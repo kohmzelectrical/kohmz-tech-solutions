@@ -9,25 +9,61 @@
     <style>
         :root { --corp-blue: #0056b3; --corp-gold: #c5a059; --bg-light: #fbfbfc; --text-dark: #222; }
         * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-dark); background: var(--bg-light); line-height: 1.8; }
+        body { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-dark); background: var(--bg-light); line-height: 1.8; overflow-x: hidden; }
         
-        /* Typography */
-        h1 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; color: white; margin-bottom: 15px; text-transform: uppercase; }
-        h2 { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: var(--corp-blue); text-transform: uppercase; margin-bottom: 25px; border-bottom: 2px solid var(--corp-gold); display: inline-block; padding-bottom: 5px; }
-        h3 { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--corp-blue); margin-bottom: 10px; text-transform: uppercase; }
+        /* 1. STICKY ADVERTISEMENT TICKER (NEW FIX) */
+        .ticker-wrapper {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(90deg, #1a237e 0%, #283593 100%); 
+            width: 100%; 
+            height: 45px;
+            position: sticky;
+            top: 0;
+            z-index: 2001; /* Pinakataas sa lahat */
+            border-bottom: 2px solid #ffeb3b; 
+            overflow: hidden;
+        }
+        .ticker-label {
+            background: #0d1440; 
+            color: #ffeb3b;
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            font-weight: 900;
+            font-size: 11px; 
+            text-transform: uppercase;
+            z-index: 10;
+            flex-shrink: 0;
+            box-shadow: 5px 0 10px rgba(0,0,0,0.3);
+        }
+        .ticker-content-box { flex: 1; overflow: hidden; display: flex; align-items: center; }
+        .ticker-text {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: ticker-move 40s linear infinite; 
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        @keyframes ticker-move {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+        .ticker-text b { color: #ffeb3b; }
 
-        /* Navigation */
-        nav { background: white; padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        /* 2. NAVIGATION (Below Ticker) */
+        nav { background: white; padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 45px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .logo-container { display: flex; align-items: center; text-decoration: none; }
         .logo-img { height: 35px; width: auto; margin-right: 10px; }
         .logo-text { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: var(--corp-blue); }
         .nav-links a { color: var(--text-dark); text-decoration: none; margin-left: 20px; font-weight: 600; font-size: 11px; text-transform: uppercase; }
         .btn-book-nav { background: var(--corp-blue); color: white !important; padding: 8px 15px; border-radius: 3px; margin-left: 15px; }
 
-        /* Floating Messenger */
-        .messenger-fab { position: fixed; bottom: 25px; right: 25px; background: #0084ff; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 2000; text-decoration: none; }
-
-        /* Hero (Logo Background) */
+        /* 3. HERO & CONTENT */
         .hero { 
             background: linear-gradient(rgba(0, 40, 80, 0.85), rgba(0, 40, 80, 0.9)), url('KOHMZ LOGO.jpg'); 
             background-size: cover; background-position: center; background-attachment: fixed;
@@ -37,240 +73,50 @@
         .badge { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 4px; border: 1px solid var(--corp-gold); font-size: 10px; font-weight: 600; }
         .btn-main { background: var(--corp-gold); color: white; padding: 12px 28px; text-decoration: none; font-weight: 700; border-radius: 3px; display: inline-block; margin-top: 20px; }
 
-        /* Sections */
         .container { max-width: 1100px; margin: 0 auto; padding: 60px 5%; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
         .card { background: white; padding: 30px; border-radius: 8px; border: 1px solid #eee; transition: 0.3s; border-top: 3px solid var(--corp-blue); }
         .card:hover { transform: translateY(-5px); border-color: var(--corp-gold); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
 
-        /* Affiliate Shop Section */
+        /* Shop Section */
         .shop-section { background: #eef2f7; border-radius: 12px; padding: 40px; margin-top: 20px; }
         .shop-card { background: white; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #ddd; }
         .btn-shop { border: 2px solid var(--corp-blue); color: var(--corp-blue); padding: 8px 15px; text-decoration: none; font-weight: 700; border-radius: 4px; display: inline-block; margin-top: 15px; font-size: 10px; }
 
-        /* Estimator Tool */
+        /* Estimator */
         .estimator-card { background: #001f3f; color: white; padding: 40px; border-radius: 10px; margin-top: 40px; }
         input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 4px; border: none; background: rgba(255,255,255,0.1); color: white; }
         .res-box { background: rgba(255,255,255,0.05); padding: 15px; border-left: 4px solid var(--corp-gold); margin-top: 10px; font-weight: 700; color: var(--corp-gold); }
 
+        /* Messenger FAB */
+        .messenger-fab { position: fixed; bottom: 25px; right: 25px; background: #0084ff; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 2000; text-decoration: none; }
+
         footer { background: #001529; color: white; padding: 60px 5% 20px 5%; text-align: center; border-top: 3px solid var(--corp-gold); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            h1 { font-size: 20px; }
+        }
     </style>
 </head>
 <body>
+
+    <div class="ticker-wrapper">
+        <div class="ticker-label">💡 KOHMZ</div>
+        <div class="ticker-content-box">
+            <div class="ticker-text">
+                ⚡ <b>ENERGY SAVING:</b> Clean AC filters monthly to save 5%... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                ☀️ <b>SOLAR FACT:</b> Panels last 25+ years with KOHMZ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                🛠️ <b>SAFETY:</b> Avoid "octopus wiring" to prevent fire... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                🔧 <b>MAINTENANCE:</b> Tighten connections every 6 months... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                💧 <b>GROUNDING:</b> Protect your appliances from surges... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                🏠 <b>SMART HOME:</b> Shift to LED to lower cooling costs... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                📞 <b>PROMO:</b> Free quote for NCR & CALABARZON! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
 
     <a href="https://m.me/KOHMZElectrical" class="messenger-fab" target="_blank"><i class="fab fa-facebook-messenger"></i></a>
 
     <nav>
         <a href="#" class="logo-container">
-            <img src="KOHMZ LOGO.jpg" alt="KOHMZ" class="logo-img" onerror="this.style.display='none'">
-            <div class="logo-text">KOHMZ <span>ELECTRICAL</span></div>
-        </a>
-        <div class="nav-links">
-            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/overview">Overview</a>
-            <a href="#services">Services</a>
-            <a href="#shop">Shop</a>
-            <a href="#estimator">Estimator</a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" class="btn-book-nav">BOOK NOW</a>
-        </div>
-    </nav>
-
-    <header class="hero">
-        <div class="trust-badges">
-            <div class="badge">DTI REGISTERED #6111576</div>
-            <div class="badge">PEC COMPLIANT</div>
-            <div class="badge">EST. APRIL 30, 2024</div>
-        </div>
-        <h1>Engineering Excellence & <br> Sustainable Power</h1>
-        <p>Premium Electrical Contracting, Hybrid Solar Integration, and Industrial Design across the CALABARZON region.</p>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" class="btn-main">FILL UP BOOKING FORM</a>
-    </header>
-
-    <section class="container" id="overview">
-        <h2>Corporate Profile</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-            <div>
-                <p><strong>KOHMZ Electrical Design and Build</strong> delivers professional, PEC-compliant engineering solutions. Operating under the registered entity <strong>KOHMZ Industrial Design Services</strong>, we specialize in high-efficiency electrical infrastructure for residential and commercial clients.</p>
-            </div>
-            <div style="background: #eef2f7; padding: 25px; border-radius: 4px;">
-                <p><strong>Service Focus:</strong><br>
-                Region IV-A Coverage | Hybrid & Off-Grid Solar | Industrial Load Computation | Technical Maintenance</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="container" id="services">
-        <h2 style="text-align: center;">Our Expertise</h2>
-        <div class="grid-3">
-            <div class="card">
-                <i class="fas fa-home" style="font-size: 24px; color: var(--corp-blue); margin-bottom: 15px;"></i>
-                <h3>Residential</h3>
-                <p>Wiring, safety audits, and smart lighting solutions.</p>
-                <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/services/residential" target="_blank" style="color:var(--corp-gold); text-decoration:none; font-weight:700;">DETAILS →</a>
-            </div>
-            <div class="card">
-                <i class="fas fa-industry" style="font-size: 24px; color: var(--corp-blue); margin-bottom: 15px;"></i>
-                <h3>Commercial</h3>
-                <p>Industrial design, load schedules, and motor controls.</p>
-                <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/services/commercial" target="_blank" style="color:var(--corp-gold); text-decoration:none; font-weight:700;">DETAILS →</a>
-            </div>
-            <div class="card">
-                <i class="fas fa-solar-panel" style="font-size: 24px; color: var(--corp-blue); margin-bottom: 15px;"></i>
-                <h3>Solar Solutions</h3>
-                <p>Hybrid integration for long-term energy savings.</p>
-                <a href="#estimator" style="color:var(--corp-gold); text-decoration:none; font-weight:700;">CALCULATOR →</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="container" id="shop">
-        <div class="shop-section">
-            <h2 style="border:none;">Authorized Affiliate Shop</h2>
-            <div class="grid-3">
-                <div class="shop-card">
-                    <i class="fas fa-sun" style="font-size: 20px; color: var(--corp-gold);"></i>
-                    <h3>Solar Parts</h3>
-                    <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/affiliate-shop/solar-parts" target="_blank" class="btn-shop">VIEW SHOP</a>
-                </div>
-                <div class="shop-card">
-                    <i class="fas fa-hammer" style="font-size: 20px; color: var(--corp-gold);"></i>
-                    <h3>Power Tools</h3>
-                    <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/affiliate-shop/powertools" target="_blank" class="btn-shop">VIEW SHOP</a>
-                </div>
-                <div class="shop-card">
-                    <i class="fas fa-plug" style="font-size: 20px; color: var(--corp-gold);"></i>
-                    <h3>Materials</h3>
-                    <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/affiliate-shop/electrical-materials" target="_blank" class="btn-shop">VIEW SHOP</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="container" id="estimator">
-        <div class="estimator-card">
-            <h2 style="color:white; border:none;">Tech Estimator</h2>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                <div>
-                    <label>Monthly Electric Bill (₱)</label>
-                    <input type="number" id="bill" placeholder="e.g. 5000" oninput="calc()">
-                    <div class="res-box" id="sol-res">System Needed: 0.0 kW</div>
-                </div>
-                <div>
-                    <label>Appliance Power (Watts)</label>
-                    <div style="display:flex; gap:10px;">
-                        <input type="number" id="w" placeholder="Watts" oninput="calc()">
-                        <input type="number" id="h" placeholder="Hrs/Day" oninput="calc()">
-                    </div>
-                    <div class="res-box" id="cost-res">Monthly Cost: ₱0.00</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <img src="KOHMZ LOGO.jpg" alt="KOHMZ" style="height:40px; margin-bottom:10px;" onerror="this.style.display='none'">
-        <p style="font-weight:700;">KOHMZ INDUSTRIAL DESIGN SERVICES</p>
-        <p>DTI Registered Contractor #6111576 | CALABARZON</p>
-        <div style="margin: 20px 0;">
-            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/portfolio" style="color:#ccc; text-decoration:none; margin: 0 10px;">Portfolio</a> |
-            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/about-us" style="color:#ccc; text-decoration:none; margin: 0 10px;">About</a>
-        </div>
-        <p style="font-size: 10px; opacity: 0.5;">© 2024-2026 KOHMZ Electrical. All Rights Reserved.</p>
-    </footer>
-
-    <script>
-        function calc() {
-            const b = document.getElementById('bill').value;
-            if(b > 0) document.getElementById('sol-res').innerText = `System Needed: ${(b/12/30/4.5).toFixed(1)} kW`;
-            const w = document.getElementById('w').value;
-            const h = document.getElementById('h').value;
-            if(w > 0 && h > 0) document.getElementById('cost-res').innerText = `Monthly Cost: ₱${((w/1000)*h*12*30).toLocaleString()}`;
-        }
-    </script>
-</body>
-</html>
-<style>
-  html, body { 
-    margin: 0 !important; 
-    padding: 0 !important; 
-    overflow: hidden; 
-    background: transparent;
-  }
-  
-  .ticker-wrapper {
-    display: flex;
-    align-items: center;
-    background: linear-gradient(90deg, #1a237e 0%, #283593 100%); 
-    width: 100vw; 
-    height: 50px; /* Tinaasan natin para mas madaling basahin */
-    position: relative;
-    box-sizing: border-box;
-    border-bottom: 2px solid #ffeb3b; 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  }
-
-  .ticker-label {
-    background: #0d1440; 
-    color: #ffeb3b; /* Ginawang yellow ang text para mas litaw */
-    padding: 0 12px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    font-weight: 900;
-    font-size: 11px; 
-    text-transform: uppercase;
-    z-index: 10;
-    flex-shrink: 0;
-    box-shadow: 5px 0 10px rgba(0,0,0,0.3);
-  }
-
-  .ticker-content-box {
-    flex: 1;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-  }
-
-  .ticker-text {
-    display: inline-block;
-    white-space: nowrap;
-    padding-left: 100%;
-    /* 50s speed - saktong bagal para mabasa sa mobile */
-    animation: ticker-move 50s linear infinite; 
-    color: white;
-    font-weight: 600;
-    font-size: 15px; /* MALAKI NA ITO: Siguradong mababasa sa mobile */
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    /* Para smooth sa mobile GPU */
-    will-change: transform;
-  }
-
-  @keyframes ticker-move {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-100%, 0, 0); }
-  }
-
-  b { color: #ffeb3b; font-weight: 800; } 
-
-  /* MOBILE FIX: Kapag maliit ang screen, i-adjust ang font */
-  @media (max-width: 600px) {
-    .ticker-wrapper { height: 45px; }
-    .ticker-text { font-size: 14px; } /* Guaranteed readable size */
-    .ticker-label { font-size: 10px; width: 80px; text-align: center; }
-  }
-</style>
-
-<div class="ticker-wrapper">
-  <div class="ticker-label">💡 KOHMZ</div>
-  <div class="ticker-content-box">
-    <div class="ticker-text">
-      ⚡ <b>ENERGY SAVING:</b> Clean AC filters monthly to save 5%... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      ☀️ <b>SOLAR FACT:</b> Panels last 25+ years with KOHMZ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      🛠️ <b>SAFETY:</b> Avoid "octopus wiring" to prevent fire... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      🔧 <b>MAINTENANCE:</b> Tighten connections every 6 months... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      💧 <b>GROUNDING:</b> Protect your appliances from surges... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      🏠 <b>SMART HOME:</b> Shift to LED to lower cooling costs... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      📞 <b>PROMO:</b> Free quote for NCR & CALABARZON! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </div>
-  </div>
-</div>
