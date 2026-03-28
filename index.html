@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOHMZ Tech Tools</title>
+    <style>
+        :root { --primary: #1a237e; --secondary: #ffeb3b; --light: #f8f9fa; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 15px; background: var(--light); color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { background: var(--primary); color: white; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; border-top: 5px solid var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: 0.3s; }
+        h2 { color: var(--primary); font-size: 1.2rem; margin-top: 0; display: flex; align-items: center; gap: 10px; }
+        .input-group { margin: 15px 0; }
+        label { display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 6px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; }
+        .result { background: #e8eaf6; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: bold; text-align: center; border-left: 4px solid var(--primary); }
+        .highlight { color: #d32f2f; font-size: 1.2rem; }
+        .btn-quote { display: block; text-align: center; background: #2e7d32; color: white; padding: 14px; text-decoration: none; border-radius: 6px; margin-top: 15px; font-weight: bold; }
+        .footer { text-align: center; font-size: 0.8rem; color: #777; margin-top: 30px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1 style="margin:0; font-size: 1.6rem;">⚡ KOHMZ TECH TOOLS</h1>
+        <p style="margin:5px 0 0 0; font-size: 0.9rem;">Professional Electrical & Solar Solutions</p>
+    </div>
+    <div class="grid">
+        <div class="card">
+            <h2>☀️ Solar ROI Calc</h2>
+            <div class="input-group">
+                <label>Monthly Electric Bill (₱):</label>
+                <input type="number" id="bill" placeholder="e.g. 5000" oninput="calcSolar()">
+            </div>
+            <div id="solar-res" class="result">
+                System Size: <span class="highlight" id="sys-size">0</span> kW<br>
+                Panels: <span class="highlight" id="panels">0</span> Units
+            </div>
+            <a href="https://m.me/KOHMZElectrical" target="_blank" class="btn-quote">GET FREE QUOTE</a>
+        </div>
+        <div class="card">
+            <h2>🔌 Appliance Cost</h2>
+            <div class="input-group">
+                <label>Watts (W):</label>
+                <input type="number" id="watts" placeholder="e.g. 1000" oninput="calcCost()">
+            </div>
+            <div class="input-group">
+                <label>Hours Used / Day:</label>
+                <input type="number" id="hours" placeholder="e.g. 5" oninput="calcCost()">
+            </div>
+            <div class="result">Monthly Cost:<br><span class="highlight" id="monthly-cost">₱0.00</span></div>
+        </div>
+        <div class="card">
+            <h2>🏠 Wiring Guide (PEC)</h2>
+            <div class="input-group">
+                <label>Installation Type:</label>
+                <select id="load-type" onchange="getGuide()">
+                    <option value="">-- Select --</option>
+                    <option value="res">Outlet (20A)</option>
+                    <option value="com">AC (30A+)</option>
+                    <option value="sol">Solar Inverter</option>
+                    <option value="light">Lighting (15A)</option>
+                </select>
+            </div>
+            <div id="guide-res" class="result" style="text-align: left; font-size: 0.9rem;">Select to see PEC standards.</div>
+        </div>
+    </div>
+    <div class="footer"><b>KOHMZ Industrial Design Services</b><br>Electrical Contractor | Region IV-A</div>
+</div>
+<script>
+    function calcSolar() { const bill = document.getElementById('bill').value; if(bill > 0) { const kwRequired = (bill / 12) / 30 / 4.5; const panels = Math.ceil((kwRequired * 1000) / 550); document.getElementById('sys-size').innerText = kwRequired.toFixed(1); document.getElementById('panels').innerText = panels; } }
+    function calcCost() { const watts = document.getElementById('watts').value; const hours = document.getElementById('hours').value; if(watts > 0 && hours > 0) { const monthly = (watts / 1000) * hours * 12 * 30; document.getElementById('monthly-cost').innerText = '₱' + monthly.toLocaleString(undefined, {maximumFractionDigits: 0}); } }
+    function getGuide() { const type = document.getElementById('load-type').value; const res = document.getElementById('guide-res'); const guides = { 'res': '<b>Standard Outlet:</b> 3.5mm² THHN + 20A Breaker.', 'com': '<b>Heavy Load:</b> 5.5mm² or 8.0mm² + 30A-40A.', 'sol': '<b>Solar:</b> 6mm² PV Cable + DC Breaker.', 'light': '<b>Lighting:</b> 2.0mm² THHN + 15A Breaker.' }; res.innerHTML = guides[type] || 'Select to see PEC standards.'; }
+</script>
+</body>
+</html>
+Final Launch
