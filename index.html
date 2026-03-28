@@ -3,144 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOHMZ Electrical Design and Build | Premium Engineering</title>
+    <title>KOHMZ Electrical Design and Build | Official Corporate Site</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --corp-blue: #0056b3;
-            --corp-gold: #c5a059;
-            --bg-light: #fbfbfc;
-            --text-dark: #222;
-        }
-
+        :root { --corp-blue: #0056b3; --corp-gold: #c5a059; --bg-light: #fbfbfc; --text-dark: #222; }
         * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-dark); background: var(--bg-light); line-height: 1.8; min-height: 100vh; }
+        body { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-dark); background: var(--bg-light); line-height: 1.8; }
         
+        /* Typography */
+        h1 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; color: white; margin-bottom: 15px; text-transform: uppercase; }
+        h2 { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: var(--corp-blue); text-transform: uppercase; margin-bottom: 25px; border-bottom: 2px solid var(--corp-gold); display: inline-block; padding-bottom: 5px; }
+        h3 { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--corp-blue); margin-bottom: 10px; text-transform: uppercase; }
+
         /* Navigation */
-        nav { background: white; padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; }
+        nav { background: white; padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .logo-container { display: flex; align-items: center; text-decoration: none; }
-        .logo-img { height: 35px; width: auto; margin-right: 10px; background: #eee; } /* Background placeholder if img fails */
+        .logo-img { height: 35px; width: auto; margin-right: 10px; }
         .logo-text { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: var(--corp-blue); }
-        .logo-text span { color: var(--corp-gold); }
+        .nav-links a { color: var(--text-dark); text-decoration: none; margin-left: 20px; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+        .btn-book-nav { background: var(--corp-blue); color: white !important; padding: 8px 15px; border-radius: 3px; margin-left: 15px; }
 
-        /* Messenger FAB */
-        .messenger-fab { position: fixed; bottom: 25px; right: 25px; background: #0084ff; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 2000; text-decoration: none; transition: 0.3s; }
+        /* Floating Messenger */
+        .messenger-fab { position: fixed; bottom: 25px; right: 25px; background: #0084ff; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 2000; text-decoration: none; }
 
-        /* Hero Section */
+        /* Hero (Logo Background) */
         .hero { 
             background: linear-gradient(rgba(0, 40, 80, 0.85), rgba(0, 40, 80, 0.9)), url('KOHMZ LOGO.jpg'); 
             background-size: cover; background-position: center; background-attachment: fixed;
-            padding: 100px 5%; text-align: center; color: white; min-height: 400px;
+            padding: 100px 5%; text-align: center; color: white;
         }
-        h1 { font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; }
-        .hero p { max-width: 700px; margin: 0 auto 30px auto; font-size: 13px; opacity: 0.9; }
+        .trust-badges { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; }
+        .badge { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 4px; border: 1px solid var(--corp-gold); font-size: 10px; font-weight: 600; }
+        .btn-main { background: var(--corp-gold); color: white; padding: 12px 28px; text-decoration: none; font-weight: 700; border-radius: 3px; display: inline-block; margin-top: 20px; }
 
-        /* Trust Badges */
-        .trust-badges { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; }
-        .badge { background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 4px; border: 1px solid var(--corp-gold); font-size: 10px; font-weight: 600; }
-
-        /* Stats */
-        .stats-bar { background: var(--corp-blue); color: white; padding: 30px 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); text-align: center; gap: 20px; }
-        .stat-item h3 { font-size: 18px; color: var(--corp-gold); margin-bottom: 5px; }
-
-        /* Container & Cards */
+        /* Sections */
         .container { max-width: 1100px; margin: 0 auto; padding: 60px 5%; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .card { background: white; padding: 30px; border-radius: 8px; border: 1px solid #eee; transition: 0.3s; text-align: left; }
+        .card { background: white; padding: 30px; border-radius: 8px; border: 1px solid #eee; transition: 0.3s; border-top: 3px solid var(--corp-blue); }
         .card:hover { transform: translateY(-5px); border-color: var(--corp-gold); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-        .card i { font-size: 28px; color: var(--corp-blue); margin-bottom: 15px; }
-        .card h3 { font-size: 14px; margin-bottom: 10px; color: var(--corp-blue); }
 
-        /* Estimator */
-        .estimator-card { background: #001f3f; color: white; padding: 40px; border-radius: 10px; margin-top: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .estimator-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; outline: none; }
-        .res-box { background: rgba(255,255,255,0.1); padding: 15px; border-left: 4px solid var(--corp-gold); margin-top: 10px; font-weight: 700; font-size: 13px; }
+        /* Affiliate Shop Section */
+        .shop-section { background: #eef2f7; border-radius: 12px; padding: 40px; margin-top: 20px; }
+        .shop-card { background: white; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #ddd; }
+        .btn-shop { border: 2px solid var(--corp-blue); color: var(--corp-blue); padding: 8px 15px; text-decoration: none; font-weight: 700; border-radius: 4px; display: inline-block; margin-top: 15px; font-size: 10px; }
 
-        /* Buttons */
-        .btn-gold { background: var(--corp-gold); color: white; padding: 12px 25px; text-decoration: none; font-weight: 700; border-radius: 4px; display: inline-block; border: none; transition: 0.3s; cursor: pointer; text-transform: uppercase; font-size: 11px; }
-        .btn-gold:hover { background: #a68545; transform: scale(1.02); }
+        /* Estimator Tool */
+        .estimator-card { background: #001f3f; color: white; padding: 40px; border-radius: 10px; margin-top: 40px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 4px; border: none; background: rgba(255,255,255,0.1); color: white; }
+        .res-box { background: rgba(255,255,255,0.05); padding: 15px; border-left: 4px solid var(--corp-gold); margin-top: 10px; font-weight: 700; color: var(--corp-gold); }
 
-        footer { background: #001529; color: white; padding: 50px 5%; text-align: center; border-top: 3px solid var(--corp-gold); }
-        .footer-logo { height: 40px; margin-bottom: 15px; }
-
-        @media (max-width: 768px) {
-            .estimator-grid { grid-template-columns: 1fr; }
-            h1 { font-size: 22px; }
-            .hero { padding: 60px 5%; }
-        }
+        footer { background: #001529; color: white; padding: 60px 5% 20px 5%; text-align: center; border-top: 3px solid var(--corp-gold); }
     </style>
 </head>
 <body>
 
-    <a href="https://m.me/KOHMZElectrical" class="messenger-fab" target="_blank" title="Chat with us">
-        <i class="fab fa-facebook-messenger"></i>
-    </a>
+    <a href="https://m.me/KOHMZElectrical" class="messenger-fab" target="_blank"><i class="fab fa-facebook-messenger"></i></a>
 
     <nav>
         <a href="#" class="logo-container">
             <img src="KOHMZ LOGO.jpg" alt="KOHMZ" class="logo-img" onerror="this.style.display='none'">
             <div class="logo-text">KOHMZ <span>ELECTRICAL</span></div>
         </a>
-        <div style="display: flex; gap: 10px;">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" class="btn-gold" style="padding: 8px 15px;">GET QUOTE</a>
+        <div class="nav-links">
+            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/overview">Overview</a>
+            <a href="#services">Services</a>
+            <a href="#shop">Shop</a>
+            <a href="#estimator">Estimator</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" class="btn-book-nav">BOOK NOW</a>
         </div>
     </nav>
 
     <header class="hero">
         <div class="trust-badges">
-            <div class="badge"><i class="fas fa-certificate"></i> DTI REGISTERED #6111576</div>
-            <div class="badge"><i class="fas fa-bolt"></i> PEC COMPLIANT</div>
+            <div class="badge">DTI REGISTERED #6111576</div>
+            <div class="badge">PEC COMPLIANT</div>
+            <div class="badge">EST. APRIL 30, 2024</div>
         </div>
-        <h1>Powering Your Future <br> with Precision</h1>
-        <p>CALABARZON's Trusted Partner for Industrial Electrical Design and Hybrid Solar Solutions. Professional. Reliable. Sustainable.</p>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" class="btn-gold">BOOK FREE SURVEY</a>
+        <h1>Engineering Excellence & <br> Sustainable Power</h1>
+        <p>Premium Electrical Contracting, Hybrid Solar Integration, and Industrial Design across the CALABARZON region.</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" class="btn-main">FILL UP BOOKING FORM</a>
     </header>
 
-    <div class="stats-bar">
-        <div class="stat-item"><h3>LAGUNA & BEYOND</h3><p>Service Coverage</p></div>
-        <div class="stat-item"><h3>SOLAR HYBRID</h3><p>Specialization</p></div>
-        <div class="stat-item"><h3>INDUSTRIAL</h3><p>Design Experts</p></div>
-    </div>
+    <section class="container" id="overview">
+        <h2>Corporate Profile</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+            <div>
+                <p><strong>KOHMZ Electrical Design and Build</strong> delivers professional, PEC-compliant engineering solutions. Operating under the registered entity <strong>KOHMZ Industrial Design Services</strong>, we specialize in high-efficiency electrical infrastructure for residential and commercial clients.</p>
+            </div>
+            <div style="background: #eef2f7; padding: 25px; border-radius: 4px;">
+                <p><strong>Service Focus:</strong><br>
+                Region IV-A Coverage | Hybrid & Off-Grid Solar | Industrial Load Computation | Technical Maintenance</p>
+            </div>
+        </div>
+    </section>
 
     <section class="container" id="services">
-        <h2 style="text-align: center; margin-bottom: 40px; border: none;">Specialized Solutions</h2>
+        <h2 style="text-align: center;">Our Expertise</h2>
         <div class="grid-3">
             <div class="card">
-                <i class="fas fa-solar-panel"></i>
-                <h3>Solar Engineering</h3>
-                <p>Customized hybrid and off-grid setups to slash your power costs effectively.</p>
-                <a href="#estimator" style="color:var(--corp-gold); text-decoration:none; font-weight:700;">CALCULATE SAVINGS →</a>
+                <i class="fas fa-home" style="font-size: 24px; color: var(--corp-blue); margin-bottom: 15px;"></i>
+                <h3>Residential</h3>
+                <p>Wiring, safety audits, and smart lighting solutions.</p>
+                <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/services/residential" target="_blank" style="color:var(--corp-gold); text-decoration:none; font-weight:700;">DETAILS →</a>
             </div>
             <div class="card">
-                <i class="fas fa-tools"></i>
-                <h3>Electrical Design</h3>
-                <p>DTI-registered industrial design services, load schedules, and motor controls.</p>
-                <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/services/commercial" target="_blank" style="color:var(--corp-gold); text-decoration:none; font-weight:700;">VIEW SERVICES →</a>
+                <i class="fas fa-industry" style="font-size: 24px; color: var(--corp-blue); margin-bottom: 15px;"></i>
+                <h3>Commercial</h3>
+                <p>Industrial design, load schedules, and motor controls.</p>
+                <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/services/commercial" target="_blank" style="color:var(--corp-gold); text-decoration:none; font-weight:700;">DETAILS →</a>
             </div>
             <div class="card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>Safety Audits</h3>
-                <p>Comprehensive electrical inspections and PEC compliance certifications.</p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" style="color:var(--corp-gold); text-decoration:none; font-weight:700;">BOOK NOW →</a>
+                <i class="fas fa-solar-panel" style="font-size: 24px; color: var(--corp-blue); margin-bottom: 15px;"></i>
+                <h3>Solar Solutions</h3>
+                <p>Hybrid integration for long-term energy savings.</p>
+                <a href="#estimator" style="color:var(--corp-gold); text-decoration:none; font-weight:700;">CALCULATOR →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="shop">
+        <div class="shop-section">
+            <h2 style="border:none;">Authorized Affiliate Shop</h2>
+            <div class="grid-3">
+                <div class="shop-card">
+                    <i class="fas fa-sun" style="font-size: 20px; color: var(--corp-gold);"></i>
+                    <h3>Solar Parts</h3>
+                    <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/affiliate-shop/solar-parts" target="_blank" class="btn-shop">VIEW SHOP</a>
+                </div>
+                <div class="shop-card">
+                    <i class="fas fa-hammer" style="font-size: 20px; color: var(--corp-gold);"></i>
+                    <h3>Power Tools</h3>
+                    <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/affiliate-shop/powertools" target="_blank" class="btn-shop">VIEW SHOP</a>
+                </div>
+                <div class="shop-card">
+                    <i class="fas fa-plug" style="font-size: 20px; color: var(--corp-gold);"></i>
+                    <h3>Materials</h3>
+                    <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/affiliate-shop/electrical-materials" target="_blank" class="btn-shop">VIEW SHOP</a>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="container" id="estimator">
         <div class="estimator-card">
-            <h2 style="color:white; border:none; padding:0; margin-bottom:10px;">Client Savings Portal</h2>
-            <p style="opacity:0.7; margin-bottom:25px;">Get an instant estimate for your solar requirements and appliance costs.</p>
-            <div class="estimator-grid">
+            <h2 style="color:white; border:none;">Tech Estimator</h2>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                 <div>
                     <label>Monthly Electric Bill (₱)</label>
-                    <input type="number" id="bill" placeholder="Enter amount" oninput="calc()">
-                    <div class="res-box" id="sol-res">Recommended: 0.0 kW System</div>
+                    <input type="number" id="bill" placeholder="e.g. 5000" oninput="calc()">
+                    <div class="res-box" id="sol-res">System Needed: 0.0 kW</div>
                 </div>
                 <div>
                     <label>Appliance Power (Watts)</label>
-                    <input type="number" id="w" placeholder="Enter watts" oninput="calc()">
+                    <div style="display:flex; gap:10px;">
+                        <input type="number" id="w" placeholder="Watts" oninput="calc()">
+                        <input type="number" id="h" placeholder="Hrs/Day" oninput="calc()">
+                    </div>
                     <div class="res-box" id="cost-res">Monthly Cost: ₱0.00</div>
                 </div>
             </div>
@@ -148,28 +167,23 @@
     </section>
 
     <footer>
-        <img src="KOHMZ LOGO.jpg" alt="KOHMZ Logo" class="footer-logo" onerror="this.style.display='none'">
-        <p style="font-weight:700; font-size:12px; margin-bottom:10px;">KOHMZ ELECTRICAL DESIGN AND BUILD</p>
-        <p style="opacity:0.6; margin-bottom:20px;">Industrial Design Services | DTI Registered #6111576</p>
-        <div style="margin-bottom:30px;">
-            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/portfolio" style="color:#888; text-decoration:none; margin:0 10px;">Portfolio</a>
-            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/about-us" style="color:#888; text-decoration:none; margin:0 10px;">About</a>
+        <img src="KOHMZ LOGO.jpg" alt="KOHMZ" style="height:40px; margin-bottom:10px;" onerror="this.style.display='none'">
+        <p style="font-weight:700;">KOHMZ INDUSTRIAL DESIGN SERVICES</p>
+        <p>DTI Registered Contractor #6111576 | CALABARZON</p>
+        <div style="margin: 20px 0;">
+            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/portfolio" style="color:#ccc; text-decoration:none; margin: 0 10px;">Portfolio</a> |
+            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/about-us" style="color:#ccc; text-decoration:none; margin: 0 10px;">About</a>
         </div>
-        <p style="font-size:9px; opacity:0.4;">© 2024-2026 KOHMZ Industrial Design Services. All Rights Reserved.</p>
+        <p style="font-size: 10px; opacity: 0.5;">© 2024-2026 KOHMZ Electrical. All Rights Reserved.</p>
     </footer>
 
     <script>
         function calc() {
             const b = document.getElementById('bill').value;
-            if(b > 0) {
-                const kw = (b / 12) / 30 / 4.5;
-                document.getElementById('sol-res').innerText = `Recommended: ${kw.toFixed(1)} kW System`;
-            }
+            if(b > 0) document.getElementById('sol-res').innerText = `System Needed: ${(b/12/30/4.5).toFixed(1)} kW`;
             const w = document.getElementById('w').value;
-            if(w > 0) {
-                const c = (w/1000) * 24 * 12 * 30;
-                document.getElementById('cost-res').innerText = `Monthly Cost: ₱${c.toLocaleString()}`;
-            }
+            const h = document.getElementById('h').value;
+            if(w > 0 && h > 0) document.getElementById('cost-res').innerText = `Monthly Cost: ₱${((w/1000)*h*12*30).toLocaleString()}`;
         }
     </script>
 </body>
