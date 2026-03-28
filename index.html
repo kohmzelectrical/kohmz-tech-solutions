@@ -3,179 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOHMZ Electrical Design and Build | Professional Contractor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+    <title>KOHMZ Electrical Design and Build | Corporate Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #1a237e; --accent: #ffeb3b; --light: #f8f9fa; --dark: #121212; --success: #2e7d32; }
-        * { box-sizing: border-box; scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--light); color: #333; line-height: 1.6; }
-        
-        /* Navigation */
-        nav { background: var(--primary); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .logo { color: white; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.4rem; }
-        .logo span { color: var(--accent); }
-        .nav-links a { color: white; text-decoration: none; margin-left: 15px; font-weight: 600; font-size: 0.85rem; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent); }
-
-        /* Hero */
-        .hero { background: linear-gradient(rgba(26, 35, 126, 0.85), rgba(26, 35, 126, 0.85)), url('https://images.unsplash.com/photo-1581092334651-ddf26d9a1930?auto=format&fit=crop&q=80&w=1200'); 
-                background-size: cover; height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
-        .cta-main { background: var(--accent); color: var(--primary); padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: 800; margin-top: 20px; }
-
-        /* Sections */
-        section { padding: 60px 8%; max-width: 1200px; margin: 0 auto; }
-        h2 { color: var(--primary); font-family: 'Poppins', sans-serif; border-left: 5px solid var(--accent); padding-left: 15px; margin-bottom: 30px; }
-
-        /* Services & Shop Grid */
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        .card h3 { margin-top: 0; color: var(--primary); }
-        .btn-sm { display: inline-block; margin-top: 10px; color: var(--primary); font-weight: bold; text-decoration: none; border-bottom: 2px solid var(--accent); }
-
-        /* Estimator Box */
-        #estimator { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .est-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
-        .res-box { background: #e8eaf6; padding: 15px; border-radius: 8px; font-weight: bold; text-align: center; color: var(--primary); }
-
-        /* Footer */
-        footer { background: var(--dark); color: white; text-align: center; padding: 50px 20px; font-size: 0.85rem; }
-        .footer-links a { color: #aaa; text-decoration: none; margin: 0 10px; }
-        
-        @media (max-width: 768px) { .nav-links { display: none; } }
-    </style>
-</head>
-<body>
-
-<nav>
-    <div class="logo">KOHMZ <span>ELECTRICAL</span></div>
-    <div class="nav-links">
-        <a href="#overview">About</a>
-        <a href="#services">Services</a>
-        <a href="#shop">Shop</a>
-        <a href="#estimator">Estimator</a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Book Now</a>
-    </div>
-</nav>
-
-<div class="hero">
-    <h1 style="font-family:'Poppins';">KOHMZ Industrial Design Services</h1>
-    <p>Professional Electrical Design, Build, and Solar Solutions in CALABARZON.</p>
-    <a href="#estimator" class="cta-main">FREE TECH ESTIMATOR</a>
-</div>
-
-<section id="overview">
-    <h2>Business Overview</h2>
-    <div class="grid-3" style="grid-template-columns: 2fr 1fr;">
-        <div>
-            <p><strong>KOHMZ Electrical Design and Build</strong> is a DTI-registered firm (Certificate No. 5693452) providing innovative engineering solutions. We specialize in industrial design and sustainable energy, serving Laguna, Batangas, Cavite, Rizal, and Quezon.</p>
-            <p>Our mission is to empower homes and businesses through high-quality electrical design and renewable energy systems.</p>
-        </div>
-        <div class="card" style="border-top-color: var(--success);">
-            <h3>Core Values</h3>
-            <ul style="padding-left:15px; font-size:0.9rem;">
-                <li>Integrity & Safety</li>
-                <li>Innovation in Design</li>
-                <li>Customer Satisfaction</li>
-                <li>Sustainable Energy</li>
-            </ul>
-        </div>
-    </div>
-</section>
-
-<section id="services" style="background:#f1f3f5;">
-    <h2>Our Services</h2>
-    <div class="grid-3">
-        <div class="card">
-            <h3>Residential</h3>
-            <p>Full house wiring, LED lighting upgrades, and safety inspections for your home.</p>
-            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/services/residential" class="btn-sm">Learn More →</a>
-        </div>
-        <div class="card">
-            <h3>Commercial</h3>
-            <p>Industrial design services, load computation, and electrical system maintenance.</p>
-            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/services/commercial" class="btn-sm">Learn More →</a>
-        </div>
-        <div class="card">
-            <h3>Solar Solutions</h3>
-            <p>Hybrid and Off-grid solar installations tailored for maximum savings.</p>
-            <a href="#estimator" class="btn-sm">Estimate Savings →</a>
-        </div>
-    </div>
-</section>
-
-<section id="shop">
-    <h2>Affiliate Shop</h2>
-    <p>Get the best tools and materials directly from our trusted partners.</p>
-    <div class="grid-3">
-        <div class="card">
-            <h3>Solar Parts</h3>
-            <p>Panels, Inverters, and Batteries.</p>
-            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/affiliate-shop/solar-parts" class="btn-sm">Browse Shop →</a>
-        </div>
-        <div class="card">
-            <h3>Power Tools</h3>
-            <p>Drills, Grinders, and Equipment.</p>
-            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/affiliate-shop/powertools" class="btn-sm">Browse Shop →</a>
-        </div>
-        <div class="card">
-            <h3>Electrical Materials</h3>
-            <p>Wires, Breakers, and Fittings.</p>
-            <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/affiliate-shop/electrical-materials" class="btn-sm">Browse Shop →</a>
-        </div>
-    </div>
-</section>
-
-<section id="estimator">
-    <h2 style="border:none; text-align:center;">Tech Estimator & Calculator</h2>
-    <div class="est-grid">
-        <div class="card">
-            <h3>Solar ROI</h3>
-            <input type="number" id="bill" placeholder="Monthly Bill (₱)" oninput="calcSolar()">
-            <div class="res-box" id="solar-res">System: 0 kW</div>
-        </div>
-        <div class="card">
-            <h3>Appliance Cost</h3>
-            <input type="number" id="watts" placeholder="Watts" oninput="calcCost()">
-            <input type="number" id="hours" placeholder="Hours/Day" oninput="calcCost()">
-            <div class="res-box" id="cost-res">Monthly: ₱0.00</div>
-        </div>
-    </div>
-    <div style="text-align:center; margin-top:30px;">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" class="cta-main" style="background:var(--success); color:white;">BOOK A SURVEY NOW</a>
-    </div>
-</section>
-
-<footer>
-    <p><strong>KOHMZ INDUSTRIAL DESIGN SERVICES</strong><br>
-    Registered Contractor | CALABARZON Region IV-A</p>
-    <div class="footer-links" style="margin:20px 0;">
-        <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/portfolio">Portfolio</a> | 
-        <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/about-us">About Us</a> | 
-        <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/privacy-policy-terms-of-service">Privacy Policy</a>
-    </div>
-    <a href="https://m.me/KOHMZElectrical" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:bold;">Message us on Facebook</a>
-    <p style="margin-top:30px; opacity:0.5;">© 2024-2026 KOHMZ Electrical Design and Build.</p>
-</footer>
-
-<script>
-    function calcSolar() {
-        const b = document.getElementById('bill').value;
-        if(b > 0) {
-            const kw = (b / 12) / 30 / 4.5;
-            document.getElementById('solar-res').innerText = `System: ${kw.toFixed(1)} kW (${Math.ceil((kw*1000)/550)} Panels)`;
+        /* Signature KOHMZ Corporate Theme */
+        :root {
+            --corp-blue: #0056b3;   /* Match Logo Blue */
+            --corp-gold: #c5a059;   /* Subtle Premium Gold */
+            --bg-light: #fbfbfc;
+            --text-dark: #222;
+            --text-muted: #555;
+            --border-line: #eaeaea;
         }
-    }
-    function calcCost() {
-        const w = document.getElementById('watts').value;
-        const h = document.getElementById('hours').value;
-        if(w && h) {
-            const c = (w/1000) * h * 12 * 30;
-            document.getElementById('cost-res').innerText = `Monthly: ₱${c.toLocaleString()}`;
-        }
-    }
-</script>
 
-</body>
-</html>
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+        
+        /* Strict Font Sizing as requested */
+        body { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-dark); background: var(--bg-light); line-height: 1.8; }
+        h1 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; color: white; margin-bottom: 15px; letter-spacing: 0.5px; }
+        h2 { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: var(--corp-blue); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 25px; border-bottom: 2px solid var(--corp-gold); display: inline-block; padding-bottom: 5px; }
+        h3 { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--corp-blue); margin-bottom: 8px; text-transform: uppercase; }
+        p, a, li, label, input, select { font-size: 12px; }
+        .small-text, footer, footer p, footer a { font-size: 10px; }
+
+        /* Navigation with Logo */
+        nav { background: white; padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-line); box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .logo-container { display: flex; align-items: center; text-decoration: none; color: var(--corp-blue); }
+        .logo-img { height: 25px; width: auto; margin-right: 10px; }
+        .logo-text { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; }
+        .logo-text span { color: var(--corp-gold); }
+        .nav-links a { color: var(--text-dark); text-decoration: none; margin-left: 20px; font-weight: 600; text-transform: uppercase; font-size: 11px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--corp-gold); }
+        .btn-book { background: var(--corp-blue); color: white !important; padding: 8px 16px; border-radius: 3px; font-size: 11px; }
+        .btn-book:hover { background: #003d7e; }
+
+        /* Signature Hero Header */
+        .hero { 
+            background: linear-gradient(rgba(0, 86, 179, 0.85), rgba(0, 86, 179, 0.95)),
