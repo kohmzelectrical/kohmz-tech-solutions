@@ -188,3 +188,89 @@
     </script>
 </body>
 </html>
+<style>
+  html, body { 
+    margin: 0 !important; 
+    padding: 0 !important; 
+    overflow: hidden; 
+    background: transparent;
+  }
+  
+  .ticker-wrapper {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg, #1a237e 0%, #283593 100%); 
+    width: 100vw; 
+    height: 50px; /* Tinaasan natin para mas madaling basahin */
+    position: relative;
+    box-sizing: border-box;
+    border-bottom: 2px solid #ffeb3b; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .ticker-label {
+    background: #0d1440; 
+    color: #ffeb3b; /* Ginawang yellow ang text para mas litaw */
+    padding: 0 12px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-weight: 900;
+    font-size: 11px; 
+    text-transform: uppercase;
+    z-index: 10;
+    flex-shrink: 0;
+    box-shadow: 5px 0 10px rgba(0,0,0,0.3);
+  }
+
+  .ticker-content-box {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .ticker-text {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%;
+    /* 50s speed - saktong bagal para mabasa sa mobile */
+    animation: ticker-move 50s linear infinite; 
+    color: white;
+    font-weight: 600;
+    font-size: 15px; /* MALAKI NA ITO: Siguradong mababasa sa mobile */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    /* Para smooth sa mobile GPU */
+    will-change: transform;
+  }
+
+  @keyframes ticker-move {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+  }
+
+  b { color: #ffeb3b; font-weight: 800; } 
+
+  /* MOBILE FIX: Kapag maliit ang screen, i-adjust ang font */
+  @media (max-width: 600px) {
+    .ticker-wrapper { height: 45px; }
+    .ticker-text { font-size: 14px; } /* Guaranteed readable size */
+    .ticker-label { font-size: 10px; width: 80px; text-align: center; }
+  }
+</style>
+
+<div class="ticker-wrapper">
+  <div class="ticker-label">💡 KOHMZ</div>
+  <div class="ticker-content-box">
+    <div class="ticker-text">
+      ⚡ <b>ENERGY SAVING:</b> Clean AC filters monthly to save 5%... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      ☀️ <b>SOLAR FACT:</b> Panels last 25+ years with KOHMZ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      🛠️ <b>SAFETY:</b> Avoid "octopus wiring" to prevent fire... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      🔧 <b>MAINTENANCE:</b> Tighten connections every 6 months... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      💧 <b>GROUNDING:</b> Protect your appliances from surges... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      🏠 <b>SMART HOME:</b> Shift to LED to lower cooling costs... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      📞 <b>PROMO:</b> Free quote for NCR & CALABARZON! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+  </div>
+</div>
