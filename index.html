@@ -3,233 +3,356 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOHMZ Electrical | Solar Solutions Philippines</title>
+    <title>KOHMZ Electrical Design and Build</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* ==========================================================
-           GLOBAL CSS ARCHITECTURE - EXPANDED COMMANDS
-           ========================================================== */
+        /* =========================================
+           CSS COMMAND ARCHITECTURE (EXPANDED)
+           =========================================
+        */
 
         :root {
             --primary-navy: #0d1440;
-            --secondary-blue: #1a237e;
             --accent-gold: #ffeb3b;
-            --white-pure: #ffffff;
-            --gray-light: #f1f5f9;
-            --gray-dark: #334155;
-            --text-main: #1e293b;
-            --success-green: #22c55e;
-            --shadow-standard: 0 4px 15px rgba(0,0,0,0.1);
-            --transition-smooth: all 0.3s ease;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            outline: none;
+            --ui-blue: #1a237e;
+            --white: #ffffff;
+            --bg-gray: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
         }
 
         html {
             scroll-behavior: smooth;
-            overflow-x: hidden;
         }
 
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Inter', sans-serif;
-            background-color: var(--gray-light);
-            color: var(--text-main);
-            line-height: 1.8;
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
-        /* --- 1. PREMIUM ADVERTISING TICKER --- */
-        .ticker-bar {
-            background: var(--primary-navy);
-            height: 42px;
+        /* ANNOUNCEMENT TICKER */
+        .top-bar {
+            width: 100%;
+            height: 45px;
+            background-color: var(--primary-navy);
+            border-bottom: 3px solid var(--accent-gold);
             display: flex;
             align-items: center;
-            border-bottom: 3px solid var(--accent-gold);
+            overflow: hidden;
             position: sticky;
             top: 0;
-            z-index: 10000;
+            z-index: 1000;
         }
 
         .ticker-label {
-            background: var(--accent-gold);
+            background-color: var(--accent-gold);
             color: var(--primary-navy);
-            padding: 0 25px;
+            padding: 0 20px;
             height: 100%;
             display: flex;
             align-items: center;
             font-weight: 900;
-            font-size: 13px;
+            font-size: 11px;
             text-transform: uppercase;
-            box-shadow: 10px 0 20px rgba(0,0,0,0.2);
             z-index: 2;
         }
 
-        .ticker-scroll-window {
-            flex: 1;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-
-        .ticker-text-move {
+        .ticker-move {
             display: inline-block;
             white-space: nowrap;
             padding-left: 100%;
-            animation: moveText 35s linear infinite;
+            animation: tickerScroll 40s linear infinite;
+            color: var(--white);
             font-weight: 700;
-            color: var(--white-pure);
             font-size: 14px;
         }
 
-        @keyframes moveText {
+        @keyframes tickerScroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-100%); }
         }
 
-        /* --- 2. NAVIGATION BAR --- */
-        header {
-            background: var(--white-pure);
-            padding: 15px 8%;
+        /* NAVIGATION */
+        nav {
+            background-color: var(--white);
+            padding: 20px 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: var(--shadow-standard);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
 
-        .brand-container {
+        .brand-logo {
             display: flex;
             flex-direction: column;
         }
 
-        .brand-name {
+        .brand-logo a {
             font-family: 'Montserrat', sans-serif;
             font-weight: 900;
             font-size: 28px;
-            color: var(--secondary-blue);
+            color: var(--ui-blue);
             text-decoration: none;
             line-height: 1;
         }
 
-        .brand-tagline {
-            font-size: 11px;
-            color: var(--gray-dark);
-            text-transform: uppercase;
+        .brand-logo span {
+            font-size: 10px;
+            color: var(--text-light);
             letter-spacing: 2px;
-            margin-top: 5px;
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
-        .nav-links-list {
+        .nav-links {
             display: flex;
             gap: 30px;
             list-style: none;
         }
 
-        .nav-links-list li a {
+        .nav-links a {
             text-decoration: none;
-            color: var(--text-main);
+            color: var(--text-dark);
             font-weight: 700;
-            font-size: 14px;
-            transition: var(--transition-smooth);
+            font-size: 13px;
+            text-transform: uppercase;
         }
 
-        .nav-links-list li a:hover {
-            color: var(--secondary-blue);
-        }
-
-        /* --- 3. HERO SECTION (RESIDENTIAL & COMMERCIAL FOCUS) --- */
-        .hero-banner {
-            padding: 140px 8%;
+        /* HERO SECTION */
+        .hero {
+            padding: 100px 6% 140px;
             background: linear-gradient(rgba(13, 20, 64, 0.8), rgba(13, 20, 64, 0.8)), url('https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2072');
             background-size: cover;
             background-position: center;
             text-align: center;
-            color: var(--white-pure);
+            color: var(--white);
         }
 
-        .hero-banner h1 {
+        .hero h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(32px, 5vw, 55px);
+            font-size: 52px;
             font-weight: 900;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        .hero-banner p {
-            font-size: 20px;
-            max-width: 800px;
+        .hero p {
+            font-size: 18px;
+            max-width: 750px;
             margin: 0 auto 40px;
             opacity: 0.9;
         }
 
-        .cta-button-hero {
-            background: var(--accent-gold);
+        .hero-btn {
+            background-color: var(--accent-gold);
             color: var(--primary-navy);
             padding: 18px 45px;
-            border-radius: 8px;
+            border-radius: 5px;
             text-decoration: none;
             font-weight: 800;
             text-transform: uppercase;
             display: inline-block;
-            box-shadow: 0 10px 20px rgba(255, 235, 59, 0.3);
         }
 
-        /* --- 4. SOLAR CALCULATOR SUITE (EXPANDED) --- */
-        .tools-section {
-            padding: 80px 8%;
+        /* CALCULATOR GRID */
+        .calc-area {
+            padding: 0 6% 80px;
             margin-top: -80px;
         }
 
-        .grid-container {
+        .calc-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 35px;
-            max-width: 1300px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .calculator-card {
-            background: var(--white-pure);
-            padding: 45px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--secondary-blue);
+        .calc-card {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-top: 8px solid var(--ui-blue);
         }
 
-        .calculator-card h3 {
+        .calc-card i {
+            font-size: 40px;
+            color: var(--ui-blue);
+            margin-bottom: 20px;
+        }
+
+        .calc-card h3 {
             font-family: 'Montserrat';
-            margin-bottom: 30px;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .input-field-group {
             margin-bottom: 25px;
+            font-size: 20px;
         }
 
-        .input-field-group label {
+        .input-box {
+            margin-bottom: 20px;
+        }
+
+        .input-box label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
-            color: var(--gray-dark);
-            margin-bottom: 10px;
+            color: var(--text-light);
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
 
-        .input-field-group input {
+        .input-box input {
             width: 100%;
-            padding: 16px;
-            border: 2px solid #e2e8f0;
+            padding: 15px;
+            border: 2.5px solid #f1f5f9;
             border-radius: 10px;
-            font-size: 18px;
-            background: #
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .res-display {
+            margin-top: 30px;
+            background-color: var(--primary-navy);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .res-display .res-label {
+            color: var(--white);
+            font-size: 10px;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+
+        .res-display .res-val {
+            color: var(--accent-gold);
+            font-size: 30px;
+            font-weight: 900;
+            margin-top: 5px;
+        }
+
+        /* SHOP SECTION */
+        .shop {
+            padding: 100px 6%;
+            background-color: var(--white);
+        }
+
+        .prod-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .prod-card {
+            border: 1px solid #f1f5f9;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .aff-btn {
+            display: block;
+            margin-top: 20px;
+            background-color: #ee4d2d;
+            color: white;
+            padding: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 5px;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--primary-navy);
+            color: var(--white);
+            padding: 80px 6% 40px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Montserrat';
+            font-size: 35px;
+            font-weight: 900;
+            color: var(--accent-gold);
+        }
+
+        .footer-info {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.6;
+            line-height: 1.8;
+        }
+
+        /* MESSENGER FAB */
+        .messenger-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background-color: #0084ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 35px;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 2000;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 34px; }
+            .calc-area { margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="ticker-label">Announcements</div>
+        <div class="ticker-move">
+            ⚡ <b>OFFER:</b> Free Site Survey for Residential Solar in CALABARZON! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            🏢 <b>BUSINESS:</b> Lower your electricity bills with our Commercial Solar Packages. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            🛠️ <b>KOHMZ:</b> DTI Registered Industrial Design firm since April 2024.
+        </div>
+    </div>
+
+    <nav>
+        <div class="brand-logo">
+            <a href="#">KOHMZ</a>
+            <span>Solar & Electrical Build</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#tools">Tools</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="https://m.me/KOHMZElectrical" target="_blank">Chat</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <h1>Reliable Solar for <br>Homes & Stores</h1>
+        <p>Providing expert electrical design and sustainable energy solutions for residential and commercial properties in Region IV-A.</p>
+        <a href="#tools" class="hero-btn">Calculate Your Needs</a>
+    </section>
+
+    <section class="calc-area" id="tools">
+        <div class="calc-grid">
+            
+            <div class="calc-card">
+                <i class="fas fa-sun"></i>
+                <h3>Solar Sizer</h3>
+                <div class="input-box">
+                    <label>Average Monthly Bill (₱)</label>
+                    <input type="number" id="in-bill" placeholder="e.g. 5000" oninput="runKohmzEngine()">
