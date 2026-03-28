@@ -1,0 +1,171 @@
+index.html
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOHMZ Solar & Electrical Tools</title>
+    <style>
+        :root {
+            --primary: #1a237e;
+            --secondary: #ffeb3b;
+            --dark: #0d1440;
+            --light: #f8f9fa;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            background: var(--light);
+            color: #333;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        .card {
+            background: white;
+            padding: 18px;
+            border-radius: 8px;
+            border-top: 4px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        h2 { color: var(--primary); font-size: 1.1rem; margin-top: 0; }
+        .input-group { margin: 12px 0; }
+        label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 4px; }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .result {
+            background: #f0f2f5;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 12px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+        .highlight { color: #d32f2f; font-size: 1.1rem; }
+        .btn-quote {
+            display: block;
+            text-align: center;
+            background: #2e7d32;
+            color: white;
+            padding: 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1 style="margin:0; font-size: 1.4rem;">⚡ KOHMZ TECH TOOLS</h1>
+        <p style="margin:4px 0 0 0; font-size: 0.85rem;">Residential & Commercial Solar Solutions</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h2>☀️ Solar ROI Calculator</h2>
+            <div class="input-group">
+                <label>Monthly Electric Bill (₱):</label>
+                <input type="number" id="bill" placeholder="e.g. 6000" oninput="calcSolar()">
+            </div>
+            <div id="solar-res" class="result">
+                Estimated System: <span class="highlight" id="sys-size">0</span> kW<br>
+                Panels Needed: <span class="highlight" id="panels">0</span> Units
+            </div>
+            <a href="https://m.me/KOHMZElectrical" target="_blank" class="btn-quote">GET FREE QUOTE</a>
+        </div>
+
+        <div class="card">
+            <h2>🔌 Appliance Cost Checker</h2>
+            <div class="input-group">
+                <label>Appliance Watts (W):</label>
+                <input type="number" id="watts" placeholder="e.g. 1500" oninput="calcCost()">
+            </div>
+            <div class="input-group">
+                <label>Hours Used / Day:</label>
+                <input type="number" id="hours" placeholder="e.g. 8" oninput="calcCost()">
+            </div>
+            <div id="cost-res" class="result">
+                Monthly Added Cost:<br>
+                <span class="highlight" id="monthly-cost">₱0.00</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🏠 Smart Wiring Guide</h2>
+            <div class="input-group">
+                <label>Type of Installation:</label>
+                <select id="load-type" onchange="getGuide()">
+                    <option value="">-- Select --</option>
+                    <option value="res">Residential Outlet (20A)</option>
+                    <option value="com">Commercial AC (30A+)</option>
+                    <option value="sol">Solar Inverter (Dedicated)</option>
+                    <option value="light">LED Lighting (15A)</option>
+                </select>
+            </div>
+            <div id="guide-res" class="result" style="font-size: 0.85rem; text-align: left;">
+                Select to see PEC standards.
+            </div>
+        </div>
+    </div>
+
+    <p style="text-align:center; font-size: 0.7rem; color: #999; margin-top: 25px;">
+        KOHMZ Industrial Design Services | Experts in CALABARZON Electrical Projects
+    </p>
+</div>
+
+<script>
+    function calcSolar() {
+        const bill = document.getElementById('bill').value;
+        if(bill > 0) {
+            const kwRequired = (bill / 12) / 30 / 4.5; 
+            const panels = Math.ceil((kwRequired * 1000) / 550);
+            document.getElementById('sys-size').innerText = kwRequired.toFixed(1);
+            document.getElementById('panels').innerText = panels;
+        }
+    }
+
+    function calcCost() {
+        const watts = document.getElementById('watts').value;
+        const hours = document.getElementById('hours').value;
+        if(watts > 0 && hours > 0) {
+            const monthly = (watts / 1000) * hours * 12 * 30;
+            document.getElementById('monthly-cost').innerText = '₱' + monthly.toLocaleString(undefined, {maximumFractionDigits: 0});
+        }
+    }
+
+    function getGuide() {
+        const type = document.getElementById('load-type').value;
+        const res = document.getElementById('guide-res');
+        const guides = {
+            'res': '<b>Standard Outlet:</b> Use 3.5mm² THHN Wire + 20A Breaker.',
+            'com': '<b>Heavy Load:</b> Use 5.5mm² or 8.0mm² + 30A-40A Breaker.',
+            'sol': '<b>Solar Setup:</b> Requires dedicated DC breakers and 6mm² PV cables.',
+            'light': '<b>Lighting:</b> Use 2.0mm² THHN Wire + 15A Breaker.'
+        };
+        res.innerHTML = guides[type] || 'Select to see PEC standards.';
+    }
+</script>
+
+</body>
+</html>
