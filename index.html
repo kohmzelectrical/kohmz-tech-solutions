@@ -3,77 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOHMZ Tech Tools</title>
+    <title>KOHMZ Electrical Design and Build | Solar & Electrical Contractor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #1a237e; --secondary: #ffeb3b; --light: #f8f9fa; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 15px; background: var(--light); color: #333; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .header { background: var(--primary); color: white; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 20px; border-radius: 12px; border-top: 5px solid var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: 0.3s; }
-        h2 { color: var(--primary); font-size: 1.2rem; margin-top: 0; display: flex; align-items: center; gap: 10px; }
-        .input-group { margin: 15px 0; }
-        label { display: block; font-size: 0.9rem; font-weight: bold; margin-bottom: 6px; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1rem; }
-        .result { background: #e8eaf6; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: bold; text-align: center; border-left: 4px solid var(--primary); }
-        .highlight { color: #d32f2f; font-size: 1.2rem; }
-        .btn-quote { display: block; text-align: center; background: #2e7d32; color: white; padding: 14px; text-decoration: none; border-radius: 6px; margin-top: 15px; font-weight: bold; }
-        .footer { text-align: center; font-size: 0.8rem; color: #777; margin-top: 30px; }
+        :root {
+            --primary: #1a237e; /* Navy Blue */
+            --accent: #ffeb3b;  /* Solar Yellow */
+            --success: #2e7d32; /* Green */
+            --dark: #121212;
+            --light: #f4f7f6;
+        }
+
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--light); color: #333; line-height: 1.6; }
+        
+        /* Navigation */
+        nav { background: var(--primary); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .logo { color: white; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.5rem; letter-spacing: 1px; }
+        .logo span { color: var(--accent); }
+        nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+        nav a:hover { color: var(--accent); }
+
+        /* Hero Section */
+        .hero { background: linear-gradient(rgba(26, 35, 126, 0.8), rgba(26, 35, 126, 0.8)), url('https://images.unsplash.com/photo-1509391366360-fe5bb5843e0c?auto=format&fit=crop&q=80&w=1200'); 
+                background-size: cover; background-position: center; height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
+        .hero h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 10px; }
+        .hero p { font-size: 1.1rem; max-width: 600px; opacity: 0.9; }
+        .cta-btn { background: var(--accent); color: var(--primary); padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 800; margin-top: 20px; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 235, 59, 0.3); }
+        .cta-btn:hover { transform: scale(1.05); background: white; }
+
+        /* Section Styling */
+        section { padding: 60px 5%; max-width: 1100px; margin: 0 auto; }
+        .section-title { text-align: center; font-family: 'Poppins', sans-serif; color: var(--primary); margin-bottom: 40px; }
+        .section-title hr { width: 50px; border: 2px solid var(--accent); border-radius: 2px; }
+
+        /* Services Grid */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .service-card { background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-bottom: 4px solid var(--primary); }
+        .service-card h3 { color: var(--primary); margin-top: 0; }
+
+        /* Estimator Section (Yung Tool Mo) */
+        #estimator { background: #e8eaf6; border-radius: 20px; padding: 40px 20px; }
+        .tool-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .tool-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid var(--primary); }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.85rem; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        .result-box { background: #f0f2f5; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: bold; text-align: center; border-left: 5px solid var(--success); }
+        .highlight { color: #d32f2f; font-size: 1.3rem; }
+
+        /* Contact Section */
+        .contact-box { background: var(--primary); color: white; padding: 40px; border-radius: 20px; text-align: center; }
+        .contact-box h2 { color: var(--accent); }
+
+        /* Footer */
+        footer { text-align: center; padding: 40px; color: #777; font-size: 0.85rem; }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.8rem; }
+            nav { flex-direction: column; gap: 10px; }
+            nav a { margin: 0 10px; font-size: 0.8rem; }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1 style="margin:0; font-size: 1.6rem;">⚡ KOHMZ TECH TOOLS</h1>
-        <p style="margin:5px 0 0 0; font-size: 0.9rem;">Professional Electrical & Solar Solutions</p>
+
+    <nav>
+        <div class="logo">KOHMZ<span>ELECTRICAL</span></div>
+        <div>
+            <a href="#services">Services</a>
+            <a href="#estimator">Estimator</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Reliable Electrical & Solar Solutions</h1>
+        <p>Expert electrical contracting, industrial design, and hybrid solar systems for residential and commercial projects in CALABARZON.</p>
+        <a href="https://m.me/KOHMZElectrical" target="_blank" class="cta-btn">INQUIRE NOW</a>
     </div>
-    <div class="grid">
-        <div class="card">
-            <h2>☀️ Solar ROI Calc</h2>
-            <div class="input-group">
-                <label>Monthly Electric Bill (₱):</label>
-                <input type="number" id="bill" placeholder="e.g. 5000" oninput="calcSolar()">
-            </div>
-            <div id="solar-res" class="result">
-                System Size: <span class="highlight" id="sys-size">0</span> kW<br>
-                Panels: <span class="highlight" id="panels">0</span> Units
-            </div>
-            <a href="https://m.me/KOHMZElectrical" target="_blank" class="btn-quote">GET FREE QUOTE</a>
+
+    <section id="services">
+        <div class="section-title">
+            <h2>Our Expert Services</h2>
+            <hr>
         </div>
-        <div class="card">
-            <h2>🔌 Appliance Cost</h2>
-            <div class="input-group">
-                <label>Watts (W):</label>
-                <input type="number" id="watts" placeholder="e.g. 1000" oninput="calcCost()">
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>☀️ Solar Power</h3>
+                <p>Hybrid and Off-grid solar installations tailored for maximum savings.</p>
             </div>
-            <div class="input-group">
-                <label>Hours Used / Day:</label>
-                <input type="number" id="hours" placeholder="e.g. 5" oninput="calcCost()">
+            <div class="service-card">
+                <h3>🔌 Electrical Design</h3>
+                <p>Professional blueprints and load computations for safe installations.</p>
             </div>
-            <div class="result">Monthly Cost:<br><span class="highlight" id="monthly-cost">₱0.00</span></div>
+            <div class="service-card">
+                <h3>🏠 Residential/Commercial</h3>
+                <p>Full wiring services, LED upgrades, and maintenance projects.</p>
+            </div>
         </div>
-        <div class="card">
-            <h2>🏠 Wiring Guide (PEC)</h2>
-            <div class="input-group">
-                <label>Installation Type:</label>
-                <select id="load-type" onchange="getGuide()">
-                    <option value="">-- Select --</option>
-                    <option value="res">Outlet (20A)</option>
-                    <option value="com">AC (30A+)</option>
-                    <option value="sol">Solar Inverter</option>
-                    <option value="light">Lighting (15A)</option>
-                </select>
-            </div>
-            <div id="guide-res" class="result" style="text-align: left; font-size: 0.9rem;">Select to see PEC standards.</div>
+    </section>
+
+    <section id="estimator">
+        <div class="section-title">
+            <h2>Tech Estimator</h2>
+            <p>Plan your project with our smart electrical tools.</p>
         </div>
-    </div>
-    <div class="footer"><b>KOHMZ Industrial Design Services</b><br>Electrical Contractor | Region IV-A</div>
-</div>
-<script>
-    function calcSolar() { const bill = document.getElementById('bill').value; if(bill > 0) { const kwRequired = (bill / 12) / 30 / 4.5; const panels = Math.ceil((kwRequired * 1000) / 550); document.getElementById('sys-size').innerText = kwRequired.toFixed(1); document.getElementById('panels').innerText = panels; } }
-    function calcCost() { const watts = document.getElementById('watts').value; const hours = document.getElementById('hours').value; if(watts > 0 && hours > 0) { const monthly = (watts / 1000) * hours * 12 * 30; document.getElementById('monthly-cost').innerText = '₱' + monthly.toLocaleString(undefined, {maximumFractionDigits: 0}); } }
-    function getGuide() { const type = document.getElementById('load-type').value; const res = document.getElementById('guide-res'); const guides = { 'res': '<b>Standard Outlet:</b> 3.5mm² THHN + 20A Breaker.', 'com': '<b>Heavy Load:</b> 5.5mm² or 8.0mm² + 30A-40A.', 'sol': '<b>Solar:</b> 6mm² PV Cable + DC Breaker.', 'light': '<b>Lighting:</b> 2.0mm² THHN + 15A Breaker.' }; res.innerHTML = guides[type] || 'Select to see PEC standards.'; }
-</script>
+        
+        <div class="tool-container">
+            <div class="tool-card">
+                <h3 style="color: var(--primary);">Solar Estimator</h3>
+                <div class="input-group">
+                    <label>Monthly Electric Bill (₱):</label>
+                    <input type="number" id="bill" placeholder="e.g. 6000" oninput="runTools()">
+                </div>
+                <div class="result-box">
+                    System: <span class="highlight" id="sys-size">0</span> kW<br>
+                    Panels: <span class="highlight" id="panels">0</span> Units
+                </div>
+                <a href="https://m.me/KOHMZElectrical" target="_blank" style="display:block; text-align:center; color:var(--success); font-weight:bold; margin-top:10px; text-decoration:none;">Book Survey →</a>
+            </div>
+
+            <div class="tool-card">
+                <h3 style="color: var(--primary);">Cost Checker</h3>
+                <div class="input-group">
+                    <label>Watts (W):</label>
+                    <input type="number" id="watts" placeholder="e.g. 1500" oninput="runTools()">
+                </div>
+                <div class="input-group">
+                    <label>Hours Used / Day:</label>
+                    <input type="number" id="hours" placeholder="e.g. 8" oninput="runTools()">
+                </div>
+                <div class="result-box">
+                    Monthly Cost: <br>
+                    <span class="highlight" id="monthly-cost">₱0.00</span>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <h3 style="color: var(--primary);">PEC Guide</h3>
+                <div class="input-group">
+                    <label>Load Type:</label>
+                    <select id="load-type" onchange="runTools()">
+                        <option value="">-- Select --</option>
+                        <option value="res">Standard Outlet (20A)</option>
+                        <option value="com">AC / Heavy (30A+)</option>
+                        <option value="light">LED Lighting (15A)</option>
+                    </select>
+                </div>
+                <div id="guide-res" class="result-box" style="text-align: left; font-size: 0.85rem;">
+                    Select load to see wire & breaker size.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-box">
+            <h2>Ready to start your project?</h2>
+            <p>Get a professional quote for your solar or electrical needs today.</p>
+            <p>📍 Serving Laguna, Batangas, and Cavite (Region IV-A)</p>
+            <a href="https://m.me/KOHMZElectrical" target="_blank" class="cta-btn" style="background:white; color:var(--primary);">MESSAGE US ON FB</a>
+        </div>
+    </section>
+
+    <footer>
+        <p><b>KOHMZ Industrial Design Services</b><br>
+        DTI Registered | Professional Electrical Contractor<br>
+        © 2024 KOHMZ Electrical Design and Build. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function runTools() {
+            // Solar Calc
+            const bill = document.getElementById('bill').value;
+            if(bill > 0) {
+                const kw = (bill / 12) / 30 / 4.5;
+                document.getElementById('sys-size').innerText = kw.toFixed(1);
+                document.getElementById('panels').innerText = Math.ceil((kw * 1000) / 550);
+            }
+
+            // Cost Calc
+            const w = document.getElementById('watts').value;
+            const h = document.getElementById('hours').value;
+            if(w > 0 && h > 0) {
+                const cost = (w / 1000) * h * 12 * 30;
+                document.getElementById('monthly-cost').innerText = '₱' + cost.toLocaleString(undefined, {maximumFractionDigits: 0});
+            }
+
+            // Wiring Guide
+            const type = document.getElementById('load-type').value;
+            const guides = {
+                'res': '<b>Standard Outlet:</b><br>Wire: 3.5mm² THHN<br>Breaker: 20A',
+                'com': '<b>AC/Heavy Load:</b><br>Wire: 5.5mm² or 8.0mm²<br>Breaker: 30A-40A',
+                'light': '<b>Lighting:</b><br>Wire: 2.0mm² THHN<br>Breaker: 15A'
+            };
+            if(type) document.getElementById('guide-res').innerHTML = guides[type];
+        }
+    </script>
 </body>
 </html>
-Final Launch
