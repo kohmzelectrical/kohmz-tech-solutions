@@ -3,216 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOHMZ Electrical Design and Build | Official Corporate Site</title>
+    <title>KOHMZ Electrical Tools</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* 1. GLOBAL RESET - PINAKA-IMPORTANTE */
+        /* CSS RESET PARA SA GOOGLE SITES */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        html, body {
-            width: 100%;
-            height: auto;
-            overflow-x: hidden !important; /* Iwas sideways scroll */
-            overflow-y: visible !important; /* Siguradong may vertical scroll */
-            background-color: #f4f7f9;
-            font-family: 'Inter', sans-serif;
-            color: #333;
-            line-height: 1.6;
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f4f7f9; 
+            color: #333; 
+            padding-bottom: 50px;
+            overflow-x: hidden;
         }
 
-        /* 2. STICKY TOP SECTION */
-        header {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            z-index: 10000;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        /* TICKER */
-        .promo-ticker {
-            background: linear-gradient(90deg, #1a237e 0%, #283593 100%);
+        /* HEADER */
+        .kohmz-header {
+            background: #1a237e;
             color: white;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            border-bottom: 2px solid #ffeb3b;
-            overflow: hidden; /* Dito lang ang hidden para sa text movement */
-        }
-        .ticker-label {
-            background: #0d1440;
-            color: #ffeb3b;
-            padding: 0 12px;
-            font-weight: 900;
-            font-size: 10px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-            z-index: 5;
-        }
-        .ticker-text-wrapper {
-            white-space: nowrap;
-            display: inline-block;
-            padding-left: 100%;
-            animation: ticker-slide 35s linear infinite;
-            font-weight: 600;
-            font-size: 13px;
-        }
-        @keyframes ticker-slide {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
-
-        /* NAV BAR */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 5%;
-            height: 60px;
-        }
-        .logo-area { display: flex; align-items: center; text-decoration: none; color: #0056b3; }
-        .logo-img { height: 35px; margin-right: 10px; }
-        .nav-links a { text-decoration: none; color: #444; margin-left: 15px; font-weight: 600; font-size: 12px; text-transform: uppercase; }
-
-        /* 3. SECTIONS */
-        .content-section {
-            padding: 60px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: block; /* Siguradong lilitaw */
-        }
-        .hero {
-            background: linear-gradient(rgba(0,30,60,0.8), rgba(0,30,60,0.8)), url('KOHMZ LOGO.jpg');
-            background-size: cover;
-            background-position: center;
-            color: white;
+            padding: 20px;
             text-align: center;
-            padding: 100px 5%;
+            border-bottom: 4px solid #ffeb3b;
         }
-        .hero h1 { font-family: 'Montserrat', sans-serif; font-size: 32px; margin-bottom: 10px; }
 
-        .service-grid {
+        /* TOOL GRID */
+        .wrapper {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 15px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
-            margin-top: 30px;
         }
-        .service-card {
+
+        .card {
             background: white;
-            padding: 30px;
             border-radius: 10px;
-            border-top: 5px solid #0056b3;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
         }
 
-        /* 4. TOOLS & SHOP */
-        .shop-banner { background: #e3e8ed; border-radius: 15px; padding: 40px; text-align: center; }
-        .btn-shop { 
-            display: inline-block; padding: 10px 25px; background: #0056b3; 
-            color: white; text-decoration: none; border-radius: 5px; font-weight: 700; margin-top: 15px;
+        .card h3 {
+            color: #1a237e;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
         }
 
-        .estimator-container { background: #001f3f; color: white; padding: 40px; border-radius: 10px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 5px; }
+        /* FORM ELEMENTS */
+        label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 15px 0;
+            border: 2px solid #edf2f7;
+            border-radius: 6px;
+            font-size: 16px; /* Para sa mobile compliance */
+            outline: none;
+        }
+        input:focus { border-color: #1a237e; }
 
-        /* FAB */
-        .messenger-link { position: fixed; bottom: 25px; right: 25px; background: #0084ff; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 11000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        /* RESULTS */
+        .res-container {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #1a237e;
+        }
+        .res-label { font-size: 10px; color: #718096; font-weight: 800; text-transform: uppercase; }
+        .res-val { 
+            display: block; 
+            font-size: 18px; 
+            font-weight: 800; 
+            color: #1a237e; 
+            margin-top: 2px;
+        }
+        .res-hint { font-size: 11px; color: #d32f2f; font-weight: 600; margin-top: 5px; }
 
-        footer { background: #0d1440; color: white; text-align: center; padding: 50px; margin-top: 40px; }
-
-        @media (max-width: 700px) { .nav-links { display: none; } .hero h1 { font-size: 22px; } }
+        /* FOOTER */
+        .footer-tag { text-align: center; font-size: 12px; color: #999; margin-top: 30px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="promo-ticker">
-            <div class="ticker-label">💡 KOHMZ ADVISORY</div>
-            <div class="ticker-text-wrapper">
-                ⚡ <b>ENERGY SAVING:</b> Clean AC filters monthly to save 5%... &nbsp;&nbsp;&nbsp;&nbsp;
-                ☀️ <b>SOLAR:</b> Panels last 25+ years with KOHMZ Solar Integration... &nbsp;&nbsp;&nbsp;&nbsp;
-                🛠️ <b>SAFETY:</b> Avoid octopus wiring to prevent fire hazards... &nbsp;&nbsp;&nbsp;&nbsp;
-                📞 <b>PROMO:</b> Free technical quote for CALABARZON residents! &nbsp;&nbsp;&nbsp;&nbsp;
-            </div>
-        </div>
-        <nav>
-            <a href="#" class="logo-area">
-                <img src="KOHMZ LOGO.jpg" alt="KOHMZ" class="logo-img" onerror="this.style.display='none'">
-                <span style="font-family:'Montserrat'; font-weight:700;">KOHMZ ELECTRICAL</span>
-            </a>
-            <div class="nav-links">
-                <a href="#services">Services</a>
-                <a href="#shop">Shop</a>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" style="background:#0056b3; color:white; padding:8px 15px; border-radius:4px;">BOOK NOW</a>
-            </div>
-        </nav>
-    </header>
-
-    <div class="hero">
-        <h1>Engineering Excellence & <br> Sustainable Power</h1>
-        <p>Premium Electrical Contracting & Hybrid Solar Integration in CALABARZON.</p>
+    <div class="kohmz-header">
+        <h2 style="font-family:'Montserrat'; font-size: 20px;">KOHMZ ENGINEERING TOOLS</h2>
+        <p style="font-size: 12px; opacity: 0.8;">Verified Electrical & Solar Calculators</p>
     </div>
 
-    <section class="content-section" id="services">
-        <h2 style="font-family:'Montserrat'; border-left: 5px solid #c5a059; padding-left: 15px;">OUR EXPERTISE</h2>
-        <div class="service-grid">
-            <div class="service-card">
-                <h3>Residential</h3>
-                <p>Wiring, safety audits, and smart lighting designs.</p>
-                <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/services/residential" target="_blank" style="color:#c5a059; font-weight:700; text-decoration:none;">MORE INFO →</a>
-            </div>
-            <div class="service-card">
-                <h3>Industrial</h3>
-                <p>Load schedules, motor controls, and system design.</p>
-                <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/services/commercial" target="_blank" style="color:#c5a059; font-weight:700; text-decoration:none;">MORE INFO →</a>
-            </div>
-            <div class="service-card">
-                <h3>Solar Power</h3>
-                <p>Custom hybrid and off-grid solutions for your home.</p>
-                <a href="#shop" style="color:#c5a059; font-weight:700; text-decoration:none;">VIEW KITS →</a>
+    <div class="wrapper">
+        <div class="card">
+            <h3><i class="fas fa-sun"></i> Meralco-to-Solar</h3>
+            <label>Monthly Bill (₱)</label>
+            <input type="number" id="billIn" placeholder="e.g. 6000" oninput="runAll()">
+            <div class="res-container">
+                <span class="res-label">Recommended System:</span>
+                <span class="res-val" id="solarOut">0.00 kWp</span>
             </div>
         </div>
-    </section>
 
-    <section class="content-section" id="shop">
-        <div class="shop-banner">
-            <h2 style="font-family:'Montserrat';">KOHMZ AFFILIATE SHOP</h2>
-            <p>High-quality electrical materials and solar components.</p>
-            <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-top:20px;">
-                <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/affiliate-shop/solar-parts" target="_blank" class="btn-shop">SOLAR PARTS</a>
-                <a href="https://sites.google.com/view/kohmzelectricaldesignandbuild/affiliate-shop/powertools" target="_blank" class="btn-shop">POWER TOOLS</a>
+        <div class="card">
+            <h3><i class="fas fa-bolt"></i> Appliance Load</h3>
+            <label>Wattage (W)</label>
+            <input type="number" id="wIn" placeholder="e.g. 1500" oninput="runAll()">
+            <label>Daily Hours</label>
+            <input type="number" id="hIn" placeholder="e.g. 8" oninput="runAll()">
+            <div class="res-container">
+                <span class="res-label">Monthly Cost:</span>
+                <span class="res-val" id="costOut">₱ 0.00</span>
             </div>
         </div>
-    </section>
 
-    <section class="content-section">
-        <div class="estimator-container">
-            <h2 style="color:white; margin-bottom:15px;">SOLAR LOAD ESTIMATOR</h2>
-            <label>Current Monthly Bill (₱)</label>
-            <input type="number" id="bill" placeholder="Input amount" oninput="calc()">
-            <div id="sol-res" style="font-size: 18px; color: #ffeb3b; font-weight: 700; margin-top:10px;">Recommended System: 0.0 kW</div>
+        <div class="card">
+            <h3><i class="fas fa-microchip"></i> Tech Wire Guide</h3>
+            <label>Load Amperes (A)</label>
+            <input type="number" id="aIn" placeholder="e.g. 20" oninput="runAll()">
+            <div class="res-container">
+                <span class="res-label">Required THHN Wire:</span>
+                <span class="res-val" id="wireOut">---</span>
+                <div class="res-hint" id="cbOut">Min. Breaker: ---</div>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <a href="https://m.me/KOHMZElectrical" class="messenger-link" target="_blank"><i class="fab fa-facebook-messenger"></i></a>
-
-    <footer>
-        <p><strong>KOHMZ INDUSTRIAL DESIGN SERVICES</strong></p>
-        <p style="font-size:12px; opacity:0.8;">DTI REGISTERED #6111576 | APRIL 30, 2024</p>
-        <p style="margin-top:20px; font-size:10px; opacity:0.5;">© 2024-2026 KOHMZ Electrical. All Rights Reserved.</p>
-    </footer>
+    <div class="footer-tag">
+        <p>KOHMZ INDUSTRIAL DESIGN SERVICES</p>
+        <p>© 2026 | Technical Reference Tool</p>
+    </div>
 
     <script>
-        function calc() {
-            const b = document.getElementById('bill').value;
+        function runAll() {
+            const RATE = 12.5; // Average Meralco Rate
+
+            // SOLAR CALC
+            const b = parseFloat(document.getElementById('billIn').value) || 0;
             if(b > 0) {
-                document.getElementById('sol-res').innerText = `Recommended System: ${(b/12/30/4.5).toFixed(1)} kW`;
+                const kwp = (b / RATE) / 30 / 3.5;
+                document.getElementById('solarOut').innerText = kwp.toFixed(2) + " kWp";
             } else {
-                document.getElementById('sol-res').innerText = `Recommended System: 0.0 kW`;
+                document.getElementById('solarOut').innerText = "0.00 kWp";
+            }
+
+            // LOAD CALC
+            const w = parseFloat(document.getElementById('wIn').value) || 0;
+            const h = parseFloat(document.getElementById('hIn').value) || 0;
+            if(w > 0 && h > 0) {
+                const monthly = (w / 1000) * h * 30 * RATE;
+                document.getElementById('costOut').innerText = "₱ " + monthly.toLocaleString(undefined, {minimumFractionDigits: 2});
+            } else {
+                document.getElementById('costOut').innerText = "₱ 0.00";
+            }
+
+            // WIRE GUIDE CALC
+            const a = parseFloat(document.getElementById('aIn').value) || 0;
+            if(a > 0) {
+                let wire = "Check PEC";
+                // Standard THHN Copper Ampacity Table (PEC Simplified)
+                if (a <= 15) wire = "2.0 mm² (14 AWG)";
+                else if (a <= 20) wire = "3.5 mm² (12 AWG)";
+                else if (a <= 30) wire = "5.5 mm² (10 AWG)";
+                else if (a <= 40) wire = "8.0 mm² (8 AWG)";
+                else if (a <= 55) wire = "14.0 mm² (6 AWG)";
+                else if (a <= 75) wire = "22.0 mm² (4 AWG)";
+                else wire = "Consult Engineer";
+
+                document.getElementById('wireOut').innerText = wire;
+                // 80% Safety Rule for Circuit Breaker
+                const breakerSize = Math.ceil(a / 0.8);
+                document.getElementById('cbOut').innerText = "Min. Breaker: " + breakerSize + "A";
+            } else {
+                document.getElementById('wireOut').innerText = "---";
+                document.getElementById('cbOut').innerText = "Min. Breaker: ---";
             }
         }
     </script>
