@@ -3,120 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOHMZ Electrical Design and Build | Official Corporate Site</title>
+    <title>KOHMZ Electrical Design and Build | Official Site</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --corp-blue: #0056b3; --corp-gold: #c5a059; --bg-light: #fbfbfc; --text-dark: #222; }
-        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-dark); background: var(--bg-light); line-height: 1.8; overflow-x: hidden; }
         
-        /* 1. STICKY ADVERTISEMENT TICKER (NEW FIX) */
+        /* Core Reset - Siguradong may scroll */
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+        html, body { width: 100%; min-height: 100%; overflow-x: hidden; overflow-y: auto !important; background: var(--bg-light); }
+        body { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-dark); line-height: 1.8; }
+
+        /* 1. FIXED HEADER GROUP */
+        .header-fixed { position: sticky; top: 0; width: 100%; z-index: 2000; box-shadow: 0 2px 15px rgba(0,0,0,0.1); }
+
+        /* TICKER ADVERTISEMENT */
         .ticker-wrapper {
-            display: flex;
-            align-items: center;
             background: linear-gradient(90deg, #1a237e 0%, #283593 100%); 
-            width: 100%; 
-            height: 45px;
-            position: sticky;
-            top: 0;
-            z-index: 2001; /* Pinakataas sa lahat */
-            border-bottom: 2px solid #ffeb3b; 
-            overflow: hidden;
+            height: 40px; display: flex; align-items: center; border-bottom: 2px solid #ffeb3b; overflow: hidden;
         }
-        .ticker-label {
-            background: #0d1440; 
-            color: #ffeb3b;
-            padding: 0 15px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            font-weight: 900;
-            font-size: 11px; 
-            text-transform: uppercase;
-            z-index: 10;
-            flex-shrink: 0;
-            box-shadow: 5px 0 10px rgba(0,0,0,0.3);
-        }
-        .ticker-content-box { flex: 1; overflow: hidden; display: flex; align-items: center; }
-        .ticker-text {
-            display: inline-block;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: ticker-move 40s linear infinite; 
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
-            text-transform: uppercase;
-        }
-        @keyframes ticker-move {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
-        .ticker-text b { color: #ffeb3b; }
+        .ticker-label { background: #0d1440; color: #ffeb3b; padding: 0 15px; height: 100%; display: flex; align-items: center; font-weight: 900; font-size: 10px; z-index: 10; flex-shrink: 0; }
+        .ticker-content { flex: 1; overflow: hidden; }
+        .ticker-text { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker-move 45s linear infinite; color: white; font-weight: 600; font-size: 13px; text-transform: uppercase; }
+        @keyframes ticker-move { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
 
-        /* 2. NAVIGATION (Below Ticker) */
-        nav { background: white; padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 45px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        /* NAVIGATION */
+        nav { background: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; }
         .logo-container { display: flex; align-items: center; text-decoration: none; }
-        .logo-img { height: 35px; width: auto; margin-right: 10px; }
+        .logo-img { height: 30px; margin-right: 10px; }
         .logo-text { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: var(--corp-blue); }
-        .nav-links a { color: var(--text-dark); text-decoration: none; margin-left: 20px; font-weight: 600; font-size: 11px; text-transform: uppercase; }
-        .btn-book-nav { background: var(--corp-blue); color: white !important; padding: 8px 15px; border-radius: 3px; margin-left: 15px; }
+        .nav-links a { color: var(--text-dark); text-decoration: none; margin-left: 15px; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+        .btn-book-nav { background: var(--corp-blue); color: white !important; padding: 6px 12px; border-radius: 3px; }
 
-        /* 3. HERO & CONTENT */
+        /* 2. MAIN CONTENT SECTIONS */
         .hero { 
             background: linear-gradient(rgba(0, 40, 80, 0.85), rgba(0, 40, 80, 0.9)), url('KOHMZ LOGO.jpg'); 
-            background-size: cover; background-position: center; background-attachment: fixed;
-            padding: 100px 5%; text-align: center; color: white;
+            background-size: cover; background-position: center; padding: 80px 5%; text-align: center; color: white;
         }
-        .trust-badges { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; }
-        .badge { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 4px; border: 1px solid var(--corp-gold); font-size: 10px; font-weight: 600; }
-        .btn-main { background: var(--corp-gold); color: white; padding: 12px 28px; text-decoration: none; font-weight: 700; border-radius: 3px; display: inline-block; margin-top: 20px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 50px 5%; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 25px; border-radius: 8px; border: 1px solid #eee; border-top: 3px solid var(--corp-blue); }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 60px 5%; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .card { background: white; padding: 30px; border-radius: 8px; border: 1px solid #eee; transition: 0.3s; border-top: 3px solid var(--corp-blue); }
-        .card:hover { transform: translateY(-5px); border-color: var(--corp-gold); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        /* SHOP & TOOLS */
+        .shop-section { background: #eef2f7; border-radius: 12px; padding: 30px; margin-top: 20px; }
+        .shop-card { background: white; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ddd; }
+        .btn-shop { border: 2px solid var(--corp-blue); color: var(--corp-blue); padding: 6px 12px; text-decoration: none; font-weight: 700; font-size: 10px; border-radius: 4px; display: inline-block; margin-top: 10px; }
 
-        /* Shop Section */
-        .shop-section { background: #eef2f7; border-radius: 12px; padding: 40px; margin-top: 20px; }
-        .shop-card { background: white; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #ddd; }
-        .btn-shop { border: 2px solid var(--corp-blue); color: var(--corp-blue); padding: 8px 15px; text-decoration: none; font-weight: 700; border-radius: 4px; display: inline-block; margin-top: 15px; font-size: 10px; }
+        .estimator-card { background: #001f3f; color: white; padding: 30px; border-radius: 10px; margin-top: 30px; }
+        input { width: 100%; padding: 10px; margin: 8px 0; border-radius: 4px; border: none; background: rgba(255,255,255,0.1); color: white; }
+        .res-box { background: rgba(255,255,255,0.05); padding: 12px; border-left: 4px solid var(--corp-gold); margin-top: 10px; font-weight: 700; color: var(--corp-gold); }
 
-        /* Estimator */
-        .estimator-card { background: #001f3f; color: white; padding: 40px; border-radius: 10px; margin-top: 40px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 4px; border: none; background: rgba(255,255,255,0.1); color: white; }
-        .res-box { background: rgba(255,255,255,0.05); padding: 15px; border-left: 4px solid var(--corp-gold); margin-top: 10px; font-weight: 700; color: var(--corp-gold); }
+        /* MESSENGER FAB */
+        .messenger-fab { position: fixed; bottom: 20px; right: 20px; background: #0084ff; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 3000; text-decoration: none; }
 
-        /* Messenger FAB */
-        .messenger-fab { position: fixed; bottom: 25px; right: 25px; background: #0084ff; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 2000; text-decoration: none; }
+        footer { background: #001529; color: white; padding: 40px 5%; text-align: center; border-top: 3px solid var(--corp-gold); }
 
-        footer { background: #001529; color: white; padding: 60px 5% 20px 5%; text-align: center; border-top: 3px solid var(--corp-gold); }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            h1 { font-size: 20px; }
-        }
+        @media (max-width: 768px) { .nav-links { display: none; } .hero h1 { font-size: 18px; } }
     </style>
 </head>
 <body>
 
-    <div class="ticker-wrapper">
-        <div class="ticker-label">💡 KOHMZ</div>
-        <div class="ticker-content-box">
-            <div class="ticker-text">
-                ⚡ <b>ENERGY SAVING:</b> Clean AC filters monthly to save 5%... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                ☀️ <b>SOLAR FACT:</b> Panels last 25+ years with KOHMZ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                🛠️ <b>SAFETY:</b> Avoid "octopus wiring" to prevent fire... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                🔧 <b>MAINTENANCE:</b> Tighten connections every 6 months... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                💧 <b>GROUNDING:</b> Protect your appliances from surges... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                🏠 <b>SMART HOME:</b> Shift to LED to lower cooling costs... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                📞 <b>PROMO:</b> Free quote for NCR & CALABARZON! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="header-fixed">
+        <div class="ticker-wrapper">
+            <div class="ticker-label">💡 TIPS & PROMOS</div>
+            <div class="ticker-content">
+                <div class="ticker-text">
+                    ⚡ <b>ENERGY SAVING:</b> Clean AC filters monthly to save 5%... &nbsp;&nbsp;&nbsp;&nbsp;
+                    ☀️ <b>SOLAR:</b> Panels last 25+ years with KOHMZ... &nbsp;&nbsp;&nbsp;&nbsp;
+                    🛠️ <b>SAFETY:</b> Avoid "octopus wiring" to prevent fire... &nbsp;&nbsp;&nbsp;&nbsp;
+                    🔧 <b>MAINTENANCE:</b> Tighten connections every 6 months... &nbsp;&nbsp;&nbsp;&nbsp;
+                    📞 <b>FREE QUOTE:</b> Contact us for NCR & CALABARZON projects!
+                </div>
             </div>
         </div>
-    </div>
-
-    <a href="https://m.me/KOHMZElectrical" class="messenger-fab" target="_blank"><i class="fab fa-facebook-messenger"></i></a>
-
-    <nav>
-        <a href="#" class="logo-container">
+        <nav>
+            <a href="#" class="logo-container">
+                <img src="KOHMZ LOGO.jpg" alt="KOHMZ" class="logo-img" onerror="this.style.display='none'">
+                <div class="logo-text">KOHMZ ELECTRICAL</div>
+            </a>
+            <div class="nav-links">
+                <a href="#services">Services
