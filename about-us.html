@@ -39,28 +39,17 @@
         .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; } 
         .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
 
-        /* 4 SEPARATE FLOATING BUTTONS ON THE RIGHT */
+        /* 4 SEPARATE FLOATING BUTTONS */
         .floating-container {
             position: fixed;
             bottom: 25px;
             right: 25px;
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 9999;
+            flex-direction: column; gap: 12px; z-index: 9999;
         }
         .float-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 24px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            transition: transform 0.3s, filter 0.3s;
+            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s;
         }
         .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
         .fb-messenger { background: #0084ff; }
@@ -70,60 +59,31 @@
 
         /* Content Sections */
         .content-section { padding: 50px 10%; text-align: center; }
-        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; } 
-        .content-section p { max-width: 850px; margin: 0 auto 20px; line-height: 1.8; color: #444; text-align: justify; }
+        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; } 
+        .content-section p { max-width: 900px; margin: 0 auto 20px; line-height: 1.8; color: #444; }
 
+        /* Core Competencies Cards */
         .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
-        .card { background: white; width: 280px; padding: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-radius: 8px; border-top: 4px solid #ffb703; text-align: left; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; border-bottom: 1px solid #eee; padding-bottom: 5px; } 
-        .card p { font-size: 12px; color: #555; line-height: 1.6; margin: 0; } 
+        .card { background: white; width: 300px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 5px solid #ffb703; text-align: left; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 700; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .card p { font-size: 11px; line-height: 1.6; margin-bottom: 10px; }
 
-        /* QR Section - SIDE BY SIDE LAYOUT */
-        .qr-section { 
-            background: #fff; 
-            padding: 40px; 
-            border-radius: 10px; 
-            margin: 40px auto; 
-            max-width: 750px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            border: 1px solid #eee;
-        }
-        .qr-image-container { flex: 0 0 180px; }
-        .qr-image { 
-            width: 180px; height: 180px; 
-            border: 5px solid #0d1b2a; 
-            border-radius: 10px; 
-            overflow: hidden; 
-            background: white;
-        }
-        .qr-text-container { flex: 1; text-align: left; min-width: 280px; }
-        .qr-text-container h4 { color: #0d1b2a; font-size: 14px; margin-bottom: 12px; text-transform: uppercase; font-weight: 800; }
-        
-        .vcard-btn { 
-            display: inline-block;
-            background: #0d1b2a; 
-            color: #ffb703 !important; 
-            padding: 15px 30px; 
-            text-decoration: none; 
-            border-radius: 5px; 
-            font-weight: 900; /* Maximum bold for clarity */
-            font-size: 13px; 
-            letter-spacing: 1px;
-            box-shadow: 0 4px 12px rgba(13, 27, 42, 0.4);
-            transition: 0.3s;
-            margin-top: 15px;
-            border: 2px solid #ffb703;
-            text-align: center;
-        }
-        .vcard-btn:hover { background: #1a2e44; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(13, 27, 42, 0.5); }
+        /* Solar Special Section */
+        .solar-deep-dive { background: #fff; padding: 40px 10%; border-radius: 15px; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; border: 1px solid #ffb703; }
+        .solar-type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .solar-type-card { background: #fdfdfd; padding: 20px; border-radius: 8px; border-left: 4px solid #34a853; }
+        .solar-type-card h4 { font-size: 13px; color: #0d1b2a; margin-bottom: 8px; text-transform: uppercase; }
+        .solar-type-card ul { padding-left: 15px; font-size: 11px; color: #555; }
+        .best-pick-tag { background: #ffb703; color: #0d1b2a; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 3px; display: inline-block; margin-bottom: 10px; }
 
-        /* Footer - UNIFIED */
+        /* QR Section */
+        .qr-section { background: #fff; padding: 40px; border-radius: 12px; margin: 40px auto; max-width: 750px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; border: 1px solid #eee; }
+        .qr-image { width: 180px; height: 180px; border: 6px solid #0d1b2a; border-radius: 15px; background: white; }
+        .vcard-btn { display: inline-block; background: #0d1b2a; color: #ffb703 !important; padding: 16px 32px; text-decoration: none; border-radius: 6px; font-weight: 900; font-size: 13px; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(13, 27, 42, 0.4); transition: 0.3s; border: 2px solid #ffb703; }
+        .vcard-btn:hover { background: #1a2e44; transform: translateY(-3px); }
+
+        /* Footer */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
         .footer-content p strong { font-size: 12px; color: #ffb703; }
@@ -133,15 +93,15 @@
 <body>
 
     <div class="floating-container">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email"><i class="fas fa-envelope"></i></a>
     </div>
 
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
-            ⚡ KOHMZ Electrical Design and Build: Your Trusted Specialist Partner | 24/7 Professional Repair and Maintenance ⚡
+            ⚡ KOHMZ Electrical Design and Build: Specialist Technical Firm | 24/7 Professional Support | Certified Solar & Power Implementations ⚡
         </marquee>
     </div>
 
@@ -158,7 +118,6 @@
                         <a href="pro-tips.html">Pro Tips</a>
                     </div>
                 </li>
-                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropbtn">Affiliate Shop &#9662;</a>
@@ -177,51 +136,109 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h2>Our Identity & Commitment</h2>
-                <p>Bridging the gap between complex electrical requirements and flawless technical execution.</p>
+                <h2>Precision in Every Connection</h2>
+                <p>A specialist technical firm dedicated to high-standard electrical architecture and renewable energy integration.</p>
             </div>
         </section>
 
         <section class="content-section">
-            <h2>About KOHMZ Electrical Design and Build</h2>
-            <p><strong>KOHMZ Electrical Design and Build</strong> is a professional contracting firm dedicated to providing safe, efficient, and high-quality solutions. We specialize in comprehensive technical design, certified installation, and professional maintenance for residential, commercial, and industrial projects.</p>
-            <p>Our philosophy is built on the pillars of **precision and long-term reliability**. We don't just complete projects; we secure properties. By utilizing advanced technical planning and rigorous testing protocols, we ensure that every installation—from a single residential breaker to a complex commercial power grid—meets the highest industry standards.</p>
+            <h2>Our Identity & Technical Commitment</h2>
+            <p><strong>KOHMZ Electrical Design and Build</strong> is a premier professional contracting firm. We don't just "wire" properties; we curate safe, sustainable, and high-performance power environments. Our specialty lies in the meticulous synergy of technical design, certified installation, and 24/7 technical oversight for residential, commercial, and industrial landscapes.</p>
+            <p>We operate with a **Design-First Philosophy**, ensuring that every circuit, breaker, and solar panel is placed with calculated precision. Our team of technical specialists is committed to future-proofing your investments through rigorous testing and adherence to the highest safety protocols.</p>
         </section>
 
         <section class="content-section" style="background: white;">
-            <h2>Our Core Competencies</h2>
+            <h2>Sector-Specific Expertise</h2>
             <div class="cards-container">
                 <div class="card">
-                    <h3>Technical Design</h3>
-                    <p>Precision blueprints and professional designs for new builds, ensuring optimal power distribution and maximum cost-efficiency.</p>
+                    <h3>Residential Specialists</h3>
+                    <p>Creating "Smart & Safe" homes. We focus on load optimization, dedicated appliance circuits, and advanced protection systems to ensure your family's absolute peace of mind.</p>
                 </div>
-                <div class="card">
-                    <h3>Solar Solutions</h3>
-                    <p>Specialized in Hybrid and Off-grid systems. We help clients transition to renewable energy with certified implementation and energy savings.</p>
+                <div class="card" style="border-top-color: #1a73e8;">
+                    <h3>Commercial Architecture</h3>
+                    <p>Efficiency-driven power distribution for businesses. We specialize in custom office fit-outs, workstation integration, and rapid-response maintenance to eliminate downtime.</p>
                 </div>
-                <div class="card">
-                    <h3>Wiring Integrity</h3>
-                    <p>NEMA-compliant installations and 24/7 technical troubleshooting to ensure the safety and longevity of your assets.</p>
+                <div class="card" style="border-top-color: #34a853;">
+                    <h3>Renewable Integration</h3>
+                    <p>Transitioning properties to clean energy. We provide certified solar assessments and high-ROI implementations tailored to the Philippine tropical climate.</p>
                 </div>
             </div>
-            
-            <p style="margin-top: 40px; font-style: italic; color: #0d1b2a; font-weight: bold; text-align: center;">
-                "At KOHMZ Electrical, we combine professional expertise with a commitment to excellence. We provide the power you can trust."
-            </p>
+
+            <div class="solar-deep-dive">
+                <div class="best-pick-tag">⭐ PROFESSIONAL SOLAR GUIDE</div>
+                <h3 style="font-size: 16px; color: #0d1b2a; margin-bottom: 15px;">Smart Solar Solutions: The Future of Energy Independence</h3>
+                <p style="font-size: 11px; margin-bottom: 20px;">Investing in Solar is the single most effective way to eliminate rising electricity costs. At KOHMZ, we use only Tier-1 equipment to guarantee 25+ years of performance. Here is how we pick the right system for you:</p>
+                
+                <div class="solar-type-grid">
+                    <div class="solar-type-card">
+                        <h4>1. Grid-Tied System</h4>
+                        <p style="font-size: 10px; font-style: italic; color: #34a853; margin-bottom: 5px;">"Best for Maximum ROI"</p>
+                        <ul>
+                            <li>Lowers daytime bills by up to 80%.</li>
+                            <li>Directly feeds excess power back to the grid.</li>
+                            <li>Simple, low maintenance, and fastest payback.</li>
+                        </ul>
+                    </div>
+                    <div class="solar-type-card" style="border-left-color: #ea4335;">
+                        <h4>2. Off-Grid System</h4>
+                        <p style="font-size: 10px; font-style: italic; color: #ea4335; margin-bottom: 5px;">"Best for Remote Areas"</p>
+                        <ul>
+                            <li>100% independence from utility companies.</li>
+                            <li>Relies on heavy-duty battery storage.</li>
+                            <li>Perfect for rest houses or areas with frequent blackouts.</li>
+                        </ul>
+                    </div>
+                    <div class="solar-type-card" style="border-left-color: #ffb703; background: #fffcf0;">
+                        <div class="best-pick-tag" style="background: #0d1b2a; color: #ffb703;">PRO'S TOP PICK</div>
+                        <h4>3. Hybrid System</h4>
+                        <p style="font-size: 10px; font-style: italic; color: #ffb703; margin-bottom: 5px;">"Best for Modern PH Homes"</p>
+                        <ul>
+                            <li>BILL REDUCTION + BACKUP POWER.</li>
+                            <li>Seamlessly switches to batteries during brownouts.</li>
+                            <li>The ultimate balance of savings and reliability.</li>
+                        </ul>
+                    </div>
+                </div>
+                <p style="margin-top: 25px; font-size: 12px; font-weight: bold; color: #0d1b2a; text-align: center; border-top: 1px dashed #ddd; padding-top: 15px;">
+                    "Our Recommendation: For most Metro Manila homes, a **Hybrid System** is the best pick. It protects your comfort during outages while slashing your Meralco bills simultaneously."
+                </p>
+            </div>
         </section>
 
         <section class="content-section">
-            <h3>Connect with our Technical Specialists</h3>
-            
-            <div class="qr-section">
-                <div class="qr-image-container">
-                    <div class="qr-image">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://qr1.me-qr.com/entry/vcard/qdbqa4sx" alt="KOHMZ QR Code" style="width:100%; height:100%;">
-                    </div>
+            <h2>Why Trust KOHMZ Specialists?</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; text-align: left;">
+                <div style="flex: 1; min-width: 250px; background: #0d1b2a; color: white; padding: 25px; border-radius: 10px;">
+                    <h4 style="color: #ffb703; margin-bottom: 10px;">The KOHMZ Guarantee</h4>
+                    <ul style="font-size: 11px; line-height: 1.8;">
+                        <li>✅ Certified Technical Inspections</li>
+                        <li>✅ Precision CAD-based Power Layouts</li>
+                        <li>✅ Tier-1 Material Procurement Only</li>
+                        <li>✅ 24/7 Post-Installation Support</li>
+                    </ul>
                 </div>
-                <div class="qr-text-container">
-                    <h4>Digital Contact Identity</h4>
-                    <p style="font-size: 11px; margin-bottom: 8px;">Scan the QR code to instantly save our contact details to your device, or use the professional V-Card download button below.</p>
+                <div style="flex: 1; min-width: 250px; background: #fff; padding: 25px; border-radius: 10px; border: 1px solid #ddd;">
+                    <h4 style="color: #0d1b2a; margin-bottom: 10px;">Our Seamless Process</h4>
+                    <p style="font-size: 11px; color: #666;">From the initial site visit to the final energization, we handle everything. We provide detailed Load Schedules and technical documentation so you never have to guess about your property's safety.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h3>Ready to partner with technical experts?</h3>
+            <div style="margin: 25px 0;">
+                <a href="book-now.html" class="vcard-btn" style="background: #25d366; border-color: #25d366; color: white !important;">
+                   <i class="fas fa-calendar-check"></i> SCHEDULE A CONSULTATION
+                </a>
+            </div>
+
+            <div class="qr-section">
+                <div class="qr-image">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://qr1.me-qr.com/entry/vcard/qdbqa4sx" alt="KOHMZ QR Code" style="width:100%; height:100%; border-radius: 10px;">
+                </div>
+                <div style="flex: 1; text-align: left; min-width: 280px;">
+                    <h4 style="color: #0d1b2a; font-size: 14px; margin-bottom: 12px; text-transform: uppercase; font-weight: 800;">Digital Contact Identity ⤵️</h4>
+                    <p style="font-size: 11px; margin-bottom: 15px; color: #666;">Scan the QR code to instantly save our professional details to your device, or download the V-Card directly for future technical assistance.</p>
                     <a href="https://qr1.me-qr.com/entry/vcard/qdbqa4sx" target="_blank" class="vcard-btn">
                         <i class="fas fa-download"></i> DOWNLOAD V-CARD
                     </a>
