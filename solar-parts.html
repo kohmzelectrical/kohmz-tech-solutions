@@ -27,6 +27,10 @@
             display: flex; justify-content: space-between; align-items: center; 
             position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
         }
+        
+        /* LOGO STYLE ADDED */
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; }
         .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
         .logo span { color: #ffb703; }
 
@@ -34,7 +38,8 @@
 
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s ease; }
         .nav-links li { margin-left: 18px; position: relative; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
+        /* NAVIGATION FONT SIZE CHANGED TO 11px */
+        .nav-links li a { color: white; text-decoration: none; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
         .nav-links li a:hover { color: #ffb703; }
         
         /* DROPDOWNS (Desktop) */
@@ -135,7 +140,10 @@
     </div>
 
     <header>
-        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <div class="logo">
+            <img src="logo.jpg" alt="KOHMZ Logo">
+            <h1>KOHMZ <span>Electrical</span></h1>
+        </div>
         
         <div class="menu-toggle" id="mobile-menu">
             <i class="fas fa-bars"></i>
@@ -264,7 +272,7 @@
                 <a href="privacy-policy.html">Privacy Policy</a>
                 <a href="terms-of-service.html">Terms of Service</a>
             </div>
-            <hr style="margin:25px auto; border:0; border-top:1px solid rgba(255,255,255,0.1); max-width: 800px;">
+            <hr style="margin:15px auto; border:0; border-top:1px solid rgba(255,255,255,0.1); max-width: 800px;">
             <p style="font-size: 9px; opacity: 0.6; letter-spacing: 1px;">Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
         </div>
     </footer>
@@ -287,7 +295,7 @@
 
         // Handle dropdowns on mobile (click to open)
         dropdowns.forEach(dropdown => {
-            dropdown.addEventListener('click', (e) => {
+            dropdown.addEventListener('click', () => {
                 if (window.innerWidth <= 992) {
                     dropdown.classList.toggle('active');
                 }
