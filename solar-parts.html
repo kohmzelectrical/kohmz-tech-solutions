@@ -19,6 +19,16 @@
         .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; } 
         .card p { font-size: 12px; color: #444; line-height: 1.6; margin-bottom: 15px; } 
         
+        /* Ganda ng Product Images */
+        .product-image {
+            width: 100%;
+            height: 180px; /* Pantay-pantay na height ng pictures */
+            object-fit: contain; /* Hindi ma-i-stretch ang picture */
+            margin-bottom: 15px;
+            background: #fff;
+            border-radius: 4px;
+        }
+
         .footer-content { font-size: 10px; line-height: 1.6; }
         .footer-content p strong { font-size: 12px; }
 
@@ -27,13 +37,9 @@
             background-size: contain; height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 0 20px;
         }
 
-        /* Buttons para sa Shopee at Lazada */
-        .btn-shopee { padding: 8px 15px; font-size: 11px; border-radius: 4px; display: inline-block; text-decoration: none; font-weight: bold; background: #ee4d2d; color: white; margin-bottom: 5px; width: 90%; }
+        /* Button para sa Lazada */
         .btn-lazada { padding: 8px 15px; font-size: 11px; border-radius: 4px; display: inline-block; text-decoration: none; font-weight: bold; background: #0f136d; color: white; width: 90%; }
-        .btn-shopee:hover { background: #d73a1e; }
         .btn-lazada:hover { background: #0a0c4a; }
-        
-        .image-placeholder { height:120px; background:#f4f7f6; margin-bottom:15px; display:flex; align-items:center; justify-content:center; color:#888; border-radius:4px; border: 1px dashed #ccc; }
     </style>
 </head>
 <body>
@@ -86,51 +92,59 @@
             <div class="cards-container">
                 
                 <div class="card">
-                    <div class="image-placeholder">[Solar Panel Image]</div>
+                    <img src="panel.jpg" alt="Solar Panel" class="product-image">
                     <h3>High-Efficiency Solar Panel</h3>
                     <p>Monocrystalline panels (200W-600W) perfect for residential and commercial hybrid/off-grid setups.</p>
-                    <a href="https://shopee.ph/-Real-Watt-200W-240W-600W-SOLAR-PANEL-Monocrystalline-Big-Solar-Panel-IP67-Waterproof-i.487797661.28914065902?extraParams=%7B%22display_model_id%22%3A390521332524%2C%22model_selection_logic%22%3A3%7D&sp_atk=db22d466-9d9a-4b69-9cce-caa8b1e639d9&xptdk=db22d466-9d9a-4b69-9cce-caa8b1e639d9" target="_blank" class="btn-shopee">View on Shopee</a>
                     <a href="https://c.lazada.com.ph/t/c.2t72dA" target="_blank" class="btn-lazada">View on Lazada</a>
                 </div>
 
                 <div class="card">
-                    <div class="image-placeholder">[DEYE Inverter Image]</div>
+                    <img src="inverter.jpg" alt="DEYE Inverter" class="product-image">
                     <h3>DEYE Hybrid Solar Inverter</h3>
                     <p>8kW/5kW Hybrid Inverter with EPS backup. Smart monitoring capabilities for seamless power transition.</p>
-                    <a href="https://invl.me/clna4y2?url=https%3A%2F%2Fshopee.ph%2FDEYE-8kw-8000W-Hybrid-Solar-Inverter-with-8kw-EPS-%2528Back-up%2529-Can-be-Parallel-Deye-5kw-8kw-i.225699792.8038574097%2F%3FextraParams%3D%25257B%252522display_model_id%252522%25253A223710869478%25252C%252522model_selection_logic%252522%25253A3%25257D%26sp_atk%3Dc5530a3a-f2c3-4134-8c2d-fa4f0f7b2e90%26xptdk%3Dc5530a3a-f2c3-4134-8c2d-fa4f0f7b2e90" target="_blank" class="btn-shopee">View on Shopee</a>
                     <a href="https://c.lazada.com.ph/t/c.2t72jH" target="_blank" class="btn-lazada">View on Lazada</a>
                 </div>
 
                 <div class="card">
-                    <div class="image-placeholder">[Lithium Battery Image]</div>
+                    <img src="battery.jpg" alt="Lithium Battery" class="product-image">
                     <h3>LiFePO4 Solar Battery (48V)</h3>
                     <p>Factory Wholesale 100AH/200AH deep cycle lithium battery for long-lasting energy storage.</p>
-                    <a href="https://invl.me/clna4z1?url=https%3A%2F%2Fshopee.ph%2FFactory-Wholesale-48V-lithium-ion-battery-capacity-10KWH-5KWH-lifepo4-battery-200AH-100AH-lithium-ba-i.1311250899.28119239917%2F%3FextraParams%3D%25257B%252522display_model_id%252522%25253A215601999107%25252C%252522model_selection_logic%252522%25253A3%25257D%26sp_atk%3D63a8c209-6b49-411f-8734-7313a4aaeac4%26xptdk%3D63a8c209-6b49-411f-8734-7313a4aaeac4" target="_blank" class="btn-shopee">View on Shopee</a>
                     <a href="https://c.lazada.com.ph/t/c.2t72VJ" target="_blank" class="btn-lazada">View on Lazada</a>
                 </div>
 
                 <div class="card">
-                    <div class="image-placeholder">[Aluminum Rails Image]</div>
+                    <img src="rails.jpg" alt="Aluminum Rails" class="product-image">
                     <h3>PV Aluminum Mounting Rails</h3>
                     <p>Standard 2.4-meter roof solar panel mounting rails to ensure your panels are securely fastened.</p>
-                    <a href="https://invl.me/clna4zc?url=https%3A%2F%2Fshopee.ph%2FPV-Aluminum-Railings-Roof-Solar-Panel-Mounting-Rail-2.4-Meter-2-or-4-Pieces-Package-1-2-3-i.254456653.24935647794%2F%3FextraParams%3D%25257B%252522display_model_id%252522%25253A262186996716%25252C%252522model_selection_logic%252522%25253A3%25257D%26sp_atk%3Db585f715-fc60-42be-82b2-b0de84fb50b8%26xptdk%3Db585f715-fc60-42be-82b2-b0de84fb50b8" target="_blank" class="btn-shopee">View on Shopee</a>
                     <a href="https://c.lazada.com.ph/t/c.2t7dus" target="_blank" class="btn-lazada">View on Lazada</a>
                 </div>
 
                 <div class="card">
-                    <div class="image-placeholder">[Breaker/SPD Image]</div>
-                    <h3>Solar DC Breakers & SPDs</h3>
-                    <p>Protect your system from power surges and overloads with high-quality DC isolation switches.</p>
-                    <a href="https://c.lazada.com.ph/t/c.2GGbRE" target="_blank" class="btn-lazada">Option 1 on Lazada</a>
-                    <a href="https://c.lazada.com.ph/t/c.2vNNj3" target="_blank" class="btn-lazada">Option 2 on Lazada</a>
+                    <img src="breakers.jpg" alt="Solar DC Breakers" class="product-image">
+                    <h3>DC Breakers & SPD (Option 1)</h3>
+                    <p>Reliable circuit protection and surge suppression for your solar array.</p>
+                    <a href="https://c.lazada.com.ph/t/c.2GGbRE" target="_blank" class="btn-lazada">View on Lazada</a>
                 </div>
 
                 <div class="card">
-                    <div class="image-placeholder">[Solar Cables Image]</div>
-                    <h3>PV Cables & MC4 Connectors</h3>
-                    <p>Standard solar cables and weatherproof MC4 connectors for safe and efficient power transmission.</p>
-                    <a href="https://c.lazada.com.ph/t/c.2vNN9I" target="_blank" class="btn-lazada">Option 1 on Lazada</a>
-                    <a href="https://c.lazada.com.ph/t/c.2vNNQj" target="_blank" class="btn-lazada">Option 2 on Lazada</a>
+                    <img src="breakers.jpg" alt="Solar DC Breakers" class="product-image">
+                    <h3>DC Breakers & Isolator (Option 2)</h3>
+                    <p>Safe maintenance and protection for system components.</p>
+                    <a href="https://c.lazada.com.ph/t/c.2vNNj3" target="_blank" class="btn-lazada">View on Lazada</a>
+                </div>
+
+                <div class="card">
+                    <img src="cables.jpg" alt="PV Cables" class="product-image">
+                    <h3>PV Cables & MC4 (Option 1)</h3>
+                    <p>Standard solar cables and MCP connectors for efficient power transmission.</p>
+                    <a href="https://c.lazada.com.ph/t/c.2vNN9I" target="_blank" class="btn-lazada">View on Lazada</a>
+                </div>
+
+                <div class="card">
+                    <img src="cables.jpg" alt="PV Cables" class="product-image">
+                    <h3>PV Cables & Accessories (Option 2)</h3>
+                    <p>Standard solar cables for clean wire management.</p>
+                    <a href="https://c.lazada.com.ph/t/c.2vNNQj" target="_blank" class="btn-lazada">View on Lazada</a>
                 </div>
 
             </div>
