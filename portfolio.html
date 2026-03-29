@@ -22,14 +22,19 @@
             display: flex; justify-content: space-between; align-items: center; 
             position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
         }
+        
+        /* LOGO STYLE ADDED */
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(255,183,3,0.3); }
         .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
         .logo span { color: #ffb703; }
 
         .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; }
 
+        /* NAVIGATION FONT SIZE CHANGED TO 11px */
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s ease; }
         .nav-links li { margin-left: 18px; position: relative; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
         .nav-links li a:hover { color: #ffb703; }
         
         /* DROPDOWNS */
@@ -42,7 +47,7 @@
         .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; }
         .dropdown:hover .dropdown-content { display: block; }
 
-        /* MOBILE OVERLAY (Hamburger Logic) */
+        /* MOBILE OVERLAY */
         @media (max-width: 992px) {
             header { padding: 15px 25px; }
             .menu-toggle { display: block; }
@@ -123,7 +128,10 @@
     </div>
 
     <header>
-        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <div class="logo">
+            <img src="logo.jpg" alt="KOHMZ Logo">
+            <h1>KOHMZ <span>Electrical</span></h1>
+        </div>
         
         <div class="menu-toggle" id="mobile-menu">
             <i class="fas fa-bars"></i>
@@ -237,7 +245,7 @@
         <section class="content-section">
             <h3>Want to see the KOHMZ Standard in your property?</h3>
             <div style="margin-top: 20px;">
-                <a href="book-now.html" class="float-btn" style="background: #ffb703; color: #0d1b2a; border-radius: 5px; width: auto; height: auto; padding: 15px 30px; font-size: 14px; font-weight: 800; display: inline-flex;">
+                <a href="book-now.html" class="float-btn" style="background: #ffb703; color: #0d1b2a; border-radius: 5px; width: auto; height: auto; padding: 15px 30px; font-size: 14px; font-weight: 800; display: inline-flex; text-decoration: none;">
                     REQUEST A SITE ASSESSMENT
                 </a>
             </div>
