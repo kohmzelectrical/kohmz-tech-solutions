@@ -17,34 +17,19 @@
         .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 10px; } 
         .hero p { font-size: 12px; max-width: 600px; margin: 0 auto 20px; } 
         .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 20px; text-transform: uppercase; text-align: center; } 
-        .card h3 { font-size: 14px; margin-bottom: 10px; } 
-        .card p { font-size: 12px; color: #555; } 
+        .card { text-align: center; border-top: 4px solid #ffb703; padding: 20px; background: white; width: 300px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px; }
+        .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; } 
+        .card p { font-size: 12px; color: #444; line-height: 1.6; margin-bottom: 15px; } 
         .footer-content { font-size: 10px; line-height: 1.6; }
         .footer-content p strong { font-size: 12px; }
 
-        /* Hero Section with logo.jpg Background */
         .hero {
-            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), 
-                        url('logo.jpg') no-repeat center center;
-            background-size: contain; 
-            height: 60vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            padding: 0 20px;
+            background: linear-gradient(rgba(13, 27, 42, 0.9), rgba(13, 27, 42, 0.9)), url('logo.jpg') no-repeat center center;
+            background-size: contain; height: 50vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 0 20px;
         }
 
-        .cta-button {
-            padding: 8px 18px;
-            font-size: 12px;
-            border-radius: 4px;
-            margin: 5px;
-            display: inline-block;
-        }
-
-        .content-section { padding: 40px 10%; }
+        .cta-button { padding: 8px 18px; font-size: 12px; border-radius: 4px; display: inline-block; text-decoration: none; font-weight: bold; margin: 5px; }
+        .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
     </style>
 </head>
 <body>
@@ -59,7 +44,7 @@
         <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
         <nav>
             <ul class="nav-links">
-                <li><a href="index.html">Overview</a></li>
+                <li><a href="index.html" style="color: #ffb703;">Overview</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropbtn">Services &#9662;</a>
                     <div class="dropdown-content">
@@ -90,7 +75,7 @@
                 <h2>ADVANCED POWER SYSTEMS & INTEGRATED ELECTRICAL DESIGN</h2>
                 <p>The Official Home of KOHMZ Electrical Design and Build: Expert Solutions for Commercial, Residential, and Solar Projects.</p>
                 <div style="margin-top: 15px;">
-                    <a href="book-now.html" class="cta-button">Book Now</a>
+                    <a href="book-now.html" class="cta-button" style="background:#ffb703; color:#0d1b2a;">Book Now</a>
                     <a href="portfolio.html" class="cta-button" style="background:transparent; border:1px solid #ffb703; color:#ffb703;">View Capabilities</a>
                 </div>
             </div>
@@ -114,18 +99,18 @@
             </div>
         </section>
 
-        <section class="content-section" style="background:#fff;">
+        <section class="content-section" style="background:#f9f9f9;">
             <div class="cards-container">
-                <div class="card">
-                    <h3>Commercial</h3>
+                <div class="card" style="border-top: 4px solid #1a73e8;">
+                    <h3 style="color:#1a73e8;">Commercial</h3>
                     <p>Custom wiring, lighting systems, load evaluation, and reliable maintenance to prevent downtime.</p>
                 </div>
-                <div class="card">
-                    <h3>Residential</h3>
+                <div class="card" style="border-top: 4px solid #34a853;">
+                    <h3 style="color:#34a853;">Residential</h3>
                     <p>Safe, code-compliant electrical solutions from new installations to troubleshooting and repairs.</p>
                 </div>
-                <div class="card">
-                    <h3>Industrial</h3>
+                <div class="card" style="border-top: 4px solid #ea4335;">
+                    <h3 style="color:#ea4335;">Industrial</h3>
                     <p>Robust, high-capacity electrical infrastructure tailored for heavy-duty industrial facilities.</p>
                 </div>
             </div>
@@ -134,15 +119,15 @@
         <section class="content-section">
             <h2>About KOHMZ Electrical Design & Build</h2>
             <p style="text-align:center; margin-bottom:20px;"><strong>Precision in Every Connection. Powering Your Progress.</strong></p>
-            <p>At KOHMZ Electrical Design and Build, we don’t just wire buildings; we engineer reliability. We bridge the gap between complex design and flawless execution. Our mission is to deliver power with precision, ensuring every installation is a benchmark for quality.</p>
+            <p style="text-align:center; max-width:800px; margin:auto; color:#444; line-height: 1.6;">At KOHMZ Electrical Design and Build, we don’t just wire buildings; we engineer reliability. We bridge the gap between complex design and flawless execution. Our mission is to deliver power with precision, ensuring every installation is a benchmark for quality.</p>
         </section>
 
-        <section class="content-section" style="background:#f1f1f1; border-radius:10px;">
-            <h2>Frequently Asked Questions</h2>
+        <section class="content-section" style="background:#0d1b2a; color:white; border-radius: 10px; max-width: 900px; margin: 40px auto; padding: 40px;">
+            <h2 style="color:#ffb703;">Frequently Asked Questions</h2>
             <div style="text-align:left; max-width:800px; margin:auto;">
-                <p><strong>Need a panel upgrade?</strong> Signs include tripping breakers or flickering lights. We perform load evaluation and insulation testing.</p><br>
-                <p><strong>AC unit wiring?</strong> We provide dedicated AC wiring and proper circuit breakers to prevent infrastructure overload.</p><br>
-                <p><strong>Sparking outlet?</strong> Stop use immediately and turn off the breaker. Our team provides fast diagnostics and repairs.</p>
+                <p style="color:#ddd; margin-bottom:15px; font-size: 12px;"><strong style="color:white; font-size: 14px;">Need a panel upgrade?</strong><br> Signs include tripping breakers or flickering lights. We perform load evaluation and insulation testing.</p>
+                <p style="color:#ddd; margin-bottom:15px; font-size: 12px;"><strong style="color:white; font-size: 14px;">AC unit wiring?</strong><br> We provide dedicated AC wiring and proper circuit breakers to prevent infrastructure overload.</p>
+                <p style="color:#ddd; font-size: 12px;"><strong style="color:white; font-size: 14px;">Sparking outlet?</strong><br> Stop use immediately and turn off the breaker. Our team provides fast diagnostics and repairs.</p>
             </div>
         </section>
 
@@ -166,6 +151,9 @@
             <p><a href="privacy-policy.html" style="color:#ffb703;">Privacy Policy</a> | <a href="privacy-policy.html" style="color:#ffb703;">Terms of Service</a></p>
         </div>
     </footer>
+
+</body>
+</html>
 
 </body>
 </html>
