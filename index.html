@@ -19,6 +19,7 @@
         .moving-ads { background: #ffb703; color: #0d1b2a; padding: 6px; font-weight: 800; border-bottom: 2px solid #0d1b2a; }
         .moving-ads marquee { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; } 
         
+        /* HEADER & NAVIGATION (UNCHANGED) */
         header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
         .logo span { color: #ffb703; }
@@ -27,7 +28,7 @@
         .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
         .nav-links li a:hover { color: #ffb703; }
         
-        .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 180px; box-shadow: 0px 8px 25px rgba(0,0,0,0.15); z-index: 1001; border-radius: 4px; overflow: hidden; top: 100%; left: 0; border-top: 3px solid #ffb703; }
+        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 180px; box-shadow: 0px 8px 25px rgba(0,0,0,0.15); z-index: 1001; border-radius: 4px; overflow: hidden; top: 100%; left: 0; border-top: 3px solid #ffb703; }
         .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #f1f5f9; font-weight: 600; transition: 0.2s; }
         .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; padding-left: 20px; }
         .dropdown:hover .dropdown-content { display: block; }
@@ -97,7 +98,8 @@
         
         .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px; }
         @media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } }
-        .feature-box { background: #f8fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #1a73e8; }
+        .feature-box { background: #f8fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #1a73e8; transition: 0.3s; }
+        .feature-box:hover { background: #f0f7ff; transform: translateX(5px); }
         .feature-box strong { color: #0d1b2a; display: block; font-size: 13px; margin-bottom: 8px; text-transform: uppercase; font-weight: 800; }
         .feature-box span { font-size: 12px; color: #555; line-height: 1.7; display: block; }
 
@@ -105,16 +107,19 @@
         .dark-cta { background: #0d1b2a; color: white; padding: 80px 10%; text-align: center; border-top: 4px solid #ffb703; }
         .dark-cta h2 { color: #ffb703; margin-bottom: 20px; font-size: 20px; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* FAQ - HIGH DENSITY */
+        /* FAQ - HIGH DENSITY & SMOOTH OPENING */
         .faq-container { max-width: 850px; margin: 0 auto; text-align: left; }
-        details { background: white; margin-bottom: 10px; border-radius: 6px; box-shadow: 0 3px 10px rgba(0,0,0,0.03); overflow: hidden; border: 1px solid #e2e8f0; }
+        details { background: white; margin-bottom: 10px; border-radius: 6px; box-shadow: 0 3px 10px rgba(0,0,0,0.03); overflow: hidden; border: 1px solid #e2e8f0; transition: 0.3s; }
         summary { font-size: 13px; font-weight: 800; color: #0d1b2a; padding: 20px 25px; cursor: pointer; outline: none; background: #fdfdfd; border-left: 5px solid #ffb703; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
         summary:hover { background: #f8fafc; }
         summary::after { content: '\f067'; font-family: 'Font Awesome 5 Free'; font-weight: 900; color: #ffb703; transition: 0.3s; }
-        details[open] summary::after { content: '\f068'; transform: rotate(180deg); }
-        details p { font-size: 12px; padding: 25px; margin: 0; color: #444; line-height: 1.9; border-top: 1px solid #f1f5f9; background: #fff; }
+        details[open] summary::after { content: '\f068'; transform: rotate(180deg); color: #1a73e8; }
+        details[open] { box-shadow: 0 8px 25px rgba(26,115,232,0.05); border-color: #1a73e8; }
+        
+        details p { font-size: 12px; padding: 25px; margin: 0; color: #444; line-height: 1.9; border-top: 1px solid #f1f5f9; background: #fff; opacity: 0; transform: translateY(-10px); transition: opacity 0.3s, transform 0.3s; }
+        details[open] p { opacity: 1; transform: translateY(0); }
 
-        /* PREMIUM VIP BOOKING ADVISORY (CLASSY) */
+        /* PREMIUM VIP BOOKING ADVISORY (SIKSIK & CONVINCING) */
         .vip-advisory { background: #ffffff; border-left: 6px solid #1a73e8; box-shadow: 0 10px 30px rgba(0,0,0,0.06); padding: 35px; border-radius: 8px; display: flex; gap: 25px; align-items: flex-start; text-align: left; max-width: 850px; margin: 0 auto 50px; border-right: 1px solid #e2e8f0; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; }
         .adv-icon { background: #f0f7ff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .adv-icon i { font-size: 20px; color: #1a73e8; }
@@ -202,34 +207,37 @@
                 <div class="card" style="border-top-color: #1a73e8;">
                     <i class="fas fa-building-circle-check"></i>
                     <h3>Commercial Asset Management</h3>
-                    <p>Maximizing business uptime through strategic wiring architecture. We ensure zero interruptions and strict local government compliance to keep your operations legally protected.</p>
+                    <p>Maximizing business uptime sa pamamagitan ng strategic wiring architecture. Tinitiyak namin ang zero interruptions at strict local government compliance para mapanatiling legally protected at profoundly safe ang iyong operasyon.</p>
                     <ul class="tech-list">
                         <li><i class="fas fa-check"></i> 3-Phase Workstation Power Grids</li>
                         <li><i class="fas fa-check"></i> Architectural & Retail Lighting Control</li>
-                        <li><i class="fas fa-check"></i> Dedicated Server Room Protection</li>
+                        <li><i class="fas fa-check"></i> Dedicated Server Room Thermal Protection</li>
                         <li><i class="fas fa-check"></i> LGU & Fire Department Permit Assistance</li>
+                        <li style="color:#1a73e8; font-weight:900;">Result: Validated Power Quality & Assurance</li>
                     </ul>
                 </div>
                 <div class="card" style="border-top-color: #34a853;">
                     <i class="fas fa-house-shield"></i>
                     <h3>Premium Residential Security</h3>
-                    <p>Securing high-end residences through code-compliant panel upgrades and smart-infrastructure readiness. We deliver clean, hidden wire management and protection against electrical fires.</p>
+                    <p>Securing high-end residences sa pamamagitan ng code-compliant panel upgrades at smart-infrastructure readiness. Hinahawakan namin ang iyong private estate nang may utmost respect, delivering clean, hidden wire management.</p>
                     <ul class="tech-list">
                         <li><i class="fas fa-check"></i> Main Distribution Board (MDB) Upgrades</li>
                         <li><i class="fas fa-check"></i> EV Charger & Smart Home Provisioning</li>
                         <li><i class="fas fa-check"></i> Heavy-Load AC Dedicated Circuits</li>
                         <li><i class="fas fa-check"></i> AFCI/GFCI Life-Safety Implementation</li>
+                        <li style="color:#34a853; font-weight:900;">Result: Strict Insurance Fire Safety Compliance</li>
                     </ul>
                 </div>
                 <div class="card" style="border-top-color: #ea4335;">
                     <i class="fas fa-industry"></i>
                     <h3>Heavy-Duty Power Systems</h3>
-                    <p>Executing high-capacity service entrances and 3-phase distribution for high-stakes environments. Built for absolute endurance and minimal thermal stress under continuous heavy loads.</p>
+                    <p>Executing high-capacity service entrances at 3-phase distribution para sa high-stakes environments. Binuo para sa absolute endurance at minimal thermal stress sa ilalim ng continuous heavy industrial loads.</p>
                     <ul class="tech-list">
                         <li><i class="fas fa-check"></i> High-Capacity Service Entrances</li>
                         <li><i class="fas fa-check"></i> Industrial Motor Control Centers (MCC)</li>
                         <li><i class="fas fa-check"></i> NEMA-Compliant Outdoor Enclosures</li>
                         <li><i class="fas fa-check"></i> Heavy Raceway & Cable Tray Routing</li>
+                        <li style="color:#ea4335; font-weight:900;">Result: Mitigated Operational Downtime Risks</li>
                     </ul>
                 </div>
             </div>
@@ -242,25 +250,25 @@
                 <div class="workflow-step">
                     <span class="step-num">01</span>
                     <h4>Diagnostics & Architectural Layout</h4>
-                    <p>We conduct comprehensive site surveys, mathematical load balancing, and CAD layout approvals before purchasing a single material. Proper planning prevents electrical bottlenecks and overloaded neutrals.</p>
+                    <p>We conduct comprehensive site surveys, mathematical load balancing, at CAD layout approvals bago bumili ng isang materyal. Proper planning prevents electrical bottlenecks at overloaded neutrals.</p>
                     <span class="deliverable"><i class="fas fa-file-pdf"></i> Deliverable: CAD Layouts & Load Schedules</span>
                 </div>
                 <div class="workflow-step">
                     <span class="step-num">02</span>
                     <h4>Code-Compliant Execution</h4>
-                    <p>Our licensed technicians utilize only authentic, THHN/THWN-2 pure copper wires and UL-listed materials. Every conduit bend and wire termination is executed with surgical precision and clean aesthetics.</p>
+                    <p>Ang aming licensed technicians ay gumagamit lamang ng authentic, THHN/THWN-2 pure copper wires at UL-listed materials. Every conduit bend and wire termination is executed with surgical precision at clean aesthetics.</p>
                     <span class="deliverable"><i class="fas fa-clipboard-check"></i> Deliverable: PEC Standard Workmanship</span>
                 </div>
                 <div class="workflow-step">
                     <span class="step-num">03</span>
                     <h4>QA & System Stress-Testing</h4>
-                    <p>We don't just turn on the breaker. We conduct rigorous continuity tests, Digital Insulation Resistance (Megger) checks, and voltage drop verification to guarantee lifelong reliability under peak demand.</p>
+                    <p>We don't just turn on the breaker. We conduct rigorous continuity tests, Digital Insulation Resistance (Megger) checks, at voltage drop verification to guarantee lifelong reliability sa ilalim ng peak demand.</p>
                     <span class="deliverable"><i class="fas fa-search-plus"></i> Deliverable: Diagnostic Safety Clearance</span>
                 </div>
                 <div class="workflow-step">
                     <span class="step-num">04</span>
                     <h4>Official Turnover & Warranty</h4>
-                    <p>You receive complete as-built technical plans, comprehensive system walkthroughs, and a solid workmanship warranty. We leave you with absolute peace of mind and total system control.</p>
+                    <p>You receive complete as-built technical plans, comprehensive system walkthroughs, at isang solid workmanship warranty. We leave you with absolute peace of mind and total system control.</p>
                     <span class="deliverable"><i class="fas fa-file-signature"></i> Deliverable: As-Built Plans & Warranty</span>
                 </div>
             </div>
@@ -273,22 +281,22 @@
                 <div class="card">
                     <i class="fas fa-compass-drafting"></i>
                     <h3>Technical Architecture</h3>
-                    <p>Custom electrical schematics, robust entrance wiring, and professional underground/overhead conduit layouts. We ensure proper bend radius and fill capacity to prevent wire skin degradation during installation.</p>
+                    <p>Custom electrical schematics, robust entrance wiring, at professional underground/overhead conduit layouts. Tinitiyak namin ang proper bend radius at fill capacity para maiwasan ang wire skin degradation.</p>
                 </div>
                 <div class="card">
                     <i class="fas fa-boxes-stacked"></i>
                     <h3>Certified Panel Upgrades</h3>
-                    <p>Upgrading from outdated, hazardous systems to modern, high-capacity Main Distribution Boards. Equipped with strict phase-balancing, proper grounding busbars, and whole-property surge protection devices (SPD).</p>
+                    <p>Upgrading from outdated, hazardous systems to modern, high-capacity Main Distribution Boards. Nilagyan ng strict phase-balancing, proper grounding busbars, at surge protection devices (SPD).</p>
                 </div>
                 <div class="card">
                     <i class="fas fa-chart-pie"></i>
                     <h3>Precision Load Profiling</h3>
-                    <p>Calculated load balancing for new high-draw appliances (Inverter ACs, Induction cookers) or commercial workstations. We strictly match breaker ampacity to exact wire gauges to completely eliminate the risk of panel fires.</p>
+                    <p>Calculated load balancing para sa mga bagong high-draw appliances (Inverter ACs, Induction cookers) o commercial workstations. Strictly matched breaker ampacity to exact wire gauges.</p>
                 </div>
                 <div class="card">
                     <i class="fas fa-solar-panel"></i>
                     <h3>System & Grid Integration</h3>
-                    <p>Supporting high-efficiency Renewable/Solar implementations and heavy Generator backups. We handle the critical backbone: certified DC protection suites, rapid-shutdown compliance, and flawless ATS architecture.</p>
+                    <p>Supporting high-efficiency Renewable/Solar implementations at heavy Generator backups. Hinahawakan namin ang critical backbone: certified DC protection suites, rapid-shutdown compliance, at ATS architecture.</p>
                 </div>
             </div>
         </section>
@@ -300,27 +308,27 @@
                 
                 <p>At <strong>KOHMZ Electrical Design and Build</strong>, we don’t just wire buildings; we implement full-scale technical governance. Founded on the absolute necessity for life safety, transparency, and continuous operational continuity, we provide elite power solutions for the Residential and Commercial sectors.</p>
                 
-                <p>In an industry plagued by substandard practices, shortcut wiring, and generic guesswork, we stand as the definitive benchmark for electrical integrity. As a specialist professional contractor, we bridge the critical gap between complex design blueprints and flawless physical implementation. We understand that electrical failure is not just an inconvenience—it is a massive insurance liability and a critical threat to your property, your business, and your life.</p>
+                <p>In an industry plagued by substandard practices, shortcut wiring, and generic guesswork, we stand as the definitive benchmark for electrical integrity. As a specialist professional contractor, we bridge the critical gap between complex design blueprints and flawless physical implementation. We understand that electrical failure is not just an inconvenience—it is a massive insurance liability at isang critical threat sa iyong property at sa iyong negosyo.</p>
                 
                 <h3>The Hidden Quality Guarantee</h3>
-                <p>We believe that what is hidden behind your walls and ceilings matters just as much as the fixtures you see. Discerning property owners and top-tier developers choose KOHMZ because we guarantee straight conduit runs, perfectly torqued terminal connections, premium pure copper wiring, and an obsessive attention to detail that generic contractors routinely ignore. This eliminates micro-arcing, reduces dangerous thermal buildup, and dramatically extends the lifespan of your property's entire electrical infrastructure.</p>
+                <p>Naniniwala kami na kung ano ang nakatago sa likod ng iyong mga pader at kisame ay mahalaga rin gaya ng mga fixtures na nakikita mo. Discerning property owners choose KOHMZ because we guarantee straight conduit runs, perfectly torqued terminal connections, premium pure copper wiring, at obsessive attention to detail. Ito ang nag-aalis sa micro-arcing at dramatically extends the lifespan ng iyong electrical infrastructure.</p>
 
                 <div class="feature-grid">
                     <div class="feature-box">
                         <strong>24/7 Specialist Overwatch</strong>
-                        <span>Power failure means immediate downtime. Our specialized emergency response team is on standby for rapid deployment during critical system failures to restore power safely and efficiently.</span>
+                        <span>Power failure means immediate downtime. Ang aming specialized emergency response team ay on standby para sa rapid deployment during critical system failures.</span>
                     </div>
                     <div class="feature-box">
                         <strong>Strategic Reliability</strong>
-                        <span>We do not apply band-aid fixes to symptoms. We conduct deep-tier diagnostics using advanced insulation resistance testing to mathematically reinforce your infrastructure against future risks.</span>
+                        <span>We do not apply band-aid fixes. professionally namin dina-diagnose ang root cause gamit ang advanced insulation resistance testing para i-reinforce ang iyong infrastructure against future risks.</span>
                     </div>
                     <div class="feature-box">
                         <strong>Uncompromising Safety Governance</strong>
-                        <span>From weather-rated NEMA enclosures to high-interrupting capacity breakers, strict adherence to PEC and NEMA standards ensures your assets pass the strictest fire safety inspections.</span>
+                        <span>From weather-rated NEMA enclosures to high-interrupting capacity breakers, strict adherence sa PEC at NEMA standards ensures your assets pass the strictest fire safety inspections.</span>
                     </div>
                     <div class="feature-box">
                         <strong>Full-Cycle Documentation</strong>
-                        <span>We provide detailed CAD drawings and accurate load schedules, giving you total transparency and legal compliance over your property's power map for securing LGU building permits.</span>
+                        <span>Nagbibigay kami ng detailed CAD drawings at accurate load schedules, giving you total transparency at legal compliance para sa pag-secure ng LGU building permits.</span>
                     </div>
                 </div>
 
@@ -333,7 +341,7 @@
         <section class="dark-cta">
             <h2>Your Certified Professional Partner</h2>
             <div style="max-width: 800px; margin: 0 auto; color: #cbd5e1;">
-                <p style="font-size: 13px; line-height: 2;">Your property is one of your most significant investments. Substandard wiring doesn't just risk power outages—it risks catastrophic structural fires and voids warranties on million-peso industrial equipment and luxury home appliances. Partner with specialists who understand the true governance of power.</p>
+                <p style="font-size: 13px; line-height: 2;">Ang iyong property ay isa sa iyong pinaka-significant investments. Substandard wiring doesn't just risk power outages—it risks catastrophic structural fires at voids warranties sa million-peso industrial equipment at luxury home appliances. Partner with specialists who understand the true governance of power.</p>
                 <div style="margin-top: 35px;">
                     <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" class="cta-button btn-primary" style="font-size: 12px; padding: 15px 35px;"><i class="fab fa-facebook"></i> VIEW LATEST PROJECT DOCUMENTATION ON FB</a>
                 </div>
@@ -344,12 +352,12 @@
             <h2>Technical Advisory (FAQ)</h2>
             <p class="section-subtitle">Expert answers to the most critical electrical concerns for property owners, architects, and facility managers.</p>
             <div class="faq-container">
-                <details><summary>Is my property at risk? When should I upgrade my electrical panel?</summary><p>Tripping breakers, flickering lights, a slight burning smell, or warm panel covers are critical red flags indicating a severe amperage deficit and thermal degradation. Modern smart appliances draw continuous loads that old panels cannot handle. We perform comprehensive load evaluations and Digital Insulation Resistance Testing to detect internal faults before they escalate into structural fire hazards.</p></details>
-                <details><summary>Do you handle dedicated technical wiring for new heavy AC units?</summary><p>Yes. Simply tapping a new high-HP air conditioner into an existing line is highly dangerous due to massive compressor inrush currents. We provide certified AC load centers, dedicated home-run circuits directly from the main panel, and exact breaker sizing to ensure your cooling system operates safely while preventing voltage drops that destroy expensive compressor motors.</p></details>
-                <details><summary>What should I do if an outlet stops working or emits sparks?</summary><p>Stop using the outlet immediately and turn off the corresponding breaker at your main panel. Sparking indicates loose terminal arcing or oxidized contacts, which is an immediate fire hazard hidden inside your walls. Our team provides rapid technical diagnostics to isolate the faulty wiring and replace the compromised materials safely.</p></details>
-                <details><summary>Can you design the electrical layout for a new commercial space?</summary><p>Absolutely. We specialize in custom wiring architecture, three-phase distribution, scalable power grids for workstation ergonomics, and NEMA-compliant enclosures. Our CAD documents are meticulously prepared to pass rigorous LGU safety permits, fire department compliance checks, and commercial building inspections without delay.</p></details>
-                <details><summary>How can regular technical maintenance benefit my business?</summary><p>Proactive maintenance is exponentially cheaper than disaster recovery. Preventative diagnostics avoid unexpected operational downtime, protect sensitive corporate servers from power surges, and prevent catastrophic equipment failures by identifying weak points in your system before they physically fail.</p></details>
-                <details><summary>Can you install heavy-duty industrial power systems?</summary><p>Yes, we are fully equipped to implement heavy entrance wiring, 3-phase service meter bases, motor control centers, heavy-duty raceways, and commercial-grade distribution panels specifically structured for maximum operational endurance in high-capacity industrial, manufacturing, and retail electrical loads.</p></details>
+                <details><summary>Is my property at risk? When should I upgrade my electrical panel?</summary><p>Tripping breakers, flickering lights, a slight burning smell, o warm panel covers ay critical red flags indicating a severe amperage deficit. Modern smart appliances draw continuous loads na hindi kaya ng mga lumang panels. Nagsasagawa kami ng comprehensive load evaluations para makita ang internal faults bago sila maging fire hazards.</p></details>
+                <details><summary>Do you handle dedicated technical wiring for new heavy AC units?</summary><p>Yes. Ang simpleng pag-tap ng bagong high-HP air conditioner sa existing line ay lubhang mapanganib dahil sa massive compressor inrush currents. Nagbibigay kami ng certified AC load centers at dedicated home-run circuits directly mula sa main panel para mapanatiling ligtas ang iyong cooling system.</p></details>
+                <details><summary>What should I do if an outlet stops working or emits sparks?</summary><p>Huwag gamitin ang outlet immediately at i-turn off ang corresponding breaker. Ang sparking ay nagpapahiwatig ng loose terminal arcing, na isang immediate fire hazard na nakatago sa iyong mga pader. Ang aming koponan ay nagbibigay ng mabilis na technical diagnostics para palitan ang compromised materials safely.</p></details>
+                <details><summary>Can you design the electrical layout for a new commercial space?</summary><p>Absolutely. Nagpapakadalubhasa kami sa custom wiring architecture, scalable power grids para sa workstation ergonomics, at NEMA-compliant enclosures. Ang aming CAD documents ay meticulously prepared para makapasa sa rigorous LGU safety permits at commercial building inspections.</p></details>
+                <details><summary>How can regular technical maintenance benefit my business?</summary><p>Ang proactive maintenance ay exponentially cheaper kaysa sa disaster recovery. Ang preventative diagnostics ay naiiwasan ang unexpected operational downtime, pinoprotektahan ang sensitive corporate servers mula sa power surges, at pinipigilan ang equipment failures.</p></details>
+                <details><summary>Can you install heavy-duty industrial power systems?</summary><p>Yes, fully equipped kami para mag-implement ng heavy entrance wiring, 3-phase service meter bases, at commercial-grade distribution panels specifically structured para sa maximum operational endurance sa high-capacity industrial environments.</p></details>
             </div>
         </section>
 
@@ -358,7 +366,7 @@
                 <div class="adv-icon"><i class="fas fa-clipboard-check"></i></div>
                 <div class="adv-text">
                     <h4>Priority Project Enrollment & Site Audits</h4>
-                    <p>We are currently accepting new technical assessments for residential safety audits and commercial system integrations. To maintain our strict standards of professional excellence, projects are accommodated through a structured scheduling system. Secure your property's technical evaluation today to ensure absolute compliance and prevent operational hazards.</p>
+                    <p>Kasalukuyan kaming tumatanggap ng mga bagong technical assessments para sa residential safety audits at commercial system integrations. Upang mapanatili ang aming mahigpit na standards of professional excellence, ang mga proyekto ay tinatanggap sa pamamagitan ng isang structured scheduling system. Secure your property's technical evaluation today bago magkaroon ng milyong structural damage.</p>
                     <div class="adv-tags">
                         <span class="adv-tag"><i class="fas fa-shield-alt"></i> Fire-Prevention Audits</span>
                         <span class="adv-tag"><i class="fas fa-chart-line"></i> Load Balancing Analysis</span>
