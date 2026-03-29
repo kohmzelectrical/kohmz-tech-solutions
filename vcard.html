@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Contact | Samuel Millano - KOHMZ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --dark: #0d1b2a; --gold: #ffb703; --blue: #1155cc; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        .vcard-container { background: white; width: 90%; max-width: 400px; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border-top: 8px solid var(--gold); text-align: center; padding-bottom: 30px; }
+        
+        .profile-header { background: var(--dark); padding: 40px 20px; color: white; }
+        .profile-header h1 { margin: 10px 0 5px; font-size: 22px; letter-spacing: 1px; }
+        .profile-header p { margin: 0; font-size: 12px; color: var(--gold); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .contact-info { padding: 25px; text-align: left; }
+        .info-item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; text-decoration: none; color: #334155; transition: 0.3s; }
+        .info-item i { width: 35px; height: 35px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--blue); font-size: 16px; }
+        .info-item div span { display: block; font-size: 10px; color: #64748b; font-weight: 700; text-transform: uppercase; }
+        .info-item div p { margin: 0; font-size: 13px; font-weight: 600; }
+
+        .btn-group { display: flex; flex-direction: column; gap: 12px; padding: 0 25px; }
+        .btn { padding: 15px; border-radius: 10px; text-decoration: none; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; border: none; cursor: pointer; }
+        
+        .btn-map { background: var(--blue); color: white; }
+        .btn-vcard { background: var(--gold); color: var(--dark); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        .footer-brand { margin-top: 25px; font-size: 10px; color: #94a3b8; font-weight: 700; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <div class="vcard-container">
+        <div class="profile-header">
+            <div style="font-size: 40px; margin-bottom: 10px;"><i class="fas fa-user-tie"></i></div>
+            <h1>SAMUEL MILLANO</h1>
+            <p>Owner / Electrical Contractor</p>
+        </div>
+
+        <div class="contact-info">
+            <a href="tel:+639266174131" class="info-item">
+                <i class="fas fa-phone"></i>
+                <div><span>Contact Number</span><p>+63 926 617 4131</p></div>
+            </a>
+            <a href="mailto:kohmzelectrical@gmail.com" class="info-item">
+                <i class="fas fa-envelope"></i>
+                <div><span>Email Address</span><p>kohmzelectrical@gmail.com</p></div>
+            </a>
+            <a href="https://kohmzelectrical.github.io/kohmz-electrical-services/" class="info-item">
+                <i class="fas fa-globe"></i>
+                <div><span>Official Website</span><p>kohmzelectrical.github.io</p></div>
+            </a>
+            <div class="info-item">
+                <i class="fas fa-building"></i>
+                <div><span>Company</span><p>KOHMZ INDUSTRIAL DESIGN SERVICES</p></div>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <a href="https://www.google.com/maps/search/?api=1&query=KOHMZ+ELECTRICAL+DESIGN+AND+BUILD+Quezon+City" target="_blank" class="btn btn-map">
+                <i class="fas fa-map-marked-alt"></i> VIEW ON MAP
+            </a>
+            
+            <button onclick="downloadVCard()" class="btn btn-vcard">
+                <i class="fas fa-address-card"></i> DOWNLOAD VCARD
+            </button>
+        </div>
+
+        <div class="footer-brand">KOHMZ™ Electrical Design and Build</div>
+    </div>
+
+    <script>
+        function downloadVCard() {
+            const vCardData = `BEGIN:VCARD
+VERSION:3.0
+FN:Samuel Millano
+ORG:KOHMZ INDUSTRIAL DESIGN SERVICES
+TITLE:Owner / Electrical Contractor
+TEL;TYPE=CELL,VOICE:+639266174131
+EMAIL:kohmzelectrical@gmail.com
+URL:https://kohmzelectrical.github.io/kohmz-electrical-services/
+ADR;TYPE=WORK:;;Quezon City;Metro Manila;;Philippines
+NOTE:KOHMZ ELECTRICAL DESIGN AND BUILD
+END:VCARD`;
+
+            const blob = new Blob([vCardData], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Samuel_Millano_KOHMZ.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+
+</body>
+</html>
