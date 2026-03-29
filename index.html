@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <meta name="google-site-verification" content="x_KzHj0x9Ygn2C3ffPnJ8aQTC4EE3n4AhWGtoNODr_k" />
+    
     <title>KOHMZ Electrical Design and Build | Technical Governance & Power Architecture</title>
     <meta name="description" content="Specialist Electrical Contractor in the Philippines. We provide high-impact Technical Governance for Residential and Commercial assets through PEC-compliant design and build.">
     
@@ -11,116 +13,160 @@
     <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
     
     <link rel="preload" as="image" href="logo.jpg" fetchpriority="high">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
+
+    <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="style.css"></noscript>
 
     <style>
-        /* BASE STYLES */
+        /* STRICT PROFESSIONAL FONT SCALE SYNC (12px Base) */
         body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; color: #1e293b; scroll-behavior: smooth; line-height: 1.6; margin: 0; padding: 0; overflow-x: hidden; } 
         
-        /* TECH BAR */
+        /* HIGH-TECH TECH BAR */
         .tech-bar { background: #ffb703; color: #0d1b2a; padding: 10px; font-weight: 800; border-bottom: 2px solid #0d1b2a; text-align: center; }
         .tech-bar-content { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
         .tech-bar-content span::after { content: '\f111'; font-family: 'Font Awesome 5 Free'; font-weight: 900; color: #0d1b2a; margin-left: 15px; font-size: 7px; opacity: 0.5; }
         .tech-bar-content span:last-child::after { content: ''; }
 
-        /* HEADER & NAVIGATION (SMALLER FONT & LOGO) */
+        /* HEADER & NAVIGATION */
         header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
         
+        /* LOGO AREA WITH IMAGE */
         .logo { display: flex; align-items: center; gap: 10px; }
-        .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(255,183,3,0.3); }
+        .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; }
         .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
         .logo span { color: #ffb703; }
         
         .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; }
 
+        /* NAVIGATION MENU - SMALLER FONT (11px) */
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s; }
         .nav-links li { margin-left: 18px; position: relative; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 12px; transition: 0.3s; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 11px; transition: 0.3s; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .nav-links li a:hover { color: #ffb703; }
         
+        /* DROPDOWNS */
         .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 180px; box-shadow: 0px 8px 25px rgba(0,0,0,0.15); z-index: 1001; border-radius: 4px; overflow: hidden; top: 100%; left: 0; border-top: 3px solid #ffb703; }
-        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 11px !important; border-bottom: 1px solid #f1f5f9; font-weight: 600; }
-        .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; }
+        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 11px !important; border-bottom: 1px solid #f1f5f9; font-weight: 600; transition: 0.2s; }
+        .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; padding-left: 20px; }
         .dropdown:hover .dropdown-content { display: block; }
 
+        /* MOBILE MENU RESPONSIVE LOGIC */
         @media (max-width: 992px) {
             .menu-toggle { display: block; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: #0d1b2a; padding: 20px 0; border-bottom: 4px solid #ffb703; }
+            .nav-links {
+                display: none; flex-direction: column; position: absolute; 
+                top: 100%; left: 0; width: 100%; background: #0d1b2a; 
+                padding: 20px 0; border-bottom: 4px solid #ffb703;
+            }
             .nav-links.active { display: flex; }
             .nav-links li { margin: 15px 0; text-align: center; width: 100%; margin-left: 0; }
-            .nav-links li a { font-size: 14px; width: 100%; }
+            .nav-links li a { font-size: 14px; width: 100%; } /* Smaller mobile font */
             .dropdown-content { position: static; box-shadow: none; background: #1a2e44; display: none; width: 100%; }
             .dropdown.active .dropdown-content { display: block; }
         }
 
         /* HERO SECTION */
-        .hero { background: linear-gradient(rgba(13, 27, 42, 0.8), rgba(13, 27, 42, 0.8)), url('logo.jpg') no-repeat center center; background-size: cover; padding: 120px 10%; text-align: center; color: white; display: flex; align-items: center; justify-content: center; }
+        .hero { 
+            background: linear-gradient(rgba(13, 27, 42, 0.8), rgba(13, 27, 42, 0.8)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 120px 10%; text-align: center; color: white; display: flex; align-items: center; justify-content: center;
+        }
         .hero-inner { max-width: 850px; }
         .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; line-height: 1.3; } 
-        .hero p { font-size: 14px; margin: 0 auto 30px; line-height: 1.8; opacity: 0.95; } 
+        .hero p { font-size: 14px; margin: 0 auto 30px; line-height: 1.8; font-weight: 400; opacity: 0.95; } 
         
-        .cta-button { padding: 12px 25px; font-size: 11px; border-radius: 4px; display: inline-block; text-decoration: none; font-weight: 800; margin: 6px; transition: 0.3s; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .cta-button { padding: 12px 25px; font-size: 11px; border-radius: 4px; display: inline-block; text-decoration: none; font-weight: 800; margin: 6px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .btn-primary { background: #ffb703; color: #0d1b2a; border: 2px solid #ffb703; }
         .btn-outline { background: rgba(0,0,0,0.8); color: #ffb703; border: 2px solid #ffb703; backdrop-filter: blur(5px); }
-        .btn-fb { background: #0c5bb5; color: white; border: 2px solid #0c5bb5; }
-        .cta-button:hover { transform: translateY(-3px); filter: brightness(1.1); }
-
-        /* TRUST BAR */
-        .trust-bar { background: #fff; padding: 20px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; border-bottom: 1px solid #e2e8f0; }
-        .trust-item { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11px; color: #0d1b2a; text-transform: uppercase; }
-        .trust-item i { color: #d99a00; font-size: 16px; }
-
-        /* CONTENT SECTIONS */
-        .content-section { padding: 70px 10%; text-align: center; }
-        .content-section h2 { font-size: 20px; color: #0d1b2a; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; position: relative; display: inline-block; }
-        .content-section h2::after { content: ''; width: 50px; height: 3px; background: #ffb703; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); }
-        .section-subtitle { max-width: 800px; margin: 25px auto 45px; font-size: 12px; line-height: 1.8; color: #334155; }
-        
-        .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .card { background: white; width: 320px; padding: 35px 25px; border-radius: 8px; border-top: 4px solid #ffb703; text-align: left; box-shadow: 0 8px 25px rgba(0,0,0,0.04); transition: 0.3s; display: flex; flex-direction: column; }
-        .card i { font-size: 28px; color: #d99a00; margin-bottom: 20px; }
-        .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 900; text-transform: uppercase; }
-        .card p { font-size: 12px; color: #334155; margin-bottom: 15px; flex-grow: 1; }
-        
-        .tech-list { padding-left: 0; list-style: none; margin-top: auto; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-        .tech-list li { font-size: 11px; margin-bottom: 6px; font-weight: 600; display: flex; align-items: flex-start; gap: 6px; }
-        .tech-list li i { font-size: 10px; color: #1155cc; margin-top: 3px; }
-
-        /* WORKFLOW */
-        .workflow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
-        .workflow-step { text-align: left; padding: 25px; background: #fff; border-top: 3px solid #ffb703; border-radius: 6px; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
-        .step-num { font-size: 32px; font-weight: 900; color: #ffb703; opacity: 0.15; position: absolute; top: 10px; right: 15px; }
-        .deliverable { font-size: 10px; text-transform: uppercase; font-weight: 800; color: #1155cc; padding: 6px 10px; background: rgba(0,0,0,0.05); border-radius: 4px; display: inline-block; }
-
-        /* TEXT BLOCK & FEATURE GRID */
-        .text-block { max-width: 900px; margin: 0 auto; text-align: justify; font-size: 12px; line-height: 2; color: #1e293b; background: white; padding: 45px; border-radius: 12px; border: 1px solid #e2e8f0; }
-        .text-block h3 { color: #0d1b2a; font-size: 16px; margin: 30px 0 15px 0; border-left: 4px solid #ffb703; padding-left: 15px; text-transform: uppercase; font-weight: 900; }
-        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px; }
-        @media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } }
-        .feature-box { background: #f8fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #1155cc; }
-        .feature-box strong { color: #0d1b2a; display: block; font-size: 13px; margin-bottom: 8px; text-transform: uppercase; font-weight: 800; }
-
-        /* FAQ */
-        .faq-container { max-width: 850px; margin: 0 auto; text-align: left; }
-        details { background: white; margin-bottom: 10px; border-radius: 6px; border: 1px solid #e2e8f0; }
-        summary { font-size: 13px; font-weight: 800; color: #0d1b2a; padding: 20px 25px; cursor: pointer; outline: none; border-left: 5px solid #ffb703; display: flex; justify-content: space-between; align-items: center; }
-        summary::after { content: '\f067'; font-family: 'Font Awesome 5 Free'; font-weight: 900; color: #d99a00; }
-        details[open] summary::after { content: '\f068'; color: #1155cc; }
-        details p { font-size: 12px; padding: 25px; margin: 0; color: #1e293b; line-height: 1.9; border-top: 1px solid #f1f5f9; }
+        .btn-fb { background: #0c5bb5; color: white; border: 2px solid #0c5bb5; } 
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.3); filter: brightness(1.1); }
 
         /* FLOATING ACTION */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 10px; z-index: 10000; }
-        .float-btn { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); text-decoration: none; transition: 0.3s; }
-        .fb-messenger { background: #006aff; } .viber { background: #5c4ad2; } .whatsapp { background: #1da851; } .email { background: #c5221f; }
+        .float-btn { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
+        .float-btn:hover { transform: scale(1.1) rotate(5deg); }
+        .fb-messenger { background: #006aff; } 
+        .viber { background: #5c4ad2; } 
+        .whatsapp { background: #1da851; } 
+        .email { background: #c5221f; } 
 
-        /* VIP ADVISORY */
-        .vip-advisory { background: #ffffff; border-left: 6px solid #1155cc; padding: 35px; border-radius: 8px; display: flex; gap: 25px; max-width: 850px; margin: 0 auto 50px; border: 1px solid #e2e8f0; text-align: left; }
+        /* TRUST BAR - COMPACT */
+        .trust-bar { background: #fff; padding: 20px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; border-bottom: 1px solid #e2e8f0; box-shadow: 0 2px 5px rgba(0,0,0,0.02); position: relative; z-index: 10; }
+        .trust-item { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11px; color: #0d1b2a; text-transform: uppercase; letter-spacing: 0.5px; }
+        .trust-item i { color: #d99a00; font-size: 16px; } 
+
+        /* HIGH-IMPACT SECTIONS */
+        .content-section { padding: 70px 10%; text-align: center; }
+        .content-section h2 { font-size: 20px; color: #0d1b2a; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; position: relative; display: inline-block; }
+        .content-section h2::after { content: ''; width: 50px; height: 3px; background: #ffb703; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); }
+        .section-subtitle { max-width: 800px; margin: 25px auto 45px; font-size: 12px; line-height: 1.8; color: #334155; } 
+        
+        /* CARD SYSTEM */
+        .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: stretch; }
+        .card { background: white; width: 320px; padding: 35px 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border-radius: 8px; border-top: 4px solid #ffb703; text-align: left; transition: 0.3s; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
+        .card i { font-size: 28px; color: #d99a00; margin-bottom: 20px; display: block; }
+        .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 900; text-transform: uppercase; } 
+        .card p { font-size: 12px; color: #334155; line-height: 1.7; margin-bottom: 15px; flex-grow: 1; } 
+        
+        .tech-list { padding-left: 0; list-style: none; margin-top: auto; border-top: 1px solid #f1f5f9; padding-top: 15px; }
+        .tech-list li { font-size: 11px; color: #1e293b; margin-bottom: 6px; font-weight: 600; display: flex; align-items: flex-start; gap: 6px; }
+        .tech-list li i { font-size: 10px; color: #1155cc; margin-top: 3px; }
+
+        /* TECHNICAL WORKFLOW GRID */
+        .workflow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        .workflow-step { text-align: left; padding: 25px; background: #fff; border-top: 3px solid #ffb703; border-radius: 6px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: 0.3s; position: relative; overflow: hidden; }
+        .workflow-step:hover { background: #0d1b2a; color: white; border-top-color: #1155cc; transform: translateY(-3px); }
+        .workflow-step:hover h3, .workflow-step:hover p, .workflow-step:hover .deliverable { color: white; }
+        .step-num { font-size: 32px; font-weight: 900; color: #ffb703; opacity: 0.15; position: absolute; top: 10px; right: 15px; line-height: 1; }
+        .workflow-step h3 { font-size: 13px; text-transform: uppercase; margin-bottom: 12px; color: #0d1b2a; font-weight: 900; transition: 0.3s; position: relative; z-index: 2; margin-top:0; }
+        .workflow-step p { font-size: 12px; line-height: 1.6; color: #334155; transition: 0.3s; margin-bottom: 12px; position: relative; z-index: 2; }
+        .deliverable { font-size: 10px; text-transform: uppercase; font-weight: 800; color: #1155cc; padding: 6px 10px; background: rgba(0,0,0,0.05); border-radius: 4px; display: inline-block; transition: 0.3s; }
+
+        /* CORPORATE IDENTITY */
+        .text-block { max-width: 900px; margin: 0 auto; text-align: justify; font-size: 12px; line-height: 2; color: #1e293b; background: white; padding: 45px; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; }
+        .text-block h3 { color: #0d1b2a; font-size: 16px; margin: 30px 0 15px 0; border-left: 4px solid #ffb703; padding-left: 15px; text-transform: uppercase; font-weight: 900; }
+        .text-block p { margin-bottom: 15px; }
+        
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px; }
+        @media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } }
+        .feature-box { background: #f8fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #1155cc; transition: 0.3s; }
+        .feature-box:hover { background: #f0f7ff; transform: translateX(5px); }
+        .feature-box strong { color: #0d1b2a; display: block; font-size: 13px; margin-bottom: 8px; text-transform: uppercase; font-weight: 800; }
+        .feature-box span { font-size: 12px; color: #334155; line-height: 1.7; display: block; }
+
+        /* DARK SECTION */
+        .dark-cta { background: #0d1b2a; color: white; padding: 80px 10%; text-align: center; border-top: 4px solid #ffb703; }
+        .dark-cta h2 { color: #ffb703; margin-bottom: 20px; font-size: 20px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* FAQ */
+        .faq-container { max-width: 850px; margin: 0 auto; text-align: left; }
+        details { background: white; margin-bottom: 10px; border-radius: 6px; box-shadow: 0 3px 10px rgba(0,0,0,0.03); overflow: hidden; border: 1px solid #e2e8f0; transition: 0.3s; }
+        summary { font-size: 13px; font-weight: 800; color: #0d1b2a; padding: 20px 25px; cursor: pointer; outline: none; background: #fdfdfd; border-left: 5px solid #ffb703; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        summary:hover { background: #f8fafc; }
+        summary::after { content: '\f067'; font-family: 'Font Awesome 5 Free'; font-weight: 900; color: #d99a00; transition: 0.3s; }
+        details[open] summary::after { content: '\f068'; transform: rotate(180deg); color: #1155cc; }
+        details[open] { box-shadow: 0 8px 25px rgba(26,115,232,0.05); border-color: #1155cc; }
+        
+        details p { font-size: 12px; padding: 25px; margin: 0; color: #1e293b; line-height: 1.9; border-top: 1px solid #f1f5f9; background: #fff; opacity: 0; transform: translateY(-10px); transition: opacity 0.3s, transform 0.3s; }
+        details[open] p { opacity: 1; transform: translateY(0); }
+
+        /* PREMIUM VIP BOOKING ADVISORY */
+        .vip-advisory { background: #ffffff; border-left: 6px solid #1155cc; box-shadow: 0 10px 30px rgba(0,0,0,0.06); padding: 35px; border-radius: 8px; display: flex; gap: 25px; align-items: flex-start; text-align: left; max-width: 850px; margin: 0 auto 50px; border-right: 1px solid #e2e8f0; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; }
+        .adv-icon { background: #f0f7ff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .adv-icon i { font-size: 20px; color: #1155cc; }
-        .adv-tag { background: #f8fafc; font-size: 10px; padding: 6px 12px; border-radius: 4px; border: 1px solid #94a3b8; color: #0f172a; font-weight: 700; text-transform: uppercase; display: inline-block; margin-right: 5px; }
+        .adv-text h3 { font-size: 15px; color: #0d1b2a; text-transform: uppercase; margin-bottom: 10px; font-weight: 900; letter-spacing: 0.5px; margin-top:0;}
+        .adv-text p { font-size: 12px; color: #334155; line-height: 1.8; margin-bottom: 15px; }
+        .adv-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+        .adv-tag { background: #f8fafc; font-size: 10px; padding: 6px 12px; border-radius: 4px; border: 1px solid #94a3b8; color: #0f172a; font-weight: 700; text-transform: uppercase; }
+        .adv-tag i { color: #d99a00; margin-right: 5px; }
 
+        /* FOOTER */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
+        .footer-content p strong { font-size: 12px; color: #ffb703; }
         .footer-content a { color: #ffb703; text-decoration: none; }
     </style>
 </head>
@@ -141,12 +187,16 @@
             <img src="logo.jpg" alt="KOHMZ Logo">
             <h1>KOHMZ <span>Electrical</span></h1>
         </div>
-        <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars"></i></div>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+
         <nav>
             <ul class="nav-links" id="nav-list">
                 <li><a href="index.html" style="color: #ffb703;">Overview</a></li>
                 <li class="dropdown">
-                    <a href="#">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="dropbtn">Services &#9662;</a>
                     <div class="dropdown-content">
                         <a href="commercial.html">Commercial</a>
                         <a href="residential.html">Residential</a>
@@ -156,7 +206,7 @@
                 <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#">Technical Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="dropbtn">Technical Shop &#9662;</a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
@@ -194,7 +244,7 @@
             <p class="section-subtitle">We deploy specialized professional teams tailored to the unique demands of your environment. Every conduit run and terminal connection serves a strategic purpose for your property's longevity, strict code compliance, and absolute structural safety.</p>
             <div class="cards-container">
                 <div class="card" style="border-top-color: #1155cc;">
-                    <i class="fas fa-building-circle-check" style="color: #1155cc;"></i>
+                    <i class="fas fa-building-circle-check"></i>
                     <h3>Commercial Asset Management</h3>
                     <p>Maximizing business uptime sa pamamagitan ng strategic wiring architecture. Tinitiyak namin ang zero interruptions at strict local government compliance para mapanatiling legally protected at profoundly safe ang iyong operasyon.</p>
                     <ul class="tech-list">
@@ -206,7 +256,7 @@
                     </ul>
                 </div>
                 <div class="card" style="border-top-color: #22863a;">
-                    <i class="fas fa-house-shield" style="color: #22863a;"></i>
+                    <i class="fas fa-house-shield"></i>
                     <h3>Premium Residential Security</h3>
                     <p>Securing high-end residences sa pamamagitan ng code-compliant panel upgrades at smart-infrastructure readiness. Hinahawakan namin ang iyong private estate nang may utmost respect, delivering clean, hidden wire management.</p>
                     <ul class="tech-list">
@@ -218,7 +268,7 @@
                     </ul>
                 </div>
                 <div class="card" style="border-top-color: #d93025;">
-                    <i class="fas fa-industry" style="color: #d93025;"></i>
+                    <i class="fas fa-industry"></i>
                     <h3>Heavy-Duty Power Systems</h3>
                     <p>Executing high-capacity service entrances at 3-phase distribution para sa high-stakes environments. Binuo para sa absolute endurance at minimal thermal stress sa ilalim ng continuous heavy industrial loads.</p>
                     <ul class="tech-list">
@@ -245,7 +295,7 @@
                 <div class="workflow-step">
                     <span class="step-num">02</span>
                     <h3>Code-Compliant Execution</h3>
-                    <p>Ang aming licensed technicians ay gumagamit lamang ng authentic, THHN/THWN-2 pure copper wires at UL-listed materials. Every conduit bend at wire termination is executed with surgical precision at clean aesthetics.</p>
+                    <p>Ang aming licensed technicians ay gumagamit lamang ng authentic, THHN/THWN-2 pure copper wires at UL-listed materials. Every conduit bend and wire termination is executed with surgical precision at clean aesthetics.</p>
                     <span class="deliverable"><i class="fas fa-clipboard-check"></i> Deliverable: PEC Standard Workmanship</span>
                 </div>
                 <div class="workflow-step">
@@ -265,34 +315,38 @@
 
         <section class="content-section">
             <h2>Core Specialist Competencies</h2>
+            <p class="section-subtitle">Delivering end-to-end technical solutions designed to future-proof your property against evolving technological demands, smart integrations, and consistently rising energy requirements.</p>
             <div class="cards-container">
                 <div class="card">
                     <i class="fas fa-compass-drafting"></i>
                     <h3>Technical Architecture</h3>
-                    <p>Custom electrical schematics, robust entrance wiring, at professional underground/overhead conduit layouts. Tinitiyak namin ang proper bend radius para maiwasan ang wire skin degradation.</p>
+                    <p>Custom electrical schematics, robust entrance wiring, at professional underground/overhead conduit layouts. Tinitiyak namin ang proper bend radius at fill capacity para maiwasan ang wire skin degradation.</p>
                 </div>
                 <div class="card">
                     <i class="fas fa-boxes-stacked"></i>
                     <h3>Certified Panel Upgrades</h3>
-                    <p>Upgrading hazardous systems to modern, high-capacity Main Distribution Boards. Nilagyan ng strict phase-balancing, proper grounding busbars, at surge protection devices (SPD).</p>
+                    <p>Upgrading from outdated, hazardous systems to modern, high-capacity Main Distribution Boards. Nilagyan ng strict phase-balancing, proper grounding busbars, at surge protection devices (SPD).</p>
                 </div>
                 <div class="card">
                     <i class="fas fa-chart-pie"></i>
                     <h3>Precision Load Profiling</h3>
-                    <p>Calculated load balancing para sa mga high-draw appliances (Inverter ACs, Induction cookers). Strictly matched breaker ampacity to exact wire gauges.</p>
+                    <p>Calculated load balancing para sa mga bagong high-draw appliances (Inverter ACs, Induction cookers) o commercial workstations. Strictly matched breaker ampacity to exact wire gauges.</p>
                 </div>
                 <div class="card">
                     <i class="fas fa-solar-panel"></i>
                     <h3>System & Grid Integration</h3>
-                    <p>Supporting high-efficiency Renewable implementations at heavy Generator backups. Hinahawakan namin ang critical backbone: certified DC protection suites at ATS architecture.</p>
+                    <p>Supporting high-efficiency Renewable/Solar implementations at heavy Generator backups. Hinahawakan namin ang critical backbone: certified DC protection suites, rapid-shutdown compliance, at ATS architecture.</p>
                 </div>
             </div>
         </section>
 
         <section class="content-section" style="background: #ffffff; border-top: 1px solid #f1f5f9;">
+            <h2>The KOHMZ Quality Assurance</h2>
             <div class="text-block">
                 <p style="text-align: center; font-weight: 900; font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;">Architectural Precision. Professional Reliability.</p>
+                
                 <p>At <strong>KOHMZ Electrical Design and Build</strong>, we don’t just wire buildings; we implement full-scale technical governance. Founded on the absolute necessity for life safety, transparency, and continuous operational continuity, we provide elite power solutions for the Residential and Commercial sectors.</p>
+                
                 <p>In an industry plagued by substandard practices, shortcut wiring, and generic guesswork, we stand as the definitive benchmark for electrical integrity. As a specialist professional contractor, we bridge the critical gap between complex design blueprints and flawless physical implementation. We understand that electrical failure is not just an inconvenience—it is a massive insurance liability at isang critical threat sa iyong property at sa iyong negosyo.</p>
                 
                 <h3>The Hidden Quality Guarantee</h3>
@@ -317,7 +371,7 @@
                     </div>
                 </div>
 
-                <p style="font-style: italic; text-align: center; font-weight: 800; color: #0d1b2a; background: #f8fafc; padding: 25px; border-radius: 8px; border: 2px solid #ffb703; font-size: 13px; margin-top: 40px;">
+                <p style="font-style: italic; text-align: center; font-weight: 800; color: #0d1b2a; background: #f8fafc; padding: 25px; border-radius: 8px; border: 2px solid #ffb703; font-size: 13px; margin-top: 40px; box-shadow: 0 4px 15px rgba(255,183,3,0.05);">
                     "Our Vision: To deliver power with such meticulous precision that every electrical connection becomes a permanent, reliable investment in safety and performance."
                 </p>
             </div>
@@ -326,7 +380,7 @@
         <section class="dark-cta">
             <h2>Your Certified Professional Partner</h2>
             <div style="max-width: 800px; margin: 0 auto; color: #cbd5e1;">
-                <p style="font-size: 13px; line-height: 2;">Ang iyong property ay isa sa iyong pinaka-significant investments. Substandard wiring doesn't just risk power outages—it risks catastrophic structural fires at voids warranties sa expensive industrial equipment at luxury home appliances. Partner with specialists who understand the true governance of power.</p>
+                <p style="font-size: 13px; line-height: 2;">Ang iyong property ay isa sa iyong pinaka-significant investments. Substandard wiring doesn't just risk power outages—it risks catastrophic structural fires at voids warranties sa million-peso industrial equipment at luxury home appliances. Partner with specialists who understand the true governance of power.</p>
                 <div style="margin-top: 35px;">
                     <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" class="cta-button btn-primary" style="font-size: 12px; padding: 15px 35px;"><i class="fab fa-facebook"></i> VIEW LATEST PROJECT DOCUMENTATION ON FB</a>
                 </div>
@@ -359,22 +413,26 @@
                     </div>
                 </div>
             </div>
+            
+            <h2 style="margin-top: 40px;">Ready to Secure Your Investment?</h2>
+            <p style="margin-bottom: 30px; color: #555; font-size: 13px;">Choose the professional partner that prioritizes asset protection, zero-downtime, and absolute operational continuity.</p>
             <a href="mailto:kohmzelectrical@gmail.com" class="cta-button" style="background:#c5221f; color:white; padding: 15px 35px;"><i class="fas fa-envelope"></i> SUBMIT FORMAL INQUIRY</a>
             <a href="https://wa.me/639266174131" target="_blank" class="cta-button" style="background:#1da851; color:white; padding: 15px 35px;"><i class="fab fa-whatsapp"></i> CONNECT WITH A SPECIALIST</a>
         </section>
     </main>
 
     <div class="floating-container">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber"><i class="fab fa-viber"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email"><i class="fas fa-envelope"></i></a>
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
     </div>
 
     <footer>
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
+            <p>FB Page: <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
             <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
             <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
             <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
