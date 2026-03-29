@@ -1,13 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Privacy Policy | Kohmz Electrical</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy & Terms of Service | KOHMZ Electrical</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .policy-container {
+            text-align: left;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Style para sa Collapsible Button */
+        .collapsible {
+            background-color: #0d1b2a;
+            color: #ffb703;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            text-align: left;
+            outline: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        /* Hover effect para sa button */
+        .active, .collapsible:hover {
+            background-color: #1a2a3a;
+        }
+
+        /* Icon (+ at -) */
+        .collapsible:after {
+            content: '\002B'; /* Plus sign (+) */
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .active:after {
+            content: "\2212"; /* Minus sign (−) */
+        }
+
+        /* Style para sa Content Panel (Nakatago sa simula) */
+        .panel {
+            padding: 0 18px;
+            background-color: #fff;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-radius: 0 0 5px 5px;
+            margin-bottom: 20px;
+        }
+
+        /* Inner content styling */
+        .panel-content {
+            padding: 30px;
+            color: #444;
+            line-height: 1.8;
+        }
+
+        .panel-content h3 {
+            margin-top: 25px;
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+
+        .panel-content p, .panel-content ul {
+            margin-bottom: 15px;
+        }
+
+        .panel-content ul {
+            padding-left: 20px;
+        }
+    </style>
 </head>
 <body>
-    <header><div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
-    <nav><ul class="nav-links"><li><a href="index.html">Home</a></li></ul></nav></header>
-    <main class="services-preview"><h2>Privacy Policy</h2><p>Ang inyong data ay ligtas sa amin.</p></main>
-    <footer><p>&copy; 2026 Kohmz Electrical</p></footer>
+
+    <div class="moving-ads">
+        <marquee behavior="scroll" direction="left">
+            ⚡ KOHMZ Electrical Design and Build: Committed to Safety, Quality, and Your Privacy ⚡
+        </marquee>
+    </div>
+
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="book-now.html" class="btn-book">Book Now</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="services-preview">
+            <h2>Our Policies & Terms</h2>
+            <p style="color: #555; margin-bottom: 30px;">Click the sections below to read our full policy.</p>
+        </section>
+
+        <div class="policy-container">
+            
+            <button type="button" class="collapsible">Privacy Policy</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <p>At <strong>KOHMZ Electrical Design and Build</strong>, we value your privacy. Any information you provide through our "Request a Quote" form (such as your name, email, and phone number) is used solely for the following:</p>
+                    <ul>
+                        <li>To provide accurate quotes or technical assessments for your electrical and solar projects.</li>
+                        <li>To communicate with you regarding your specific inquiry.</li>
+                    </ul>
+                    <p>We do not sell, trade, or share your personal information with third parties. Your data is handled with the utmost care and remains secure within our system.</p>
+                </div>
+            </div>
+
+            <button type="button" class="collapsible">Terms of Service</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <p>By engaging the services of <strong>KOHMZ Electrical Design and Build</strong>, you agree to the following terms:</p>
+                    
+                    <h3>1. Quotations</h3>
+                    <p>All initial quotes are based on the information provided by the client and are subject to change following a comprehensive actual site inspection.</p>
+
+                    <h3>2. Safety & Standards</h3>
+                    <p>All electrical and solar installations strictly comply with the Philippine Electrical Code (PEC) and NEMA standards to ensure the safety and longevity of your property.</p>
+
+                    <h3>3. Project Agreements</h3>
+                    <p>Payment schedules and specific terms for large-scale projects (such as solar power setups) will be discussed and must be signed by both parties before the commencement of work.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p><strong>KOHMZ Electrical Design and Build</strong></p>
+            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
+            <hr style="margin:15px 0; border:0; border-top:1px solid #444;">
+            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+          });
+        }
+    </script>
+
 </body>
 </html>
