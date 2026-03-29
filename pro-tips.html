@@ -39,14 +39,6 @@
         .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; } 
         .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
 
-        /* Calculator Section */
-        .calc-section { background: #0d1b2a; color: white; padding: 30px; border-radius: 8px; margin: -40px auto 40px; max-width: 600px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); text-align: center; }
-        .calc-section h3 { font-size: 14px; color: #ffb703; margin-bottom: 15px; }
-        .calc-input-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-        .calc-input-group input { padding: 8px; border-radius: 4px; border: none; font-size: 12px; width: 120px; }
-        .calc-btn { background: #ffb703; color: #0d1b2a; border: none; padding: 8px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; }
-        #calc-result { margin-top: 15px; font-size: 14px; font-weight: bold; color: #25d366; }
-
         /* 4 SEPARATE FLOATING BUTTONS */
         .floating-container {
             position: fixed;
@@ -86,6 +78,20 @@
         summary::after { content: "+"; font-size: 18px; color: #ffb703; }
         details[open] summary::after { content: "-"; }
         .tip-content { padding: 0 20px 20px; font-size: 12px; color: #555; line-height: 1.6; border-top: 1px solid #eee; padding-top: 15px; }
+
+        /* Calculator Section at Bottom */
+        .calc-section { background: #0d1b2a; color: white; padding: 30px; border-radius: 8px; margin: 40px auto; max-width: 600px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); text-align: center; }
+        .calc-section h3 { font-size: 14px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; }
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .calc-grid div { text-align: left; }
+        .calc-grid label { display: block; font-size: 10px; color: #ffb703; margin-bottom: 5px; }
+        .calc-grid input { width: 90%; padding: 8px; border-radius: 4px; border: none; font-size: 12px; background: #f4f7f6; color: #333; }
+        .calc-btn { width: 100%; background: #ffb703; color: #0d1b2a; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.3s; }
+        .calc-btn:hover { background: #e6a600; }
+        .calc-results-wrap { margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .res-box { background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 4px; }
+        .res-label { font-size: 9px; color: #bbb; display: block; }
+        .res-value { font-size: 13px; font-weight: bold; color: #25d366; }
 
         /* Call to Action Box */
         .cta-box { background: #0d1b2a; color: white; padding: 40px; border-radius: 8px; margin-top: 40px; text-align: center; }
@@ -152,91 +158,80 @@
             </div>
         </section>
 
-        <section class="calc-section">
-            <h3>Watts to Amps Calculator</h3>
-            <p style="font-size: 10px; color: #ccc; margin-bottom: 15px;">Alamin ang load consumption ($I = P / V$)</p>
-            <div class="calc-input-group">
-                <input type="number" id="wattsInput" placeholder="Total Watts (P)">
-                <input type="number" id="voltsInput" value="230" placeholder="Voltage (V)">
-                <button class="calc-btn" onclick="calculateAmps()">Calculate</button>
-            </div>
-            <div id="calc-result">Result: 0.00 Amps</div>
-        </section>
-
         <section class="content-section">
             <h2>Advice from the KOHMZ Professional Team</h2>
             
             <div class="tip-grid">
                 <details class="tip-card">
                     <summary>1. Panel Board Load Evaluation</summary>
-                    <div class="tip-content">
-                        <p>Flickering lights kapag bumukas ang aircon? Maaaring undersized ang inyong panel. Ang professional load evaluation ay sumisiguro na ang inyong breakers ay akma sa inyong power consumption para maiwasan ang overheating.</p>
-                    </div>
+                    <div class="tip-content"><p>Flickering lights kapag bumukas ang aircon? Maaaring undersized ang inyong panel. Ang professional load evaluation ay sumisiguro na ang inyong breakers ay akma sa inyong power consumption para maiwasan ang overheating.</p></div>
                 </details>
-
                 <details class="tip-card">
                     <summary>2. Dedicated Circuit Rule</summary>
-                    <div class="tip-content">
-                        <p>Ang mga heavy appliances gaya ng AC, Water Heaters, at Pumps ay dapat may sariling "Dedicated Circuit." Ang pagsasama ng mga ito sa ordinaryong outlets ay maaaring magdulot ng wire melting at sunog sa loob ng dingding.</p>
-                    </div>
+                    <div class="tip-content"><p>Ang mga heavy appliances gaya ng AC, Water Heaters, at Pumps ay dapat may sariling "Dedicated Circuit." Ang pagsasama ng mga ito sa ordinaryong outlets ay maaaring magdulot ng wire melting at sunog sa loob ng dingding.</p></div>
                 </details>
-
                 <details class="tip-card">
                     <summary>3. Sparking Outlet Diagnostics</summary>
-                    <div class="tip-content">
-                        <p>Ang sparking outlet ay madalas senyales ng loose connection o arc-fault. Kapag nakakita ng sparks, i-off agad ang breaker. Ang loose wiring ay lumilikha ng high resistance na nagdudulot ng matinding init.</p>
-                    </div>
+                    <div class="tip-content"><p>Ang sparking outlet ay madalas senyales ng loose connection o arc-fault. Kapag nakakita ng sparks, i-off agad ang breaker. Ang loose wiring ay lumilikha ng high resistance na nagdudulot ng matinding init.</p></div>
                 </details>
-
                 <details class="tip-card">
                     <summary>4. Insulation Resistance (Megger Test)</summary>
-                    <div class="tip-content">
-                        <p>Hindi nakikita ang mga hidden micro-shorts. Sa KOHMZ, gumagamit kami ng Megohmmeter para i-test ang wire insulation. Sinisiguro nito na walang sira ang mga kable sa loob ng inyong conduits.</p>
-                    </div>
+                    <div class="tip-content"><p>Hindi nakikita ang mga hidden micro-shorts. Sa KOHMZ, gumagamit kami ng Megohmmeter para i-test ang wire insulation. Sinisiguro nito na walang sira ang mga kable sa loob ng inyong conduits.</p></div>
                 </details>
-
                 <details class="tip-card">
                     <summary>5. GFCI in Wet Areas</summary>
-                    <div class="tip-content">
-                        <p>Ang mga outlet malapit sa lababo, banyo, o labas ng bahay ay DAPAT GFCI-protected. Kusa nitong pinuputol ang kuryente sa loob ng milliseconds kapag may na-detect na ground fault para maiwasan ang fatal shock.</p>
-                    </div>
+                    <div class="tip-content"><p>Ang mga outlet malapit sa lababo, banyo, o labas ng bahay ay DAPAT GFCI-protected. Kusa nitong pinuputol ang kuryente sa loob ng milliseconds kapag may na-detect na ground fault para maiwasan ang fatal shock.</p></div>
                 </details>
-
                 <details class="tip-card">
                     <summary>6. Surge Protective Devices (SPD)</summary>
-                    <div class="tip-content">
-                        <p>Ang voltage spikes mula sa kidlat o grid ay maaaring sumira sa mamahaling gamit gaya ng Inverters at Smart TVs. Ang Panel-Level SPD ay nagsisilbing safety valve na nagtataboy ng excess voltage sa ground.</p>
-                    </div>
+                    <div class="tip-content"><p>Ang voltage spikes mula sa kidlat o grid ay maaaring sumira sa mamahaling gamit gaya ng Inverters at Smart TVs. Ang Panel-Level SPD ay nagsisilbing safety valve na nagtataboy ng excess voltage sa ground.</p></div>
                 </details>
-
                 <details class="tip-card">
                     <summary>7. Proper Grounding (Earthing)</summary>
-                    <div class="tip-content">
-                        <p>Ang 3rd pin sa inyong plug ay para sa inyong kaligtasan. Ang tamang grounding system ay nagbibigay ng daan para sa fault current. Kung wala ito, ang mga metal na parte ng gamit niyo ay maaaring maging "live" at makakuryente.</p>
-                    </div>
+                    <div class="tip-content"><p>Ang 3rd pin sa inyong plug ay para sa inyong kaligtasan. Ang tamang grounding system ay nagbibigay ng daan para sa fault current. Kung wala ito, ang mga metal na parte ng gamit niyo ay maaaring maging "live" at makakuryente.</p></div>
                 </details>
-
                 <details class="tip-card">
                     <summary>8. Extension Cord Safety</summary>
-                    <div class="tip-content">
-                        <p>Ang extension cords ay temporary solution lamang. Ang daisy-chaining ay malaking fire hazard. Kung kulang ang saksakan, mas mainam na magpa-install ng bagong wall receptacle.</p>
-                    </div>
+                    <div class="tip-content"><p>Ang extension cords ay temporary solution lamang. Ang daisy-chaining ay malaking fire hazard. Kung kulang ang saksakan, mas mainam na magpa-install ng bagong wall receptacle.</p></div>
                 </details>
-
                 <details class="tip-card">
                     <summary>9. LED Retrofitting Benefits</summary>
-                    <div class="tip-content">
-                        <p>Ang paglipat sa LED ay hindi lang para sa tipid sa kuryente. Mas malamig tumakbo ang LEDs. Nababawasan nito ang init sa inyong fixtures, kaya mas tumatagal ang buhay ng wire insulation.</p>
-                    </div>
+                    <div class="tip-content"><p>Ang paglipat sa LED ay hindi lang para sa tipid sa kuryente. Mas malamig tumakbo ang LEDs. Nababawasan nito ang init sa inyong fixtures, kaya mas tumatagal ang buhay ng wire insulation.</p></div>
                 </details>
-
                 <details class="tip-card">
                     <summary>10. CAD Electrical Drawings</summary>
-                    <div class="tip-content">
-                        <p>Huwag magsimula ng renovation nang walang Electrical Plan. Ang CAD drawings at Load Schedules ang blueprint ng inyong system, kaya mas mabilis at mas mura ang troubleshooting o expansion sa hinaharap.</p>
-                    </div>
+                    <div class="tip-content"><p>Huwag magsimula ng renovation nang walang Electrical Plan. Ang CAD drawings at Load Schedules ang blueprint ng inyong system, kaya mas mabilis at mas mura ang troubleshooting o expansion sa hinaharap.</p></div>
                 </details>
             </div>
+
+            <section class="calc-section">
+                <h3>Load & Monthly Cost Calculator</h3>
+                <div class="calc-grid">
+                    <div>
+                        <label>Total Watts (P)</label>
+                        <input type="number" id="wattsInput" placeholder="e.g. 1500">
+                    </div>
+                    <div>
+                        <label>Hours Used / Day</label>
+                        <input type="number" id="hoursInput" placeholder="e.g. 8">
+                    </div>
+                    <div>
+                        <label>Voltage (V)</label>
+                        <input type="number" id="voltsInput" value="230">
+                    </div>
+                    <div>
+                        <label>Rate (PHP/kWh)</label>
+                        <input type="number" id="rateInput" value="12">
+                    </div>
+                </div>
+                <button class="calc-btn" onclick="fullCalculation()">Compute Consumption</button>
+                
+                <div class="calc-results-wrap">
+                    <div class="res-box"><span class="res-label">Amperes (Load)</span><span id="resAmps" class="res-value">0.00 A</span></div>
+                    <div class="res-box"><span class="res-label">Monthly kWh</span><span id="resKwh" class="res-value">0.0 kWh</span></div>
+                    <div class="res-box" style="grid-column: span 2; background: rgba(37, 211, 102, 0.1);"><span class="res-label">Est. Monthly Cost</span><span id="resCost" class="res-value" style="font-size: 18px;">₱ 0.00</span></div>
+                </div>
+            </section>
 
             <div class="cta-box">
                 <p style="font-size: 14px;">Experiencing flickering lights or unusual burning smells?</p>
@@ -262,14 +257,26 @@
     </footer>
 
     <script>
-        function calculateAmps() {
+        function fullCalculation() {
             const watts = document.getElementById('wattsInput').value;
-            const volts = document.getElementById('voltsInput').value;
-            if (watts && volts) {
+            const hours = document.getElementById('hoursInput').value || 0;
+            const volts = document.getElementById('voltsInput').value || 230;
+            const rate = document.getElementById('rateInput').value || 12;
+
+            if (watts > 0) {
+                // Ampere Calculation (I = P/V)
                 const amps = (watts / volts).toFixed(2);
-                document.getElementById('calc-result').innerText = "Total Load: " + amps + " Amperes";
+                document.getElementById('resAmps').innerText = amps + " A";
+
+                // Monthly kWh (kWh = (Watts * Hours * 30) / 1000)
+                const monthlyKwh = (watts * hours * 30) / 1000;
+                document.getElementById('resKwh').innerText = monthlyKwh.toFixed(1) + " kWh";
+
+                // Monthly Cost
+                const monthlyCost = (monthlyKwh * rate).toLocaleString(undefined, {minimumFractionDigits: 2});
+                document.getElementById('resCost').innerText = "₱ " + monthlyCost;
             } else {
-                alert("Mangyaring ilagay ang Watts at Voltage.");
+                alert("Pakisuyong ilagay ang Watts (P) para makapag-compute.");
             }
         }
     </script>
