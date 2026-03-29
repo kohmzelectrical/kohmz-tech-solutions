@@ -204,7 +204,39 @@ footer {
     margin-top: 10px;
     display: inline-block;
 }
+/* Style para sa Moving Advertisement */
+.moving-ads {
+    background-color: #ffb703;
+    color: #0d1b2a;
+    padding: 5px 0;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border-bottom: 2px solid #0d1b2a;
+}
 
+/* Para sa FAQ at Content Sections */
+.content-section {
+    padding: 60px 10%;
+    text-align: center;
+}
+
+/* Footer Content Styling */
+.footer-content {
+    max-width: 1000px;
+    margin: auto;
+    font-size: 0.9rem;
+}
+
+/* Social Buttons Hover */
+.cta-button {
+    margin: 5px;
+    display: inline-block;
+}
+
+/* Dropdown link color fix */
+.dropdown-content a {
+    color: #333 !important;
+}
 .footer-links a:hover {
     text-decoration: underline;
 }
