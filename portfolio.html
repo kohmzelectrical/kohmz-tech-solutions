@@ -1,29 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Portfolio | Kohmz Electrical</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header><div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
-    <nav><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="portfolio.html">Portfolio</a></li></ul></nav></header>
-    <main class="services-preview"><h2>Our Projects</h2><p>Tingnan ang aming mga natapos na proyekto dito.</p></main>
-    <footer><p>&copy; 2026 Kohmz Electrical</p></footer>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio | KOHMZ Electrical Design and Build</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .portfolio-steps {
+            text-align: left;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .step-card {
+            background: #fff;
+            border-left: 5px solid #ffb703;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .step-card h3 {
+            color: #0d1b2a;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        .step-card p {
+            color: #444;
+            line-height: 1.6;
+        }
+        .portfolio-header {
+            background: #0d1b2a;
+            color: white;
+            padding: 60px 10%;
+            text-align: center;
+        }
+        .portfolio-header h2 {
+            color: #ffb703;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
 
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
-            ⚡ View Our Design Capabilities | CAD-Driven Electrical Drawings | Flawless Execution ⚡
+            ⚡ KOHMZ Standard of Execution: We eliminate guesswork through meticulous planning and testing ⚡
         </marquee>
     </div>
 
@@ -32,6 +54,7 @@
         <nav>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
+                <li><a href="about-us.html">About Us</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
                 <li><a href="book-now.html" class="btn-book">Book Now</a></li>
             </ul>
@@ -39,45 +62,42 @@
     </header>
 
     <main>
-        <section class="content-section">
-            <h2>Our Design Capabilities</h2>
-            <p>We utilize a **Design-First Approach**. Utilizing CAD-driven electrical drawings and load calculations, we eliminate guesswork and prevent system failures before they happen.</p>
+        <section class="portfolio-header">
+            <h2>The KOHMZ Standard of Execution</h2>
+            <p>We eliminate guesswork from electrical contracting through meticulous planning and testing.</p>
         </section>
 
-        <section class="services-preview">
-            <div class="cards-container">
-                <div class="card">
-                    <div style="height:150px; background:#ddd; display:flex; align-items:center; justify-content:center; margin-bottom:15px;">[Project Image]</div>
-                    <h3>Industrial Infrastructure</h3>
-                    <p>High-capacity electrical infrastructure for heavy-duty facilities including NEMA-compliant enclosures.</p>
-                </div>
-                <div class="card">
-                    <div style="height:150px; background:#ddd; display:flex; align-items:center; justify-content:center; margin-bottom:15px;">[Project Image]</div>
-                    <h3>Commercial Fit-out</h3>
-                    <p>Custom wiring design, lighting systems, and load evaluation for modern office spaces.</p>
-                </div>
-                <div class="card">
-                    <div style="height:150px; background:#ddd; display:flex; align-items:center; justify-content:center; margin-bottom:15px;">[Project Image]</div>
-                    <h3>Residential Systems</h3>
-                    <p>Custom lighting installations and service panel upgrades for high-end residential projects.</p>
-                </div>
+        <section class="portfolio-steps">
+            <div class="step-card">
+                <h3>Step 1: Precision CAD Design</h3>
+                <p>Every major project begins with detailed CAD electrical drawings and load calculations to ensure absolute code compliance.</p>
             </div>
-        </section>
 
-        <section class="content-section" style="background:#0d1b2a; color:white;">
-            <h3>Expertise in Action</h3>
-            <p>From insulation resistance testing to intricate interior wiring, we handle the full spectrum of electrical needs with precision.</p>
-            <br>
-            <a href="book-now.html" class="cta-button">Start Your Project With Us</a>
+            <div class="step-card">
+                <h3>Step 2: Transparent Estimating</h3>
+                <p>No hidden fees. We provide clear, highly detailed material and labor cost estimates before any wire is pulled.</p>
+            </div>
+
+            <div class="step-card">
+                <h3>Step 3: Expert Installation & NEMA Compliance</h3>
+                <p>Built to last, utilizing proper wire management, conduits, and heavy-duty enclosures.</p>
+            </div>
+
+            <div class="step-card">
+                <h3>Step 4: Rigorous Safety Testing</h3>
+                <p>We verify the integrity of every installation with thorough single-phase insulation resistance testing and final load evaluations.</p>
+            </div>
         </section>
     </main>
 
     <footer>
         <div class="footer-content">
             <p><strong>KOHMZ Electrical Design and Build</strong></p>
-            <p>Phone: (+639266174131) | Email: (kohmzelectrical@gmail.com)</p>
-            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
+            <hr style="margin:15px 0; border:0; border-top:1px solid #444;">
+            <p>Copyright © 2026 KOHMZ™ All Rights Reserved.</p>
         </div>
     </footer>
+
 </body>
 </html>
