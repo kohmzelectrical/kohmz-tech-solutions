@@ -1,13 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Solar Parts | Kohmz Electrical</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Parts Shop | KOHMZ Electrical</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Strict Font Scale: 20-14-12-10 */
+        body { font-size: 12px; } 
+        .moving-ads marquee { font-size: 10px; } 
+        .logo h1 { font-size: 20px; } 
+        .nav-links li a { font-size: 14px; } 
+        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 10px; } 
+        .hero p { font-size: 12px; max-width: 600px; margin: 0 auto 20px; } 
+        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 20px; text-transform: uppercase; text-align: center; } 
+        .card { text-align: center; border-top: 4px solid #ffb703; }
+        .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; } 
+        .card p { font-size: 12px; color: #444; line-height: 1.6; margin-bottom: 15px; } 
+        .footer-content { font-size: 10px; line-height: 1.6; }
+        .footer-content p strong { font-size: 12px; }
+        
+        .hero {
+            background: linear-gradient(rgba(13, 27, 42, 0.9), rgba(13, 27, 42, 0.9)), url('logo.jpg') no-repeat center center;
+            background-size: contain; height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 0 20px;
+        }
+        
+        .cta-button { padding: 8px 18px; font-size: 12px; border-radius: 4px; display: inline-block; text-decoration: none; font-weight: bold; background: #0d1b2a; color: #ffb703; border: 1px solid #ffb703; transition: 0.3s;}
+        .cta-button:hover { background: #ffb703; color: #0d1b2a; }
+    </style>
 </head>
 <body>
-    <header><div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
-    <nav><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="solar-parts.html">Solar</a></li></ul></nav></header>
-    <main class="services-preview"><h2>Solar Parts Shop</h2><div class="card"><h3>Solar Panel 500W</h3><a href="#" class="cta-button">Buy Now</a></div></main>
-    <footer><p>&copy; 2026 Kohmz Electrical</p></footer>
+
+    <div class="moving-ads">
+        <marquee behavior="scroll" direction="left">
+            ⚡ KOHMZ AFFILIATE SHOP: High-Efficiency Solar Panels | Hybrid Inverters | Off-Grid Setup Components ⚡
+        </marquee>
+    </div>
+
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Overview</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Services &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="commercial.html">Commercial</a>
+                        <a href="residential.html">Residential</a>
+                        <a href="pro-tips.html">Pro Tips</a>
+                    </div>
+                </li>
+                <li><a href="book-now.html">Book Now</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn" style="color: #ffb703;">Shop &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="solar-parts.html">Solar Parts</a>
+                        <a href="powertools.html">Power Tools</a>
+                        <a href="electrical-materials.html">Materials</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>AFFILIATE SHOP: SOLAR COMPONENTS</h2>
+                <p>Engineer-approved solar parts for maximum energy savings and reliability.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Recommended Solar Equipment</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div style="height:120px; background:#eee; margin-bottom:15px; display:flex; align-items:center; justify-content:center; color:#888; border-radius:4px;">[Solar Panel Image]</div>
+                    <h3>550W Mono Solar Panel</h3>
+                    <p>High-efficiency Tier 1 solar panels perfect for residential and commercial hybrid/off-grid setups.</p>
+                    <a href="#" target="_blank" class="cta-button">Check Price on Shopee/Lazada</a>
+                </div>
+                <div class="card">
+                    <div style="height:120px; background:#eee; margin-bottom:15px; display:flex; align-items:center; justify-content:center; color:#888; border-radius:4px;">[Inverter Image]</div>
+                    <h3>5kW Hybrid Inverter</h3>
+                    <p>Pure sine wave inverter with smart monitoring capabilities. Designed for seamless power transition.</p>
+                    <a href="#" target="_blank" class="cta-button">Check Price on Shopee/Lazada</a>
+                </div>
+                <div class="card">
+                    <div style="height:120px; background:#eee; margin-bottom:15px; display:flex; align-items:center; justify-content:center; color:#888; border-radius:4px;">[Battery Image]</div>
+                    <h3>LiFePO4 Solar Battery (48V)</h3>
+                    <p>Deep cycle lithium battery for long-lasting energy storage and high-load capacity.</p>
+                    <a href="#" target="_blank" class="cta-button">Check Price on Shopee/Lazada</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
+            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
+            <hr style="margin:10px 0; border:0; border-top:1px solid #444;">
+            <p>Copyright © 2026 KOHMZ™ All Rights Reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
