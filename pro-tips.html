@@ -12,24 +12,53 @@
     <link rel="stylesheet" href="style.css">
     <style>
         /* Strict Font Scale: 20-14-12-10 */
-        body { font-size: 12px; font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; } 
+        body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; overflow-x: hidden; } 
+        
         .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
         .moving-ads marquee { font-size: 10px; } 
         
-        /* Header & Navigation */
-        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo h1 { font-size: 20px; margin: 0; } 
+        /* --- MODERN RESPONSIVE HEADER --- */
+        header { 
+            background: #0d1b2a; color: white; padding: 15px 20px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
+        }
+        .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
         .logo span { color: #ffb703; }
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; }
-        .nav-links li { margin-left: 15px; position: relative; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; }
+
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s ease; }
+        .nav-links li { margin-left: 18px; position: relative; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
         .nav-links li a:hover { color: #ffb703; }
         
-        /* Dropdown Styles */
-        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-radius: 4px; overflow: hidden; }
-        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; }
-        .dropdown-content a:hover { background-color: #ffb703; }
+        /* DROPDOWNS (Desktop) */
+        .dropdown-content { 
+            display: none; position: absolute; background-color: #ffffff; min-width: 180px; 
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.15); z-index: 1001; border-radius: 4px; 
+            overflow: hidden; top: 100%; left: 0; border-top: 3px solid #ffb703; 
+        }
+        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #f1f5f9; font-weight: 600; }
+        .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; }
         .dropdown:hover .dropdown-content { display: block; }
+
+        /* MOBILE OVERLAY (Max-width 992px) */
+        @media (max-width: 992px) {
+            header { padding: 15px 25px; }
+            .menu-toggle { display: block; }
+            .nav-links {
+                display: none; flex-direction: column; position: absolute; 
+                top: 100%; left: 0; width: 100%; background: #0d1b2a; 
+                padding: 20px 0; border-bottom: 4px solid #ffb703;
+            }
+            .nav-links.active { display: flex; }
+            .nav-links li { margin: 15px 0; text-align: center; width: 100%; margin-left: 0; }
+            .nav-links li a { font-size: 18px; font-weight: 700; width: 100%; display: block; }
+            
+            .dropdown-content { position: static; box-shadow: none; background: #1a2e44; display: none; width: 100%; }
+            .dropdown.active .dropdown-content { display: block; }
+        }
 
         /* Hero Section */
         .hero { 
@@ -39,38 +68,18 @@
         .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; } 
         .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
 
-        /* 4 SEPARATE FLOATING BUTTONS */
-        .floating-container {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 9999;
-        }
-        .float-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 24px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            transition: transform 0.3s;
-        }
+        /* Floating Action Buttons */
+        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
+        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.3s; }
         .float-btn:hover { transform: scale(1.1); }
         .fb-messenger { background: #0084ff; }
         .viber { background: #7360f2; }
         .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
-        /* Content & Collapsible Tips */
+        /* Tips Section */
         .content-section { padding: 50px 10%; text-align: center; }
-        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; } 
+        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; } 
         
         .tip-grid { max-width: 800px; margin: 0 auto; text-align: left; }
         details.tip-card { background: white; padding: 0; border-radius: 8px; border-left: 5px solid #ffb703; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; }
@@ -79,7 +88,7 @@
         details[open] summary::after { content: "-"; }
         .tip-content { padding: 0 20px 20px; font-size: 12px; color: #555; line-height: 1.6; border-top: 1px solid #eee; padding-top: 15px; }
 
-        /* Calculator Section at Bottom */
+        /* Calculator Styles */
         .calc-section { background: #0d1b2a; color: white; padding: 30px; border-radius: 8px; margin: 40px auto; max-width: 600px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); text-align: center; }
         .calc-section h3 { font-size: 14px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; }
         .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
@@ -93,16 +102,17 @@
         .res-label { font-size: 9px; color: #bbb; display: block; }
         .res-value { font-size: 13px; font-weight: bold; color: #25d366; }
 
-        /* Call to Action Box */
+        /* CTA Box */
         .cta-box { background: #0d1b2a; color: white; padding: 40px; border-radius: 8px; margin-top: 40px; text-align: center; }
         .cta-buttons-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
         .cta-button { padding: 12px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block; transition: 0.3s; font-size: 12px; }
         .btn-whatsapp { background: #25d366; color: white; }
         .btn-messenger { background: #0084ff; color: white; }
 
+        /* Footer */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
-        .footer-content p strong { font-size: 12px; }
+        .footer-content p strong { font-size: 12px; color: #ffb703; }
         .footer-content a { color: #ffb703; text-decoration: none; }
     </style>
 </head>
@@ -123,11 +133,16 @@
 
     <header>
         <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+
         <nav>
-            <ul class="nav-links">
+            <ul class="nav-links" id="nav-list">
                 <li><a href="index.html">Overview</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn" style="color: #ffb703;">Services &#9662;</a>
+                    <a href="#" class="dropbtn" style="color: #ffb703;">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="commercial.html">Commercial</a>
                         <a href="residential.html">Residential</a>
@@ -137,7 +152,7 @@
                 <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Affiliate Shop &#9662;</a>
+                    <a href="#" class="dropbtn">Affiliate Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
@@ -249,14 +264,36 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: KOHMZ Electrical Design & Build | LinkedIn Page: KOHMZ Electrical Design and Build</p>
-            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 600px;">
+            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
+            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
             <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
             <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
         </div>
     </footer>
 
     <script>
+        const menuToggle = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+        const dropdowns = document.querySelectorAll('.dropdown');
+
+        menuToggle.addEventListener('click', () => {
+            navList.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (navList.classList.contains('active')) {
+                icon.className = 'fas fa-times';
+            } else {
+                icon.className = 'fas fa-bars';
+            }
+        });
+
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('click', (e) => {
+                if (window.innerWidth <= 992) {
+                    dropdown.classList.toggle('active');
+                }
+            });
+        });
+
         function fullCalculation() {
             const watts = document.getElementById('wattsInput').value;
             const hours = document.getElementById('hoursInput').value || 0;
@@ -264,15 +301,10 @@
             const rate = document.getElementById('rateInput').value || 12;
 
             if (watts > 0) {
-                // Ampere Calculation (I = P/V)
                 const amps = (watts / volts).toFixed(2);
                 document.getElementById('resAmps').innerText = amps + " A";
-
-                // Monthly kWh (kWh = (Watts * Hours * 30) / 1000)
                 const monthlyKwh = (watts * hours * 30) / 1000;
                 document.getElementById('resKwh').innerText = monthlyKwh.toFixed(1) + " kWh";
-
-                // Monthly Cost
                 const monthlyCost = (monthlyKwh * rate).toLocaleString(undefined, {minimumFractionDigits: 2});
                 document.getElementById('resCost').innerText = "₱ " + monthlyCost;
             } else {
