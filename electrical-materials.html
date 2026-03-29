@@ -4,35 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Electrical Materials | KOHMZ Electrical</title>
+    
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
     <style>
-        body { font-size: 12px; } 
+        /* Strict Font Scale: 20-14-12-10 */
+        body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; } 
+        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
         .moving-ads marquee { font-size: 10px; } 
-        .logo h1 { font-size: 20px; } 
-        .nav-links li a { font-size: 14px; } 
-        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 10px; } 
-        .hero p { font-size: 12px; max-width: 600px; margin: 0 auto 20px; } 
-        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 20px; text-transform: uppercase; text-align: center; } 
-        .card { text-align: center; border-top: 4px solid #34a853; }
-        .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; } 
-        .card p { font-size: 12px; color: #444; line-height: 1.6; margin-bottom: 15px; } 
-        .footer-content { font-size: 10px; line-height: 1.6; }
-        .footer-content p strong { font-size: 12px; }
         
-        .hero {
-            background: linear-gradient(rgba(13, 27, 42, 0.9), rgba(13, 27, 42, 0.9)), url('logo.jpg') no-repeat center center;
-            background-size: contain; height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 0 20px;
+        /* Full Navigation Sync */
+        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo h1 { font-size: 20px; margin: 0; } 
+        .logo span { color: #ffb703; }
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; }
+        .nav-links li { margin-left: 15px; position: relative; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .nav-links li a:hover { color: #ffb703; }
+        
+        /* Dropdown Styles */
+        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; overflow: hidden; }
+        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; }
+        .dropdown-content a:hover { background-color: #ffb703; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        /* Hero Section - Identical Background */
+        .hero { 
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 80px 20px; text-align: center; color: white; 
         }
+        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; } 
+        .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
+
+        /* 4 SEPARATE FLOATING BUTTONS */
+        .floating-container {
+            position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000;
+        }
+        .float-btn {
+            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s;
+        }
+        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
+        .fb-messenger { background: #0084ff; }
+        .viber { background: #7360f2; }
+        .whatsapp { background: #25d366; }
+        .email { background: #db4437; }
+
+        /* Shop Grid Styling */
+        .content-section { padding: 50px 10%; text-align: center; }
+        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; font-weight: 800; } 
         
-        .cta-button { padding: 8px 18px; font-size: 12px; border-radius: 4px; display: inline-block; text-decoration: none; font-weight: bold; background: #0d1b2a; color: #ffb703; border: 1px solid #ffb703; transition: 0.3s;}
-        .cta-button:hover { background: #ffb703; color: #0d1b2a; }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; justify-content: center; }
+        .card { background: white; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 4px solid #34a853; text-align: left; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        /* Image Display */
+        .product-image-wrap { width: 100%; height: 180px; background: #fff; border-radius: 8px; margin-bottom: 15px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #f0f0f0; }
+        .product-image-wrap img { max-width: 90%; max-height: 90%; object-fit: contain; }
+
+        .card h3 { font-size: 13px; margin-bottom: 8px; color: #0d1b2a; font-weight: 700; min-height: 35px; } 
+        .card p { font-size: 11px; color: #555; line-height: 1.5; margin-bottom: 12px; min-height: 45px; } 
+        
+        .pro-note { font-size: 10px; background: #e8f5e9; color: #2e7d32; padding: 6px 10px; border-radius: 4px; font-weight: bold; margin-bottom: 15px; display: block; border-left: 3px solid #34a853; }
+
+        /* Premium Shopee/Lazada Button */
+        .btn-lazada { 
+            display: block; width: 100%; text-align: center; padding: 12px 0; font-size: 11px; border-radius: 6px; 
+            text-decoration: none; font-weight: bold; background: #0f136d; color: white; transition: 0.3s; 
+        }
+        .btn-lazada:hover { background: #f36f21; transform: scale(1.02); }
+
+        /* Identical Footer Sync */
+        footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
+        .footer-content { font-size: 10px; line-height: 1.8; }
+        .footer-content p strong { font-size: 12px; color: #ffb703; }
+        .footer-content a { color: #ffb703; text-decoration: none; }
     </style>
 </head>
 <body>
 
+    <div class="floating-container">
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
+    </div>
+
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
-            ⚡ KOHMZ AFFILIATE SHOP: NEMA-Compliant Enclosures | Pure Copper Wires | Standard Quality Circuit Breakers ⚡
+            ⚡ KOHMZ AFFILIATE SHOP: Technical-Grade Meter Bases | NEMA 3R Enclosures | Industrial Panel Boards | Certified Fittings ⚡
         </marquee>
     </div>
 
@@ -49,15 +113,18 @@
                         <a href="pro-tips.html">Pro Tips</a>
                     </div>
                 </li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropbtn" style="color: #ffb703;">Shop &#9662;</a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
-                        <a href="electrical-materials.html">Materials</a>
+                        <a href="electrical-materials.html" style="color: #ffb703;">Materials</a>
                     </div>
                 </li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
             </ul>
         </nav>
     </header>
@@ -65,32 +132,65 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h2>AFFILIATE SHOP: ELECTRICAL MATERIALS</h2>
-                <p>We only recommend materials that meet the rigorous standards of the Philippine Electrical Code (PEC).</p>
+                <h2>TECHNICAL SHOP: ELECTRICAL MATERIALS</h2>
+                <p>Contractor-vetted hardware built for safety and durability. We only recommend materials that meet the rigorous standards of the Philippine Electrical Code (PEC).</p>
             </div>
         </section>
 
         <section class="content-section">
-            <h2>Standard Quality Materials</h2>
-            <div class="cards-container">
+            <h2>Standard Quality Technical Materials (5 Items)</h2>
+            <div class="shop-grid">
+                
                 <div class="card">
-                    <div style="height:120px; background:#eee; margin-bottom:15px; display:flex; align-items:center; justify-content:center; color:#888; border-radius:4px;">[NEMA Box Image]</div>
-                    <h3>NEMA 3R Enclosure</h3>
-                    <p>Heavy-duty, weather-resistant outdoor enclosures perfect for main service panels and sub-panel integration.</p>
-                    <a href="#" target="_blank" class="cta-button">Check Price on Shopee/Lazada</a>
+                    <div class="product-image-wrap">
+                        <img src="meter_base.jpg" alt="Square Meter Base">
+                    </div>
+                    <h3>Square Type Electric Meter Base (5-Jaws)</h3>
+                    <p>Heavy-duty Class 125 meter base. Sizes: 1-1/4", 1-1/2", 2". High-conductivity copper terminals.</p>
+                    <span class="pro-note">TECH TIP: Essential for standard Meralco or regional utility service entrances.</span>
+                    <a href="https://c.lazada.com.ph/t/c.dgC79X" target="_blank" class="btn-lazada">SHOP ON LAZADA</a>
                 </div>
+
                 <div class="card">
-                    <div style="height:120px; background:#eee; margin-bottom:15px; display:flex; align-items:center; justify-content:center; color:#888; border-radius:4px;">[Wire Image]</div>
-                    <h3>THHN/THWN Copper Wires</h3>
-                    <p>Pure copper stranded wires. Ensure maximum conductivity and safety for residential and commercial wiring.</p>
-                    <a href="#" target="_blank" class="cta-button">Check Price on Shopee/Lazada</a>
+                    <div class="product-image-wrap">
+                        <img src="schneider_nema.jpg" alt="Schneider Enclosure">
+                    </div>
+                    <h3>NEMA 3R Schneider Enclosure (125A-250A)</h3>
+                    <p>Weatherproof technical enclosure designed for industrial-grade protection of main breakers.</p>
+                    <span class="pro-note">TECH TIP: Best for outdoor mounting to prevent water ingress and rust.</span>
+                    <a href="https://c.lazada.com.ph/t/c.dgC7kK" target="_blank" class="btn-lazada">SHOP ON LAZADA</a>
                 </div>
+
                 <div class="card">
-                    <div style="height:120px; background:#eee; margin-bottom:15px; display:flex; align-items:center; justify-content:center; color:#888; border-radius:4px;">[Breaker Image]</div>
-                    <h3>High-Capacity Circuit Breakers</h3>
-                    <p>Reliable protection against overloads and short circuits. Available in various amp ratings for dedicated circuits.</p>
-                    <a href="#" target="_blank" class="cta-button">Check Price on Shopee/Lazada</a>
+                    <div class="product-image-wrap">
+                        <img src="hub.jpg" alt="Watertight Hub">
+                    </div>
+                    <h3>Technical Watertight Conduit Hub</h3>
+                    <p>Sizes: 3/4" to 3". Precision-sealed technical fittings for moisture-free cabinet entry.</p>
+                    <span class="pro-note">TECH TIP: Mandatory to maintain the NEMA 3R rating of your panels.</span>
+                    <a href="https://c.lazada.com.ph/t/c.dgC7Lx" target="_blank" class="btn-lazada">SHOP ON LAZADA</a>
                 </div>
+
+                <div class="card">
+                    <div class="product-image-wrap">
+                        <img src="nipple.jpg" alt="Galvanized Fittings">
+                    </div>
+                    <h3>Galvanized Metal Fitting Nipples</h3>
+                    <p>Sizes: 3/4" to 2". High-strength galvanized steel for secure conduit-to-box connections.</p>
+                    <span class="pro-note">TECH TIP: Anti-corrosion coating ensures long-term safety and grounding.</span>
+                    <a href="https://c.lazada.com.ph/t/c.dgCiGu" target="_blank" class="btn-lazada">SHOP ON LAZADA</a>
+                </div>
+
+                <div class="card">
+                    <div class="product-image-wrap">
+                        <img src="koten_panel.jpg" alt="Koten Panel Board">
+                    </div>
+                    <h3>PREMIUM Koten Bolt-On Panel Board</h3>
+                    <p>Capacity: 4 to 20 holes. Industrial-grade distribution board for stable circuit management.</p>
+                    <span class="pro-note">TECH TIP: Bolt-on breakers provide a more vibration-proof and stable connection.</span>
+                    <a href="https://c.lazada.com.ph/t/c.dgC85M" target="_blank" class="btn-lazada">SHOP ON LAZADA</a>
+                </div>
+
             </div>
         </section>
     </main>
@@ -99,8 +199,10 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <hr style="margin:10px 0; border:0; border-top:1px solid #444;">
-            <p>Copyright © 2026 KOHMZ™ All Rights Reserved.</p>
+            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
+            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
+            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
         </div>
     </footer>
 </body>
