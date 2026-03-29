@@ -4,29 +4,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us | KOHMZ Electrical Design and Build</title>
+    
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
     <style>
-        .qr-section {
-            background: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            margin-top: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        /* Strict Font Scale: 20-14-12-10 */
+        body { font-size: 12px; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; } 
+        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
+        .moving-ads marquee { font-size: 10px; } 
+        
+        /* Header & Navigation */
+        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo h1 { font-size: 20px; margin: 0; } 
+        .logo span { color: #ffb703; }
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; }
+        .nav-links li { margin-left: 15px; position: relative; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .nav-links li a:hover { color: #ffb703; }
+        
+        /* Dropdown Styles */
+        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; overflow: hidden; }
+        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; }
+        .dropdown-content a:hover { background-color: #ffb703; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        /* Hero Section - FIXED BACKGROUND FIT */
+        .hero { 
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 80px 20px; text-align: center; color: white; 
         }
-        .qr-image {
-            width: 200px;
-            height: 200px;
-            margin: 20px auto;
-            border: 5px solid #0d1b2a;
-            border-radius: 10px;
+        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; } 
+        .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
+
+        /* 4 SEPARATE FLOATING BUTTONS ON THE RIGHT */
+        .floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 9999;
         }
+        .float-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s, filter 0.3s;
+        }
+        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
+        .fb-messenger { background: #0084ff; }
+        .viber { background: #7360f2; }
+        .whatsapp { background: #25d366; }
+        .email { background: #db4437; }
+
+        /* Content Sections */
+        .content-section { padding: 50px 10%; text-align: center; }
+        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; } 
+        .content-section p { max-width: 850px; margin: 0 auto 20px; line-height: 1.8; color: #444; text-align: justify; }
+
+        .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
+        .card { background: white; width: 280px; padding: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-radius: 8px; border-top: 4px solid #ffb703; text-align: left; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; border-bottom: 1px solid #eee; padding-bottom: 5px; } 
+        .card p { font-size: 12px; color: #555; line-height: 1.6; margin: 0; } 
+
+        /* QR Section - SIDE BY SIDE LAYOUT */
+        .qr-section { 
+            background: #fff; 
+            padding: 40px; 
+            border-radius: 10px; 
+            margin: 40px auto; 
+            max-width: 750px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            border: 1px solid #eee;
+        }
+        .qr-image-container { flex: 0 0 180px; }
+        .qr-image { 
+            width: 180px; height: 180px; 
+            border: 5px solid #0d1b2a; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            background: white;
+        }
+        .qr-text-container { flex: 1; text-align: left; min-width: 280px; }
+        .qr-text-container h4 { color: #0d1b2a; font-size: 14px; margin-bottom: 12px; text-transform: uppercase; font-weight: 800; }
+        
+        .vcard-btn { 
+            display: inline-block;
+            background: #0d1b2a; 
+            color: #ffb703 !important; 
+            padding: 15px 30px; 
+            text-decoration: none; 
+            border-radius: 5px; 
+            font-weight: 900; /* Maximum bold for clarity */
+            font-size: 13px; 
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(13, 27, 42, 0.4);
+            transition: 0.3s;
+            margin-top: 15px;
+            border: 2px solid #ffb703;
+            text-align: center;
+        }
+        .vcard-btn:hover { background: #1a2e44; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(13, 27, 42, 0.5); }
+
+        /* Footer - UNIFIED */
+        footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
+        .footer-content { font-size: 10px; line-height: 1.8; }
+        .footer-content p strong { font-size: 12px; color: #ffb703; }
+        .footer-content a { color: #ffb703; text-decoration: none; }
     </style>
 </head>
 <body>
 
+    <div class="floating-container">
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
+    </div>
+
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
-            ⚡ KOHMZ Electrical Design and Build: Your Trusted Electrical Partner | 24/7 Expert Repair and Maintenance ⚡
+            ⚡ KOHMZ Electrical Design and Build: Your Trusted Specialist Partner | 24/7 Professional Repair and Maintenance ⚡
         </marquee>
     </div>
 
@@ -34,67 +149,96 @@
         <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
         <nav>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="index.html">Overview</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Services &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="commercial.html">Commercial</a>
+                        <a href="residential.html">Residential</a>
+                        <a href="pro-tips.html">Pro Tips</a>
+                    </div>
+                </li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
+                <li><a href="book-now.html">Book Now</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Affiliate Shop &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="solar-parts.html">Solar Parts</a>
+                        <a href="powertools.html">Power Tools</a>
+                        <a href="electrical-materials.html">Materials</a>
+                    </div>
+                </li>
+                <li><a href="about-us.html" style="color: #ffb703;">About Us</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="book-now.html" class="btn-book">Book Now</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Our Identity & Commitment</h2>
+                <p>Bridging the gap between complex electrical requirements and flawless technical execution.</p>
+            </div>
+        </section>
+
         <section class="content-section">
             <h2>About KOHMZ Electrical Design and Build</h2>
-            <p><strong>KOHMZ Electrical Design and Build</strong> is a professional electrical contracting firm dedicated to providing safe, efficient, and high-quality electrical solutions. We specialize in comprehensive electrical design, installation, and maintenance for residential, commercial, and industrial projects.</p>
+            <p><strong>KOHMZ Electrical Design and Build</strong> is a professional contracting firm dedicated to providing safe, efficient, and high-quality solutions. We specialize in comprehensive technical design, certified installation, and professional maintenance for residential, commercial, and industrial projects.</p>
+            <p>Our philosophy is built on the pillars of **precision and long-term reliability**. We don't just complete projects; we secure properties. By utilizing advanced technical planning and rigorous testing protocols, we ensure that every installation—from a single residential breaker to a complex commercial power grid—meets the highest industry standards.</p>
         </section>
 
-        <section class="services-preview" style="background: #fff;">
-            <h2>Our Core Services</h2>
+        <section class="content-section" style="background: white;">
+            <h2>Our Core Competencies</h2>
             <div class="cards-container">
                 <div class="card">
-                    <h3>Electrical Design</h3>
-                    <p>Precision blueprints and technical designs for new builds and renovations.</p>
+                    <h3>Technical Design</h3>
+                    <p>Precision blueprints and professional designs for new builds, ensuring optimal power distribution and maximum cost-efficiency.</p>
                 </div>
                 <div class="card">
-                    <h3>Solar Installation</h3>
-                    <p>Specialized in Hybrid and Off-grid systems to maximize your energy savings.</p>
+                    <h3>Solar Solutions</h3>
+                    <p>Specialized in Hybrid and Off-grid systems. We help clients transition to renewable energy with certified implementation and energy savings.</p>
                 </div>
                 <div class="card">
-                    <h3>Wiring & Maintenance</h3>
-                    <p>NEMA-compliant installations and 24/7 troubleshooting to ensure safety.</p>
+                    <h3>Wiring Integrity</h3>
+                    <p>NEMA-compliant installations and 24/7 technical troubleshooting to ensure the safety and longevity of your assets.</p>
                 </div>
             </div>
-            <br>
-            <p style="max-width: 800px; margin: auto;">At KOHMZ Electrical, we combine technical expertise with a commitment to excellence. Whether you are building your dream home or managing a large-scale facility, we provide the power you can trust.</p>
+            
+            <p style="margin-top: 40px; font-style: italic; color: #0d1b2a; font-weight: bold; text-align: center;">
+                "At KOHMZ Electrical, we combine professional expertise with a commitment to excellence. We provide the power you can trust."
+            </p>
         </section>
 
         <section class="content-section">
-            <h3>Ready to power up your home?</h3>
-            <div style="margin: 25px 0;">
-                <a href="tel:+639266174131" class="cta-button" style="background: #25d366; font-size: 1.2rem;">📞 Call / WhatsApp / Viber Us</a>
-            </div>
-
+            <h3>Connect with our Technical Specialists</h3>
+            
             <div class="qr-section">
-                <h4>YOU CAN CHECK ME HERE ⤵️⤵️⤵️⤵️</h4>
-                <p>CLICK DOWNLOAD OR SCAN THE QR CODE</p>
-                
-                <div class="qr-image">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://qr1.me-qr.com/entry/vcard/qdbqa4sx" alt="KOHMZ QR Code" style="width:100%; height:100%;">
+                <div class="qr-image-container">
+                    <div class="qr-image">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://qr1.me-qr.com/entry/vcard/qdbqa4sx" alt="KOHMZ QR Code" style="width:100%; height:100%;">
+                    </div>
                 </div>
-
-                <a href="https://qr1.me-qr.com/entry/vcard/qdbqa4sx" target="_blank" class="cta-button" style="background: #0d1b2a;">DOWNLOAD V-CARD</a>
+                <div class="qr-text-container">
+                    <h4>Digital Contact Identity</h4>
+                    <p style="font-size: 11px; margin-bottom: 8px;">Scan the QR code to instantly save our contact details to your device, or use the professional V-Card download button below.</p>
+                    <a href="https://qr1.me-qr.com/entry/vcard/qdbqa4sx" target="_blank" class="vcard-btn">
+                        <i class="fas fa-download"></i> DOWNLOAD V-CARD
+                    </a>
+                </div>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="footer-content">
-            <p><strong>KOHMZ Electrical Design and Build</strong></p>
-            <p>Phone: (+639266174131) | Email: (kohmzelectrical@gmail.com)</p>
-            <hr style="margin:15px 0; border:0; border-top:1px solid #444;">
+            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
+            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
+            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
+            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
             <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
         </div>
     </footer>
-
 </body>
 </html>
