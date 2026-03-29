@@ -6,31 +6,17 @@
     <title>KOHMZ Electrical Design and Build | Official Home</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Karagdagang style para sa niliitang fonts at bagong background */
-        
-        /* Maliit na font para sa Moving Ads */
-        .moving-ads marquee {
-            font-size: 0.8rem;
-        }
+        /* Custom Adjustments */
+        .moving-ads marquee { font-size: 0.8rem; }
+        .logo h1 { font-size: 20px; }
+        .nav-links li a { font-size: 14px; }
 
-        /* Niliitang Logo Text sa Header */
-        .logo h1 {
-            font-size: 20px;
-        }
-
-        /* Niliitang Navigation Links */
-        .nav-links li a {
-            font-size: 14px;
-        }
-
-        /* --- UPDATED HERO SECTION --- */
         .hero {
-            /* Gamitin ang logo.png bilang background, may dark overlay para mabasa ang text */
-            background: linear-gradient(rgba(13, 27, 42, 0.9), rgba(13, 27, 42, 0.9)), 
-                        url('logo.png') no-repeat center center;
-            /* I-fit ang image nang maayos: 'contain' para makita buong logo nang hindi nka-stretch */
+            /* Pinalitan ko ito ng logo.jpg para tugma sa inupload mo */
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), 
+                        url('logo.jpg') no-repeat center center;
             background-size: contain; 
-            height: 60vh; /* Maintain height */
+            height: 65vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -39,31 +25,9 @@
             padding: 0 20px;
         }
 
-        /* Niliitang Hero Title */
-        .hero h2 {
-            font-size: 2.2rem; /* Dati ay 3rem */
-            margin-bottom: 10px;
-        }
-
-        /* Niliitang Hero Subtitle */
-        .hero p {
-            font-size: 1rem; /* Dati ay 1.2rem */
-            margin-bottom: 20px;
-            max-width: 700px; /* Limit para hindi masyadong haba ang linya */
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Niliitang CTA Buttons sa Hero */
-        .hero .cta-button {
-            padding: 10px 20px;
-            font-size: 1rem;
-        }
-
-        /* Maliit na font para sa Footer */
-        .footer-content {
-            font-size: 0.8rem;
-        }
+        .hero h2 { font-size: 2rem; margin-bottom: 10px; color: #ffb703; }
+        .hero p { font-size: 0.95rem; margin-bottom: 20px; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .footer-content { font-size: 0.8rem; }
     </style>
 </head>
 <body>
@@ -75,9 +39,7 @@
     </div>
 
     <header>
-        <div class="logo">
-            <h1>KOHMZ <span>Electrical</span></h1>
-        </div>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
         <nav>
             <ul class="nav-links">
                 <li><a href="index.html">Overview</a></li>
@@ -112,20 +74,35 @@
                 <p>The Official Home of KOHMZ Electrical Design and Build: Expert Solutions for Commercial, Residential, and Solar Projects.</p>
                 <div style="margin-top: 15px;">
                     <a href="book-now.html" class="cta-button">Book Now</a>
-                    <a href="portfolio.html" class="cta-button" style="background:transparent; border:2px solid #ffb703; color:#ffb703; margin-left:10px;">View Design Capabilities</a>
+                    <a href="portfolio.html" class="cta-button" style="background:transparent; border:2px solid #ffb703; color:#ffb703; margin-left:10px;">View Capabilities</a>
                 </div>
             </div>
         </section>
 
-        </main>
+        <section class="content-section">
+            <h2>Core Services & Competencies</h2>
+            <div class="cards-container">
+                <div class="card"><h3>Custom Design</h3><p>Entrance Wiring and Conduit Installation</p></div>
+                <div class="card"><h3>Panel Upgrades</h3><p>Service Panel, Meter Bases, and Sub-Panel Integration</p></div>
+                <div class="card"><h3>Industrial Infrastructure</h3><p>NEMA-Compliant Enclosures and Management Systems</p></div>
+            </div>
+        </section>
+
+        <section class="content-section" style="background:#f9f9f9;">
+            <h2>Frequently Asked Questions</h2>
+            <div style="text-align:left; max-width:800px; margin:auto;">
+                <p><strong>Need a panel upgrade?</strong> Signs include tripping breakers or flickering lights. We perform full load evaluations.</p><br>
+                <p><strong>New AC unit?</strong> We provide dedicated AC wiring to prevent overloading your existing system.</p>
+            </div>
+        </section>
+    </main>
 
     <footer>
         <div class="footer-content">
             <p><strong>KOHMZ Electrical Design and Build</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
             <hr style="margin:15px 0; border:0; border-top:1px solid #444;">
-            <p>Copyright © 2026 KOHMZ™ All Rights Reserved.</p>
-            <p><a href="privacy-policy.html" style="color:#ffb703;">Privacy Policy</a> | <a href="privacy-policy.html" style="color:#ffb703;">Terms of Service</a></p>
+            <p>Copyright © 2026 KOHMZ™ All Rights Reserved. | <a href="privacy-policy.html" style="color:#ffb703;">Privacy Policy</a></p>
         </div>
     </footer>
 
