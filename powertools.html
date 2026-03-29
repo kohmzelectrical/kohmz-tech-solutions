@@ -9,89 +9,87 @@
     <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
+
     <style>
-        /* Strict Font Scale: 20-14-12-10 para pumantay sa Home Page */
-        body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; } 
-        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
-        .moving-ads marquee { font-size: 10px; } 
+        /* STRICT PROFESSIONAL FONT SCALE SYNC (12px Base) */
+        body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; color: #1e293b; scroll-behavior: smooth; line-height: 1.6; margin: 0; padding: 0; } 
         
-        /* Header & Navigation Sync */
-        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo h1 { font-size: 20px; margin: 0; } 
+        /* HIGH-TECH TECH BAR */
+        .tech-bar { background: #ffb703; color: #0d1b2a; padding: 10px; font-weight: 800; border-bottom: 2px solid #0d1b2a; text-align: center; }
+        .tech-bar-content { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .tech-bar-content span::after { content: '\f111'; font-family: 'Font Awesome 5 Free'; font-weight: 900; color: #0d1b2a; margin-left: 15px; font-size: 7px; opacity: 0.5; }
+        .tech-bar-content span:last-child::after { content: ''; }
+
+        /* HEADER & NAVIGATION */
+        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
         .logo span { color: #ffb703; }
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; }
-        .nav-links li { margin-left: 15px; position: relative; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .nav-links li { margin-left: 18px; position: relative; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
         .nav-links li a:hover { color: #ffb703; }
         
-        /* Dropdown Styles */
-        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; overflow: hidden; }
-        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; }
-        .dropdown-content a:hover { background-color: #ffb703; }
+        /* DROPDOWNS */
+        .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 175px; box-shadow: 0px 8px 25px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; overflow: hidden; top: 100%; left: 0; border-top: 3px solid #ffb703; }
+        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; transition: 0.2s; font-weight: 600; }
+        .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; padding-left: 25px; }
         .dropdown:hover .dropdown-content { display: block; }
 
-        /* Hero Section */
+        /* HERO SECTION - REFINED AUTHORITY */
         .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
-            background-size: cover; padding: 80px 20px; text-align: center; color: white; 
+            background: linear-gradient(rgba(13, 27, 42, 0.75), rgba(13, 27, 42, 0.75)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 120px 10%; text-align: center; color: white; display: flex; align-items: center; justify-content: center;
         }
-        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; } 
-        .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
+        .hero-inner { max-width: 850px; }
+        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; line-height: 1.3; } 
+        .hero p { font-size: 14px; margin: 0 auto 30px; line-height: 1.8; font-weight: 400; font-style: italic; opacity: 0.95; } 
 
-        /* 4 SEPARATE FLOATING BUTTONS (HIWALAY) */
-        .floating-container {
-            position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000;
-        }
-        .float-btn {
-            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s, filter 0.3s;
-        }
-        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
+        /* FLOATING ACTION */
+        .floating-container { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
+        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); transition: 0.3s; }
+        .float-btn:hover { transform: scale(1.15) rotate(5deg); }
         .fb-messenger { background: #0084ff; }
         .viber { background: #7360f2; }
         .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
-        /* Shop Grid Styling */
-        .content-section { padding: 50px 10%; text-align: center; }
-        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; font-weight: 800; } 
+        /* SHOP GRID STYLING - PREMIUM LOOK */
+        .content-section { padding: 80px 10%; text-align: center; }
+        .content-section h2 { font-size: 20px; color: #0d1b2a; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; position: relative; display: inline-block; }
+        .content-section h2::after { content: ''; width: 60px; height: 4px; background: #ffb703; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); }
         
-        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; justify-content: center; }
-        .card { background: white; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 4px solid #1a73e8; text-align: left; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; justify-content: center; }
+        .card { background: white; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-radius: 12px; border-top: 5px solid #1a73e8; text-align: left; transition: 0.4s; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 45px rgba(0,0,0,0.1); border-top-color: #ffb703; }
         
-        /* Image Display Fix: Siguradong nakagitna at hindi putol */
+        /* IMAGE DISPLAY FIX - SURE NA NAKAGITNA */
         .product-image-wrap { 
-            width: 100%; height: 180px; background: #fff; border-radius: 8px; 
-            margin-bottom: 12px; overflow: hidden; display: flex; align-items: center; 
-            justify-content: center; border: 1px solid #f0f0f0; position: relative;
+            width: 100%; height: 200px; background: #fff; border-radius: 8px; 
+            margin-bottom: 20px; overflow: hidden; display: flex; align-items: center; 
+            justify-content: center; border: 1px solid #f1f5f9; padding: 10px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
         }
-        .product-image-wrap img { 
-            max-width: 100%; max-height: 100%; object-fit: contain; 
-            /* Fallback background para lumitaw ang placeholder kung hindi pa load ang image */
-            display: block;
-        }
+        .product-image-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        .card h3 { font-size: 12px; margin-bottom: 8px; color: #0d1b2a; font-weight: 700; min-height: 30px; } 
-        .card p { font-size: 11px; color: #555; line-height: 1.4; margin-bottom: 10px; min-height: 40px; } 
+        .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 900; min-height: 40px; text-transform: uppercase; } 
+        .card p { font-size: 12px; color: #475569; line-height: 1.6; margin-bottom: 15px; flex-grow: 1; } 
         
-        /* Contractor Technical Notes */
-        .pro-note { font-size: 10px; background: #e3f2fd; color: #1565c0; padding: 6px 10px; border-radius: 4px; font-weight: bold; margin-bottom: 12px; display: block; border-left: 3px solid #1a73e8; }
+        /* Technical Notes */
+        .pro-note { font-size: 11px; background: #f0f7ff; color: #1a73e8; padding: 10px 15px; border-radius: 6px; font-weight: 800; margin-bottom: 20px; display: block; border-left: 4px solid #1a73e8; text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* Premium Shopee/Lazada Button */
         .btn-lazada { 
-            display: block; width: 100%; text-align: center; padding: 10px 0; font-size: 11px; border-radius: 5px; 
-            text-decoration: none; font-weight: bold; background: #0f136d; color: white; transition: 0.3s; 
+            display: block; width: 100%; text-align: center; padding: 14px 0; font-size: 12px; border-radius: 6px; 
+            text-decoration: none; font-weight: 900; background: #0d1b2a; color: white; transition: 0.3s; letter-spacing: 1px; border: 2px solid #0d1b2a;
         }
-        .btn-lazada:hover { background: #f36f21; transform: scale(1.02); } /* Lazada orange on hover */
+        .btn-lazada:hover { background: #f36f21; border-color: #f36f21; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(243, 111, 33, 0.3); }
 
-        /* Footer */
-        footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
-        .footer-content { font-size: 10px; line-height: 1.8; }
-        .footer-content p strong { font-size: 12px; color: #ffb703; }
-        .footer-content a { color: #ffb703; text-decoration: none; }
+        /* FOOTER RETAINED */
+        footer { background: #0d1b2a; color: white; text-align: center; padding: 40px 20px; margin-top: 60px; border-top: 6px solid #ffb703; }
+        .footer-content { font-size: 11px; line-height: 2; max-width: 1000px; margin: 0 auto; }
+        .footer-content p strong { font-size: 13px; color: #ffb703; letter-spacing: 1px; text-transform: uppercase; }
+        .footer-links a { color: #ffb703; text-decoration: none; font-weight: bold; margin: 0 15px; text-transform: uppercase; font-size: 10px; }
+        .footer-links a:hover { color: white; }
     </style>
 </head>
 <body>
@@ -103,10 +101,12 @@
         <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
     </div>
 
-    <div class="moving-ads">
-        <marquee behavior="scroll" direction="left">
-            ⚡ KOHMZ AFFILIATE SHOP: Technical-Grade Power Tools | Professional Digital Testers | Impact Grinding Equipment for Precision Execution ⚡
-        </marquee>
+    <div class="tech-bar">
+        <div class="tech-bar-content">
+            <span>⚡ TECHNICAL-GRADE POWER TOOLS</span>
+            <span>⚡ PROFESSIONAL DIGITAL TESTERS</span>
+            <span>⚡ PRECISION EXECUTION EQUIPMENT ⚡</span>
+        </div>
     </div>
 
     <header>
@@ -122,10 +122,10 @@
                         <a href="pro-tips.html">Pro Tips</a>
                     </div>
                 </li>
-                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn" style="color: #ffb703;">Shop &#9662;</a>
+                    <a href="#" class="dropbtn" style="color: #ffb703;">Technical Shop &#9662;</a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html" style="color: #ffb703;">Power Tools</a>
@@ -140,9 +140,9 @@
 
     <main>
         <section class="hero">
-            <div class="hero-content">
+            <div class="hero-inner">
                 <h2>TECHNICAL SHOP: POWER TOOLS & TESTERS</h2>
-                <p>Equip yourself with the industry-standard tools we trust for professional electrical contracting. Precision performance guaranteed for every installation.</p>
+                <p>Equip yourself with the industry-standard tools we trust for professional electrical implementation. Precision performance guaranteed for every installation.</p>
             </div>
         </section>
 
@@ -152,22 +152,22 @@
                 
                 <div class="card">
                     <div class="product-image-wrap">
-                        <img src="die_grinder.jpg" alt="Mini Drill Rotary Die Grinder">
+                        <img src="INGCO Mini Drill Rotary Grinder (MG1309P).jpg" alt="Mini Drill Rotary Die Grinder">
                     </div>
                     <h3>INGCO Mini Drill Rotary Grinder (MG1309P)</h3>
-                    <p>Technical-grade rotary tool for precise cutting, grinding, and polishing. Contractor-grade performance.</p>
-                    <span class="pro-note">TECH TIP: Best tool for custom conduit modifications and panel board refinements.</span>
-                    <a href="https://c.lazada.com.ph/t/c.2IOvgo" target="_blank" class="btn-lazada">SHOP ON SHOPEE/LAZADA</a>
+                    <p>Technical-grade rotary tool for precise cutting, grinding, and polishing. Contractor-grade performance for meticulous finishes.</p>
+                    <span class="pro-note"><i class="fas fa-wrench"></i> TECH TIP: Best tool for custom conduit modifications and panel board refinements.</span>
+                    <a href="https://c.lazada.com.ph/t/c.2IOvgo" target="_blank" class="btn-lazada">SECURE ON LAZADA/SHOPEE</a>
                 </div>
 
                 <div class="card">
                     <div class="product-image-wrap">
-                        <img src="welder.jpg" alt="Inverter Welding Machine">
+                        <img src="INGCO Inverter MMA Welder (MMA3505P).jpg" alt="Inverter Welding Machine">
                     </div>
                     <h3>INGCO Inverter MMA Welder (MMA3505P)</h3>
-                    <p>Technical-grade 350A welder with MMA & Lift TIG capabilities. robust industrial and commercial applications.</p>
-                    <span class="pro-note">TECH TIP: Essential for fabricating custom panel supports and heavy-duty grounding systems.</span>
-                    <a href="https://c.lazada.com.ph/t/c.2IOvT3" target="_blank" class="btn-lazada">SHOP ON SHOPEE/LAZADA</a>
+                    <p>Technical-grade 350A welder with MMA & Lift TIG capabilities. Built for robust industrial and heavy commercial applications.</p>
+                    <span class="pro-note"><i class="fas fa-fire-burner"></i> TECH TIP: Essential for fabricating custom panel supports and heavy-duty grounding systems.</span>
+                    <a href="https://c.lazada.com.ph/t/c.2IOvT3" target="_blank" class="btn-lazada">SECURE ON LAZADA/SHOPEE</a>
                 </div>
 
                 <div class="card">
@@ -175,19 +175,19 @@
                         <img src="grinder.jpg" alt="Angle Grinder">
                     </div>
                     <h3>INGCO Industrial Angle Grinder (AG70012-1)</h3>
-                    <p>Industrial-standard 700W angle grinder for swift metal cutting and concrete surface preparation.</p>
-                    <span class="pro-note">TECH TIP: Use technical-grade cutting wheels for speed and safety.</span>
-                    <a href="https://c.lazada.com.ph/t/c.2IOvhx" target="_blank" class="btn-lazada">SHOP ON SHOPEE/LAZADA</a>
+                    <p>Industrial-standard 700W angle grinder for swift metal cutting, deburring, and concrete surface preparation.</p>
+                    <span class="pro-note"><i class="fas fa-gear"></i> TECH TIP: Use technical-grade cutting wheels for maximum installation speed and safety.</span>
+                    <a href="https://c.lazada.com.ph/t/c.2IOvhx" target="_blank" class="btn-lazada">SECURE ON LAZADA/SHOPEE</a>
                 </div>
 
                 <div class="card">
                     <div class="product-image-wrap">
-                        <img src="impact_drill.jpg" alt="Electric Impact Drill">
+                        <img src="INGCO Electric Impact Drill (ID68016P).jpg" alt="Electric Impact Drill">
                     </div>
                     <h3>INGCO Electric Impact Drill (ID68016P)</h3>
-                    <p>Contractor-grade 680W impact drill with Super Select modes for masonry and metal drilling.</p>
-                    <span class="pro-note">TECH TIP: Mandatory tool for creating mounting points on concrete surfaces.</span>
-                    <a href="https://c.lazada.com.ph/t/c.2IOv7a" target="_blank" class="btn-lazada">SHOP ON SHOPEE/LAZADA</a>
+                    <p>Contractor-grade 680W impact drill with Super Select modes for heavy masonry and structural metal drilling.</p>
+                    <span class="pro-note"><i class="fas fa-hammer"></i> TECH TIP: Mandatory tool for creating secure mounting points on hardened concrete surfaces.</span>
+                    <a href="https://c.lazada.com.ph/t/c.2IOv7a" target="_blank" class="btn-lazada">SECURE ON LAZADA/SHOPEE</a>
                 </div>
 
             </div>
@@ -198,10 +198,14 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
-            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
-            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
-            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+            <div class="footer-links" style="margin: 20px 0;">
+                <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank">Official Facebook</a>
+                <a href="https://m.me/100093260504264" target="_blank">Messenger Support</a>
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="terms-of-service.html">Terms of Service</a>
+            </div>
+            <hr style="margin:25px auto; border:0; border-top:1px solid rgba(255,255,255,0.1); max-width: 800px;">
+            <p style="font-size: 9px; opacity: 0.6; letter-spacing: 1px;">Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
         </div>
     </footer>
 </body>
