@@ -6,17 +6,25 @@
     <title>KOHMZ Electrical Design and Build | Official Home</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Custom Adjustments */
-        .moving-ads marquee { font-size: 0.8rem; }
-        .logo h1 { font-size: 20px; }
-        .nav-links li a { font-size: 14px; }
+        /* Strict Font Scale: 20-14-12-10 */
+        body { font-size: 12px; } 
+        .moving-ads marquee { font-size: 10px; } 
+        .logo h1 { font-size: 20px; } 
+        .nav-links li a { font-size: 14px; } 
+        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 10px; } 
+        .hero p { font-size: 12px; max-width: 600px; margin: 0 auto 20px; } 
+        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 20px; text-transform: uppercase; text-align: center; } 
+        .card h3 { font-size: 14px; margin-bottom: 10px; } 
+        .card p { font-size: 12px; color: #555; } 
+        .footer-content { font-size: 10px; line-height: 1.6; }
+        .footer-content p strong { font-size: 12px; }
 
+        /* Hero Section with logo.jpg Background */
         .hero {
-            /* Pinalitan ko ito ng logo.jpg para tugma sa inupload mo */
             background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), 
                         url('logo.jpg') no-repeat center center;
             background-size: contain; 
-            height: 65vh;
+            height: 60vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -25,16 +33,22 @@
             padding: 0 20px;
         }
 
-        .hero h2 { font-size: 2rem; margin-bottom: 10px; color: #ffb703; }
-        .hero p { font-size: 0.95rem; margin-bottom: 20px; max-width: 700px; margin-left: auto; margin-right: auto; }
-        .footer-content { font-size: 0.8rem; }
+        .cta-button {
+            padding: 8px 18px;
+            font-size: 12px;
+            border-radius: 4px;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        .content-section { padding: 40px 10%; }
     </style>
 </head>
 <body>
 
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
-            ⚡ Delivering Power With Precision | 24/7 Emergency Response | Licensed Electrical Contractor | Commercial, Residential, and Industrial Solutions ⚡
+            ⚡ DELIVERING POWER WITH PRECISION | 24/7 EMERGENCY RESPONSE | LICENSED ELECTRICAL CONTRACTOR | COMMERCIAL, RESIDENTIAL, AND INDUSTRIAL SOLUTIONS ⚡
         </marquee>
     </div>
 
@@ -70,39 +84,83 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h2>Advanced Power Systems & Integrated Electrical Design</h2>
+                <h2>ADVANCED POWER SYSTEMS & INTEGRATED ELECTRICAL DESIGN</h2>
                 <p>The Official Home of KOHMZ Electrical Design and Build: Expert Solutions for Commercial, Residential, and Solar Projects.</p>
                 <div style="margin-top: 15px;">
                     <a href="book-now.html" class="cta-button">Book Now</a>
-                    <a href="portfolio.html" class="cta-button" style="background:transparent; border:2px solid #ffb703; color:#ffb703; margin-left:10px;">View Capabilities</a>
+                    <a href="portfolio.html" class="cta-button" style="background:transparent; border:1px solid #ffb703; color:#ffb703;">View Capabilities</a>
                 </div>
             </div>
         </section>
 
         <section class="content-section">
-            <h2>Core Services & Competencies</h2>
+            <h2>CORE SERVICES & COMPETENCIES</h2>
             <div class="cards-container">
-                <div class="card"><h3>Custom Design</h3><p>Entrance Wiring and Conduit Installation</p></div>
-                <div class="card"><h3>Panel Upgrades</h3><p>Service Panel, Meter Bases, and Sub-Panel Integration</p></div>
-                <div class="card"><h3>Industrial Infrastructure</h3><p>NEMA-Compliant Enclosures and Management Systems</p></div>
+                <div class="card">
+                    <h3>Custom Design</h3>
+                    <p>Entrance Wiring, and Conduit Installation. Advanced Lighting Systems and Power Distribution.</p>
+                </div>
+                <div class="card">
+                    <h3>Panel Upgrades</h3>
+                    <p>Service Panel Upgrades, Meter Bases, and Sub-Panel Integration.</p>
+                </div>
+                <div class="card">
+                    <h3>Wire Management</h3>
+                    <p>NEMA-Compliant Enclosures and Wire Management Systems.</p>
+                </div>
             </div>
         </section>
 
-        <section class="content-section" style="background:#f9f9f9;">
+        <section class="content-section" style="background:#fff;">
+            <div class="cards-container">
+                <div class="card">
+                    <h3>Commercial</h3>
+                    <p>Custom wiring, lighting systems, load evaluation, and reliable maintenance to prevent downtime.</p>
+                </div>
+                <div class="card">
+                    <h3>Residential</h3>
+                    <p>Safe, code-compliant electrical solutions from new installations to troubleshooting and repairs.</p>
+                </div>
+                <div class="card">
+                    <h3>Industrial</h3>
+                    <p>Robust, high-capacity electrical infrastructure tailored for heavy-duty industrial facilities.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>About KOHMZ Electrical Design & Build</h2>
+            <p style="text-align:center; margin-bottom:20px;"><strong>Precision in Every Connection. Powering Your Progress.</strong></p>
+            <p>At KOHMZ Electrical Design and Build, we don’t just wire buildings; we engineer reliability. We bridge the gap between complex design and flawless execution. Our mission is to deliver power with precision, ensuring every installation is a benchmark for quality.</p>
+        </section>
+
+        <section class="content-section" style="background:#f1f1f1; border-radius:10px;">
             <h2>Frequently Asked Questions</h2>
             <div style="text-align:left; max-width:800px; margin:auto;">
-                <p><strong>Need a panel upgrade?</strong> Signs include tripping breakers or flickering lights. We perform full load evaluations.</p><br>
-                <p><strong>New AC unit?</strong> We provide dedicated AC wiring to prevent overloading your existing system.</p>
+                <p><strong>9. Need a panel upgrade?</strong> Signs include tripping breakers or flickering lights. We perform load evaluation and insulation testing.</p><br>
+                <p><strong>10. AC unit wiring?</strong> We provide dedicated AC wiring and proper circuit breakers to prevent infrastructure overload.</p><br>
+                <p><strong>11. Sparking outlet?</strong> Stop use immediately and turn off the breaker. Our team provides fast diagnostics and repairs.</p>
+            </div>
+        </section>
+
+        <section class="content-section" style="text-align:center;">
+            <h2>Ready to Power Your Next Project?</h2>
+            <div style="margin-top:20px;">
+                <a href="https://mail.google.com/mail/u/1/?hl=en_GB#inbox" target="_blank" class="cta-button" style="background:#db4437; color:white;">Email Us</a>
+                <a href="https://m.me/100093260504264" target="_blank" class="cta-button" style="background:#0084ff; color:white;">Messenger</a>
+                <a href="https://wa.me/639266174131" target="_blank" class="cta-button" style="background:#25d366; color:white;">WhatsApp</a>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="footer-content">
-            <p><strong>KOHMZ Electrical Design and Build</strong></p>
+            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
+            <p>FB Page: KOHMZ Electrical Design & Build | LinkedIn Page: KOHMZ Electrical Design and Build</p>
             <hr style="margin:15px 0; border:0; border-top:1px solid #444;">
-            <p>Copyright © 2026 KOHMZ™ All Rights Reserved. | <a href="privacy-policy.html" style="color:#ffb703;">Privacy Policy</a></p>
+            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+            <p><a href="privacy-policy.html" style="color:#ffb703;">Privacy Policy</a> | <a href="privacy-policy.html" style="color:#ffb703;">Terms of Service</a></p>
         </div>
     </footer>
 
