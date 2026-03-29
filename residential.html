@@ -1,14 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Residential Services | Kohmz Electrical</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Residential Electrical Services | KOHMZ Electrical</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-size: 12px; } 
+        .moving-ads marquee { font-size: 10px; } 
+        .logo h1 { font-size: 20px; } 
+        .nav-links li a { font-size: 14px; } 
+        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 10px; } 
+        .hero p { font-size: 12px; max-width: 600px; margin: 0 auto 20px; } 
+        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 20px; text-transform: uppercase; text-align: center; } 
+        .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; } 
+        .card p, .content-section p, .content-section ul li { font-size: 12px; color: #444; line-height: 1.6; } 
+        .footer-content { font-size: 10px; line-height: 1.6; }
+        .footer-content p strong { font-size: 12px; }
+        
+        .hero {
+            background: linear-gradient(rgba(13, 27, 42, 0.9), rgba(13, 27, 42, 0.9)), url('logo.jpg') no-repeat center center;
+            background-size: contain; height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 0 20px;
+        }
+    </style>
 </head>
 <body>
-    <header><div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
-    <nav><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="residential.html">Residential</a></li></ul></nav></header>
-    <main><section class="hero" style="height:30vh;"><h2>Residential Services</h2></section>
-    <section class="services-preview"><ul><li>House Troubleshooting</li><li>Indoor/Outdoor Lighting</li><li>Breaker Upgrades</li></ul></section></main>
-    <footer><p>&copy; 2026 Kohmz Electrical</p></footer>
+
+    <div class="moving-ads">
+        <marquee behavior="scroll" direction="left">
+            ⚡ RESIDENTIAL SERVICES: New Installations | Panel Upgrades | AC Dedicated Wiring | 24/7 Troubleshooting & Repair ⚡
+        </marquee>
+    </div>
+
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Overview</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn" style="color: #ffb703;">Services &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="commercial.html">Commercial</a>
+                        <a href="residential.html">Residential</a>
+                        <a href="pro-tips.html">Pro Tips</a>
+                    </div>
+                </li>
+                <li><a href="book-now.html">Book Now</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>RESIDENTIAL ELECTRICAL SERVICES</h2>
+                <p>Safe, standard-compliant, and reliable electrical installations to protect your home and your family.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Powering Your Dream Home</h2>
+            <p style="text-align:center; max-width:800px; margin: 0 auto 30px;">From new house construction wiring to fixing a stubborn tripped breaker, KOHMZ Electrical brings industrial-level precision into your home. We ensure your electrical system can handle today’s modern appliances safely.</p>
+            
+            <div class="cards-container">
+                <div class="card">
+                    <h3>Panel Upgrades & Replacements</h3>
+                    <p>Older homes often cannot handle the load of modern air conditioners and heaters. We upgrade service panels and meter bases to prevent fire hazards and ensure smooth power flow.</p>
+                </div>
+                <div class="card">
+                    <h3>Dedicated Appliance Wiring</h3>
+                    <p>Installing a new Air Conditioner or Water Heater? We provide dedicated circuits with proper breaker sizing so your appliances don't overload your home's main system.</p>
+                </div>
+                <div class="card">
+                    <h3>24/7 Troubleshooting & Repair</h3>
+                    <p>Sparking outlets? Flickering lights? Power outages in one room? Stop using the affected area immediately and call our emergency response team for rapid diagnostics and repair.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" style="background:#0d1b2a; color:white; border-radius:10px; max-width:900px; margin: 40px auto; padding: 40px;">
+            <h2 style="color:#ffb703;">Why Choose KOHMZ for Your Home?</h2>
+            <p style="color:#ccc; text-align:center;">We treat your home with the utmost respect. We utilize proper wire management, high-grade THHN/THWN copper wires, and perform rigorous safety testing before we leave any residential project.</p>
+            <div style="text-align:center; margin-top:20px;">
+                <a href="book-now.html" class="cta-button" style="background:#ffb703; color:#0d1b2a; padding: 10px 20px; font-weight:bold; border-radius:5px; text-decoration:none;">Request a Home Service</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
+            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
+            <hr style="margin:10px 0; border:0; border-top:1px solid #444;">
+            <p>Copyright © 2026 KOHMZ™ All Rights Reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
