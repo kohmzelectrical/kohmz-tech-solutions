@@ -9,15 +9,13 @@
     <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Strict Font Scale: 20-14-12-10 para pumantay sa Home Page */
+        /* Strict Font Scale: 20-14-12-10 */
         body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; } 
         .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
         .moving-ads marquee { font-size: 10px; } 
         
-        /* Header & Navigation Sync */
         header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo h1 { font-size: 20px; margin: 0; } 
         .logo span { color: #ffb703; }
@@ -26,68 +24,39 @@
         .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
         .nav-links li a:hover { color: #ffb703; }
         
-        /* Dropdown Styles */
         .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; overflow: hidden; }
         .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; }
         .dropdown-content a:hover { background-color: #ffb703; }
         .dropdown:hover .dropdown-content { display: block; }
 
-        /* Hero Section */
-        .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
-            background-size: cover; padding: 80px 20px; text-align: center; color: white; 
-        }
+        .hero { background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; background-size: cover; padding: 80px 20px; text-align: center; color: white; }
         .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; } 
         .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
 
-        /* 4 SEPARATE FLOATING BUTTONS (HIWALAY) */
-        .floating-container {
-            position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000;
-        }
-        .float-btn {
-            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s, filter 0.3s;
-        }
+        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
+        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
         .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
         .fb-messenger { background: #0084ff; }
         .viber { background: #7360f2; }
         .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
-        /* Shop Grid Styling */
         .content-section { padding: 50px 10%; text-align: center; }
         .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; font-weight: 800; } 
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; justify-content: center; }
+        .card { background: white; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 4px solid #ffb703; text-align: left; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
+        .card:hover { transform: translateY(-5px); }
         
-        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; justify-content: center; }
-        .card { background: white; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 4px solid #ffb703; text-align: left; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        
-        /* Image Display Fix: Siguradong nakagitna at hindi putol */
-        .product-image-wrap { 
-            width: 100%; height: 180px; background: #fff; border-radius: 8px; 
-            margin-bottom: 12px; overflow: hidden; display: flex; align-items: center; 
-            justify-content: center; border: 1px solid #f0f0f0; position: relative;
-        }
-        .product-image-wrap img { 
-            max-width: 100%; max-height: 100%; object-fit: contain; 
-            /* Fallback background para lumitaw ang placeholder kung hindi pa load ang image */
-            display: block;
-        }
+        .product-image-wrap { width: 100%; height: 200px; background: #fff; border-radius: 8px; margin-bottom: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #f0f0f0; }
+        .product-image-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        .card h3 { font-size: 12px; margin-bottom: 8px; color: #0d1b2a; font-weight: 700; min-height: 30px; } 
-        .card p { font-size: 11px; color: #555; line-height: 1.4; margin-bottom: 10px; min-height: 40px; } 
-        
-        /* Professional Technical Notes */
+        .card h3 { font-size: 12px; margin-bottom: 8px; color: #0d1b2a; font-weight: 700; min-height: 35px; text-transform: uppercase; } 
+        .card p { font-size: 11px; color: #555; line-height: 1.4; margin-bottom: 10px; flex-grow: 1; } 
         .pro-note { font-size: 10px; background: #fff8e1; color: #d84315; padding: 6px 10px; border-radius: 4px; font-weight: bold; margin-bottom: 12px; display: block; border-left: 3px solid #ffb703; }
 
-        /* Premium Lazada Button */
-        .btn-lazada { 
-            display: block; width: 100%; text-align: center; padding: 10px 0; font-size: 11px; border-radius: 5px; 
-            text-decoration: none; font-weight: bold; background: #0f136d; color: white; transition: 0.3s; 
-        }
-        .btn-lazada:hover { background: #f36f21; transform: scale(1.02); } /* Lazada orange on hover */
+        .btn-lazada { display: block; width: 100%; text-align: center; padding: 12px 0; font-size: 11px; border-radius: 5px; text-decoration: none; font-weight: bold; background: #0f136d; color: white; transition: 0.3s; }
+        .btn-lazada:hover { background: #f36f21; }
 
-        /* Footer */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
         .footer-content p strong { font-size: 12px; color: #ffb703; }
@@ -105,7 +74,7 @@
 
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
-            ⚡ KOHMZ AFFILIATE SHOP: Specialist-Vetted Solar Panels | Hybrid Inverters | Professional-Grade Energy Storage | Technical Cables & DC Safety ⚡
+            ⚡ KOHMZ AFFILIATE SHOP: Specialist-Vetted Solar Components | Portable Power Stations | High-Efficiency Mono-Crystalline Boards ⚡
         </marquee>
     </div>
 
@@ -142,93 +111,52 @@
         <section class="hero">
             <div class="hero-content">
                 <h2>TECHNICAL SHOP: SOLAR COMPONENTS</h2>
-                <p>Specialist-vetted technical-grade solar hardware curated for high-efficiency energy systems. Direct order links through our certified partners.</p>
+                <p>Curated specialist-grade hardware for reliable energy independence. Order directly through our certified partners.</p>
             </div>
         </section>
 
         <section class="content-section">
-            <h2>Recommended Solar Equipment (8 Items)</h2>
-            
+            <h2>Recommended Solar Equipment (5 Items)</h2>
             <div class="shop-grid">
                 
                 <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="panel.jpg" alt="High-Efficiency Monocrystalline Panel">
-                    </div>
-                    <h3>Mono-Crystalline Solar Panel</h3>
-                    <p>High-wattage (450W-550W) technical grade monocrystalline panels. optimized for peak sun absorption.</p>
-                    <span class="pro-note">TECH TIP: Optimized power conversion even in low-light conditions.</span>
+                    <div class="product-image-wrap"><img src="river%202%20ecoflow.jpg" alt="EcoFlow River 2"></div>
+                    <h3>EcoFlow 240Wh River 2</h3>
+                    <p>Ultra-portable power station. Charges 0-100% in 60 mins. Ideal for emergency lighting and mobile charging.</p>
+                    <span class="pro-note">TECH TIP: Fastest charging portable station in the market.</span>
                     <a href="https://c.lazada.com.ph/t/c.2t72dA" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
                 </div>
 
                 <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="inverter.jpg" alt="DEYE Hybrid Inverter">
-                    </div>
-                    <h3>Smart Hybrid Solar Inverter</h3>
-                    <p>Professional grade 5kW/8kW Hybrid Inverter. Wi-Fi monitoring and automatic grid switching capability.</p>
-                    <span class="pro-note">TECH TIP: Essential for seamless energy transition during brownouts.</span>
-                    <a href="https://c.lazada.com.ph/t/c.2t72jH" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
-                </div>
-
-                <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="battery.jpg" alt="LiFePO4 Solar Battery">
-                    </div>
-                    <h3>LiFePO4 Lithium Battery (48V)</h3>
-                    <p>Technical grade wholesale 100AH/200AH deep cycle lithium battery. Long-lasting energy storage.</p>
-                    <span class="pro-note">TECH TIP: Essential for true off-grid energy independence.</span>
+                    <div class="product-image-wrap"><img src="ecoflow%20delta%203.jpg" alt="EcoFlow Delta 3"></div>
+                    <h3>ECOFLOW Portable Power Station DELTA 3 1500</h3>
+                    <p>High-capacity $1536Wh$ LiFePO4 battery. Technical-grade backup for heavy home appliances.</p>
+                    <span class="pro-note">TECH TIP: Long-lasting LiFePO4 cells with 3000+ cycles.</span>
                     <a href="https://c.lazada.com.ph/t/c.2t72VJ" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
                 </div>
 
                 <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="rails.jpg" alt="PV Mounting Rails">
-                    </div>
-                    <h3>Anti-Corrosive Mounting Rails</h3>
-                    <p>T6 Industrial Aluminum rails for roof solar mounting. Certified wind speed resistance.</p>
-                    <span class="pro-note">TECH TIP: Industrial quality prevents rust and structural damage.</span>
+                    <div class="product-image-wrap"><img src="srne%203kw%20hybrid%20offgrid%20solar%20inverter.png" alt="SRNE Inverter"></div>
+                    <h3>3KW 24V SRNE Hybrid Off-Grid Inverter</h3>
+                    <p>Professional residential solar inverter with built-in MPPT controller for $24V$ off-grid systems.</p>
+                    <span class="pro-note">TECH TIP: Specialist pick for robust off-grid home setups.</span>
+                    <a href="https://c.lazada.com.ph/t/c.2t72jH" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
+                </div>
+
+                <div class="card">
+                    <div class="product-image-wrap"><img src="gentai%20power%2024v%20100ah%20lefepo4%20lithium%20battery.jpg" alt="Gentai Battery"></div>
+                    <h3>GENTAI POWER 24V 100Ah LiFePO4 Lithium Battery</h3>
+                    <p>Upgraded Bluetooth version with Low-Temp protection. $2560W$ Max output for RV or home solar energy storage.</p>
+                    <span class="pro-note">TECH TIP: Bluetooth monitoring allows real-time health checks via app.</span>
                     <a href="https://c.lazada.com.ph/t/c.2t7dus" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
                 </div>
 
                 <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="breakers.jpg" alt="DC Breakers">
-                    </div>
-                    <h3>Solar DC Breakers & SPD (Op 1)</h3>
-                    <p>Critical circuit protection suite for safe solar array and inverter operation.</p>
-                    <span class="pro-note">TECH TIP: Primary safety guard against electrical surges.</span>
-                    <a href="https://c.lazada.com.ph/t/c.2GGbRE" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
-                </div>
-
-                <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="breakers.jpg" alt="Solar Isolators">
-                    </div>
-                    <h3>DC Breakers & Isolator (Op 2)</h3>
-                    <p>Safety isolators for manual maintenance and automatic fault protection.</p>
-                    <span class="pro-note">TECH TIP: Essential for safe system troubleshooting.</span>
-                    <a href="https://c.lazada.com.ph/t/c.2vNNj3" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
-                </div>
-
-                <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="cables.jpg" alt="PV Cables">
-                    </div>
-                    <h3>Specialist Technical PV Cables</h3>
-                    <p>Technical grade 4mm/6mm technical grade DC cables for long-term outdoor exposure.</p>
-                    <span class="pro-note">TECH TIP: Use certified technical cables to prevent power loss.</span>
+                    <div class="product-image-wrap"><img src="solar%20photovoltaic%20panel%20battery%20board%20550-580-700w%20monocrystalline.jpg" alt="Jinko Board"></div>
+                    <h3>Jinko Mono-Crystalline Board 550W-700W</h3>
+                    <p>High-performance Monocrystalline Silicon Photovoltaic Board. Tier-1 brand for maximum sunlight absorption.</p>
+                    <span class="pro-note">TECH TIP: High-wattage boards reduce the need for larger roof space.</span>
                     <a href="https://c.lazada.com.ph/t/c.2vNN9I" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
-                </div>
-
-                <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="cables.jpg" alt="Cable Accessories">
-                    </div>
-                    <h3>PV Cables & Accessories (Op 2)</h3>
-                    <p>Technical grade wire management components for clean solar installations.</p>
-                    <span class="pro-note">TECH TIP: Clean wire management extends system longevity.</span>
-                    <a href="https://c.lazada.com.ph/t/c.2vNNQj" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
                 </div>
 
             </div>
@@ -239,4 +167,11 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href
+            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
+            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
+            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+        </div>
+    </footer>
+</body>
+</html>
