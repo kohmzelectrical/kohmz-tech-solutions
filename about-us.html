@@ -56,10 +56,17 @@
             .dropdown.active .dropdown-content { display: block; }
         }
 
-        /* HERO SECTION - BACKGROUND IMAGE FIXED FOR ALL PAGES */
+        /* HERO SECTION - FIXED BACKGROUND IMAGE */
         .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.8), rgba(13, 27, 42, 0.8)), url('updated%20background%20picture%20fb.jpg') no-repeat center center; 
-            background-size: cover; padding: 100px 20px; text-align: center; color: white; 
+            background-image: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('updated%20background%20picture%20fb.jpg'); 
+            background-size: cover; 
+            background-position: center center; 
+            background-repeat: no-repeat;
+            padding: 100px 20px; 
+            text-align: center; 
+            color: white; 
+            display: block;
+            width: 100%;
         }
         .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; } 
         .hero p { font-size: 14px; max-width: 750px; margin: 0 auto 20px; line-height: 1.8; } 
@@ -83,7 +90,7 @@
         .card { background: white; width: 300px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 5px solid #ffb703; text-align: left; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 700; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-        .card p { font-size: 11px; line-height: 1.6; margin-bottom: 10px; }
+        .card p { font-size: 11px; line-height: 1.6; }
 
         /* SOLAR SECTION */
         .solar-deep-dive { background: #fff; padding: 40px 10%; border-radius: 15px; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; border: 1px solid #ffb703; }
@@ -101,7 +108,7 @@
         .vcard-btn:hover { background: #ffb703; color: #0d1b2a !important; transform: translateY(-3px); }
         .btn-map-about { background: #1155cc; color: white !important; border-color: #1155cc; }
 
-        /* FOOTER (MATCHED TO INDEX.HTML) */
+        /* FOOTER SYNCED WITH HOME */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
         .footer-content p strong { font-size: 12px; color: #ffb703; }
@@ -273,7 +280,6 @@
     </footer>
 
     <script>
-        // MOBILE MENU SCRIPT
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         const dropdowns = document.querySelectorAll('.dropdown');
@@ -290,7 +296,6 @@
             });
         });
 
-        // VCARD SCRIPT - RETAINS YOUR NAME "SAMUEL MILLANO"
         function downloadVCard() {
             const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Samuel Millano\nORG:KOHMZ INDUSTRIAL DESIGN SERVICES\nTITLE:Owner / Electrical Contractor\nTEL;TYPE=CELL,VOICE:+639266174131\nEMAIL:kohmzelectrical@gmail.com\nURL:https://kohmzelectrical.github.io/kohmz-electrical-services/\nADR;TYPE=WORK:;;Quezon City;Metro Manila;;Philippines\nNOTE:KOHMZ ELECTRICAL DESIGN AND BUILD\nEND:VCARD`;
             const blob = new Blob([vCardData], { type: 'text/vcard' });
