@@ -1,14 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Book Now | Kohmz Electrical</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Now | KOHMZ Electrical Design and Build</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .booking-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Tabs Navigation */
+        .tab-menu {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            cursor: pointer;
+            background: #f1f1f1;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #0d1b2a;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #ffb703;
+            color: #0d1b2a;
+        }
+
+        /* Iframe Containers */
+        .booking-content {
+            display: none;
+            text-align: center;
+        }
+
+        .booking-content.active {
+            display: block;
+        }
+
+        iframe {
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        .contact-fast {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
-    <header><div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
-    <nav><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="book-now.html">Book</a></li></ul></nav></header>
-    <main class="services-preview"><h2>Book a Service</h2><p>Punan ang form para sa inyong inquiry.</p><br>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" class="cta-button">Open Booking Form</a></main>
-    <footer><p>&copy; 2026 Kohmz Electrical</p></footer>
+
+    <div class="moving-ads">
+        <marquee behavior="scroll" direction="left">
+            ⚡ Book Your Schedule Today | Professional Electrical & Solar Consultations | 24/7 Service Availability ⚡
+        </marquee>
+    </div>
+
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="book-now.html">Book Now</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="services-preview">
+            <h2>Service Booking & Scheduling</h2>
+            <p>Piliin ang opsyon sa ibaba para sa inyong appointment o inquiry.</p>
+        </section>
+
+        <div class="booking-container">
+            <div class="tab-menu">
+                <button class="tab-btn active" onclick="openTab(event, 'form-tab')">📝 Fill-up Form</button>
+                <button class="tab-btn" onclick="openTab(event, 'calendar-tab')">📅 Check Availability</button>
+            </div>
+
+            <div id="form-tab" class="booking-content active">
+                <h3>Request for Quote / Service</h3>
+                <p style="margin-bottom: 20px;">Pakisagutan ang form sa ibaba at tatawagan namin kayo.</p>
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform?embedded=true" height="800">Loading form...</iframe>
+            </div>
+
+            <div id="calendar-tab" class="booking-content">
+                <h3>Our Service Calendar</h3>
+                <p style="margin-bottom: 20px;">Tingnan ang aming available na slots para sa site inspection.</p>
+                <iframe src="https://calendar.google.com/calendar/embed?src=kohmzelectrical%40gmail.com&ctz=Asia%2FManila" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+            </div>
+
+            <div class="contact-fast">
+                <h4>Need Immediate Help?</h4>
+                <p>Call us directly at <strong>+63 926 617 4131</strong> for emergency electrical repairs.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p><strong>KOHMZ Electrical Design and Build</strong></p>
+            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
+            <hr style="margin:15px 0; border:0; border-top:1px solid #444;">
+            <p>Copyright © 2026 KOHMZ™ All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, content, buttons;
+            content = document.getElementsByClassName("booking-content");
+            for (i = 0; i < content.length; i++) {
+                content[i].style.display = "none";
+                content[i].classList.remove("active");
+            }
+            buttons = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < buttons.length; i++) {
+                buttons[i].className = buttons[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
 </body>
 </html>
