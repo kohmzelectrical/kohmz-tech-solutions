@@ -56,9 +56,9 @@
             .dropdown.active .dropdown-content { display: block; }
         }
 
-        /* HERO SECTION - FIXED FILENAME */
+        /* HERO SECTION - BACKGROUND IMAGE FIXED FOR ALL PAGES */
         .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('updated%20background%20picture%20fb.jpg') no-repeat center center; 
+            background: linear-gradient(rgba(13, 27, 42, 0.8), rgba(13, 27, 42, 0.8)), url('updated%20background%20picture%20fb.jpg') no-repeat center center; 
             background-size: cover; padding: 100px 20px; text-align: center; color: white; 
         }
         .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; } 
@@ -83,7 +83,7 @@
         .card { background: white; width: 300px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 5px solid #ffb703; text-align: left; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 700; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-        .card p { font-size: 11px; line-height: 1.6; }
+        .card p { font-size: 11px; line-height: 1.6; margin-bottom: 10px; }
 
         /* SOLAR SECTION */
         .solar-deep-dive { background: #fff; padding: 40px 10%; border-radius: 15px; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; border: 1px solid #ffb703; }
@@ -101,8 +101,10 @@
         .vcard-btn:hover { background: #ffb703; color: #0d1b2a !important; transform: translateY(-3px); }
         .btn-map-about { background: #1155cc; color: white !important; border-color: #1155cc; }
 
+        /* FOOTER (MATCHED TO INDEX.HTML) */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
+        .footer-content p strong { font-size: 12px; color: #ffb703; }
         .footer-content a { color: #ffb703; text-decoration: none; }
     </style>
 </head>
@@ -135,7 +137,7 @@
                 </li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#">Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#">Affiliate Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
@@ -263,8 +265,10 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
+            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
             <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
             <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
         </div>
     </footer>
 
