@@ -7,6 +7,8 @@
     
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
     <style>
         /* Strict Font Scale: 20-14-12-10 */
@@ -29,15 +31,45 @@
         .dropdown-content a:hover { background-color: #ffb703; }
         .dropdown:hover .dropdown-content { display: block; }
 
-        /* Hero Section */
-        .hero { background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; background-size: contain; padding: 80px 20px; text-align: center; color: white; }
+        /* Hero Section - Fixed background fit */
+        .hero { 
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 80px 20px; text-align: center; color: white; 
+        }
         .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; } 
         .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
         .cta-button { padding: 10px 20px; font-size: 12px; border-radius: 4px; display: inline-block; text-decoration: none; font-weight: bold; margin: 5px; transition: 0.3s; }
         .btn-primary { background: #ffb703; color: #0d1b2a; border: 2px solid #ffb703; }
-        .btn-primary:hover { background: transparent; color: #ffb703; }
         .btn-outline { background: transparent; color: #ffb703; border: 2px solid #ffb703; }
-        .btn-outline:hover { background: #ffb703; color: #0d1b2a; }
+
+        /* 4 SEPARATE FLOATING BUTTONS ON THE RIGHT */
+        .floating-contact-wrap {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 9999;
+        }
+        .float-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s, filter 0.3s;
+        }
+        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
+        .float-messenger { background: #0084ff; }
+        .float-viber { background: #7360f2; }
+        .float-whatsapp { background: #25d366; }
+        .float-email { background: #db4437; }
 
         /* Sections & Cards */
         .content-section { padding: 50px 10%; text-align: center; }
@@ -50,17 +82,11 @@
 
         /* Text Block for About Us */
         .text-block { max-width: 800px; margin: 0 auto; text-align: left; font-size: 12px; line-height: 1.8; color: #444; }
-        .text-block h3 { color: #0d1b2a; font-size: 14px; margin-top: 20px; }
-        .text-block ul { padding-left: 20px; }
-        .text-block li { margin-bottom: 10px; }
-
-        /* Interactive FAQ */
         .faq-container { max-width: 800px; margin: 0 auto; text-align: left; }
         details { background: white; margin-bottom: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; }
         summary { font-size: 12px; font-weight: bold; color: #0d1b2a; padding: 15px; cursor: pointer; outline: none; background: #f9f9f9; border-left: 4px solid #ffb703; }
         details p { font-size: 12px; padding: 15px; margin: 0; color: #555; line-height: 1.6; border-top: 1px solid #eee; }
 
-        /* Footer */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
         .footer-content p strong { font-size: 12px; color: #ffb703; }
@@ -69,9 +95,24 @@
 </head>
 <body>
 
+    <div class="floating-contact-wrap">
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn float-messenger" title="Message us on Messenger">
+            <i class="fab fa-facebook-messenger"></i>
+        </a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn float-viber" title="Chat on Viber">
+            <i class="fab fa-viber"></i>
+        </a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn float-whatsapp" title="WhatsApp Us">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn float-email" title="Email Us">
+            <i class="fas fa-envelope"></i>
+        </a>
+    </div>
+
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
-            ⚡ KOHMZ ELECTRICAL DESIGN AND BUILD: Expert Solutions for Commercial, Residential, and Solar Projects | 24/7 EMERGENCY RESPONSE ⚡
+            ⚡ DELIVERING POWER WITH PRECISION | 24/7 EMERGENCY RESPONSE | LICENSED ELECTRICAL CONTRACTOR | COMMERCIAL, RESIDENTIAL, AND INDUSTRIAL SOLUTIONS ⚡
         </marquee>
     </div>
 
@@ -163,12 +204,12 @@
                 
                 <h3>Why Partner With Us?</h3>
                 <ul>
-                    <li><strong>24/7 Emergency Response:</strong> We understand that power failure means downtime. Our team is on standby around the clock to keep your home or business running.</li>
-                    <li><strong>Design-First Approach:</strong> Utilizing CAD-driven electrical drawings and load calculations, we eliminate guesswork and prevent system failures before they happen.</li>
-                    <li><strong>End-to-End Expertise:</strong> From NEMA-compliant industrial enclosures and service panel upgrades to intricate interior wiring, we handle the full spectrum of electrical needs.</li>
-                    <li><strong>Safety & Compliance:</strong> We prioritize the protection of your assets through rigorous insulation resistance testing and high-standard wire management.</li>
+                    <li><strong>24/7 Emergency Response:</strong> We understand that power failure means downtime. Our team is on standby around the clock.</li>
+                    <li><strong>Design-First Approach:</strong> Utilizing CAD-driven electrical drawings and load calculations, we eliminate guesswork and prevent failures.</li>
+                    <li><strong>End-to-End Expertise:</strong> From NEMA-compliant industrial enclosures to intricate interior wiring, we handle the full spectrum.</li>
+                    <li><strong>Safety & Compliance:</strong> We prioritize the protection of your assets through rigorous insulation resistance testing.</li>
                 </ul>
-                <p style="font-style: italic; text-align: center; margin-top: 20px;">"Our mission is simple: to deliver power with precision, ensuring that every KOHMZ installation is a benchmark for quality and long-term safety."</p>
+                <p style="font-style: italic; text-align: center; margin-top: 20px;">"Our mission is simple: to deliver power with precision, ensuring that bery KOHMZ installation is a benchmark for quality and safety."</p>
             </div>
         </section>
 
@@ -176,8 +217,7 @@
             <h2 style="color: #ffb703;">Your Trusted Electrical Contractor</h2>
             <div class="text-block" style="color: #ddd; text-align: center;">
                 <p style="margin-bottom: 10px; font-weight: bold; color: white;">Delivering Power With Precision.</p>
-                <p>We specialize in electrical design, installation, maintenance, and system upgrades for commercial, residential, and industrial clients.</p>
-                <p>Our services include entrance wiring and conduits, service meter bases, main and sub panel boxes, lighting systems, power outlets, NEMA enclosures, electrical gutters, AC wiring, custom wiring designs, insulation resistance testing, and load evaluation. We also provide diagnostics and repairs for existing systems, CAD electrical drawings, cost estimates, and complete or partial rewiring, including panel boards, circuit breakers, and service entrances.</p>
+                <p>We specialize in electrical design, installation, maintenance, and system upgrades for commercial, residential, and industrial clients. Our services include entrance wiring and conduits, service meter bases, lighting systems, AC wiring, CAD electrical drawings, and load evaluation.</p>
                 <p>Available 24/7 for regular and emergency services. Committed to safety, efficiency, and reliable workmanship.</p>
             </div>
         </section>
@@ -187,54 +227,16 @@
             <div class="faq-container">
                 <details>
                     <summary>My house is older. How do I know if I need a panel upgrade or rewiring?</summary>
-                    <p>Signs that you may need an upgrade include frequently tripping circuit breakers, flickering lights, or the need to use multiple extension cords. We can perform a full load evaluation and insulation resistance testing to determine if your main or sub-panel boxes need upgrading to safely meet your family's power demands.</p>
+                    <p>Signs include tripping breakers, flickering lights, or the need to use multiple extension cords. We can perform a full load evaluation and insulation resistance testing to determine if your panel box needs upgrading.</p>
                 </details>
                 <details>
                     <summary>Do you handle dedicated wiring for new air conditioning (AC) units?</summary>
-                    <p>Yes. Air conditioners draw a significant amount of power. We provide dedicated AC wiring, load evaluations, and the installation of proper circuit breakers to ensure your new cooling system operates safely without overloading your home's existing electrical infrastructure.</p>
+                    <p>Yes. Air conditioners draw significant power. We provide dedicated AC wiring, load evaluations, and proper circuit breakers to ensure your cooling system operates safely without overloading infrastructure.</p>
                 </details>
                 <details>
                     <summary>What should I do if an outlet stops working or sparks?</summary>
-                    <p>Stop using the outlet immediately and turn off the corresponding circuit breaker. Our team provides fast diagnostics and repairs to identify whether the issue is a faulty power outlet, loose entrance wiring, or a larger system failure, ensuring your home remains safe from fire hazards.</p>
+                    <p>Stop using it immediately and turn off the corresponding circuit breaker. Our team provides fast diagnostics to identify whether the issue is a faulty outlet, loose entrance wiring, or a larger failure.</p>
                 </details>
                 <details>
                     <summary>Can you design the electrical layout for a new commercial space or office fit-out?</summary>
-                    <p>Absolutely. We specialize in custom wiring designs for commercial spaces. We provide professional CAD electrical drawings, lighting system design, and the installation of electrical gutters and NEMA enclosures to ensure your new space is both functional and fully code-compliant.</p>
-                </details>
-                <details>
-                    <summary>How can regular electrical maintenance benefit my business?</summary>
-                    <p>Preventative maintenance is crucial for businesses to avoid unexpected power failures that cause costly downtime. We provide complete system diagnostics, insulation resistance testing, and load evaluations to identify and resolve potential issues before they disrupt your daily operations.</p>
-                </details>
-                <details>
-                    <summary>Can you install heavy-duty power systems for commercial equipment?</summary>
-                    <p>Yes, we install complete entrance wiring and conduits, service meter bases, and commercial-grade power outlets designed to handle higher electrical loads safely and efficiently.</p>
-                </details>
-            </div>
-        </section>
-
-        <section class="content-section" style="background: white;">
-            <div style="max-width: 700px; margin: 0 auto 30px auto; color: #444; font-size: 12px; line-height: 1.6; padding: 20px; border-left: 4px solid #ffb703; background: #f9f9f9;">
-                <p><strong>Hi there! We are KOHMZ Electrical Design and Build, your trusted electrical team.</strong></p>
-                <p>Whether you need a new installation or system repair, we deliver safe, efficient, and high-quality solutions. Send us a message today. We look forward to powering your space with professionalism and care.</p>
-            </div>
-            
-            <h2>Ready to Power Your Next Project?</h2>
-            <p style="font-size: 12px; margin-bottom: 20px;">Whether it's a simple residential/Commercial repair or a complete layout, our team is ready to deliver.</p>
-            <a href="mailto:kohmzelectrical@gmail.com" class="cta-button" style="background:#db4437; color:white;">Email Us</a>
-            <a href="https://wa.me/639266174131" target="_blank" class="cta-button" style="background:#25d366; color:white;">WhatsApp</a>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
-            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="#">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
-            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 600px;">
-            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
-            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
-        </div>
-    </footer>
-
-</body>
-</html>
+                    <p>Absolutely. We specialize in custom wiring designs for commercial spaces. We provide
