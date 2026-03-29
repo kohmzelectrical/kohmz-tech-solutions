@@ -21,9 +21,8 @@
             display: flex; justify-content: space-between; align-items: center; 
             position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
         }
-        /* LOGO AREA FIX */
         .logo { display: flex; align-items: center; gap: 10px; }
-        .logo img { height: 40px; border-radius: 4px; }
+        .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; }
         .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
         .logo span { color: #ffb703; }
 
@@ -59,23 +58,23 @@
             .dropdown.active .dropdown-content { display: block; }
         }
 
-        /* HERO SECTION - RE-FIXED BACKGROUND IMAGE PATH */
+        /* --- HERO/HEADER BACKGROUND IMAGE FIX --- */
         .hero { 
-            background-image: linear-gradient(rgba(13, 27, 42, 0.8), rgba(13, 27, 42, 0.8)), url('updated background picture fb.jpg'); 
+            background: linear-gradient(rgba(13, 27, 42, 0.7), rgba(13, 27, 42, 0.7)), url("updated background picture fb.jpg"); 
             background-size: cover; 
             background-position: center; 
             background-repeat: no-repeat;
-            padding: 100px 20px; 
+            padding: 120px 20px; 
             text-align: center; 
             color: white; 
-            min-height: 250px;
+            min-height: 400px; /* Force visibility */
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .hero-inner { max-width: 850px; }
         .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; } 
-        .hero p { font-size: 14px; margin: 0 auto 20px; line-height: 1.8; } 
+        .hero p { font-size: 14px; max-width: 750px; margin: 0 auto 20px; line-height: 1.8; } 
 
         /* FLOATING BUTTONS */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
@@ -114,7 +113,6 @@
         .vcard-btn:hover { background: #ffb703; color: #0d1b2a !important; transform: translateY(-3px); }
         .btn-map-about { background: #1155cc; color: white !important; border-color: #1155cc; }
 
-        /* FOOTER - SYNCED WITH INDEX.HTML */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
         .footer-content p strong { font-size: 12px; color: #ffb703; }
@@ -281,7 +279,7 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
+            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
             <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
             <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
             <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
@@ -289,15 +287,18 @@
     </footer>
 
     <script>
-        // MOBILE MENU SCRIPT
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         const dropdowns = document.querySelectorAll('.dropdown');
 
         menuToggle.addEventListener('click', () => {
             navList.classList.toggle('active');
-            menuToggle.querySelector('i').classList.toggle('fa-bars');
-            menuToggle.querySelector('i').classList.toggle('fa-times');
+            const icon = menuToggle.querySelector('i');
+            if (navList.classList.contains('active')) {
+                icon.className = 'fas fa-times';
+            } else {
+                icon.className = 'fas fa-bars';
+            }
         });
 
         dropdowns.forEach(dropdown => {
@@ -306,7 +307,6 @@
             });
         });
 
-        // VCARD SCRIPT - RETAINS YOUR NAME "SAMUEL MILLANO"
         function downloadVCard() {
             const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Samuel Millano\nORG:KOHMZ INDUSTRIAL DESIGN SERVICES\nTITLE:Owner / Electrical Contractor\nTEL;TYPE=CELL,VOICE:+639266174131\nEMAIL:kohmzelectrical@gmail.com\nURL:https://kohmzelectrical.github.io/kohmz-electrical-services/\nADR;TYPE=WORK:;;Quezon City;Metro Manila;;Philippines\nNOTE:KOHMZ ELECTRICAL DESIGN AND BUILD\nEND:VCARD`;
             const blob = new Blob([vCardData], { type: 'text/vcard' });
