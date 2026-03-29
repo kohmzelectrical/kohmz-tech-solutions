@@ -3,93 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOHMZ Electrical Design and Build | Official Home</title>
+    <title>KOHMZ Electrical Design and Build | Technical Governance & Power Architecture</title>
     
     <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <link rel="stylesheet" href="style.css">
     <style>
         /* Strict Font Scale: 20-14-12-10 */
-        body { font-size: 12px; font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; } 
-        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
-        .moving-ads marquee { font-size: 10px; } 
+        body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; scroll-behavior: smooth; } 
+        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 6px; font-weight: bold; border-bottom: 2px solid #0d1b2a; }
+        .moving-ads marquee { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; } 
         
-        /* Header & Navigation */
-        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo h1 { font-size: 20px; margin: 0; } 
+        /* Header & Navigation Sync */
+        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.4); }
+        .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; } 
         .logo span { color: #ffb703; }
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; }
-        .nav-links li { margin-left: 15px; position: relative; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .nav-links li { margin-left: 18px; position: relative; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; font-weight: 500; }
         .nav-links li a:hover { color: #ffb703; }
         
-        /* Dropdown Styles */
-        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-radius: 4px; overflow: hidden; }
-        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; }
-        .dropdown-content a:hover { background-color: #ffb703; }
+        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 170px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; overflow: hidden; top: 100%; left: 0; }
+        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; transition: 0.2s; }
+        .dropdown-content a:hover { background-color: #ffb703; padding-left: 20px; }
         .dropdown:hover .dropdown-content { display: block; }
 
-        /* Hero Section - Fixed background fit */
+        /* Hero Section - FIXED BACKGROUND FIT */
         .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
-            background-size: cover; padding: 100px 20px; text-align: center; color: white; 
+            background: linear-gradient(rgba(13, 27, 42, 0.88), rgba(13, 27, 42, 0.88)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 130px 20px; text-align: center; color: white; 
         }
-        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; } 
-        .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
-        .cta-button { padding: 10px 20px; font-size: 12px; border-radius: 4px; display: inline-block; text-decoration: none; font-weight: bold; margin: 5px; transition: 0.3s; }
-        .btn-primary { background: #ffb703; color: #0d1b2a; border: 2px solid #ffb703; }
+        .hero h2 { font-size: 22px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; } 
+        .hero p { font-size: 13px; max-width: 800px; margin: 0 auto 35px; line-height: 1.8; opacity: 0.95; font-style: italic; } 
+        .cta-button { padding: 15px 30px; font-size: 12px; border-radius: 5px; display: inline-block; text-decoration: none; font-weight: 800; margin: 8px; transition: 0.4s; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-primary { background: #ffb703; color: #0d1b2a; border: 2px solid #ffb703; box-shadow: 0 4px 20px rgba(255, 183, 3, 0.4); }
+        .btn-primary:hover { background: #e6a600; transform: translateY(-3px); }
         .btn-outline { background: transparent; color: #ffb703; border: 2px solid #ffb703; }
+        .btn-outline:hover { background: rgba(255, 183, 3, 0.1); transform: translateY(-3px); }
 
         /* 4 SEPARATE FLOATING BUTTONS */
-        .floating-container {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 9999;
-        }
-        .float-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 24px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            transition: transform 0.3s, filter 0.3s;
-        }
+        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
+        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
         .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
         .fb-messenger { background: #0084ff; }
         .viber { background: #7360f2; }
         .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
-        /* Sections & Cards */
-        .content-section { padding: 50px 10%; text-align: center; }
-        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; } 
-        .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .card { background: white; width: 280px; padding: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-radius: 8px; border-top: 4px solid #ffb703; text-align: left; transition: transform 0.3s; }
-        .card:hover { transform: translateY(-5px); }
-        .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; } 
-        .card p { font-size: 12px; color: #555; line-height: 1.6; margin: 0; } 
+        /* Trust Badge Bar */
+        .trust-bar { background: #fff; padding: 25px; display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; border-bottom: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .trust-item { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 11px; color: #0d1b2a; text-transform: uppercase; letter-spacing: 0.5px; }
+        .trust-item i { color: #ffb703; font-size: 18px; }
 
-        .text-block { max-width: 800px; margin: 0 auto; text-align: left; font-size: 12px; line-height: 1.8; color: #444; }
-        .faq-container { max-width: 800px; margin: 0 auto; text-align: left; }
-        details { background: white; margin-bottom: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; }
-        summary { font-size: 12px; font-weight: bold; color: #0d1b2a; padding: 15px; cursor: pointer; outline: none; background: #f9f9f9; border-left: 4px solid #ffb703; }
-        details p { font-size: 12px; padding: 15px; margin: 0; color: #555; line-height: 1.6; border-top: 1px solid #eee; }
+        /* Content Sections */
+        .content-section { padding: 80px 10%; text-align: center; }
+        .content-section h2 { font-size: 15px; color: #0d1b2a; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 2.5px; font-weight: 900; position: relative; display: inline-block; }
+        .content-section h2::after { content: ''; width: 60px; height: 4px; background: #ffb703; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); }
 
-        footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
-        .footer-content { font-size: 10px; line-height: 1.8; }
-        .footer-content p strong { font-size: 12px; color: #ffb703; }
-        .footer-content a { color: #ffb703; text-decoration: none; }
+        /* Corporate Script Section */
+        .corporate-punch { background: #fff; padding: 50px; border-radius: 15px; border-left: 8px solid #ffb703; text-align: left; max-width: 900px; margin: 0 auto 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .corporate-punch h3 { font-size: 18px; color: #0d1b2a; margin-bottom: 15px; text-transform: uppercase; }
+        .corporate-punch p { font-size: 13px; line-height: 1.8; color: #555; }
+
+        /* Cards Layout */
+        .cards-container { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 20px; }
+        .card { background: white; width: 310px; padding: 40px 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border-radius: 12px; border-top: 5px solid #ffb703; text-align: left; transition: 0.4s; position: relative; }
+        .card:hover { transform: translateY(-12px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .card h3 { font-size: 14px; margin-bottom: 18px; color: #0d1b2a; font-weight: 800; text-transform: uppercase; } 
+        .card p { font-size: 12px; color: #666; line-height: 1.8; margin: 0; } 
+
+        /* High-End Identity Section */
+        .text-block { max-width: 900px; margin: 0 auto; text-align: justify; font-size: 12px; line-height: 2.2; color: #444; background: white; padding: 50px; border-radius: 15px; box-shadow: 0 5px 30px rgba(0,0,0,0.02); }
+        .text-block ul { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .text-block li { padding-left: 30px; position: relative; }
+        .text-block li::before { content: '\f058'; font-family: 'Font Awesome 5 Free'; font-weight: 900; color: #ffb703; position: absolute; left: 0; top: 2px; font-size: 16px; }
+
+        /* Dark High-Impact CTA */
+        .dark-cta { background: #0d1b2a; color: white; padding: 100px 10%; text-align: center; border-top: 5px solid #ffb703; }
+        .dark-cta h2 { color: #ffb703; margin-bottom: 25px; font-size: 20px; }
+        .dark-cta p { max-width: 850px; margin: 0 auto 40px; font-size: 14px; line-height: 2; color: #ddd; font-weight: 300; }
+
+        /* FAQ Styling */
+        .faq-container { max-width: 900px; margin: 0 auto; text-align: left; }
+        details { background: white; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid #eee; overflow: hidden; }
+        summary { font-size: 13px; font-weight: 800; color: #0d1b2a; padding: 22px 25px; cursor: pointer; outline: none; background: #fdfdfd; border-left: 6px solid #ffb703; display: flex; justify-content: space-between; align-items: center; }
+        summary::after { content: '\f067'; font-family: 'Font Awesome 5 Free'; font-weight: 900; color: #ffb703; }
+        details[open] summary::after { content: '\f068'; }
+        details p { font-size: 12px; padding: 25px; margin: 0; color: #555; line-height: 1.8; border-top: 1px solid #f4f4f4; background: #fff; }
+
+        /* Conversion Bar */
+        .conv-bar { background: #fff8e1; padding: 40px; border-radius: 15px; border: 2px dashed #ffb703; max-width: 850px; margin: 0 auto; text-align: center; }
+        .conv-bar p { font-size: 13px; font-weight: 800; color: #0d1b2a; margin: 0; }
+
+        /* Footer Sync */
+        footer { background: #0d1b2a; color: white; text-align: center; padding: 50px 20px; margin-top: 80px; border-top: 5px solid #ffb703; }
+        .footer-content { font-size: 11px; line-height: 2; }
+        .footer-content p strong { font-size: 13px; color: #ffb703; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-content a { color: #ffb703; text-decoration: none; font-weight: bold; margin: 0 10px; }
+        .footer-content a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -103,7 +117,7 @@
 
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
-            ⚡ DELIVERING POWER WITH PRECISION | 24/7 EMERGENCY RESPONSE | LICENSED ELECTRICAL CONTRACTOR | COMMERCIAL, RESIDENTIAL, AND INDUSTRIAL SOLUTIONS ⚡
+            ⚡ TECHNICAL GOVERNANCE | POWER ARCHITECTURE | PEC-COMPLIANT DESIGN | 24/7 SPECIALIST RESPONSE | MITIGATING STRUCTURAL RISKS FOR RESIDENTIAL & COMMERCIAL ASSETS ⚡
         </marquee>
     </div>
 
@@ -115,15 +129,15 @@
                 <li class="dropdown">
                     <a href="#" class="dropbtn">Services &#9662;</a>
                     <div class="dropdown-content">
-                        <a href="commercial.html">Commercial</a>
-                        <a href="residential.html">Residential</a>
-                        <a href="pro-tips.html">Pro Tips</a>
+                        <a href="commercial.html">Commercial Systems</a>
+                        <a href="residential.html">Residential Safety</a>
+                        <a href="pro-tips.html">Technical Pro-Tips</a>
                     </div>
                 </li>
                 <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Affiliate Shop &#9662;</a>
+                    <a href="#" class="dropbtn">Shop &#9662;</a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
@@ -138,87 +152,110 @@
 
     <main>
         <section class="hero">
-            <h2>Advanced Power Systems & Integrated Electrical Design</h2>
-            <p>The Official Home of KOHMZ Electrical Design and Build: <br>Expert Solutions for Commercial, Residential, and Solar Projects.</p>
-            <div style="margin-top: 20px;">
-                <a href="portfolio.html" class="cta-button btn-primary">View Our Design Capabilities</a>
-                <a href="book-now.html" class="cta-button btn-outline">Book Now</a>
+            <h2>TECHNICAL EXCELLENCE. UNCOMPROMISING SAFETY.</h2>
+            <p>"We don't just pull wires; we architect the power that secures your legacy. At KOHMZ, we provide the technical governance required to eliminate structural hazards and optimize energy performance."</p>
+            <div style="margin-top: 25px;">
+                <a href="book-now.html" class="cta-button btn-primary"><i class="fas fa-file-contract"></i> SECURE A TECHNICAL AUDIT</a>
+                <a href="portfolio.html" class="cta-button btn-outline">EXPLORE OUR ARCHITECTURAL MASTERY</a>
+            </div>
+        </section>
+
+        <div class="trust-bar">
+            <div class="trust-item"><i class="fas fa-balance-scale"></i> LICENSED CONTRACTOR</div>
+            <div class="trust-item"><i class="fas fa-ruler-combined"></i> PEC & NEMA STANDARDS</div>
+            <div class="trust-item"><i class="fas fa-user-shield"></i> 24/7 TECHNICAL OVERWATCH</div>
+            <div class="trust-item"><i class="fas fa-chart-line"></i> DATA-DRIVEN LOAD PROFILING</div>
+        </div>
+
+        <section class="content-section" style="padding-bottom: 20px;">
+            <div class="corporate-punch">
+                <h3>Asset Protection & Operational Continuity</h3>
+                <p>For corporate clients and discerning homeowners, electrical failure isn't just an inconvenience—it's a high-stakes risk to your property and operations. KOHMZ Electrical specializes in <strong>preventive technical implementation</strong>. We focus on mitigating downtime and fire hazards through meticulous CAD planning and certified insulation resistance testing. Partner with us to ensure your power system is an asset, not a liability.</p>
             </div>
         </section>
 
         <section class="content-section">
-            <h2>Electrical Sectors We Serve</h2>
+            <h2>Critical Sectors of Operation</h2>
             <div class="cards-container">
-                <div class="card" style="border-top-color: #1a73e8;"><h3>Commercial</h3><p>We keep your business powered and compliant. Our commercial services include custom wiring, lighting systems, load evaluation, and reliable maintenance to prevent downtime.</p></div>
-                <div class="card" style="border-top-color: #34a853;"><h3>Residential</h3><p>From new installations and panel upgrades to troubleshooting and repairs, we provide safe, code-compliant electrical solutions to keep your home running smoothly.</p></div>
-                <div class="card" style="border-top-color: #ea4335;"><h3>Industrial</h3><p>We provide robust, high-capacity electrical infrastructure tailored for heavy-duty industrial facilities.</p></div>
-            </div>
-        </section>
-
-        <section class="content-section" style="background: #f4f7f6;">
-            <h2>Core Services & Competencies</h2>
-            <div class="cards-container">
-                <div class="card"><h3>Custom Design</h3><p>Custom Electrical Design, Entrance Wiring, and Conduit Installation.</p></div>
-                <div class="card"><h3>Panel Upgrades</h3><p>Service Panel Upgrades, Meter Bases, and Sub-Panel Integration.</p></div>
-                <div class="card"><h3>Power Distribution</h3><p>Advanced Lighting Systems and Power Distribution tailored to your needs.</p></div>
-                <div class="card"><h3>Safety Systems</h3><p>Electrical-Compliant Enclosures and highly standardized Wire Management Systems.</p></div>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h2>About KOHMZ Electrical Design & Build</h2>
-            <div class="text-block">
-                <p style="text-align: center; font-weight: bold; font-size: 14px; color: #ffb703; margin-bottom: 20px;">Precision in Every Connection. Powering Your Progress.</p>
-                <p>At KOHMZ Electrical Design and Build, we don’t just wire buildings; we engineer reliability. Founded on the principles of safety, technical excellence, and rapid response, we provide comprehensive electrical solutions for Residential, Commercial sectors.</p>
-                <p>As a specialist electrical contractor, we bridge the gap between complex design and flawless execution. Whether it’s a high-stakes industrial load evaluation or a custom residential lighting installation, our team ensures every project meets the highest standards.</p>
-                
-                <h3>Why Partner With Us?</h3>
-                <ul>
-                    <li><strong>24/7 Emergency Response:</strong> We understand that power failure means downtime. Our team is on standby around the clock.</li>
-                    <li><strong>Design-First Approach:</strong> Utilizing CAD-driven electrical drawings and load calculations, we eliminate guesswork and prevent system failures before they happen.</li>
-                    <li><strong>End-to-End Expertise:</strong> From NEMA-compliant industrial enclosures and service panel upgrades to intricate interior wiring, we handle the full spectrum of electrical needs.</li>
-                    <li><strong>Safety & Compliance:</strong> We prioritize the protection of your assets through rigorous insulation resistance testing and high-standard wire management.</li>
-                </ul>
-                <p style="font-style: italic; text-align: center; margin-top: 20px;">"Our mission is simple: to deliver power with precision, ensuring that every KOHMZ installation is a benchmark for quality and long-term safety."</p>
+                <div class="card" style="border-top-color: #1a73e8;">
+                    <h3>Strategic Commercial Fit-outs</h3>
+                    <p>Tailored power grids for high-traffic retail and office environments. We prioritize load optimization to prevent office-wide failures and ensure business continuity.</p>
+                </div>
+                <div class="card" style="border-top-color: #34a853;">
+                    <h3>High-Standard Residential Security</h3>
+                    <p>Complete electrical overhaul and future-proofing for luxury residences. From dedicated AC load centers to advanced surge protection—we protect your family's legacy.</p>
+                </div>
+                <div class="card" style="border-top-color: #ea4335;">
+                    <h3>Heavy-Duty Industrial Systems</h3>
+                    <p>Implementing robust technical architecture for manufacturing hubs. We specialize in high-capacity meter bases and NEMA-compliant outdoor power enclosures.</p>
+                </div>
             </div>
         </section>
 
         <section class="content-section" style="background: #0d1b2a; color: white;">
-            <h2 style="color: #ffb703;">Your Trusted Electrical Contractor</h2>
-            <div class="text-block" style="color: #ddd; text-align: center;">
-                <p>We specialize in electrical design, installation, maintenance, and system upgrades for commercial, residential, and industrial clients. Our services include entrance wiring, service meter bases, lighting systems, AC wiring, CAD drawings, and load evaluations. Available 24/7 for regular and emergency services.</p>
-            </div>
-        </section>
-
-        <section class="content-section" style="background: #f4f7f6;">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-container">
-                <details><summary>My house is older. How do I know if I need a panel upgrade?</summary><p>Signs include tripping breakers, flickering lights, or multiple extension cords. We perform load evaluations and insulation resistance testing.</p></details>
-                <details><summary>Do you handle dedicated wiring for new AC units?</summary><p>Yes. We provide dedicated AC wiring, load evaluations, and proper breakers to ensure your cooling system operates safely.</p></details>
-                <details><summary>What should I do if an outlet stops working or sparks?</summary><p>Stop using it immediately and turn off the breaker. Our team provides fast diagnostics to identify faulty wiring or system failure.</p></details>
-                <details><summary>Can you design the electrical layout for a new commercial space?</summary><p>Absolutely. We specialize in custom wiring, CAD drawings, lighting design, and NEMA enclosures for commercial fit-outs.</p></details>
-                <details><summary>How can regular maintenance benefit my business?</summary><p>Preventative maintenance avoids unexpected failures and downtime through system diagnostics and insulation testing.</p></details>
-                <details><summary>Can you install heavy-duty power systems?</summary><p>Yes, we install entrance wiring, service meter bases, and commercial-grade outlets for higher electrical loads.</p></details>
+            <h2 style="color: #ffb703;">The KOHMZ Technical Framework</h2>
+            <div class="cards-container">
+                <div class="card" style="background: rgba(255,255,255,0.03); color: white; border-color: #ffb703; border-width: 1px 1px 1px 6px;">
+                    <h3 style="color: #ffb703;">Phase 1: Precision Blueprinting</h3>
+                    <p style="color: #bbb;">Utilizing professional CAD electrical drawings to eliminate 100% of installation guesswork and ensure strict code compliance.</p>
+                </div>
+                <div class="card" style="background: rgba(255,255,255,0.03); color: white; border-color: #ffb703; border-width: 1px 1px 1px 6px;">
+                    <h3 style="color: #ffb703;">Phase 2: Technical Execution</h3>
+                    <p style="color: #bbb;">Certified installation of meter bases, panel board upgrades, and sub-panel integration using contractor-grade materials.</p>
+                </div>
+                <div class="card" style="background: rgba(255,255,255,0.03); color: white; border-color: #ffb703; border-width: 1px 1px 1px 6px;">
+                    <h3 style="color: #ffb703;">Phase 3: QA & Stress Testing</h3>
+                    <p style="color: #bbb;">Rigorous insulation resistance testing and actual load evaluations to benchmark your system against peak demand stress.</p>
+                </div>
             </div>
         </section>
 
         <section class="content-section">
-            <div style="max-width: 700px; margin: 0 auto 30px auto; color: #444; font-size: 12px; line-height: 1.6; padding: 20px; border-left: 4px solid #ffb703; background: #f9f9f9; text-align: left;">
-                <p><strong>Hi there! We are KOHMZ Electrical Design and Build, your trusted electrical team.</strong></p>
-                <p>Whether you need a new installation or system repair, we deliver safe, efficient, and high-quality solutions. Send us a message today.</p>
+            <h2>The KOHMZ Specialist Identity</h2>
+            <div class="text-block">
+                <p style="text-align: center; font-weight: bold; font-size: 15px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px;">Where Precision Meets Absolute Reliability.</p>
+                <p>At **KOHMZ Electrical Design and Build**, we represent the evolution of electrical contracting. Founded on the principle that safety is the result of meticulous planning, we serve as the technical bridge between complex blueprints and flawless execution. We don't just "troubleshoot"—we diagnose and reinforce systems to prevent future failures.</p>
+                
+                <h3 style="color: #0d1b2a; border-left: 5px solid #ffb703; padding-left: 20px; margin: 40px 0 25px;">Why Discerning Clients Choose KOHMZ:</h3>
+                <ul>
+                    <li><strong>Integrated CAD-First Design:</strong> We provide detailed load schedules and technical maps, giving you full transparency over your infrastructure.</li>
+                    <li><strong>PEC & NEMA Compliance:</strong> Every wire pulled and every breaker sized follows the rigorous safety standards of the Philippine Electrical Code.</li>
+                    <li><strong>Strategic Reliability:</strong> Our systems are designed to handle not just today's load, but the power requirements of your future expansions.</li>
+                    <li><strong>24/7 Technical Guardianship:</strong> A specialized emergency response team that understands the cost of power downtime for your business.</li>
+                </ul>
+                <p style="font-style: italic; text-align: center; margin-top: 40px; font-weight: bold; color: #0d1b2a; background: #fff8e1; padding: 20px; border-radius: 10px; border: 1px dashed #ffb703;">
+                    "Our Vision: To establish a new industry standard where every electrical connection is a guaranteed investment in safety and performance."
+                </p>
             </div>
-            <h2>Ready to Power Your Next Project?</h2>
-            <a href="mailto:kohmzelectrical@gmail.com" class="cta-button" style="background:#db4437; color:white;">Email Us</a>
-            <a href="https://wa.me/639266174131" target="_blank" class="cta-button" style="background:#25d366; color:white;">WhatsApp</a>
+        </section>
+
+        <section class="content-section" style="background: #f4f7f6;">
+            <h2>Technical Advisory (FAQ)</h2>
+            <div class="faq-container">
+                <details><summary>Why is a panel upgrade better than just adding breakers?</summary><p>A panel upgrade ensures that your main distribution board can handle the total cumulative load of your property. Adding breakers to an undersized panel is the leading cause of "panel fires." We calculate your service entrance capacity before any upgrades.</p></details>
+                <details><summary>Does KOHMZ provide technical documentation for commercial permits?</summary><p>Absolutely. We specialize in providing CAD-driven electrical designs, load calculations, and single-line diagrams required for professional safety compliance and business permit inspections.</p></details>
+                <details><summary>What is the 'KOHMZ Advantage' in Solar implementation?</summary><p>We focus on the "Electrical Backbone" of your solar setup. We ensure that your Hybrid or Off-Grid system is integrated seamlessly with your main grid using certified ATS (Automatic Transfer Switch) and DC protection suites.</p></details>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="conv-bar">
+                <p><i class="fas fa-info-circle"></i> <strong>ADVISORY:</strong> High-demand season for preventive fire audits. Slots for technical site assessments are prioritized for Residential and Commercial critical systems.</p>
+            </div>
+            <br><br>
+            <h2>Engage with Technical Specialists Today</h2>
+            <p style="margin-bottom: 30px; color: #555;">Choose the partnership that prioritizes your property's safety and power efficiency.</p>
+            <a href="mailto:kohmzelectrical@gmail.com" class="cta-button" style="background:#db4437; color:white;"><i class="fas fa-envelope"></i> FORMAL TECHNICAL INQUIRY</a>
+            <a href="https://wa.me/639266174131" target="_blank" class="cta-button" style="background:#25d366; color:white;"><i class="fab fa-whatsapp"></i> CONNECT VIA WHATSAPP</a>
         </section>
     </main>
 
     <footer>
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
-            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn: <a href="#">KOHMZ Electrical Design and Build</a></p>
-            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
+            <p>Technical Hotline: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
+            <p>Connect with Us: <a href="https://m.me/100093260504264" target="_blank">Facebook Messenger</a> | <a href="#">LinkedIn Technical Page</a></p>
+            <hr style="margin:20px auto; border:0; border-top:1px solid #444; max-width: 900px;">
             <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
             <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
         </div>
