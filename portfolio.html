@@ -12,26 +12,53 @@
     <link rel="stylesheet" href="style.css">
     <style>
         /* Strict Font Scale: 20-14-12-10 */
-        body { font-size: 12px; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; } 
+        body { font-size: 12px; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; overflow-x: hidden; } 
         .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
         .moving-ads marquee { font-size: 10px; } 
         
-        /* Header & Navigation Sync */
-        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo h1 { font-size: 20px; margin: 0; } 
+        /* --- MODERN RESPONSIVE HEADER --- */
+        header { 
+            background: #0d1b2a; color: white; padding: 15px 20px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
+        }
+        .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
         .logo span { color: #ffb703; }
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; }
-        .nav-links li { margin-left: 15px; position: relative; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; }
+
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s ease; }
+        .nav-links li { margin-left: 18px; position: relative; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
         .nav-links li a:hover { color: #ffb703; }
         
-        /* Dropdown Styles */
-        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; overflow: hidden; }
-        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; }
-        .dropdown-content a:hover { background-color: #ffb703; }
+        /* DROPDOWNS */
+        .dropdown-content { 
+            display: none; position: absolute; background-color: #ffffff; min-width: 175px; 
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; 
+            overflow: hidden; top: 100%; left: 0; border-top: 3px solid #ffb703; 
+        }
+        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; transition: 0.2s; font-weight: 600; }
+        .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; }
         .dropdown:hover .dropdown-content { display: block; }
 
-        /* Hero Section - FIXED BACKGROUND FIT */
+        /* MOBILE OVERLAY (Hamburger Logic) */
+        @media (max-width: 992px) {
+            header { padding: 15px 25px; }
+            .menu-toggle { display: block; }
+            .nav-links {
+                display: none; flex-direction: column; position: absolute; 
+                top: 100%; left: 0; width: 100%; background: #0d1b2a; 
+                padding: 20px 0; border-bottom: 4px solid #ffb703;
+            }
+            .nav-links.active { display: flex; }
+            .nav-links li { margin: 15px 0; text-align: center; width: 100%; margin-left: 0; }
+            .nav-links li a { font-size: 18px; width: 100%; }
+            .dropdown-content { position: static; box-shadow: none; background: #1a2e44; display: none; width: 100%; }
+            .dropdown.active .dropdown-content { display: block; }
+        }
+
+        /* Hero Section */
         .hero { 
             background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
             background-size: cover; padding: 80px 20px; text-align: center; color: white; 
@@ -39,18 +66,9 @@
         .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; } 
         .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
 
-        /* 4 SEPARATE FLOATING BUTTONS */
-        .floating-container {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            display: flex;
-            flex-direction: column; gap: 12px; z-index: 9999;
-        }
-        .float-btn {
-            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s;
-        }
+        /* Floating Action Buttons */
+        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
+        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
         .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
         .fb-messenger { background: #0084ff; }
         .viber { background: #7360f2; }
@@ -67,9 +85,9 @@
             font-weight: bold; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
             transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-        .active, .collapsible:hover { background-color: #fcfcfc; border-left: 5px solid #0d1b2a; }
+        .collapsible.active, .collapsible:hover { background-color: #fcfcfc; border-left: 5px solid #0d1b2a; }
         .collapsible:after { content: '\002B'; font-size: 18px; font-weight: bold; color: #ffb703; }
-        .active:after { content: "\2212"; }
+        .collapsible.active:after { content: "\2212"; }
 
         .panel { padding: 0 25px; background-color: #fff; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-radius: 0 0 5px 5px; margin-bottom: 20px; border-left: 5px solid #eee; }
         .panel-content { padding: 20px 0; color: #555; line-height: 1.8; font-size: 11px; }
@@ -106,11 +124,16 @@
 
     <header>
         <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+
         <nav>
-            <ul class="nav-links">
+            <ul class="nav-links" id="nav-list">
                 <li><a href="index.html">Overview</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Services &#9662;</a>
+                    <a href="#" class="dropbtn">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="commercial.html">Commercial</a>
                         <a href="residential.html">Residential</a>
@@ -119,7 +142,7 @@
                 </li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Affiliate Shop &#9662;</a>
+                    <a href="#" class="dropbtn">Affiliate Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
@@ -233,6 +256,7 @@
     </footer>
 
     <script>
+        // Collapsible Framework Script
         var coll = document.getElementsByClassName("collapsible");
         var i;
         for (i = 0; i < coll.length; i++) {
@@ -246,6 +270,29 @@
             } 
           });
         }
+
+        // Mobile Menu Toggle Script
+        const menuToggle = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+        const dropdowns = document.querySelectorAll('.dropdown');
+
+        menuToggle.addEventListener('click', () => {
+            navList.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (navList.classList.contains('active')) {
+                icon.className = 'fas fa-times';
+            } else {
+                icon.className = 'fas fa-bars';
+            }
+        });
+
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('click', () => {
+                if (window.innerWidth <= 992) {
+                    dropdown.classList.toggle('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
