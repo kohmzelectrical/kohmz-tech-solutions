@@ -7,6 +7,8 @@
     
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
     <style>
         /* Strict Font Scale: 20-14-12-10 */
@@ -37,34 +39,75 @@
         .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; } 
         .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
 
-        /* Content & Tip Cards */
+        /* Calculator Section */
+        .calc-section { background: #0d1b2a; color: white; padding: 30px; border-radius: 8px; margin: -40px auto 40px; max-width: 600px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); text-align: center; }
+        .calc-section h3 { font-size: 14px; color: #ffb703; margin-bottom: 15px; }
+        .calc-input-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .calc-input-group input { padding: 8px; border-radius: 4px; border: none; font-size: 12px; width: 120px; }
+        .calc-btn { background: #ffb703; color: #0d1b2a; border: none; padding: 8px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; }
+        #calc-result { margin-top: 15px; font-size: 14px; font-weight: bold; color: #25d366; }
+
+        /* 4 SEPARATE FLOATING BUTTONS */
+        .floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 9999;
+        }
+        .float-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s;
+        }
+        .float-btn:hover { transform: scale(1.1); }
+        .fb-messenger { background: #0084ff; }
+        .viber { background: #7360f2; }
+        .whatsapp { background: #25d366; }
+        .email { background: #db4437; }
+
+        /* Content & Collapsible Tips */
         .content-section { padding: 50px 10%; text-align: center; }
         .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; } 
         
-        .tip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; text-align: left; }
-        .tip-card { background: white; padding: 25px; border-radius: 8px; border-left: 5px solid #ffb703; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .tip-card h3 { font-size: 14px; color: #0d1b2a; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        .tip-card p { font-size: 12px; color: #555; line-height: 1.6; margin: 0; }
+        .tip-grid { max-width: 800px; margin: 0 auto; text-align: left; }
+        details.tip-card { background: white; padding: 0; border-radius: 8px; border-left: 5px solid #ffb703; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        summary { padding: 20px; font-size: 14px; font-weight: bold; color: #0d1b2a; cursor: pointer; outline: none; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary::after { content: "+"; font-size: 18px; color: #ffb703; }
+        details[open] summary::after { content: "-"; }
+        .tip-content { padding: 0 20px 20px; font-size: 12px; color: #555; line-height: 1.6; border-top: 1px solid #eee; padding-top: 15px; }
 
         /* Call to Action Box */
         .cta-box { background: #0d1b2a; color: white; padding: 40px; border-radius: 8px; margin-top: 40px; text-align: center; }
         .cta-buttons-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
-        
         .cta-button { padding: 12px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block; transition: 0.3s; font-size: 12px; }
         .btn-whatsapp { background: #25d366; color: white; }
-        .btn-whatsapp:hover { background: #1ebd5b; }
         .btn-messenger { background: #0084ff; color: white; }
-        .btn-messenger:hover { background: #0073e6; }
 
-        /* Footer */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
         .footer-content p strong { font-size: 12px; }
         .footer-content a { color: #ffb703; text-decoration: none; }
-        .footer-content a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
+
+    <div class="floating-container">
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email"><i class="fas fa-envelope"></i></a>
+    </div>
 
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
@@ -109,65 +152,96 @@
             </div>
         </section>
 
+        <section class="calc-section">
+            <h3>Watts to Amps Calculator</h3>
+            <p style="font-size: 10px; color: #ccc; margin-bottom: 15px;">Alamin ang load consumption ($I = P / V$)</p>
+            <div class="calc-input-group">
+                <input type="number" id="wattsInput" placeholder="Total Watts (P)">
+                <input type="number" id="voltsInput" value="230" placeholder="Voltage (V)">
+                <button class="calc-btn" onclick="calculateAmps()">Calculate</button>
+            </div>
+            <div id="calc-result">Result: 0.00 Amps</div>
+        </section>
+
         <section class="content-section">
             <h2>Advice from the KOHMZ Professional Team</h2>
             
             <div class="tip-grid">
-                <div class="tip-card">
-                    <h3>1. Panel Board Load Evaluation</h3>
-                    <p>Flickering lights kapag bumukas ang aircon? Maaaring undersized ang inyong panel. Ang professional load evaluation ay sumisiguro na ang inyong breakers ay akma sa inyong power consumption para maiwasan ang overheating.</p>
-                </div>
+                <details class="tip-card">
+                    <summary>1. Panel Board Load Evaluation</summary>
+                    <div class="tip-content">
+                        <p>Flickering lights kapag bumukas ang aircon? Maaaring undersized ang inyong panel. Ang professional load evaluation ay sumisiguro na ang inyong breakers ay akma sa inyong power consumption para maiwasan ang overheating.</p>
+                    </div>
+                </details>
 
-                <div class="tip-card">
-                    <h3>2. Dedicated Circuit Rule</h3>
-                    <p>Ang mga heavy appliances gaya ng AC, Water Heaters, at Pumps ay dapat may sariling "Dedicated Circuit." Ang pagsasama ng mga ito sa ordinaryong outlets ay maaaring magdulot ng wire melting at sunog sa loob ng dingding.</p>
-                </div>
+                <details class="tip-card">
+                    <summary>2. Dedicated Circuit Rule</summary>
+                    <div class="tip-content">
+                        <p>Ang mga heavy appliances gaya ng AC, Water Heaters, at Pumps ay dapat may sariling "Dedicated Circuit." Ang pagsasama ng mga ito sa ordinaryong outlets ay maaaring magdulot ng wire melting at sunog sa loob ng dingding.</p>
+                    </div>
+                </details>
 
-                <div class="tip-card">
-                    <h3>3. Sparking Outlet Diagnostics</h3>
-                    <p>Ang sparking outlet ay madalas senyales ng loose connection o arc-fault. Kapag nakakita ng sparks, i-off agad ang breaker. Ang loose wiring ay lumilikha ng high resistance na nagdudulot ng matinding init.</p>
-                </div>
+                <details class="tip-card">
+                    <summary>3. Sparking Outlet Diagnostics</summary>
+                    <div class="tip-content">
+                        <p>Ang sparking outlet ay madalas senyales ng loose connection o arc-fault. Kapag nakakita ng sparks, i-off agad ang breaker. Ang loose wiring ay lumilikha ng high resistance na nagdudulot ng matinding init.</p>
+                    </div>
+                </details>
 
-                <div class="tip-card">
-                    <h3>4. Insulation Resistance (Megger Test)</h3>
-                    <p>Hindi nakikita ang mga hidden micro-shorts. Sa KOHMZ, gumagamit kami ng Megohmmeter para i-test ang wire insulation. Sinisiguro nito na walang sira ang mga kable sa loob ng inyong conduits.</p>
-                </div>
+                <details class="tip-card">
+                    <summary>4. Insulation Resistance (Megger Test)</summary>
+                    <div class="tip-content">
+                        <p>Hindi nakikita ang mga hidden micro-shorts. Sa KOHMZ, gumagamit kami ng Megohmmeter para i-test ang wire insulation. Sinisiguro nito na walang sira ang mga kable sa loob ng inyong conduits.</p>
+                    </div>
+                </details>
 
-                <div class="tip-card">
-                    <h3>5. GFCI in Wet Areas</h3>
-                    <p>Ang mga outlet malapit sa lababo, banyo, o labas ng bahay ay DAPAT GFCI-protected. Kusa nitong pinuputol ang kuryente sa loob ng milliseconds kapag may na-detect na ground fault para maiwasan ang fatal shock.</p>
-                </div>
+                <details class="tip-card">
+                    <summary>5. GFCI in Wet Areas</summary>
+                    <div class="tip-content">
+                        <p>Ang mga outlet malapit sa lababo, banyo, o labas ng bahay ay DAPAT GFCI-protected. Kusa nitong pinuputol ang kuryente sa loob ng milliseconds kapag may na-detect na ground fault para maiwasan ang fatal shock.</p>
+                    </div>
+                </details>
 
-                <div class="tip-card">
-                    <h3>6. Surge Protective Devices (SPD)</h3>
-                    <p>Ang voltage spikes mula sa kidlat o grid ay maaaring sumira sa mamahaling gamit gaya ng Inverters at Smart TVs. Ang Panel-Level SPD ay nagsisilbing safety valve na nagtataboy ng excess voltage sa ground.</p>
-                </div>
+                <details class="tip-card">
+                    <summary>6. Surge Protective Devices (SPD)</summary>
+                    <div class="tip-content">
+                        <p>Ang voltage spikes mula sa kidlat o grid ay maaaring sumira sa mamahaling gamit gaya ng Inverters at Smart TVs. Ang Panel-Level SPD ay nagsisilbing safety valve na nagtataboy ng excess voltage sa ground.</p>
+                    </div>
+                </details>
 
-                <div class="tip-card">
-                    <h3>7. Proper Grounding (Earthing)</h3>
-                    <p>Ang 3rd pin sa inyong plug ay para sa inyong kaligtasan. Ang tamang grounding system ay nagbibigay ng daan para sa fault current. Kung wala ito, ang mga metal na parte ng gamit niyo ay maaaring maging "live" at makakuryente.</p>
-                </div>
+                <details class="tip-card">
+                    <summary>7. Proper Grounding (Earthing)</summary>
+                    <div class="tip-content">
+                        <p>Ang 3rd pin sa inyong plug ay para sa inyong kaligtasan. Ang tamang grounding system ay nagbibigay ng daan para sa fault current. Kung wala ito, ang mga metal na parte ng gamit niyo ay maaaring maging "live" at makakuryente.</p>
+                    </div>
+                </details>
 
-                <div class="tip-card">
-                    <h3>8. Extension Cord Safety</h3>
-                    <p>Ang extension cords ay temporary solution lamang. Ang daisy-chaining (pagkakabit ng magkakasunod na extension) ay malaking fire hazard. Kung kulang ang saksakan, mas mainam na magpa-install ng bagong wall receptacle.</p>
-                </div>
+                <details class="tip-card">
+                    <summary>8. Extension Cord Safety</summary>
+                    <div class="tip-content">
+                        <p>Ang extension cords ay temporary solution lamang. Ang daisy-chaining ay malaking fire hazard. Kung kulang ang saksakan, mas mainam na magpa-install ng bagong wall receptacle.</p>
+                    </div>
+                </details>
 
-                <div class="tip-card">
-                    <h3>9. LED Retrofitting Benefits</h3>
-                    <p>Ang paglipat sa LED ay hindi lang para sa tipid sa kuryente. Mas malamig tumakbo ang LEDs kumpara sa halogen bulbs. Nababawasan nito ang init sa inyong fixtures, kaya mas tumatagal ang buhay ng wire insulation.</p>
-                </div>
+                <details class="tip-card">
+                    <summary>9. LED Retrofitting Benefits</summary>
+                    <div class="tip-content">
+                        <p>Ang paglipat sa LED ay hindi lang para sa tipid sa kuryente. Mas malamig tumakbo ang LEDs. Nababawasan nito ang init sa inyong fixtures, kaya mas tumatagal ang buhay ng wire insulation.</p>
+                    </div>
+                </details>
 
-                <div class="tip-card">
-                    <h3>10. CAD Electrical Drawings</h3>
-                    <p>Huwag magsimula ng renovation nang walang Electrical Plan. Ang CAD drawings at Load Schedules ang blueprint ng inyong system, kaya mas mabilis at mas mura ang troubleshooting o expansion sa hinaharap.</p>
-                </div>
+                <details class="tip-card">
+                    <summary>10. CAD Electrical Drawings</summary>
+                    <div class="tip-content">
+                        <p>Huwag magsimula ng renovation nang walang Electrical Plan. Ang CAD drawings at Load Schedules ang blueprint ng inyong system, kaya mas mabilis at mas mura ang troubleshooting o expansion sa hinaharap.</p>
+                    </div>
+                </details>
             </div>
 
             <div class="cta-box">
                 <p style="font-size: 14px;">Experiencing flickering lights or unusual burning smells?</p>
                 <p style="font-size: 12px; color: #bbb;">Don't wait for a system failure. Contact us for professional diagnostics.</p>
-                
+                <br>
                 <div class="cta-buttons-container">
                     <a href="https://wa.me/639266174131" target="_blank" class="cta-button btn-whatsapp">WhatsApp Us</a>
                     <a href="https://m.me/100093260504264" target="_blank" class="cta-button btn-messenger">Messenger Us</a>
@@ -186,5 +260,18 @@
             <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
         </div>
     </footer>
+
+    <script>
+        function calculateAmps() {
+            const watts = document.getElementById('wattsInput').value;
+            const volts = document.getElementById('voltsInput').value;
+            if (watts && volts) {
+                const amps = (watts / volts).toFixed(2);
+                document.getElementById('calc-result').innerText = "Total Load: " + amps + " Amperes";
+            } else {
+                alert("Mangyaring ilagay ang Watts at Voltage.");
+            }
+        }
+    </script>
 </body>
 </html>
