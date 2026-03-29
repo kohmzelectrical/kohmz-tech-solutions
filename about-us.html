@@ -6,10 +6,9 @@
     <title>About Us | KOHMZ Electrical Design and Build</title>
     
     <link rel="icon" type="image/jpeg" href="logo.jpg">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
+    
     <style>
         /* Strict Font Scale: 20-14-12-10 */
         body { font-size: 12px; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; overflow-x: hidden; } 
@@ -57,15 +56,15 @@
             .dropdown.active .dropdown-content { display: block; }
         }
 
-        /* Hero Section - FIXED BACKGROUND */
+        /* HERO SECTION - FIXED FILENAME */
         .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('updated background picture fb.jpg') no-repeat center center; 
-            background-size: cover; padding: 80px 20px; text-align: center; color: white; 
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('updated%20background%20picture%20fb.jpg') no-repeat center center; 
+            background-size: cover; padding: 100px 20px; text-align: center; color: white; 
         }
-        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; } 
-        .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
+        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; } 
+        .hero p { font-size: 14px; max-width: 750px; margin: 0 auto 20px; line-height: 1.8; } 
 
-        /* 4 SEPARATE FLOATING BUTTONS */
+        /* FLOATING BUTTONS */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
         .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
         .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
@@ -74,19 +73,19 @@
         .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
-        /* Content Sections */
-        .content-section { padding: 50px 10%; text-align: center; }
-        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; } 
+        /* CONTENT SECTIONS */
+        .content-section { padding: 60px 10%; text-align: center; }
+        .content-section h2 { font-size: 18px; color: #0d1b2a; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; } 
         .content-section p { max-width: 900px; margin: 0 auto 20px; line-height: 1.8; color: #444; }
 
-        /* Cards */
+        /* CARDS */
         .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
         .card { background: white; width: 300px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 5px solid #ffb703; text-align: left; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 700; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-        .card p { font-size: 11px; line-height: 1.6; margin-bottom: 10px; }
+        .card p { font-size: 11px; line-height: 1.6; }
 
-        /* Solar Special Section */
+        /* SOLAR SECTION */
         .solar-deep-dive { background: #fff; padding: 40px 10%; border-radius: 15px; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; border: 1px solid #ffb703; }
         .solar-type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
         .solar-type-card { background: #fdfdfd; padding: 20px; border-radius: 8px; border-left: 4px solid #34a853; }
@@ -94,7 +93,7 @@
         .solar-type-card ul { padding-left: 15px; font-size: 11px; color: #555; }
         .best-pick-tag { background: #ffb703; color: #0d1b2a; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 3px; display: inline-block; margin-bottom: 10px; }
 
-        /* QR Section */
+        /* QR & VCARD SECTION */
         .qr-section { background: #fff; padding: 40px; border-radius: 12px; margin: 40px auto; max-width: 750px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; border: 1px solid #eee; }
         .qr-image { width: 180px; height: 180px; border: 6px solid #0d1b2a; border-radius: 15px; background: white; overflow: hidden; }
         .btn-group-vcard { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
@@ -102,10 +101,8 @@
         .vcard-btn:hover { background: #ffb703; color: #0d1b2a !important; transform: translateY(-3px); }
         .btn-map-about { background: #1155cc; color: white !important; border-color: #1155cc; }
 
-        /* Footer */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
-        .footer-content p strong { font-size: 12px; color: #ffb703; }
         .footer-content a { color: #ffb703; text-decoration: none; }
     </style>
 </head>
@@ -138,7 +135,7 @@
                 </li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#">Affiliate Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#">Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
@@ -272,7 +269,7 @@
     </footer>
 
     <script>
-        // MOBILE MENU
+        // MOBILE MENU SCRIPT
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         const dropdowns = document.querySelectorAll('.dropdown');
@@ -289,7 +286,7 @@
             });
         });
 
-        // VCARD SCRIPT: RETAINED YOUR NAME AS CONTACT
+        // VCARD SCRIPT - RETAINS YOUR NAME "SAMUEL MILLANO"
         function downloadVCard() {
             const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Samuel Millano\nORG:KOHMZ INDUSTRIAL DESIGN SERVICES\nTITLE:Owner / Electrical Contractor\nTEL;TYPE=CELL,VOICE:+639266174131\nEMAIL:kohmzelectrical@gmail.com\nURL:https://kohmzelectrical.github.io/kohmz-electrical-services/\nADR;TYPE=WORK:;;Quezon City;Metro Manila;;Philippines\nNOTE:KOHMZ ELECTRICAL DESIGN AND BUILD\nEND:VCARD`;
             const blob = new Blob([vCardData], { type: 'text/vcard' });
