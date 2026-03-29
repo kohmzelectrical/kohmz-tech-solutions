@@ -46,9 +46,15 @@
         .tip-card h3 { font-size: 14px; color: #0d1b2a; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .tip-card p { font-size: 12px; color: #555; line-height: 1.6; margin: 0; }
 
-        /* Call to Action */
+        /* Call to Action Box */
         .cta-box { background: #0d1b2a; color: white; padding: 40px; border-radius: 8px; margin-top: 40px; text-align: center; }
-        .cta-button { background: #25d366; color: white; padding: 12px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block; margin-top: 15px; }
+        .cta-buttons-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+        
+        .cta-button { padding: 12px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block; transition: 0.3s; font-size: 12px; }
+        .btn-whatsapp { background: #25d366; color: white; }
+        .btn-whatsapp:hover { background: #1ebd5b; }
+        .btn-messenger { background: #0084ff; color: white; }
+        .btn-messenger:hover { background: #0073e6; }
 
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
@@ -100,64 +106,68 @@
         </section>
 
         <section class="content-section">
-            <h2>Advice from the KOHMZ Engineering Team</h2>
+            <h2>Advice from the KOHMZ Professional Team</h2>
             
             <div class="tip-grid">
                 <div class="tip-card">
                     <h3>1. Panel Board Load Evaluation</h3>
-                    <p>Flickering lights when the AC turns on? Your panel may be undersized. A professional load evaluation ensures your breakers match your current power consumption to avoid nuisance tripping and overheating.</p>
+                    <p>Flickering lights kapag bumukas ang aircon? Maaaring undersized ang inyong panel. Ang professional load evaluation ay sumisiguro na ang inyong breakers ay akma sa inyong power consumption para maiwasan ang overheating.</p>
                 </div>
 
                 <div class="tip-card">
                     <h3>2. Dedicated Circuit Rule</h3>
-                    <p>Heavy appliances like ACs, Water Heaters, and Pumps must have their own "Dedicated Circuit." Sharing a circuit with outlets can melt wires inside the wall and cause structural fires over time.</p>
+                    <p>Ang mga heavy appliances gaya ng AC, Water Heaters, at Pumps ay dapat may sariling "Dedicated Circuit." Ang pagsasama ng mga ito sa ordinaryong outlets ay maaaring magdulot ng wire melting at sunog sa loob ng dingding.</p>
                 </div>
 
                 <div class="tip-card">
                     <h3>3. Sparking Outlet Diagnostics</h3>
-                    <p>A sparking outlet usually indicates a loose connection or arc-fault. If you see sparks, turn off the breaker immediately. Loose wiring creates high resistance, which leads to intense heat and electrical combustion.</p>
+                    <p>Ang sparking outlet ay madalas senyales ng loose connection o arc-fault. Kapag nakakita ng sparks, i-off agad ang breaker. Ang loose wiring ay lumilikha ng high resistance na nagdudulot ng matinding init.</p>
                 </div>
 
                 <div class="tip-card">
                     <h3>4. Insulation Resistance (Megger Test)</h3>
-                    <p>Hidden micro-shorts are invisible. Before final wiring, KOHMZ uses a Megohmmeter to test wire insulation. This ensures that pests or heat haven't compromised the integrity of the wires inside your conduits.</p>
+                    <p>Hindi nakikita ang mga hidden micro-shorts. Sa KOHMZ, gumagamit kami ng Megohmmeter para i-test ang wire insulation. Sinisiguro nito na walang sira ang mga kable sa loob ng inyong conduits.</p>
                 </div>
 
                 <div class="tip-card">
                     <h3>5. GFCI in Wet Areas</h3>
-                    <p>Outlets near sinks, bathrooms, or outdoors MUST be GFCI-protected (Ground Fault Circuit Interrupter). This shuts off power in milliseconds if water contact is detected, preventing fatal electric shocks.</p>
+                    <p>Ang mga outlet malapit sa lababo, banyo, o labas ng bahay ay DAPAT GFCI-protected. Kusa nitong pinuputol ang kuryente sa loob ng milliseconds kapag may na-detect na ground fault para maiwasan ang fatal shock.</p>
                 </div>
 
                 <div class="tip-card">
                     <h3>6. Surge Protective Devices (SPD)</h3>
-                    <p>Voltage spikes from the grid or lightning can fry expensive appliances (Inverters, Smart TVs). Installing a Panel-Level SPD provides a "safety valve" that diverts excess voltage safely to the ground.</p>
+                    <p>Ang voltage spikes mula sa kidlat o grid ay maaaring sumira sa mamahaling gamit gaya ng Inverters at Smart TVs. Ang Panel-Level SPD ay nagsisilbing safety valve na nagtataboy ng excess voltage sa ground.</p>
                 </div>
 
                 <div class="tip-card">
                     <h3>7. Proper Grounding (Earthing)</h3>
-                    <p>The 3rd pin on your plug is there for your life. A proper grounding system provides a path for fault current to escape. Without it, your metal appliance bodies could become "live" and shock anyone who touches them.</p>
+                    <p>Ang 3rd pin sa inyong plug ay para sa inyong kaligtasan. Ang tamang grounding system ay nagbibigay ng daan para sa fault current. Kung wala ito, ang mga metal na parte ng gamit niyo ay maaaring maging "live" at makakuryente.</p>
                 </div>
 
                 <div class="tip-card">
                     <h3>8. Extension Cord Safety</h3>
-                    <p>Extension cords are temporary solutions, not permanent wiring. Daisy-chaining (connecting one strip to another) creates a massive fire hazard. If you need more outlets, it's time to install new wall receptacles.</p>
+                    <p>Ang extension cords ay temporary solution lamang. Ang daisy-chaining (pagkakabit ng magkakasunod na extension) ay malaking fire hazard. Kung kulang ang saksakan, mas mainam na magpa-install ng bagong wall receptacle.</p>
                 </div>
 
                 <div class="tip-card">
                     <h3>9. LED Retrofitting Benefits</h3>
-                    <p>Switching to LEDs isn't just about the bill. LEDs run much cooler than halogen/incandescent bulbs. Reducing heat in your lighting fixtures extends the lifespan of the wire insulation above your ceiling.</p>
+                    <p>Ang paglipat sa LED ay hindi lang para sa tipid sa kuryente. Mas malamig tumakbo ang LEDs kumpara sa halogen bulbs. Nababawasan nito ang init sa inyong fixtures, kaya mas tumatagal ang buhay ng wire insulation.</p>
                 </div>
 
                 <div class="tip-card">
                     <h3>10. CAD Electrical Drawings</h3>
-                    <p>Never start a renovation without an Electrical Plan. CAD drawings and Load Schedules act as your system's blueprint, making future troubleshooting and expansions faster, cheaper, and safer.</p>
+                    <p>Huwag magsimula ng renovation nang walang Electrical Plan. Ang CAD drawings at Load Schedules ang blueprint ng inyong system, kaya mas mabilis at mas mura ang troubleshooting o expansion sa hinaharap.</p>
                 </div>
             </div>
 
             <div class="cta-box">
                 <p style="font-size: 14px;">Experiencing flickering lights or unusual burning smells?</p>
                 <p style="font-size: 12px; color: #bbb;">Don't wait for a system failure. Contact us for professional diagnostics.</p>
-                <a href="https://wa.me/639266174131" target="_blank" class="cta-button">Message KOHMZ via WhatsApp</a>
+                
+                <div class="cta-buttons-container">
+                    <a href="https://wa.me/639266174131" target="_blank" class="cta-button btn-whatsapp">WhatsApp Us</a>
+                    <a href="https://m.me/100093260504264" target="_blank" class="cta-button btn-messenger">Messenger Us</a>
+                </div>
             </div>
         </section>
     </main>
