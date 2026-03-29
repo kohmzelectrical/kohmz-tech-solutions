@@ -4,28 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Commercial Electrical Services | KOHMZ Electrical</title>
+    
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
     <style>
-        body { font-size: 12px; } 
+        /* Strict Font Scale: 20-14-12-10 */
+        body { font-size: 12px; font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; } 
+        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
         .moving-ads marquee { font-size: 10px; } 
-        .logo h1 { font-size: 20px; } 
-        .nav-links li a { font-size: 14px; } 
-        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 10px; } 
-        .hero p { font-size: 12px; max-width: 600px; margin: 0 auto 20px; } 
-        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 20px; text-transform: uppercase; text-align: center; } 
+        
+        /* Header & Navigation */
+        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo h1 { font-size: 20px; margin: 0; } 
+        .logo span { color: #ffb703; }
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; }
+        .nav-links li { margin-left: 15px; position: relative; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .nav-links li a:hover { color: #ffb703; }
+        
+        /* Dropdown Styles */
+        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-radius: 4px; overflow: hidden; }
+        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; }
+        .dropdown-content a:hover { background-color: #ffb703; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        /* Hero Section - FIXED BACKGROUND FIT */
+        .hero { 
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 100px 20px; text-align: center; color: white; 
+        }
+        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; } 
+        .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
+
+        /* 4 SEPARATE FLOATING BUTTONS ON THE RIGHT */
+        .floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 9999;
+        }
+        .float-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s, filter 0.3s;
+        }
+        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
+        .fb-messenger { background: #0084ff; }
+        .viber { background: #7360f2; }
+        .whatsapp { background: #25d366; }
+        .email { background: #db4437; }
+
+        /* Content Sections */
+        .content-section { padding: 50px 10%; text-align: center; }
+        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; } 
+        .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .card { background: white; width: 280px; padding: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-radius: 8px; border-top: 4px solid #ffb703; text-align: left; transition: transform 0.3s; }
         .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; } 
         .card p, .content-section p, .content-section ul li { font-size: 12px; color: #444; line-height: 1.6; } 
-        .footer-content { font-size: 10px; line-height: 1.6; }
-        .footer-content p strong { font-size: 12px; }
-        
-        .hero {
-            background: linear-gradient(rgba(13, 27, 42, 0.9), rgba(13, 27, 42, 0.9)), url('logo.jpg') no-repeat center center;
-            background-size: contain; height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 0 20px;
-        }
-        .content-section ul { padding-left: 20px; margin-top: 10px; text-align: left; display: inline-block; }
+        .content-section ul { padding-left: 20px; margin-top: 10px; text-align: left; display: inline-block; max-width: 800px; }
+
+        /* Footer - EXACT MATCH TO HOME */
+        footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
+        .footer-content { font-size: 10px; line-height: 1.8; }
+        .footer-content p strong { font-size: 12px; color: #ffb703; }
+        .footer-content a { color: #ffb703; text-decoration: none; }
     </style>
 </head>
 <body>
+
+    <div class="floating-container">
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
+    </div>
 
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
@@ -46,7 +112,16 @@
                         <a href="pro-tips.html">Pro Tips</a>
                     </div>
                 </li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Affiliate Shop &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="solar-parts.html">Solar Parts</a>
+                        <a href="powertools.html">Power Tools</a>
+                        <a href="electrical-materials.html">Materials</a>
+                    </div>
+                </li>
                 <li><a href="about-us.html">About Us</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
             </ul>
@@ -89,7 +164,7 @@
                 <li><strong>Rigorous Safety Testing:</strong> We verify the integrity of every installation with thorough single-phase insulation resistance testing.</li>
             </ul>
             <div style="text-align:center; margin-top:30px;">
-                <a href="book-now.html" class="cta-button" style="background:#0d1b2a; color:#ffb703; padding: 10px 20px; font-weight:bold; border-radius:5px; text-decoration:none;">Schedule a Site Inspection Today</a>
+                <a href="book-now.html" class="cta-button" style="background:#0d1b2a; color:#ffb703; padding: 12px 25px; font-weight:bold; border-radius:5px; text-decoration:none;">Schedule a Site Inspection Today</a>
             </div>
         </section>
     </main>
@@ -98,8 +173,10 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <hr style="margin:10px 0; border:0; border-top:1px solid #444;">
-            <p>Copyright © 2026 KOHMZ™ All Rights Reserved.</p>
+            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
+            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
+            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
         </div>
     </footer>
 </body>
