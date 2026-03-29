@@ -11,7 +11,7 @@
     
     <style>
         /* Strict Font Scale: 20-14-12-10 */
-        body { font-size: 12px; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; overflow-x: hidden; } 
+        body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; overflow-x: hidden; } 
         .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
         .moving-ads marquee { font-size: 10px; } 
         
@@ -58,23 +58,20 @@
             .dropdown.active .dropdown-content { display: block; }
         }
 
-        /* --- HERO/HEADER BACKGROUND IMAGE FIX --- */
+        /* --- HERO SECTION - FIXED BACKGROUND IMAGE (SYNCHRONIZED WITH INDEX.HTML) --- */
         .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.7), rgba(13, 27, 42, 0.7)), url("updated background picture fb.jpg"); 
+            background: linear-gradient(rgba(13, 27, 42, 0.8), rgba(13, 27, 42, 0.8)), url('updated%20background%20picture%20fb.jpg') no-repeat center center; 
             background-size: cover; 
-            background-position: center; 
-            background-repeat: no-repeat;
-            padding: 120px 20px; 
+            padding: 120px 10%; 
             text-align: center; 
             color: white; 
-            min-height: 400px; /* Force visibility */
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .hero-inner { max-width: 850px; }
-        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; } 
-        .hero p { font-size: 14px; max-width: 750px; margin: 0 auto 20px; line-height: 1.8; } 
+        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; line-height: 1.3; } 
+        .hero p { font-size: 14px; margin: 0 auto 30px; line-height: 1.8; font-weight: 400; opacity: 0.95; } 
 
         /* FLOATING BUTTONS */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
@@ -86,16 +83,17 @@
         .email { background: #db4437; }
 
         /* CONTENT SECTIONS */
-        .content-section { padding: 60px 10%; text-align: center; }
-        .content-section h2 { font-size: 18px; color: #0d1b2a; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; } 
+        .content-section { padding: 70px 10%; text-align: center; }
+        .content-section h2 { font-size: 20px; color: #0d1b2a; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; position: relative; display: inline-block; }
+        .content-section h2::after { content: ''; width: 50px; height: 3px; background: #ffb703; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); }
         .content-section p { max-width: 900px; margin: 0 auto 20px; line-height: 1.8; color: #444; }
 
         /* CARDS */
         .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
-        .card { background: white; width: 300px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 5px solid #ffb703; text-align: left; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 700; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-        .card p { font-size: 11px; line-height: 1.6; margin-bottom: 10px; }
+        .card { background: white; width: 320px; padding: 35px 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border-radius: 8px; border-top: 4px solid #ffb703; text-align: left; transition: 0.3s; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
+        .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 900; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .card p { font-size: 12px; line-height: 1.7; color: #334155; }
 
         /* SOLAR SECTION */
         .solar-deep-dive { background: #fff; padding: 40px 10%; border-radius: 15px; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; border: 1px solid #ffb703; }
@@ -113,7 +111,8 @@
         .vcard-btn:hover { background: #ffb703; color: #0d1b2a !important; transform: translateY(-3px); }
         .btn-map-about { background: #1155cc; color: white !important; border-color: #1155cc; }
 
-        footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
+        /* FOOTER (INDEX.HTML MATCH) */
+        footer { background: #0d1b2a; color: white; text-align: center; padding: 40px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
         .footer-content p strong { font-size: 12px; color: #ffb703; }
         .footer-content a { color: #ffb703; text-decoration: none; }
@@ -267,7 +266,7 @@
                     <p style="font-size: 10px; color: #666; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px;">Electrical Contractor / Technical Governance</p>
                     <p style="font-size: 11px; margin-bottom: 20px; color: #444; line-height: 1.6;">Scan QR to save our digital identity, or use the professional actions below to connect and locate us immediately.</p>
                     <div class="btn-group-vcard">
-                        <a href="http://googleusercontent.com/maps.google.com/4" target="_blank" class="vcard-btn btn-map-about"><i class="fas fa-map-marked-alt"></i> VIEW ON MAP</a>
+                        <a href="https://maps.google.com" target="_blank" class="vcard-btn btn-map-about"><i class="fas fa-map-marked-alt"></i> VIEW ON MAP</a>
                         <button onclick="downloadVCard()" class="vcard-btn"><i class="fas fa-address-card"></i> DOWNLOAD V-CARD</button>
                     </div>
                 </div>
@@ -308,7 +307,7 @@
         });
 
         function downloadVCard() {
-            const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Samuel Millano\nORG:KOHMZ INDUSTRIAL DESIGN SERVICES\nTITLE:Owner / Electrical Contractor\nTEL;TYPE=CELL,VOICE:+639266174131\nEMAIL:kohmzelectrical@gmail.com\nURL:https://kohmzelectrical.github.io/kohmz-electrical-services/\nADR;TYPE=WORK:;;Quezon City;Metro Manila;;Philippines\nNOTE:KOHMZ ELECTRICAL DESIGN AND BUILD\nEND:VCARD`;
+            const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Samuel Millano\nORG:KOHMZ INDUSTRIAL DESIGN SERVICES\nTITLE:Owner / Electrical Contractor\nTEL;TYPE=CELL,VOICE:+639266174131\nEMAIL:kohmzelectrical@gmail.com\nURL:https://kohmzelectrical.github.io/kohmz-electrical-services/\nADR;TYPE=WORK:;;CALABARZON;NCR;;Philippines\nNOTE:KOHMZ ELECTRICAL DESIGN AND BUILD\nEND:VCARD`;
             const blob = new Blob([vCardData], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
