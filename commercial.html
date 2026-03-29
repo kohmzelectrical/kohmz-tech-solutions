@@ -1,14 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Commercial Services | Kohmz Electrical</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercial Electrical Services | KOHMZ Electrical</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-size: 12px; } 
+        .moving-ads marquee { font-size: 10px; } 
+        .logo h1 { font-size: 20px; } 
+        .nav-links li a { font-size: 14px; } 
+        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 10px; } 
+        .hero p { font-size: 12px; max-width: 600px; margin: 0 auto 20px; } 
+        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 20px; text-transform: uppercase; text-align: center; } 
+        .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; } 
+        .card p, .content-section p, .content-section ul li { font-size: 12px; color: #444; line-height: 1.6; } 
+        .footer-content { font-size: 10px; line-height: 1.6; }
+        .footer-content p strong { font-size: 12px; }
+        
+        .hero {
+            background: linear-gradient(rgba(13, 27, 42, 0.9), rgba(13, 27, 42, 0.9)), url('logo.jpg') no-repeat center center;
+            background-size: contain; height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 0 20px;
+        }
+        .content-section ul { padding-left: 20px; margin-top: 10px; text-align: left; display: inline-block; }
+    </style>
 </head>
 <body>
-    <header><div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
-    <nav><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="commercial.html">Commercial</a></li></ul></nav></header>
-    <main><section class="hero" style="height:30vh;"><h2>Commercial Services</h2></section>
-    <section class="services-preview"><ul><li>Building Rewiring</li><li>Commercial Lighting</li><li>Panel Board Installation</li></ul></section></main>
-    <footer><p>&copy; 2026 Kohmz Electrical</p></footer>
+
+    <div class="moving-ads">
+        <marquee behavior="scroll" direction="left">
+            ⚡ COMMERCIAL SERVICES: Power Distribution | Custom Office Fit-outs | Load Evaluation | Preventive Maintenance ⚡
+        </marquee>
+    </div>
+
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Overview</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn" style="color: #ffb703;">Services &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="commercial.html">Commercial</a>
+                        <a href="residential.html">Residential</a>
+                        <a href="pro-tips.html">Pro Tips</a>
+                    </div>
+                </li>
+                <li><a href="book-now.html">Book Now</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>COMMERCIAL ELECTRICAL SOLUTIONS</h2>
+                <p>We keep your business powered and compliant. Minimizing downtime through precision engineering and rapid response.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Comprehensive Commercial Services</h2>
+            <p style="text-align:center; max-width:800px; margin: 0 auto 30px;">Downtime means lost revenue. At KOHMZ Electrical Design and Build, we provide robust, high-capacity electrical infrastructure tailored for commercial spaces, from retail stores to large office buildings.</p>
+            
+            <div class="cards-container">
+                <div class="card" style="border-top: 4px solid #ffb703;">
+                    <h3>Office Fit-outs & Custom Wiring</h3>
+                    <p>Complete electrical layout designing using CAD. We handle lighting systems, workstation power distribution, and server room dedicated circuits to ensure your office operates at peak efficiency.</p>
+                </div>
+                <div class="card" style="border-top: 4px solid #1a73e8;">
+                    <h3>Load Evaluation & Balancing</h3>
+                    <p>Prevent system overloads. We perform meticulous load calculations before adding new heavy equipment, ensuring absolute compliance with the Philippine Electrical Code (PEC).</p>
+                </div>
+                <div class="card" style="border-top: 4px solid #34a853;">
+                    <h3>Heavy-Duty Panel Upgrades</h3>
+                    <p>Modernize your building's electrical core. We install NEMA-compliant enclosures, 3-phase systems, and execute sub-panel integrations for better energy management.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" style="background:#f9f9f9;">
+            <h2>The KOHMZ Commercial Advantage</h2>
+            <ul style="max-width: 800px; margin: auto;">
+                <li><strong>24/7 Emergency Maintenance:</strong> We are on standby around the clock to resolve critical electrical failures and restore your business operations immediately.</li>
+                <li><strong>Design-First Approach:</strong> We eliminate guesswork by providing highly detailed material and labor cost estimates before any wire is pulled.</li>
+                <li><strong>Rigorous Safety Testing:</strong> We verify the integrity of every installation with thorough single-phase insulation resistance testing.</li>
+            </ul>
+            <div style="text-align:center; margin-top:30px;">
+                <a href="book-now.html" class="cta-button" style="background:#0d1b2a; color:#ffb703; padding: 10px 20px; font-weight:bold; border-radius:5px; text-decoration:none;">Schedule a Site Inspection Today</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
+            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
+            <hr style="margin:10px 0; border:0; border-top:1px solid #444;">
+            <p>Copyright © 2026 KOHMZ™ All Rights Reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
