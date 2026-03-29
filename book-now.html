@@ -4,67 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Now | KOHMZ Electrical Design and Build</title>
+    
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
     <style>
-        .booking-container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
+        /* Strict Font Scale: 20-14-12-10 */
+        body { font-size: 12px; font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; } 
+        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
+        .moving-ads marquee { font-size: 10px; } 
+        
+        /* Header & Navigation */
+        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo h1 { font-size: 20px; margin: 0; } 
+        .logo span { color: #ffb703; }
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; }
+        .nav-links li { margin-left: 15px; position: relative; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .nav-links li a:hover { color: #ffb703; }
+        
+        /* Dropdown Styles */
+        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-radius: 4px; overflow: hidden; }
+        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; }
+        .dropdown-content a:hover { background-color: #ffb703; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        /* Hero Section - FIXED BACKGROUND FIT */
+        .hero { 
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 80px 20px; text-align: center; color: white; 
+        }
+        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; } 
+        .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
+
+        /* URGENT CONVINCING BOX */
+        .urgency-box {
+            max-width: 800px;
+            margin: -30px auto 30px;
             background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        /* Tabs Navigation */
-        .tab-menu {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .tab-btn {
-            padding: 12px 25px;
-            cursor: pointer;
-            background: #f1f1f1;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            color: #0d1b2a;
-            transition: 0.3s;
-        }
-
-        .tab-btn.active {
-            background: #ffb703;
-            color: #0d1b2a;
-        }
-
-        /* Iframe Containers */
-        .booking-content {
-            display: none;
+            border-top: 5px solid #db4437;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
+            position: relative;
+            z-index: 10;
         }
+        .urgency-box h3 { font-size: 14px; color: #0d1b2a; margin-bottom: 10px; text-transform: uppercase; }
+        .urgency-box p { font-size: 12px; color: #444; line-height: 1.6; margin-bottom: 15px; }
+        .highlight-text { color: #db4437; font-weight: bold; }
 
-        .booking-content.active {
-            display: block;
+        /* 4 SEPARATE FLOATING BUTTONS */
+        .floating-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 9999;
         }
+        .float-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: transform 0.3s, filter 0.3s;
+        }
+        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
+        .fb-messenger { background: #0084ff; }
+        .viber { background: #7360f2; }
+        .whatsapp { background: #25d366; }
+        .email { background: #db4437; }
 
-        iframe {
-            width: 100%;
-            border: none;
-            border-radius: 8px;
+        /* Booking Container & Tabs */
+        .booking-container { max-width: 1000px; margin: 0 auto 40px; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .tab-menu { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 25px; cursor: pointer; background: #f1f1f1; border: none; border-radius: 5px; font-weight: bold; font-size: 12px; color: #0d1b2a; transition: 0.3s; }
+        .tab-btn.active { background: #ffb703; }
+
+        /* Responsive Iframe Handling */
+        .booking-content { display: none; text-align: center; }
+        .booking-content.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .iframe-wrapper { 
+            position: relative; 
+            overflow: hidden; 
+            width: 100%; 
+            padding-top: 150%; 
             background: #f9f9f9;
-        }
-
-        .contact-fast {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
             border-radius: 8px;
         }
+        #calendar-tab .iframe-wrapper { padding-top: 85%; }
+
+        .iframe-wrapper iframe { 
+            position: absolute; 
+            top: 0; left: 0; bottom: 0; right: 0; 
+            width: 100%; height: 100%; border: none; 
+        }
+
+        .contact-fast { margin-top: 30px; padding: 25px; background: #0d1b2a; color: white; border-radius: 8px; text-align: center; }
+        .contact-fast h4 { color: #ffb703; margin-bottom: 10px; font-size: 14px; text-transform: uppercase; }
+
+        /* Footer */
+        footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
+        .footer-content { font-size: 10px; line-height: 1.8; }
+        .footer-content p strong { font-size: 12px; color: #ffb703; }
+        .footer-content a { color: #ffb703; text-decoration: none; }
     </style>
 </head>
 <body>
+
+    <div class="floating-container">
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
+    </div>
 
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
@@ -76,50 +141,84 @@
         <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
         <nav>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html">Overview</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Services &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="commercial.html">Commercial</a>
+                        <a href="residential.html">Residential</a>
+                        <a href="pro-tips.html">Pro Tips</a>
+                    </div>
+                </li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
+                <li><a href="book-now.html" style="color: #ffb703;">Book Now</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Affiliate Shop &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="solar-parts.html">Solar Parts</a>
+                        <a href="powertools.html">Power Tools</a>
+                        <a href="electrical-materials.html">Materials</a>
+                    </div>
+                </li>
                 <li><a href="about-us.html">About Us</a></li>
-                <li><a href="book-now.html">Book Now</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section class="services-preview">
-            <h2>Service Booking & Scheduling</h2>
-            <p>Piliin ang opsyon sa ibaba para sa inyong appointment o inquiry.</p>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Service Booking & Scheduling</h2>
+                <p>Official Portal for Site Inspections and Inquiries. Secure your slot today.</p>
+            </div>
+        </section>
+
+        <section class="urgency-box">
+            <h3>⚠️ Huwag Ipagpaliban ang Inyong Kaligtasan!</h3>
+            <p>Ang electrical faults ay ang <span class="highlight-text">#1 sanhi ng sunog</span> sa mga tahanan at establisyimento. Huwag maghintay na magkaroon ng spark o amoy-sunog bago tumawag ng eksperto.</p>
+            <p style="background: #fff8e1; padding: 10px; border-radius: 4px; font-weight: bold; color: #0d1b2a; border: 1px dashed #ffb703;">
+                🔥 Limited Slots Only: Ang aming inspection schedules para sa linggong ito ay <span class="highlight-text">90% Full na!</span> Mag-book na sa ibaba para ma-secure ang priority response.
+            </p>
         </section>
 
         <div class="booking-container">
             <div class="tab-menu">
-                <button class="tab-btn active" onclick="openTab(event, 'form-tab')">📝 Fill-up Form</button>
-                <button class="tab-btn" onclick="openTab(event, 'calendar-tab')">📅 Check Availability</button>
+                <button class="tab-btn active" onclick="openTab(event, 'form-tab')">📝 Fill-up Quote Form</button>
+                <button class="tab-btn" onclick="openTab(event, 'calendar-tab')">📅 Check Service Calendar</button>
             </div>
 
             <div id="form-tab" class="booking-content active">
                 <h3>Request for Quote / Service</h3>
-                <p style="margin-bottom: 20px;">Pakisagutan ang form sa ibaba at tatawagan namin kayo.</p>
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform?embedded=true" height="800">Loading form...</iframe>
+                <p style="margin-bottom: 20px; font-size: 12px; color: #666;">Sagutan ang form sa ibaba at ang aming licensed engineers ay makikipag-ugnayan sa inyo agad.</p>
+                <div class="iframe-wrapper">
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform?embedded=true">Loading form...</iframe>
+                </div>
             </div>
 
             <div id="calendar-tab" class="booking-content">
-                <h3>Our Service Calendar</h3>
-                <p style="margin-bottom: 20px;">Tingnan ang aming available na slots para sa site inspection.</p>
-                <iframe src="https://calendar.google.com/calendar/embed?src=kohmzelectrical%40gmail.com&ctz=Asia%2FManila" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+                <h3>Our Real-Time Availability</h3>
+                <p style="margin-bottom: 20px; font-size: 12px; color: #666;">Tingnan ang aming open slots para sa inyong preferred date ng site visit.</p>
+                <div class="iframe-wrapper">
+                    <iframe src="https://calendar.google.com/calendar/embed?src=kohmzelectrical%40gmail.com&ctz=Asia%2FManila">Loading calendar...</iframe>
+                </div>
             </div>
 
             <div class="contact-fast">
                 <h4>Need Immediate Help?</h4>
-                <p>Call us directly at <strong>+63 926 617 4131</strong> for emergency electrical repairs.</p>
+                <p style="font-size: 12px;">Call us directly at <strong>+63 926 617 4131</strong> for emergency electrical repairs.</p>
             </div>
         </div>
     </main>
 
     <footer>
         <div class="footer-content">
-            <p><strong>KOHMZ Electrical Design and Build</strong></p>
+            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <hr style="margin:15px 0; border:0; border-top:1px solid #444;">
-            <p>Copyright © 2026 KOHMZ™ All Rights Reserved.</p>
+            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
+            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
+            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
         </div>
     </footer>
 
@@ -136,10 +235,4 @@
                 buttons[i].className = buttons[i].className.replace(" active", "");
             }
             document.getElementById(tabName).style.display = "block";
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.className += " active";
-        }
-    </script>
-
-</body>
-</html>
+            document.getElementById(tabName).classList.
