@@ -12,26 +12,52 @@
     <link rel="stylesheet" href="style.css">
     <style>
         /* Strict Font Scale: 20-14-12-10 */
-        body { font-size: 12px; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; } 
+        body { font-size: 12px; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; overflow-x: hidden; } 
         .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
         .moving-ads marquee { font-size: 10px; } 
         
-        /* Header & Navigation */
-        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo h1 { font-size: 20px; margin: 0; } 
+        /* MODERN RESPONSIVE HEADER */
+        header { 
+            background: #0d1b2a; color: white; padding: 15px 20px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
+        }
+        .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
         .logo span { color: #ffb703; }
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; }
-        .nav-links li { margin-left: 15px; position: relative; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; z-index: 1001; }
+
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s ease; }
+        .nav-links li { margin-left: 18px; position: relative; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
         .nav-links li a:hover { color: #ffb703; }
         
-        /* Dropdown Styles */
-        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; overflow: hidden; }
-        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; }
-        .dropdown-content a:hover { background-color: #ffb703; }
+        /* DROPDOWNS */
+        .dropdown-content { 
+            display: none; position: absolute; background-color: #ffffff; min-width: 175px; 
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; 
+            overflow: hidden; top: 100%; left: 0; border-top: 3px solid #ffb703; 
+        }
+        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; transition: 0.2s; font-weight: 600; }
+        .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; }
         .dropdown:hover .dropdown-content { display: block; }
 
-        /* Hero Section - UPDATED WITH NEW BACKGROUND IMAGE */
+        /* MOBILE OVERLAY */
+        @media (max-width: 992px) {
+            .menu-toggle { display: block; }
+            .nav-links {
+                display: none; flex-direction: column; position: absolute; 
+                top: 100%; left: 0; width: 100%; background: #0d1b2a; 
+                padding: 20px 0; border-bottom: 4px solid #ffb703;
+            }
+            .nav-links.active { display: flex; }
+            .nav-links li { margin: 15px 0; text-align: center; width: 100%; margin-left: 0; }
+            .nav-links li a { font-size: 18px; width: 100%; }
+            .dropdown-content { position: static; box-shadow: none; background: #1a2e44; display: none; width: 100%; }
+            .dropdown.active .dropdown-content { display: block; }
+        }
+
+        /* Hero Section - FIXED BACKGROUND */
         .hero { 
             background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('updated background picture fb.jpg') no-repeat center center; 
             background-size: cover; padding: 80px 20px; text-align: center; color: white; 
@@ -40,17 +66,8 @@
         .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
 
         /* 4 SEPARATE FLOATING BUTTONS */
-        .floating-container {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            display: flex;
-            flex-direction: column; gap: 12px; z-index: 9999;
-        }
-        .float-btn {
-            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s;
-        }
+        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
+        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
         .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
         .fb-messenger { background: #0084ff; }
         .viber { background: #7360f2; }
@@ -62,7 +79,7 @@
         .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; } 
         .content-section p { max-width: 900px; margin: 0 auto 20px; line-height: 1.8; color: #444; }
 
-        /* Core Competencies Cards */
+        /* Cards */
         .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
         .card { background: white; width: 300px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 5px solid #ffb703; text-align: left; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
@@ -77,15 +94,13 @@
         .solar-type-card ul { padding-left: 15px; font-size: 11px; color: #555; }
         .best-pick-tag { background: #ffb703; color: #0d1b2a; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 3px; display: inline-block; margin-bottom: 10px; }
 
-        /* QR Section - UPDATED */
+        /* QR Section */
         .qr-section { background: #fff; padding: 40px; border-radius: 12px; margin: 40px auto; max-width: 750px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; border: 1px solid #eee; }
         .qr-image { width: 180px; height: 180px; border: 6px solid #0d1b2a; border-radius: 15px; background: white; overflow: hidden; }
-        
         .btn-group-vcard { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
-        .vcard-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #0d1b2a; color: #ffb703 !important; padding: 14px 20px; text-decoration: none; border-radius: 6px; font-weight: 900; font-size: 12px; letter-spacing: 1px; transition: 0.3s; border: 2px solid #ffb703; cursor: pointer; }
+        .vcard-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #0d1b2a; color: #ffb703 !important; padding: 14px 20px; text-decoration: none; border-radius: 6px; font-weight: 900; font-size: 12px; transition: 0.3s; border: 2px solid #ffb703; cursor: pointer; }
         .vcard-btn:hover { background: #ffb703; color: #0d1b2a !important; transform: translateY(-3px); }
         .btn-map-about { background: #1155cc; color: white !important; border-color: #1155cc; }
-        .btn-map-about:hover { background: #0c3d8f; border-color: #0c3d8f; }
 
         /* Footer */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
@@ -104,18 +119,17 @@
     </div>
 
     <div class="moving-ads">
-        <marquee behavior="scroll" direction="left">
-            ⚡ KOHMZ Electrical Design and Build: Specialist Technical Firm | 24/7 Professional Support | Certified Solar & Power Implementations ⚡
-        </marquee>
+        <marquee behavior="scroll" direction="left">⚡ KOHMZ Electrical Design and Build: Specialist Technical Firm | 24/7 Professional Support | Certified Solar & Power Implementations ⚡</marquee>
     </div>
 
     <header>
         <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars"></i></div>
         <nav>
-            <ul class="nav-links">
+            <ul class="nav-links" id="nav-list">
                 <li><a href="index.html">Overview</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Services ▾</a>
+                    <a href="#">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="commercial.html">Commercial</a>
                         <a href="residential.html">Residential</a>
@@ -124,7 +138,7 @@
                 </li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Affiliate Shop ▾</a>
+                    <a href="#">Affiliate Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
@@ -229,29 +243,19 @@
         </section>
 
         <section class="content-section">
-            <h3>Ready to partner with technical experts?</h3>
-            <div style="margin: 25px 0;">
-                <a href="book-now.html" class="vcard-btn" style="background: #25d366; border-color: #25d366; color: white !important;">
-                   <i class="fas fa-calendar-check"></i> SCHEDULE A CONSULTATION
-                </a>
-            </div>
+            <div style="margin-bottom: 40px;"><a href="book-now.html" class="vcard-btn" style="background: #25d366; border-color: #25d366; color: white !important;"><i class="fas fa-calendar-check"></i> SCHEDULE A CONSULTATION</a></div>
 
             <div class="qr-section">
                 <div class="qr-image">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://kohmzelectrical.github.io/kohmz-electrical-services/vcard.html" alt="Samuel Millano KOHMZ QR" style="width:100%; height:100%;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://kohmzelectrical.github.io/kohmz-electrical-services/vcard.html" alt="KOHMZ QR">
                 </div>
                 <div style="flex: 1; text-align: left; min-width: 280px;">
-                    <h3 style="color: #0d1b2a; font-size: 14px; margin-bottom: 8px; text-transform: uppercase; font-weight: 800;">Samuel Millano</h3>
-                    <p style="font-size: 10px; color: #666; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px;">Owner / Electrical Contractor</p>
+                    <h3 style="color: #0d1b2a; font-size: 14px; margin-bottom: 8px; text-transform: uppercase; font-weight: 800;">KOHMZ INDUSTRIAL DESIGN SERVICES</h3>
+                    <p style="font-size: 10px; color: #666; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px;">Electrical Contractor / Technical Governance</p>
                     <p style="font-size: 11px; margin-bottom: 20px; color: #444; line-height: 1.6;">Scan QR to save our digital identity, or use the professional actions below to connect and locate us immediately.</p>
-                    
                     <div class="btn-group-vcard">
-                        <a href="https://www.google.com/maps/search/?api=1&query=KOHMZ+ELECTRICAL+DESIGN+AND+BUILD+Quezon+City" target="_blank" class="vcard-btn btn-map-about">
-                            <i class="fas fa-map-marked-alt"></i> VIEW ON MAP
-                        </a>
-                        <button onclick="downloadVCard()" class="vcard-btn">
-                            <i class="fas fa-address-card"></i> DOWNLOAD V-CARD
-                        </button>
+                        <a href="https://maps.google.com" target="_blank" class="vcard-btn btn-map-about"><i class="fas fa-map-marked-alt"></i> VIEW ON MAP</a>
+                        <button onclick="downloadVCard()" class="vcard-btn"><i class="fas fa-address-card"></i> DOWNLOAD V-CARD</button>
                     </div>
                 </div>
             </div>
@@ -262,27 +266,32 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
             <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
             <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
-            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
         </div>
     </footer>
 
     <script>
-        function downloadVCard() {
-            const vCardData = `BEGIN:VCARD
-VERSION:3.0
-FN:Samuel Millano
-ORG:KOHMZ INDUSTRIAL DESIGN SERVICES
-TITLE:Owner / Electrical Contractor
-TEL;TYPE=CELL,VOICE:+639266174131
-EMAIL:kohmzelectrical@gmail.com
-URL:https://kohmzelectrical.github.io/kohmz-electrical-services/
-ADR;TYPE=WORK:;;Quezon City;Metro Manila;;Philippines
-NOTE:KOHMZ ELECTRICAL DESIGN AND BUILD
-END:VCARD`;
+        // MOBILE MENU
+        const menuToggle = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+        const dropdowns = document.querySelectorAll('.dropdown');
 
+        menuToggle.addEventListener('click', () => {
+            navList.classList.toggle('active');
+            menuToggle.querySelector('i').classList.toggle('fa-bars');
+            menuToggle.querySelector('i').classList.toggle('fa-times');
+        });
+
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('click', () => {
+                if (window.innerWidth <= 992) dropdown.classList.toggle('active');
+            });
+        });
+
+        // VCARD SCRIPT: RETAINED YOUR NAME AS CONTACT
+        function downloadVCard() {
+            const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Samuel Millano\nORG:KOHMZ INDUSTRIAL DESIGN SERVICES\nTITLE:Owner / Electrical Contractor\nTEL;TYPE=CELL,VOICE:+639266174131\nEMAIL:kohmzelectrical@gmail.com\nURL:https://kohmzelectrical.github.io/kohmz-electrical-services/\nADR;TYPE=WORK:;;Quezon City;Metro Manila;;Philippines\nNOTE:KOHMZ ELECTRICAL DESIGN AND BUILD\nEND:VCARD`;
             const blob = new Blob([vCardData], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
