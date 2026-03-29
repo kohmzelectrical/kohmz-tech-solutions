@@ -6,29 +6,6 @@
     <title>Portfolio | KOHMZ Electrical Design and Build</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .portfolio-steps {
-            text-align: left;
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .step-card {
-            background: #fff;
-            border-left: 5px solid #ffb703;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 0 10px 10px 0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .step-card h3 {
-            color: #0d1b2a;
-            margin-bottom: 10px;
-            font-size: 1.3rem;
-        }
-        .step-card p {
-            color: #444;
-            line-height: 1.6;
-        }
         .portfolio-header {
             background: #0d1b2a;
             color: white;
@@ -38,6 +15,72 @@
         .portfolio-header h2 {
             color: #ffb703;
             margin-bottom: 15px;
+            font-size: 2.5rem;
+        }
+
+        .portfolio-steps {
+            text-align: left;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Style para sa Collapsible Button */
+        .collapsible {
+            background-color: #fff;
+            color: #0d1b2a;
+            cursor: pointer;
+            padding: 20px 25px;
+            width: 100%;
+            border: none;
+            border-left: 5px solid #ffb703;
+            border-radius: 5px;
+            text-align: left;
+            outline: none;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Hover effect */
+        .active, .collapsible:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Icon (+ at -) */
+        .collapsible:after {
+            content: '\002B'; /* Plus sign (+) */
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffb703;
+        }
+
+        .active:after {
+            content: "\2212"; /* Minus sign (−) */
+        }
+
+        /* Style para sa Content Panel (Nakatago sa simula) */
+        .panel {
+            padding: 0 25px;
+            background-color: #fff;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-radius: 0 0 5px 5px;
+            margin-bottom: 20px;
+            border-left: 5px solid #ffb703;
+        }
+
+        /* Inner content styling */
+        .panel-content {
+            padding: 25px 0;
+            color: #444;
+            line-height: 1.8;
         }
     </style>
 </head>
@@ -45,7 +88,7 @@
 
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
-            ⚡ KOHMZ Standard of Execution: We eliminate guesswork through meticulous planning and testing ⚡
+            ⚡ KOHMZ Standard of Execution: Eliminating Guesswork Through Meticulous Planning and Testing ⚡
         </marquee>
     </div>
 
@@ -64,29 +107,39 @@
     <main>
         <section class="portfolio-header">
             <h2>The KOHMZ Standard of Execution</h2>
-            <p>We eliminate guesswork from electrical contracting through meticulous planning and testing.</p>
+            <p>We eliminate guesswork from electrical contracting through meticulous planning and testing. <br>Click each step below to learn more about our process.</p>
         </section>
 
         <section class="portfolio-steps">
-            <div class="step-card">
-                <h3>Step 1: Precision CAD Design</h3>
-                <p>Every major project begins with detailed CAD electrical drawings and load calculations to ensure absolute code compliance.</p>
+            
+            <button type="button" class="collapsible">Step 1: Precision CAD Design</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <p>Every major project begins with detailed CAD electrical drawings and load calculations to ensure absolute code compliance.</p>
+                </div>
             </div>
 
-            <div class="step-card">
-                <h3>Step 2: Transparent Estimating</h3>
-                <p>No hidden fees. We provide clear, highly detailed material and labor cost estimates before any wire is pulled.</p>
+            <button type="button" class="collapsible">Step 2: Transparent Estimating</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <p>No hidden fees. We provide clear, highly detailed material and labor cost estimates before any wire is pulled.</p>
+                </div>
             </div>
 
-            <div class="step-card">
-                <h3>Step 3: Expert Installation & NEMA Compliance</h3>
-                <p>Built to last, utilizing proper wire management, conduits, and heavy-duty enclosures.</p>
+            <button type="button" class="collapsible">Step 3: Expert Installation & NEMA Compliance</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <p>Built to last, utilizing proper wire management, conduits, and heavy-duty enclosures.</p>
+                </div>
             </div>
 
-            <div class="step-card">
-                <h3>Step 4: Rigorous Safety Testing</h3>
-                <p>We verify the integrity of every installation with thorough single-phase insulation resistance testing and final load evaluations.</p>
+            <button type="button" class="collapsible">Step 4: Rigorous Safety Testing</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <p>We verify the integrity of every installation with thorough single-phase insulation resistance testing and final load evaluations.</p>
+                </div>
             </div>
+
         </section>
     </main>
 
@@ -98,6 +151,23 @@
             <p>Copyright © 2026 KOHMZ™ All Rights Reserved.</p>
         </div>
     </footer>
+
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+          });
+        }
+    </script>
 
 </body>
 </html>
