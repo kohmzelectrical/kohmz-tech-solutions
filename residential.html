@@ -6,10 +6,9 @@
     <title>Residential Electrical Services | KOHMZ Electrical</title>
     
     <link rel="icon" type="image/jpeg" href="logo.jpg">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
+    
     <style>
         /* Strict Font Scale: 20-14-12-10 */
         body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; overflow-x: hidden; } 
@@ -17,7 +16,7 @@
         .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
         .moving-ads marquee { font-size: 10px; } 
         
-        /* --- MODERN RESPONSIVE HEADER --- */
+        /* MODERN RESPONSIVE HEADER */
         header { 
             background: #0d1b2a; color: white; padding: 15px 20px; 
             display: flex; justify-content: space-between; align-items: center; 
@@ -26,14 +25,14 @@
         .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
         .logo span { color: #ffb703; }
 
-        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; }
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; z-index: 1001; }
 
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s ease; }
         .nav-links li { margin-left: 18px; position: relative; }
         .nav-links li a { color: white; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
         .nav-links li a:hover { color: #ffb703; }
         
-        /* DROPDOWNS (Desktop) */
+        /* DROPDOWNS */
         .dropdown-content { 
             display: none; position: absolute; background-color: #ffffff; min-width: 180px; 
             box-shadow: 0px 8px 25px rgba(0,0,0,0.15); z-index: 1001; border-radius: 4px; 
@@ -43,7 +42,7 @@
         .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; }
         .dropdown:hover .dropdown-content { display: block; }
 
-        /* MOBILE OVERLAY (Max-width 992px) */
+        /* MOBILE OVERLAY */
         @media (max-width: 992px) {
             header { padding: 15px 25px; }
             .menu-toggle { display: block; }
@@ -86,35 +85,33 @@
         .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; font-weight: 700; } 
         .card p, .content-section p, .content-section ul li { font-size: 12px; color: #444; line-height: 1.6; } 
 
+        /* Special Highlight Box */
+        .cta-box { background: #0d1b2a; color: white; padding: 40px; border-radius: 10px; max-width: 900px; margin: 40px auto; text-align: center; }
+        .cta-box h2 { color: #ffb703; }
+        .cta-button { background: #ffb703; color: #0d1b2a; padding: 12px 25px; font-weight: bold; border-radius: 5px; text-decoration: none; display: inline-block; margin-top: 20px; }
+
         /* Footer */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
-        .footer-content p strong { font-size: 12px; color: #ffb703; }
         .footer-content a { color: #ffb703; text-decoration: none; }
     </style>
 </head>
 <body>
 
     <div class="floating-container">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email"><i class="fas fa-envelope"></i></a>
     </div>
 
     <div class="moving-ads">
-        <marquee behavior="scroll" direction="left">
-            ⚡ RESIDENTIAL SERVICES: New Installations | Panel Upgrades | AC Dedicated Wiring | 24/7 Troubleshooting & Repair ⚡
-        </marquee>
+        <marquee behavior="scroll" direction="left">⚡ RESIDENTIAL SERVICES: New Installations | Panel Upgrades | AC Dedicated Wiring | 24/7 Troubleshooting & Repair ⚡</marquee>
     </div>
 
     <header>
         <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
-        
-        <div class="menu-toggle" id="mobile-menu">
-            <i class="fas fa-bars"></i>
-        </div>
-
+        <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars"></i></div>
         <nav>
             <ul class="nav-links" id="nav-list">
                 <li><a href="index.html">Overview</a></li>
@@ -122,14 +119,14 @@
                     <a href="#" class="dropbtn" style="color: #ffb703;">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="commercial.html">Commercial</a>
-                        <a href="residential.html">Residential</a>
+                        <a href="residential.html" style="color: #ffb703;">Residential</a>
                         <a href="pro-tips.html">Pro Tips</a>
                     </div>
                 </li>
-                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Affiliate Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#">Technical Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
@@ -155,27 +152,25 @@
             <p style="text-align:center; max-width:800px; margin: 0 auto 30px;">From new house construction wiring to fixing a stubborn tripped breaker, KOHMZ Electrical brings industrial-level precision into your home. We ensure your electrical system can handle today’s modern appliances safely.</p>
             
             <div class="cards-container">
-                <div class="card" style="border-top-color: #ffb703;">
+                <div class="card">
                     <h3>Panel Upgrades & Replacements</h3>
                     <p>Older homes often cannot handle the load of modern air conditioners and heaters. We upgrade service panels and meter bases to prevent fire hazards and ensure smooth power flow.</p>
                 </div>
-                <div class="card" style="border-top-color: #ffb703;">
+                <div class="card">
                     <h3>Dedicated Appliance Wiring</h3>
                     <p>Installing a new Air Conditioner or Water Heater? We provide dedicated circuits with proper breaker sizing so your appliances don't overload your home's main system.</p>
                 </div>
-                <div class="card" style="border-top-color: #ffb703;">
+                <div class="card">
                     <h3>24/7 Troubleshooting & Repair</h3>
                     <p>Sparking outlets? Flickering lights? Power outages in one room? Stop using the affected area immediately and call our emergency response team for rapid diagnostics and repair.</p>
                 </div>
             </div>
         </section>
 
-        <section class="content-section" style="background:#0d1b2a; color:white; border-radius:10px; max-width:900px; margin: 40px auto; padding: 40px;">
-            <h2 style="color:#ffb703;">Why Choose KOHMZ for Your Home?</h2>
-            <p style="color:#ccc; text-align:center;">We treat your home with the utmost respect. We utilize proper wire management, high-grade THHN/THWN copper wires, and perform rigorous safety testing before we leave any residential project.</p>
-            <div style="text-align:center; margin-top:20px;">
-                <a href="book-now.html" class="cta-button" style="background:#ffb703; color:#0d1b2a; padding: 12px 25px; font-weight:bold; border-radius:5px; text-decoration:none;">Request a Home Service</a>
-            </div>
+        <section class="cta-box">
+            <h2>Why Choose KOHMZ for Your Home?</h2>
+            <p style="color:#ccc;">We treat your home with the utmost respect. We utilize proper wire management, high-grade THHN/THWN copper wires, and perform rigorous safety testing before we leave any residential project.</p>
+            <a href="book-now.html" class="cta-button">Request a Home Service</a>
         </section>
     </main>
 
