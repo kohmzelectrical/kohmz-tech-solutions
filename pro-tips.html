@@ -3,26 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electrical Pro Tips | KOHMZ Electrical</title>
+    <title>Electrical Pro Tips & Safety | KOHMZ Electrical</title>
+    
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    
     <link rel="stylesheet" href="style.css">
     <style>
-        body { font-size: 12px; } 
+        /* Strict Font Scale: 20-14-12-10 */
+        body { font-size: 12px; font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; } 
+        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
         .moving-ads marquee { font-size: 10px; } 
-        .logo h1 { font-size: 20px; } 
-        .nav-links li a { font-size: 14px; } 
-        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 10px; } 
-        .hero p { font-size: 12px; max-width: 600px; margin: 0 auto 20px; } 
-        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 20px; text-transform: uppercase; text-align: center; } 
-        .tip-card { background: #fff; padding: 25px; margin-bottom: 20px; border-left: 5px solid #ffb703; border-radius: 0 8px 8px 0; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: left; }
-        .tip-card h3 { font-size: 14px; color: #1a73e8; margin-bottom: 10px; }
-        .tip-card p { font-size: 12px; color: #444; line-height: 1.6; }
-        .footer-content { font-size: 10px; line-height: 1.6; }
-        .footer-content p strong { font-size: 12px; }
         
-        .hero {
-            background: linear-gradient(rgba(13, 27, 42, 0.9), rgba(13, 27, 42, 0.9)), url('logo.jpg') no-repeat center center;
-            background-size: contain; height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 0 20px;
+        /* Header & Navigation */
+        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo h1 { font-size: 20px; margin: 0; } 
+        .logo span { color: #ffb703; }
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; }
+        .nav-links li { margin-left: 15px; position: relative; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .nav-links li a:hover { color: #ffb703; }
+        
+        /* Dropdown Styles */
+        .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-radius: 4px; overflow: hidden; }
+        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; }
+        .dropdown-content a:hover { background-color: #ffb703; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        /* Hero Section */
+        .hero { 
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 80px 20px; text-align: center; color: white; 
         }
+        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; } 
+        .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
+
+        /* Content & Tip Cards */
+        .content-section { padding: 50px 10%; text-align: center; }
+        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; } 
+        
+        .tip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; text-align: left; }
+        .tip-card { background: white; padding: 25px; border-radius: 8px; border-left: 5px solid #ffb703; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .tip-card h3 { font-size: 14px; color: #0d1b2a; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .tip-card p { font-size: 12px; color: #555; line-height: 1.6; margin: 0; }
+
+        /* Call to Action */
+        .cta-box { background: #0d1b2a; color: white; padding: 40px; border-radius: 8px; margin-top: 40px; text-align: center; }
+        .cta-button { background: #25d366; color: white; padding: 12px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block; margin-top: 15px; }
+
+        footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
+        .footer-content { font-size: 10px; line-height: 1.8; }
     </style>
 </head>
 <body>
@@ -46,7 +75,16 @@
                         <a href="pro-tips.html">Pro Tips</a>
                     </div>
                 </li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Affiliate Shop &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="solar-parts.html">Solar Parts</a>
+                        <a href="powertools.html">Power Tools</a>
+                        <a href="electrical-materials.html">Materials</a>
+                    </div>
+                </li>
                 <li><a href="about-us.html">About Us</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
             </ul>
@@ -56,37 +94,70 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h2>ELECTRICAL PRO TIPS & SAFETY</h2>
-                <p>Learn directly from the experts. Practical advice to maintain safety and efficiency in your electrical systems.</p>
+                <h2>Electrical Pro Tips & Safety</h2>
+                <p>Advanced engineering insights for maintaining a safe, efficient, and code-compliant electrical system at home or in the office.</p>
             </div>
         </section>
 
-        <section class="content-section" style="max-width: 900px; margin: auto;">
+        <section class="content-section">
             <h2>Advice from the KOHMZ Engineering Team</h2>
             
-            <div class="tip-card">
-                <h3>1. How to Know If You Need a Panel Upgrade</h3>
-                <p>If you live in an older home and experience frequently tripping circuit breakers, flickering lights when an appliance turns on, or if your panel box feels warm to the touch, your system is likely overloaded. A load evaluation and panel upgrade are required immediately to prevent electrical fires.</p>
+            <div class="tip-grid">
+                <div class="tip-card">
+                    <h3>1. Panel Board Load Evaluation</h3>
+                    <p>Flickering lights when the AC turns on? Your panel may be undersized. A professional load evaluation ensures your breakers match your current power consumption to avoid nuisance tripping and overheating.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h3>2. Dedicated Circuit Rule</h3>
+                    <p>Heavy appliances like ACs, Water Heaters, and Pumps must have their own "Dedicated Circuit." Sharing a circuit with outlets can melt wires inside the wall and cause structural fires over time.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h3>3. Sparking Outlet Diagnostics</h3>
+                    <p>A sparking outlet usually indicates a loose connection or arc-fault. If you see sparks, turn off the breaker immediately. Loose wiring creates high resistance, which leads to intense heat and electrical combustion.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h3>4. Insulation Resistance (Megger Test)</h3>
+                    <p>Hidden micro-shorts are invisible. Before final wiring, KOHMZ uses a Megohmmeter to test wire insulation. This ensures that pests or heat haven't compromised the integrity of the wires inside your conduits.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h3>5. GFCI in Wet Areas</h3>
+                    <p>Outlets near sinks, bathrooms, or outdoors MUST be GFCI-protected (Ground Fault Circuit Interrupter). This shuts off power in milliseconds if water contact is detected, preventing fatal electric shocks.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h3>6. Surge Protective Devices (SPD)</h3>
+                    <p>Voltage spikes from the grid or lightning can fry expensive appliances (Inverters, Smart TVs). Installing a Panel-Level SPD provides a "safety valve" that diverts excess voltage safely to the ground.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h3>7. Proper Grounding (Earthing)</h3>
+                    <p>The 3rd pin on your plug is there for your life. A proper grounding system provides a path for fault current to escape. Without it, your metal appliance bodies could become "live" and shock anyone who touches them.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h3>8. Extension Cord Safety</h3>
+                    <p>Extension cords are temporary solutions, not permanent wiring. Daisy-chaining (connecting one strip to another) creates a massive fire hazard. If you need more outlets, it's time to install new wall receptacles.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h3>9. LED Retrofitting Benefits</h3>
+                    <p>Switching to LEDs isn't just about the bill. LEDs run much cooler than halogen/incandescent bulbs. Reducing heat in your lighting fixtures extends the lifespan of the wire insulation above your ceiling.</p>
+                </div>
+
+                <div class="tip-card">
+                    <h3>10. CAD Electrical Drawings</h3>
+                    <p>Never start a renovation without an Electrical Plan. CAD drawings and Load Schedules act as your system's blueprint, making future troubleshooting and expansions faster, cheaper, and safer.</p>
+                </div>
             </div>
 
-            <div class="tip-card">
-                <h3>2. The Rule for Dedicated Circuits</h3>
-                <p>Never plug heavy-duty appliances (like Air Conditioners, Water Heaters, or Microwaves) into standard room outlets or extension cords. These require a "Dedicated Circuit" — meaning they have their own specific wire running directly to their own circuit breaker in the panel. This prevents wire melting and system overloads.</p>
-            </div>
-
-            <div class="tip-card">
-                <h3>3. What to Do with a Sparking Outlet</h3>
-                <p>If an outlet sparks, pops, or smells like burning plastic, <strong>stop using it immediately.</strong> Go to your main panel board and turn off the breaker connected to that room. Do not attempt to tape it or fix it yourself. Call a licensed electrical contractor to perform diagnostics.</p>
-            </div>
-
-            <div class="tip-card">
-                <h3>4. The Importance of Insulation Resistance Testing</h3>
-                <p>A wire might look fine on the outside, but its internal insulation could be compromised due to heat, pests, or age. The "KOHMZ Standard" involves using a Digital Megohmmeter to test wire insulation before finalizing a project. This ensures there are no hidden micro-shorts inside your walls.</p>
-            </div>
-
-            <div style="text-align:center; margin-top:30px;">
-                <p style="font-size: 12px; margin-bottom: 10px;">Experiencing any of these issues?</p>
-                <a href="tel:+639266174131" class="cta-button" style="background:#25d366; color:white; padding: 10px 20px; font-weight:bold; border-radius:5px; text-decoration:none;">Call KOHMZ for Assistance</a>
+            <div class="cta-box">
+                <p style="font-size: 14px;">Experiencing flickering lights or unusual burning smells?</p>
+                <p style="font-size: 12px; color: #bbb;">Don't wait for a system failure. Contact us for professional diagnostics.</p>
+                <a href="https://wa.me/639266174131" target="_blank" class="cta-button">Message KOHMZ via WhatsApp</a>
             </div>
         </section>
     </main>
@@ -95,8 +166,8 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <hr style="margin:10px 0; border:0; border-top:1px solid #444;">
-            <p>Copyright © 2026 KOHMZ™ All Rights Reserved.</p>
+            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 600px;">
+            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
         </div>
     </footer>
 </body>
