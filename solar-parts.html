@@ -6,30 +6,117 @@
     <title>Solar Parts Shop | KOHMZ Electrical</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Strict Font Scale: 20-14-12-10 */
-        body { font-size: 12px; } 
+        body { font-size: 12px; font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; } 
+        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
         .moving-ads marquee { font-size: 10px; } 
-        .logo h1 { font-size: 20px; } 
-        .nav-links li a { font-size: 14px; } 
-        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 10px; } 
-        .hero p { font-size: 12px; max-width: 600px; margin: 0 auto 20px; } 
-        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 20px; text-transform: uppercase; text-align: center; } 
-        .card { text-align: center; border-top: 4px solid #ffb703; padding: 20px; }
-        .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; } 
-        .card p { font-size: 12px; color: #444; line-height: 1.6; margin-bottom: 15px; } 
-        .footer-content { font-size: 10px; line-height: 1.6; }
-        .footer-content p strong { font-size: 12px; }
+        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo h1 { font-size: 20px; margin: 0; color: white; } 
+        .logo span { color: #ffb703; }
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; }
+        .nav-links li { margin-left: 15px; position: relative; }
+        .nav-links li a { color: white; text-decoration: none; font-size: 14px; } 
         
         .hero {
             background: linear-gradient(rgba(13, 27, 42, 0.9), rgba(13, 27, 42, 0.9)), url('logo.jpg') no-repeat center center;
             background-size: contain; height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; padding: 0 20px;
         }
+        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 10px; } 
+        .hero p { font-size: 12px; max-width: 600px; margin: 0 auto 20px; } 
         
-        /* Buttons para sa Shopee at Lazada */
-        .btn-shopee { padding: 8px 15px; font-size: 11px; border-radius: 4px; display: inline-block; text-decoration: none; font-weight: bold; background: #ee4d2d; color: white; margin-bottom: 5px; width: 90%; }
-        .btn-lazada { padding: 8px 15px; font-size: 11px; border-radius: 4px; display: inline-block; text-decoration: none; font-weight: bold; background: #0f136d; color: white; width: 90%; }
-        .btn-shopee:hover { background: #d73a1e; }
-        .btn-lazada:hover { background: #0a0c4a; }
+        .content-section { padding: 40px 10%; background: white; text-align: center; }
+        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 20px; text-transform: uppercase; } 
         
-        .image-placeholder { height:120px; background:#f4f7f6; margin-bottom:15px; display:flex; align-items:center; justify-content:center; color:#888; border-radius:4px; border: 1px dashed #ccc; }
-    </
+        .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .card { background: white; width: 300px; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px; border-top: 4px solid #ffb703; text-align: center; }
+        .card h3 { font-size: 14px; margin-bottom: 10px; color: #0d1b2a; } 
+        .card p { font-size: 12px; color: #444; line-height: 1.6; margin-bottom: 15px; } 
+        
+        .btn-shopee { padding: 8px 15px; font-size: 11px; border-radius: 4px; display: block; text-decoration: none; font-weight: bold; background: #ee4d2d; color: white; margin-bottom: 10px; }
+        .btn-lazada { padding: 8px 15px; font-size: 11px; border-radius: 4px; display: block; text-decoration: none; font-weight: bold; background: #0f136d; color: white; }
+        
+        footer { background: #0d1b2a; color: white; text-align: center; padding: 20px; margin-top: 40px; }
+        .footer-content { font-size: 10px; line-height: 1.6; }
+        .footer-content p strong { font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <div class="moving-ads">
+        <marquee behavior="scroll" direction="left">
+            ⚡ KOHMZ AFFILIATE SHOP: High-Efficiency Solar Panels | Hybrid Inverters | Off-Grid Setup Components ⚡
+        </marquee>
+    </div>
+
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="solar-parts.html" style="color: #ffb703;">Solar Parts</a></li>
+                <li><a href="powertools.html">Power Tools</a></li>
+                <li><a href="electrical-materials.html">Materials</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>AFFILIATE SHOP: SOLAR COMPONENTS</h2>
+                <p>Engineer-approved solar parts for maximum energy savings and reliability. Order directly from our trusted suppliers.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Recommended Solar Equipment</h2>
+            <div class="cards-container">
+                
+                <div class="card">
+                    <h3>High-Efficiency Solar Panel</h3>
+                    <p>Monocrystalline panels (200W-600W) perfect for residential and commercial hybrid/off-grid setups.</p>
+                    <a href="https://shopee.ph/-Real-Watt-200W-240W-600W-SOLAR-PANEL-Monocrystalline-Big-Solar-Panel-IP67-Waterproof-i.487797661.28914065902" target="_blank" class="btn-shopee">View on Shopee</a>
+                    <a href="https://c.lazada.com.ph/t/c.2t72dA" target="_blank" class="btn-lazada">View on Lazada</a>
+                </div>
+
+                <div class="card">
+                    <h3>DEYE Hybrid Solar Inverter</h3>
+                    <p>8kW/5kW Hybrid Inverter with EPS backup. Smart monitoring capabilities for seamless power transition.</p>
+                    <a href="https://invl.me/clna4y2?url=https%3A%2F%2Fshopee.ph%2FDEYE-8kw-8000W-Hybrid-Solar-Inverter-with-8kw-EPS" target="_blank" class="btn-shopee">View on Shopee</a>
+                    <a href="https://c.lazada.com.ph/t/c.2t72jH" target="_blank" class="btn-lazada">View on Lazada</a>
+                </div>
+
+                <div class="card">
+                    <h3>LiFePO4 Solar Battery (48V)</h3>
+                    <p>Factory Wholesale 100AH/200AH deep cycle lithium battery for long-lasting energy storage.</p>
+                    <a href="https://invl.me/clna4z1?url=https%3A%2F%2Fshopee.ph%2FFactory-Wholesale-48V-lithium-ion-battery" target="_blank" class="btn-shopee">View on Shopee</a>
+                    <a href="https://c.lazada.com.ph/t/c.2t72VJ" target="_blank" class="btn-lazada">View on Lazada</a>
+                </div>
+
+                <div class="card">
+                    <h3>PV Aluminum Mounting Rails</h3>
+                    <p>Standard 2.4-meter roof solar panel mounting rails to ensure your panels are securely fastened.</p>
+                    <a href="https://invl.me/clna4zc?url=https%3A%2F%2Fshopee.ph%2FPV-Aluminum-Railings-Roof-Solar-Panel-Mounting-Rail" target="_blank" class="btn-shopee">View on Shopee</a>
+                    <a href="https://c.lazada.com.ph/t/c.2t7dus" target="_blank" class="btn-lazada">View on Lazada</a>
+                </div>
+
+                <div class="card">
+                    <h3>Solar DC Breakers & SPDs</h3>
+                    <p>Protect your system from power surges and overloads with high-quality DC isolation switches.</p>
+                    <a href="https://c.lazada.com.ph/t/c.2GGbRE" target="_blank" class="btn-lazada">Option 1 on Lazada</a>
+                    <a href="https://c.lazada.com.ph/t/c.2vNNj3" target="_blank" class="btn-lazada">Option 2 on Lazada</a>
+                </div>
+
+                <div class="card">
+                    <h3>PV Cables & MC4 Connectors</h3>
+                    <p>Standard solar cables and weatherproof MC4 connectors for safe and efficient power transmission.</p>
+                    <a href="https://c.lazada.com.ph/t/c.2vNN9I" target="_blank" class="btn-lazada">Option 1 on Lazada</a>
+                    <a href="https://c.lazada.com.ph/t/c.2vNNQj" target="_blank" class="btn-lazada">Option 2 on Lazada</a>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong>
