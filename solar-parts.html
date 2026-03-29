@@ -58,24 +58,33 @@
         .content-section { padding: 50px 10%; text-align: center; }
         .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; font-weight: 800; } 
         
-        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; justify-content: center; }
-        .card { background: white; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 5px solid #ffb703; text-align: left; transition: 0.3s; }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; justify-content: center; }
+        .card { background: white; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 4px solid #ffb703; text-align: left; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         
-        .product-image-wrap { width: 100%; height: 200px; background: #fff; border-radius: 8px; margin-bottom: 15px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #f0f0f0; }
-        .product-image-wrap img { max-width: 95%; max-height: 95%; object-fit: contain; }
+        /* Image Display Fix: Siguradong nakagitna at hindi putol */
+        .product-image-wrap { 
+            width: 100%; height: 180px; background: #fff; border-radius: 8px; 
+            margin-bottom: 12px; overflow: hidden; display: flex; align-items: center; 
+            justify-content: center; border: 1px solid #f0f0f0; position: relative;
+        }
+        .product-image-wrap img { 
+            max-width: 100%; max-height: 100%; object-fit: contain; 
+            /* Fallback para kung hindi pa load ang image */
+            display: block;
+        }
 
-        .card h3 { font-size: 13px; margin-bottom: 8px; color: #0d1b2a; font-weight: 700; min-height: 35px; } 
-        .card p { font-size: 11px; color: #555; line-height: 1.5; margin-bottom: 12px; min-height: 48px; } 
+        .card h3 { font-size: 12px; margin-bottom: 8px; color: #0d1b2a; font-weight: 700; min-height: 30px; } 
+        .card p { font-size: 11px; color: #555; line-height: 1.4; margin-bottom: 10px; min-height: 40px; } 
         
-        /* CONVINCING TECHNICAL NOTES */
-        .pro-note { font-size: 10px; background: #fff8e1; color: #d84315; padding: 8px 12px; border-radius: 4px; font-weight: bold; margin-bottom: 15px; display: block; border-left: 3px solid #ffb703; }
+        /* Technical Notes */
+        .pro-note { font-size: 10px; background: #fff8e1; color: #d84315; padding: 6px 10px; border-radius: 4px; font-weight: bold; margin-bottom: 12px; display: block; border-left: 3px solid #ffb703; }
 
         .btn-lazada { 
-            display: block; width: 100%; text-align: center; padding: 12px 0; font-size: 11px; border-radius: 6px; 
+            display: block; width: 100%; text-align: center; padding: 10px 0; font-size: 11px; border-radius: 5px; 
             text-decoration: none; font-weight: bold; background: #0f136d; color: white; transition: 0.3s; 
         }
-        .btn-lazada:hover { background: #f36f21; transform: scale(1.02); } 
+        .btn-lazada:hover { background: #f36f21; }
 
         /* Footer Sync */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
@@ -95,7 +104,7 @@
 
     <div class="moving-ads">
         <marquee behavior="scroll" direction="left">
-            ⚡ KOHMZ AFFILIATE SHOP: Specialist-Vetted Solar Panels | Hybrid Inverters | Professional-Grade Mounting and DC Protection ⚡
+            ⚡ KOHMZ AFFILIATE SHOP: Specialist-Vetted Solar Panels | Hybrid Inverters | Technical Grade Mounting and DC Safety Equipment ⚡
         </marquee>
     </div>
 
@@ -132,72 +141,76 @@
         <section class="hero">
             <div class="hero-content">
                 <h2>TECHNICAL SHOP: SOLAR COMPONENTS</h2>
-                <p>Specialist-vetted solar hardware hand-picked by our technical team for maximum efficiency and energy independence. Order directly from our trusted partners.</p>
+                <p>Specialist-vetted solar hardware curated for high-efficiency energy systems. Order directly through our certified affiliate partners.</p>
             </div>
         </section>
 
         <section class="content-section">
-            <h2>Certified Solar Equipment</h2>
+            <h2>Recommended Solar Equipment (8 Items)</h2>
             <div class="shop-grid">
                 
                 <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="panel.jpg" alt="Solar Panel">
-                    </div>
-                    <h3>Mono-Crystalline Solar Panel</h3>
-                    <p>High-efficiency monocrystalline panels (450W-550W). Optimized for Philippine weather conditions.</p>
-                    <span class="pro-note">TECHNICAL NOTE: These Tier-1 panels provide 20% more power in low-light conditions compared to standard units.</span>
+                    <div class="product-image-wrap"><img src="panel.jpg" alt="Solar Panel"></div>
+                    <h3>High-Efficiency Solar Panel</h3>
+                    <p>Monocrystalline panels (200W-600W). Tier-1 certified for Philippine weather.</p>
+                    <span class="pro-note">TECH NOTE: High conversion rate even in low light.</span>
                     <a href="https://c.lazada.com.ph/t/c.2t72dA" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
                 </div>
 
                 <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="inverter.jpg" alt="Hybrid Inverter">
-                    </div>
-                    <h3>Smart Hybrid Solar Inverter</h3>
-                    <p>Advanced 5kW/8kW Hybrid system with smart Wi-Fi monitoring and automatic grid-switching.</p>
-                    <span class="pro-note">TECHNICAL NOTE: Essential for 24/7 reliability; switches to battery power in 10ms during brownouts.</span>
+                    <div class="product-image-wrap"><img src="inverter.jpg" alt="Hybrid Inverter"></div>
+                    <h3>DEYE Hybrid Solar Inverter</h3>
+                    <p>8kW/5kW Hybrid system. Features smart Wi-Fi monitoring and UPS-grade backup.</p>
+                    <span class="pro-note">TECH NOTE: The best pick for seamless grid-to-battery switching.</span>
                     <a href="https://c.lazada.com.ph/t/c.2t72jH" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
                 </div>
 
                 <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="battery.jpg" alt="Solar Battery">
-                    </div>
-                    <h3>LiFePO4 Lithium Battery (48V)</h3>
-                    <p>Long-life deep cycle lithium storage. Compact, safe, and designed for 6,000+ charge cycles.</p>
-                    <span class="pro-note">TECHNICAL NOTE: Deep-cycle lithium is 3x more efficient than lead-acid and lasts up to 10 years.</span>
+                    <div class="product-image-wrap"><img src="battery.jpg" alt="Lithium Battery"></div>
+                    <h3>LiFePO4 Solar Battery (48V)</h3>
+                    <p>100AH/200AH deep cycle lithium storage. Long-lasting energy independence.</p>
+                    <span class="pro-note">TECH NOTE: Safer and lasts 10x longer than old lead-acid types.</span>
                     <a href="https://c.lazada.com.ph/t/c.2t72VJ" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
                 </div>
 
                 <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="rails.jpg" alt="Mounting Rails">
-                    </div>
-                    <h3>Anti-Corrosive Mounting Rails</h3>
-                    <p>T6 Industrial Aluminum rails for roof mounting. Certified for high typhoon wind speeds.</p>
-                    <span class="pro-note">TECHNICAL NOTE: Never use cheap substitutes; aluminum ensures your panels won't rust or fly off during storms.</span>
+                    <div class="product-image-wrap"><img src="rails.jpg" alt="Mounting Rails"></div>
+                    <h3>PV Aluminum Mounting Rails</h3>
+                    <p>T6 Industrial Aluminum. Certified for high wind speeds during typhoons.</p>
+                    <span class="pro-note">TECH NOTE: Never use wood or iron; aluminum prevents roof rust.</span>
                     <a href="https://c.lazada.com.ph/t/c.2t7dus" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
                 </div>
 
                 <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="breakers.jpg" alt="DC Breakers">
-                    </div>
-                    <h3>Solar DC Protection Suite</h3>
-                    <p>Complete DC Breaker and Surge Protection (SPD) setup for system-level safety.</p>
-                    <span class="pro-note">TECHNICAL NOTE: Protects your expensive inverter from lightning surges and electrical short circuits.</span>
+                    <div class="product-image-wrap"><img src="breakers.jpg" alt="DC Breakers"></div>
+                    <h3>DC Breakers & SPD (Option 1)</h3>
+                    <p>High-voltage protection suite for solar arrays and inverter safety.</p>
+                    <span class="pro-note">TECH NOTE: Primary defense against lightning surges.</span>
                     <a href="https://c.lazada.com.ph/t/c.2GGbRE" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
                 </div>
 
                 <div class="card">
-                    <div class="product-image-wrap">
-                        <img src="cables.jpg" alt="PV Cables">
-                    </div>
-                    <h3>Heavy-Duty Solar PV Cables</h3>
-                    <p>UV-protected 4mm/6mm technical grade DC cables for long-term outdoor exposure.</p>
-                    <span class="pro-note">TECHNICAL NOTE: Standard wires melt under solar heat; use PV-certified cables for zero power loss.</span>
+                    <div class="product-image-wrap"><img src="breakers.jpg" alt="Isolators"></div>
+                    <h3>DC Breakers & Isolator (Option 2)</h3>
+                    <p>Safety isolators for manual maintenance and automatic fault protection.</p>
+                    <span class="pro-note">TECH NOTE: Mandatory for safe system troubleshooting.</span>
+                    <a href="https://c.lazada.com.ph/t/c.2vNNj3" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
+                </div>
+
+                <div class="card">
+                    <div class="product-image-wrap"><img src="cables.jpg" alt="PV Cables"></div>
+                    <h3>PV Cables & MC4 (Option 1)</h3>
+                    <p>Professional DC wires with high-purity copper and UV-resistant skin.</p>
+                    <span class="pro-note">TECH NOTE: Prevents melting and significant power loss.</span>
                     <a href="https://c.lazada.com.ph/t/c.2vNN9I" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
+                </div>
+
+                <div class="card">
+                    <div class="product-image-wrap"><img src="cables.jpg" alt="Cable Accessories"></div>
+                    <h3>PV Cables & Accessories (Option 2)</h3>
+                    <p>Additional wire management components for clean solar installations.</p>
+                    <span class="pro-note">TECH NOTE: Good management ensures system longevity.</span>
+                    <a href="https://c.lazada.com.ph/t/c.2vNNQj" target="_blank" class="btn-lazada">BUY ON LAZADA</a>
                 </div>
 
             </div>
