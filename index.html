@@ -1,358 +1,699 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #0d1b2a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo h1 {
+    font-size: 24px;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #ffb703;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+    color: #ffb703;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+    top: 100%;
+}
+
+.dropdown-content a {
+    color: #333 !important;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    color: #0d1b2a !important;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.btn-book {
+    background-color: #ffb703;
+    color: #0d1b2a !important;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-weight: bold !important;
+}
+
+.btn-contact {
+    border: 1px solid #ffb703;
+    padding: 8px 15px;
+    border-radius: 4px;
+}
+
+.btn-book:hover, .btn-contact:hover {
+    background-color: #e0a000;
+    color: #0d1b2a !important;
+}
+
+.hero {
+    background: linear-gradient(rgba(13, 27, 42, 0.8), rgba(13, 27, 42, 0.8)), url('https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=2069&auto=format&fit=crop') no-repeat center center/cover;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 0 20px;
+}
+
+.hero h2 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #ffb703;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+}
+
+.cta-button {
+    background-color: #ffb703;
+    color: #0d1b2a;
+    padding: 12px 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+.cta-button:hover {
+    background-color: white;
+}
+
+.services-preview {
+    padding: 60px 10%;
+    text-align: center;
+}
+
+.services-preview h2 {
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+    color: #0d1b2a;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    flex: 1;
+    min-width: 250px;
+    text-align: left;
+    border-top: 4px solid #ffb703;
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    color: #0d1b2a;
+}
+
+.card p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.card a {
+    text-decoration: none;
+    color: #ffb703;
+    font-weight: bold;
+}
+
+.card a:hover {
+    color: #0d1b2a;
+}
+
+footer {
+    background-color: #0d1b2a;
+    color: #ccc;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 40px;
+}
+
+.footer-links a {
+    color: #ffb703;
+    text-decoration: none;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOHMZ Electrical Design and Build</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        /* =========================================
-           CSS COMMAND ARCHITECTURE (EXPANDED)
-           =========================================
-        */
-
-        :root {
-            --primary-navy: #0d1440;
-            --accent-gold: #ffeb3b;
-            --ui-blue: #1a237e;
-            --white: #ffffff;
-            --bg-gray: #f8fafc;
-            --text-dark: #1e293b;
-            --text-light: #64748b;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-gray);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        /* ANNOUNCEMENT TICKER */
-        .top-bar {
-            width: 100%;
-            height: 45px;
-            background-color: var(--primary-navy);
-            border-bottom: 3px solid var(--accent-gold);
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .ticker-label {
-            background-color: var(--accent-gold);
-            color: var(--primary-navy);
-            padding: 0 20px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            font-weight: 900;
-            font-size: 11px;
-            text-transform: uppercase;
-            z-index: 2;
-        }
-
-        .ticker-move {
-            display: inline-block;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: tickerScroll 40s linear infinite;
-            color: var(--white);
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        @keyframes tickerScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* NAVIGATION */
-        nav {
-            background-color: var(--white);
-            padding: 20px 6%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-        }
-
-        .brand-logo {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand-logo a {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 28px;
-            color: var(--ui-blue);
-            text-decoration: none;
-            line-height: 1;
-        }
-
-        .brand-logo span {
-            font-size: 10px;
-            color: var(--text-light);
-            letter-spacing: 2px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 700;
-            font-size: 13px;
-            text-transform: uppercase;
-        }
-
-        /* HERO SECTION */
-        .hero {
-            padding: 100px 6% 140px;
-            background: linear-gradient(rgba(13, 20, 64, 0.8), rgba(13, 20, 64, 0.8)), url('https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2072');
-            background-size: cover;
-            background-position: center;
-            text-align: center;
-            color: var(--white);
-        }
-
-        .hero h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 52px;
-            font-weight: 900;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 18px;
-            max-width: 750px;
-            margin: 0 auto 40px;
-            opacity: 0.9;
-        }
-
-        .hero-btn {
-            background-color: var(--accent-gold);
-            color: var(--primary-navy);
-            padding: 18px 45px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 800;
-            text-transform: uppercase;
-            display: inline-block;
-        }
-
-        /* CALCULATOR GRID */
-        .calc-area {
-            padding: 0 6% 80px;
-            margin-top: -80px;
-        }
-
-        .calc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .calc-card {
-            background-color: var(--white);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--ui-blue);
-        }
-
-        .calc-card i {
-            font-size: 40px;
-            color: var(--ui-blue);
-            margin-bottom: 20px;
-        }
-
-        .calc-card h3 {
-            font-family: 'Montserrat';
-            margin-bottom: 25px;
-            font-size: 20px;
-        }
-
-        .input-box {
-            margin-bottom: 20px;
-        }
-
-        .input-box label {
-            display: block;
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--text-light);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        .input-box input {
-            width: 100%;
-            padding: 15px;
-            border: 2.5px solid #f1f5f9;
-            border-radius: 10px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        .res-display {
-            margin-top: 30px;
-            background-color: var(--primary-navy);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .res-display .res-label {
-            color: var(--white);
-            font-size: 10px;
-            text-transform: uppercase;
-            opacity: 0.6;
-        }
-
-        .res-display .res-val {
-            color: var(--accent-gold);
-            font-size: 30px;
-            font-weight: 900;
-            margin-top: 5px;
-        }
-
-        /* SHOP SECTION */
-        .shop {
-            padding: 100px 6%;
-            background-color: var(--white);
-        }
-
-        .prod-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .prod-card {
-            border: 1px solid #f1f5f9;
-            padding: 30px;
-            text-align: center;
-            border-radius: 10px;
-        }
-
-        .aff-btn {
-            display: block;
-            margin-top: 20px;
-            background-color: #ee4d2d;
-            color: white;
-            padding: 12px;
-            text-decoration: none;
-            font-weight: 700;
-            border-radius: 5px;
-        }
-
-        /* FOOTER */
-        footer {
-            background-color: var(--primary-navy);
-            color: var(--white);
-            padding: 80px 6% 40px;
-            text-align: center;
-        }
-
-        .footer-logo {
-            font-family: 'Montserrat';
-            font-size: 35px;
-            font-weight: 900;
-            color: var(--accent-gold);
-        }
-
-        .footer-info {
-            margin-top: 20px;
-            font-size: 14px;
-            opacity: 0.6;
-            line-height: 1.8;
-        }
-
-        /* MESSENGER FAB */
-        .messenger-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 70px;
-            height: 70px;
-            background-color: #0084ff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 35px;
-            text-decoration: none;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            z-index: 2000;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero h1 { font-size: 34px; }
-            .calc-area { margin-top: 20px; }
-        }
-    </style>
+    <title>Kohmz Electrical Design and Build</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Services &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="commercial.html">Commercial</a>
+                        <a href="residential.html">Residential</a>
+                        <a href="pro-tips.html">Pro Tips & Guides</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Affiliate Shop &#9662;</a>
+                    <div class="dropdown-content">
+                        <a href="solar-parts.html">Solar Parts</a>
+                        <a href="powertools.html">Power Tools</a>
+                        <a href="electrical-materials.html">Materials</a>
+                    </div>
+                </li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="book-now.html" class="btn-book">Book Now</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <div class="top-bar">
-        <div class="ticker-label">Announcements</div>
-        <div class="ticker-move">
-            ⚡ <b>OFFER:</b> Free Site Survey for Residential Solar in CALABARZON! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-            🏢 <b>BUSINESS:</b> Lower your electricity bills with our Commercial Solar Packages. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            🛠️ <b>KOHMZ:</b> DTI Registered Industrial Design firm since April 2024.
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Professional Electrical Design & Build Solutions</h2>
+                <p>Quality, Safety, and Excellence for Residential and Commercial Projects.</p>
+                <a href="book-now.html" class="cta-button">Get a Quote Today</a>
+            </div>
+        </section>
+
+        <section class="services-preview">
+            <h2>Our Expertise</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <h3>Commercial Services</h3>
+                    <p>Reliable electrical solutions tailored for businesses and commercial spaces.</p>
+                    <a href="commercial.html">Learn More &rarr;</a>
+                </div>
+                <div class="card">
+                    <h3>Residential Services</h3>
+                    <p>Safe and efficient electrical wiring and upgrades for your home.</p>
+                    <a href="residential.html">Learn More &rarr;</a>
+                </div>
+                <div class="card">
+                    <h3>Solar & Parts Shop</h3>
+                    <p>High-quality solar components, power tools, and electrical materials.</p>
+                    <a href="solar-parts.html">Visit Shop &rarr;</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Kohmz Electrical Design and Build. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="privacy-policy.html">Privacy Policy & Terms of Service</a>
+            </div>
         </div>
-    </div>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Kohmz Electrical</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="book-now.html" class="btn-book">Book Now</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <nav>
-        <div class="brand-logo">
-            <a href="#">KOHMZ</a>
-            <span>Solar & Electrical Build</span>
+    <main class="services-preview" style="text-align: left; max-width: 900px; margin: auto;">
+        <h2 style="text-align: center;">About Kohmz Electrical Design and Build</h2>
+        <p>Welcome sa Kohmz Electrical! Kami ay dedikado sa pagbibigay ng ligtas, maaasahan, at de-kalidad na electrical services para sa mga bahay at negosyo.</p>
+        <br>
+        <h3>Our Mission</h3>
+        <p>To provide top-notch electrical engineering, design, and building solutions while prioritizing safety and energy efficiency.</p>
+        <br>
+        <h3>Our Vision</h3>
+        <p>To be the leading and most trusted electrical contractor and supplier in the region.</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kohmz Electrical Design and Build.</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercial Services | Kohmz Electrical</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="commercial.html">Commercial</a></li>
+                <li><a href="residential.html">Residential</a></li>
+                <li><a href="book-now.html" class="btn-book">Book Now</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" style="height: 40vh; background: #0d1b2a;">
+            <div class="hero-content">
+                <h2>Commercial Electrical Services</h2>
+                <p>Powering your business with safe and efficient electrical designs.</p>
+            </div>
+        </section>
+        <section class="services-preview" style="text-align: left; max-width: 1000px; margin: auto;">
+            <h3>What We Offer for Businesses:</h3>
+            <ul>
+                <li>Building Rewiring and Upgrades</li>
+                <li>Commercial Lighting Design and Installation</li>
+                <li>Panel Board Installation and Maintenance</li>
+                <li>CCTV and Security System Wiring</li>
+            </ul>
+            <br>
+            <a href="book-now.html" class="cta-button">Request a Consultation</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kohmz Electrical Design and Build.</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Residential Services | Kohmz Electrical</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="commercial.html">Commercial</a></li>
+                <li><a href="residential.html">Residential</a></li>
+                <li><a href="book-now.html" class="btn-book">Book Now</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" style="height: 40vh; background: #0d1b2a;">
+            <div class="hero-content">
+                <h2>Residential Electrical Services</h2>
+                <p>Safe, reliable, and expert electrical solutions para sa inyong tahanan.</p>
+            </div>
+        </section>
+        <section class="services-preview" style="text-align: left; max-width: 1000px; margin: auto;">
+            <h3>Our Home Services Include:</h3>
+            <ul>
+                <li>House Rewiring & Troubleshooting</li>
+                <li>Lighting Installation (Indoor & Outdoor)</li>
+                <li>Circuit Breaker & Panel Board Upgrades</li>
+                <li>Appliance Wiring Installation</li>
+            </ul>
+            <br>
+            <a href="book-now.html" class="cta-button">Book an Electrician</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kohmz Electrical Design and Build.</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Tips & Guides | Kohmz Electrical</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="pro-tips.html">Pro Tips</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="services-preview">
+        <h2>Pro Tips & Technical Guides</h2>
+        <p>Mga gabay at tips para sa ligtas at matipid na paggamit ng kuryente.</p>
+        <div class="cards-container" style="margin-top: 30px;">
+            <div class="card">
+                <h3>Electrical Safety sa Bahay</h3>
+                <p>Alamin ang mga basic safety protocols para maiwasan ang sunog dulot ng faulty wiring.</p>
+            </div>
+            <div class="card">
+                <h3>Paano Makatipid sa Kuryente?</h3>
+                <p>Mga simpleng hakbang para bumaba ang inyong monthly electricity bill.</p>
+            </div>
         </div>
-        <ul class="nav-links">
-            <li><a href="#tools">Tools</a></li>
-            <li><a href="#shop">Shop</a></li>
-            <li><a href="https://m.me/KOHMZElectrical" target="_blank">Chat</a></li>
-        </ul>
-    </nav>
+    </main>
 
-    <section class="hero">
-        <h1>Reliable Solar for <br>Homes & Stores</h1>
-        <p>Providing expert electrical design and sustainable energy solutions for residential and commercial properties in Region IV-A.</p>
-        <a href="#tools" class="hero-btn">Calculate Your Needs</a>
-    </section>
+    <footer>
+        <p>&copy; 2026 Kohmz Electrical Design and Build.</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Parts Shop | Kohmz Electrical</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="solar-parts.html">Solar Parts</a></li>
+                <li><a href="powertools.html">Power Tools</a></li>
+                <li><a href="electrical-materials.html">Materials</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <section class="calc-area" id="tools">
-        <div class="calc-grid">
-            
-            <div class="calc-card">
-                <i class="fas fa-sun"></i>
-                <h3>Solar Sizer</h3>
-                <div class="input-box">
-                    <label>Average Monthly Bill (₱)</label>
-                    <input type="number" id="in-bill" placeholder="e.g. 5000" oninput="runKohmzEngine()">
+    <main class="services-preview">
+        <h2>Affiliate Shop: Solar Parts</h2>
+        <p>Bumili ng mga de-kalidad na solar panels at inverters gamit ang aming trusted links.</p>
+        <div class="cards-container" style="margin-top: 30px;">
+            <div class="card">
+                <h3>Solar Panel 500W Monocrystalline</h3>
+                <p>High efficiency solar panel perfect for residential use.</p>
+                <a href="#" target="_blank" class="cta-button" style="padding: 8px 15px; font-size: 1rem;">Buy Now</a>
+            </div>
+            <div class="card">
+                <h3>Hybrid Solar Inverter 5kW</h3>
+                <p>Heavy-duty inverter with pure sine wave output.</p>
+                <a href="#" target="_blank" class="cta-button" style="padding: 8px 15px; font-size: 1rem;">Buy Now</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kohmz Electrical Design and Build.</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Tools Shop | Kohmz Electrical</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="solar-parts.html">Solar Parts</a></li>
+                <li><a href="powertools.html">Power Tools</a></li>
+                <li><a href="electrical-materials.html">Materials</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="services-preview">
+        <h2>Affiliate Shop: Power Tools & Testers</h2>
+        <p>Mga rekomendadong power tools para sa mga DIYers at professional electricians.</p>
+        <div class="cards-container" style="margin-top: 30px;">
+            <div class="card">
+                <h3>Heavy Duty Impact Drill</h3>
+                <p>Perfect for concrete and wood drilling. Essential for installations.</p>
+                <a href="#" target="_blank" class="cta-button" style="padding: 8px 15px;">Buy on Shopee/Lazada</a>
+            </div>
+            <div class="card">
+                <h3>Digital Multimeter tester</h3>
+                <p>Accurate voltage, current, and resistance reader.</p>
+                <a href="#" target="_blank" class="cta-button" style="padding: 8px 15px;">Buy on Shopee/Lazada</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kohmz Electrical Design and Build.</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Materials | Kohmz Electrical</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="solar-parts.html">Solar Parts</a></li>
+                <li><a href="powertools.html">Power Tools</a></li>
+                <li><a href="electrical-materials.html">Materials</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="services-preview">
+        <h2>Affiliate Shop: Electrical Materials</h2>
+        <p>Bumili ng mga orihinal na kable, breaker, at iba pang materyales.</p>
+        <div class="cards-container" style="margin-top: 30px;">
+            <div class="card">
+                <h3>THHN/THWN Wires (Stranded)</h3>
+                <p>High-quality pure copper wires for residential and commercial wiring.</p>
+                <a href="#" target="_blank" class="cta-button" style="padding: 8px 15px;">Buy Now</a>
+            </div>
+            <div class="card">
+                <h3>Miniature Circuit Breakers (MCB)</h3>
+                <p>Reliable circuit protection for your panel boards.</p>
+                <a href="#" target="_blank" class="cta-button" style="padding: 8px 15px;">Buy Now</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kohmz Electrical Design and Build.</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Kohmz Electrical</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="book-now.html" class="btn-book">Book Now</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="services-preview">
+        <h2>Our Recent Projects</h2>
+        <p>Tingnan ang ilan sa mga natapos naming electrical and build projects.</p>
+        <div class="cards-container" style="margin-top: 30px;">
+            <div class="card">
+                <div style="height: 200px; background-color: #ccc; margin-bottom: 15px; text-align: center; line-height: 200px;">[Insert Picture Here]</div>
+                <h3>Makati Office Fit-out</h3>
+                <p>Complete rewiring and lighting installation for a commercial office.</p>
+            </div>
+            <div class="card">
+                <div style="height: 200px; background-color: #ccc; margin-bottom: 15px; text-align: center; line-height: 200px;">[Insert Picture Here]</div>
+                <h3>Residential Solar Setup</h3>
+                <p>Installation of an off-grid solar system for a residential home.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kohmz Electrical Design and Build.</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Now | Kohmz Electrical</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="services-preview" style="max-width: 800px; margin: auto;">
+        <h2>Book a Consultation or Service</h2>
+        <p>Handa na ba kayong simulan ang inyong project? Punan ang aming form at makikipag-ugnayan kami sa inyo.</p>
+        <br><br>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" class="cta-button" style="font-size: 1.5rem; padding: 15px 30px;">Fill out the Booking Form</a>
+        <br><br><br>
+        <h3>Or Contact Us Directly:</h3>
+        <p>Email: info@kohmzelectrical.com</p>
+        <p>Phone: +63 900 000 0000</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kohmz Electrical Design and Build.</p>
+    </footer>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | Kohmz Electrical</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="services-preview" style="text-align: left; max-width: 900px; margin: auto;">
+        <h2>Privacy Policy & Terms of Service</h2>
+        <br>
+        <h3>1. Information Collection</h3>
+        <p>We collect information you provide directly to us when you fill out the booking form.</p>
+        <br>
+        <h3>2. Use of Information</h3>
+        <p>Ang inyong personal na impormasyon ay gagamitin lamang para makipag-ugnayan sa inyo tungkol sa inyong inquiries.</p>
+        <br>
+        <h3>3. Affiliate Links</h3>
+        <p>This website contains affiliate links. We may earn a small commission if you purchase through these links at no extra cost to you.</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Kohmz Electrical Design and Build.</p>
+    </footer>
+</body>
+</html>
