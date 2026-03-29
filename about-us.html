@@ -21,6 +21,9 @@
             display: flex; justify-content: space-between; align-items: center; 
             position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
         }
+        /* LOGO AREA FIX */
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo img { height: 40px; border-radius: 4px; }
         .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
         .logo span { color: #ffb703; }
 
@@ -56,20 +59,23 @@
             .dropdown.active .dropdown-content { display: block; }
         }
 
-        /* HERO SECTION - FIXED BACKGROUND IMAGE */
+        /* HERO SECTION - RE-FIXED BACKGROUND IMAGE PATH */
         .hero { 
-            background-image: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('updated%20background%20picture%20fb.jpg'); 
+            background-image: linear-gradient(rgba(13, 27, 42, 0.8), rgba(13, 27, 42, 0.8)), url('updated background picture fb.jpg'); 
             background-size: cover; 
-            background-position: center center; 
+            background-position: center; 
             background-repeat: no-repeat;
             padding: 100px 20px; 
             text-align: center; 
             color: white; 
-            display: block;
-            width: 100%;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        .hero-inner { max-width: 850px; }
         .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; } 
-        .hero p { font-size: 14px; max-width: 750px; margin: 0 auto 20px; line-height: 1.8; } 
+        .hero p { font-size: 14px; margin: 0 auto 20px; line-height: 1.8; } 
 
         /* FLOATING BUTTONS */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
@@ -90,7 +96,7 @@
         .card { background: white; width: 300px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-radius: 12px; border-top: 5px solid #ffb703; text-align: left; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 700; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-        .card p { font-size: 11px; line-height: 1.6; }
+        .card p { font-size: 11px; line-height: 1.6; margin-bottom: 10px; }
 
         /* SOLAR SECTION */
         .solar-deep-dive { background: #fff; padding: 40px 10%; border-radius: 15px; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; border: 1px solid #ffb703; }
@@ -108,7 +114,7 @@
         .vcard-btn:hover { background: #ffb703; color: #0d1b2a !important; transform: translateY(-3px); }
         .btn-map-about { background: #1155cc; color: white !important; border-color: #1155cc; }
 
-        /* FOOTER SYNCED WITH HOME */
+        /* FOOTER - SYNCED WITH INDEX.HTML */
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
         .footer-content { font-size: 10px; line-height: 1.8; }
         .footer-content p strong { font-size: 12px; color: #ffb703; }
@@ -129,7 +135,10 @@
     </div>
 
     <header>
-        <div class="logo"><h1>KOHMZ <span>Electrical</span></h1></div>
+        <div class="logo">
+            <img src="logo.jpg" alt="KOHMZ Logo">
+            <h1>KOHMZ <span>Electrical</span></h1>
+        </div>
         <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars"></i></div>
         <nav>
             <ul class="nav-links" id="nav-list">
@@ -159,7 +168,7 @@
 
     <main>
         <section class="hero">
-            <div class="hero-content">
+            <div class="hero-inner">
                 <h2>Precision in Every Connection</h2>
                 <p>A specialist technical firm dedicated to high-standard electrical architecture and renewable energy integration.</p>
             </div>
@@ -260,7 +269,7 @@
                     <p style="font-size: 10px; color: #666; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px;">Electrical Contractor / Technical Governance</p>
                     <p style="font-size: 11px; margin-bottom: 20px; color: #444; line-height: 1.6;">Scan QR to save our digital identity, or use the professional actions below to connect and locate us immediately.</p>
                     <div class="btn-group-vcard">
-                        <a href="https://maps.google.com" target="_blank" class="vcard-btn btn-map-about"><i class="fas fa-map-marked-alt"></i> VIEW ON MAP</a>
+                        <a href="http://googleusercontent.com/maps.google.com/4" target="_blank" class="vcard-btn btn-map-about"><i class="fas fa-map-marked-alt"></i> VIEW ON MAP</a>
                         <button onclick="downloadVCard()" class="vcard-btn"><i class="fas fa-address-card"></i> DOWNLOAD V-CARD</button>
                     </div>
                 </div>
@@ -272,7 +281,7 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
+            <p>FB Page: <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
             <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
             <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
             <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
@@ -280,6 +289,7 @@
     </footer>
 
     <script>
+        // MOBILE MENU SCRIPT
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         const dropdowns = document.querySelectorAll('.dropdown');
@@ -296,6 +306,7 @@
             });
         });
 
+        // VCARD SCRIPT - RETAINS YOUR NAME "SAMUEL MILLANO"
         function downloadVCard() {
             const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Samuel Millano\nORG:KOHMZ INDUSTRIAL DESIGN SERVICES\nTITLE:Owner / Electrical Contractor\nTEL;TYPE=CELL,VOICE:+639266174131\nEMAIL:kohmzelectrical@gmail.com\nURL:https://kohmzelectrical.github.io/kohmz-electrical-services/\nADR;TYPE=WORK:;;Quezon City;Metro Manila;;Philippines\nNOTE:KOHMZ ELECTRICAL DESIGN AND BUILD\nEND:VCARD`;
             const blob = new Blob([vCardData], { type: 'text/vcard' });
