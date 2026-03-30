@@ -163,16 +163,18 @@
             font-family: 'Share Tech Mono', monospace; transition: 0.3s;
             display: flex; align-items: center; gap: 6px;
         }
-        .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
+.nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
+
+        .nav-links li.dropdown { position: relative; }
 
         .dropdown-content { 
             display: none; position: absolute; background: rgba(8,16,24,0.98); 
             min-width: 180px; box-shadow: 0px 10px 30px rgba(0,0,0,0.6); z-index: 1001; 
             top: 100%; left: 0; border-top: 3px solid #00e5ff; 
         }
+        
         .dropdown:hover .dropdown-content { display: block; }
         .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
         @media (max-width: 992px) {
             .menu-toggle { display: block; font-size: 26px; color: #00e5ff; cursor: pointer; background:none; border:none; padding:5px; }
             .nav-links { 
