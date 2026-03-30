@@ -13,7 +13,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-        /* UNIVERSAL FIX PARA HINDI MAG-OVERLAP SA MOBILE */
+        /* UNIVERSAL BOX SIZING */
         * { box-sizing: border-box; }
 
         /* BASE STYLES & CYBER THEME */
@@ -42,12 +42,10 @@
             transform: rotateX(60deg);
             animation: cadMove 8s linear infinite;
         }
-        /* Grid moving animation */
         @keyframes cadMove {
             0% { transform: rotateX(60deg) translateY(0); }
             100% { transform: rotateX(60deg) translateY(50px); }
         }
-        /* Glowing overlay para sa screen feel */
         .cad-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, rgba(8,16,24,1) 0%, transparent 40%, rgba(8,16,24,1) 100%);
@@ -57,38 +55,88 @@
         .moving-ads { background: #ffb703; color: #000; padding: 5px; font-weight: bold; text-transform: uppercase; box-shadow: 0 2px 10px rgba(255,183,3,0.4); }
         .moving-ads marquee { font-size: 10px; font-family: 'Share Tech Mono', monospace; } 
         
-        /* HEADER & NAVIGATION */
+        /* ==================================================== */
+        /* HEADER & NAVIGATION - PROFESSIONAL DESKTOP VIEW      */
+        /* ==================================================== */
         header { 
-            background: rgba(8, 16, 24, 0.95); padding: 15px 20px; 
+            background: rgba(8, 16, 24, 0.95); padding: 15px 30px; 
             display: flex; justify-content: space-between; align-items: center; 
             position: sticky; top: 0; z-index: 1000; 
             border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px);
         }
-        .logo { display: flex; align-items: center; gap: 10px; }
-        .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
-        .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.3); } 
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo img { height: 38px; width: 38px; border-radius: 4px; object-fit: cover; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
+        .logo h1 { font-size: 22px; margin: 0; letter-spacing: -1px; font-weight: 900; color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.3); } 
         .logo span { color: #ffb703; text-shadow: 0 0 10px rgba(255,183,3,0.5); }
 
-        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #00e5ff; z-index: 1001;}
+        .menu-toggle { display: none; font-size: 26px; cursor: pointer; color: #00e5ff; z-index: 1001;}
 
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s ease; }
-        .nav-links li { margin-left: 18px; position: relative; }
-        .nav-links li a { color: #e0faff; text-decoration: none; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-family: 'Share Tech Mono', monospace; transition: 0.3s; }
+        .nav-links { 
+            list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; 
+        }
+        .nav-links li { position: relative; }
+        .nav-links li a { 
+            color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; 
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; 
+            font-family: 'Share Tech Mono', monospace; transition: 0.3s;
+            display: flex; align-items: center; gap: 6px;
+        }
         .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
         
-        .dropdown-content { display: none; position: absolute; background-color: rgba(8,16,24,0.95); min-width: 175px; box-shadow: 0px 8px 25px rgba(0,229,255,0.2); z-index: 1001; border-radius: 4px; overflow: hidden; top: 100%; left: 0; border-top: 3px solid #00e5ff; backdrop-filter: blur(5px); }
-        .dropdown-content a { color: #e0faff !important; padding: 12px 16px; border-bottom: 1px solid rgba(0,229,255,0.1); font-weight: 600; }
-        .dropdown-content a:hover { background-color: rgba(0,229,255,0.1); color: #00e5ff !important; padding-left: 22px; }
-        .dropdown:hover .dropdown-content { display: block; }
+        /* DESKTOP FLOATING DROPDOWN (Hindi Accordion) */
+        .dropdown-content { 
+            display: none; position: absolute; background: rgba(8,16,24,0.98); 
+            min-width: 220px; box-shadow: 0px 10px 30px rgba(0,0,0,0.6); z-index: 1001; 
+            border-radius: 4px; overflow: hidden; top: 100%; left: 0; 
+            border: 1px solid rgba(0, 229, 255, 0.2); border-top: 3px solid #00e5ff; 
+            backdrop-filter: blur(10px); 
+        }
+        .dropdown-content a { 
+            color: #e0faff !important; padding: 15px 20px; 
+            border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 600; 
+            font-size: 11px !important; display: block; width: 100%;
+        }
+        .dropdown-content a:hover { background: rgba(0,229,255,0.1); color: #00e5ff !important; padding-left: 25px; }
+        
+        /* Desktop Hover Trigger Only */
+        @media (min-width: 993px) {
+            .dropdown:hover .dropdown-content { display: block; }
+        }
 
+        /* ==================================================== */
+        /* MOBILE NAVIGATION FIX - CLEAN ACCORDION              */
+        /* ==================================================== */
         @media (max-width: 992px) {
+            header { padding: 15px 20px; }
+            .logo h1 { font-size: 18px; }
             .menu-toggle { display: block; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(8,16,24,0.98); padding: 20px 0; border-bottom: 4px solid #00e5ff; }
+            
+            .nav-links { 
+                display: none; flex-direction: column; position: absolute; top: 100%; left: 0; 
+                width: 100%; background: rgba(8,16,24,0.98); padding: 0; margin: 0;
+                border-bottom: 4px solid #00e5ff; backdrop-filter: blur(10px); 
+                box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            }
             .nav-links.active { display: flex; }
-            .nav-links li { margin: 15px 0; text-align: center; width: 100%; margin-left: 0;}
-            .nav-links li a { font-size: 14px; width: 100%; display: block; }
-            .dropdown-content { position: static; box-shadow: none; background: transparent; border-top: none; display: none; width: 100%; }
-            .dropdown.active .dropdown-content { display: block; border-left: 2px solid #00e5ff; margin-left: 20px; }
+            .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .nav-links li:last-child { border-bottom: none; }
+            
+            .nav-links li a { 
+                font-size: 14px; width: 100%; padding: 20px 25px; display: flex; justify-content: space-between;
+            }
+            
+            /* Mobile Accordion Dropdown */
+            .dropdown-content { 
+                position: static; box-shadow: none; background: rgba(0,0,0,0.4); 
+                border: none; display: none; width: 100%; padding-left: 0; border-radius: 0;
+            }
+            .dropdown:hover .dropdown-content { display: none; } /* Disable hover on mobile */
+            .dropdown.active .dropdown-content { display: block; }
+            
+            .dropdown-content a { 
+                padding: 15px 20px 15px 40px; font-size: 13px !important; 
+                border-left: 3px solid #ffb703; border-bottom: 1px solid rgba(255,255,255,0.02);
+            }
         }
 
         /* HERO SECTION */
@@ -149,16 +197,18 @@
         }
         .submit-btn:hover { background: #00e5ff; color: #000; transform: translateY(-3px); box-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
 
-        /* MOBILE FIX FOR FORM OVERLAP */
+        /* MOBILE FORM OVERLAP FIX */
         @media (max-width: 768px) {
-            .form-grid { grid-template-columns: 1fr; /* Ginawang 1 column pag naka-mobile */ }
-            .main-container { padding: 20px; margin: 0 15px 50px; }
+            .form-grid { grid-template-columns: 1fr; gap: 15px; }
+            .main-container { padding: 25px 20px; margin: 0 15px 50px; }
+            .urgency-box { margin: 0 15px 30px; }
+            .option-container.horizontal-options { flex-direction: column; gap: 10px; }
         }
 
         /* FLOATING ACTION BUTTONS */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
         .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.8); transition: 0.3s; border: 1px solid rgba(255,255,255,0.2); }
-        .float-btn:hover { transform: scale(1.15); filter: brightness(1.2); box-shadow: 0 0 15px #00e5ff; border-color: #00e5ff; }
+        .float-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 0 15px #00e5ff; border-color: #00e5ff; }
         .fb-messenger { background: #0084ff; } 
         .viber { background: #7360f2; } 
         .whatsapp { background: #25d366; } 
@@ -168,7 +218,7 @@
             .floating-container { transform: scale(0.85); transform-origin: bottom right; right: 15px; bottom: 15px; }
         }
 
-        /* --- ROBOT ASSISTANT STYLES --- */
+        /* --- ROBOT ASSISTANT STYLES (NO BUTTONS) --- */
         .kohmz-bot-wrapper { position: fixed; bottom: 120px; right: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-end; touch-action: none; user-select: none; }
         .bot-value-tag { background: #00e5ff; color: #000; padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); cursor: grab; text-transform: uppercase; white-space: nowrap; }
         .kohmz-chat-window { display: none; width: 280px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
@@ -210,23 +260,27 @@
         <nav>
             <ul class="nav-links" id="nav-list">
                 <li><a href="index.html">Overview</a></li>
+                
                 <li class="dropdown">
-                    <a href="#">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="dropdown-trigger">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="commercial.html">Commercial</a>
                         <a href="residential.html">Residential</a>
                         <a href="pro-tips.html">Pro Tips</a>
                     </div>
                 </li>
+                
                 <li><a href="book-now.html" style="color: #ffb703; border-bottom: 1px solid #ffb703;">Book Now</a></li>
+                
                 <li class="dropdown">
-                    <a href="#">Technical Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="dropdown-trigger">Affiliate Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
                         <a href="electrical-materials.html">Materials</a>
                     </div>
                 </li>
+                
                 <li><a href="about-us.html">About Us</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
                 <li><a href="faq.html">FAQ</a></li>
@@ -319,10 +373,10 @@
                 
                 <div class="field-group">
                     <label>Urgency Level (1 = Routine, 5 = Safety Risk)</label>
-                    <div class="option-container" style="flex-direction: row; gap: 20px;">
-                        <label class="radio-item"><input type="radio" name="Urgency" value="1"> 1</label>
-                        <label class="radio-item"><input type="radio" name="Urgency" value="3"> 3</label>
-                        <label class="radio-item"><input type="radio" name="Urgency" value="5"> 5</label>
+                    <div class="option-container horizontal-options">
+                        <label class="radio-item"><input type="radio" name="Urgency" value="1"> 1 (Routine)</label>
+                        <label class="radio-item"><input type="radio" name="Urgency" value="3"> 3 (Moderate)</label>
+                        <label class="radio-item"><input type="radio" name="Urgency" value="5"> 5 (High Risk)</label>
                     </div>
                 </div>
 
@@ -330,7 +384,7 @@
                     <label>Upload Site Photos (Max 10MB)</label>
                     <div class="file-upload">
                         <i class="fas fa-cloud-upload-alt" style="font-size: 24px; color: #00e5ff; margin-bottom: 10px;"></i><br>
-                        <input type="file" name="upload" accept="image/*" style="background:transparent; border:none; padding:0; color:#fff;">
+                        <input type="file" name="upload" accept="image/*" style="background:transparent; border:none; padding:0; color:#fff; width: 100%;">
                         <p style="font-size: 10px; margin-top: 10px; color: #a0aec0;">Attach photos of existing panels or area of concern.</p>
                     </div>
                 </div>
@@ -382,6 +436,17 @@
         menuToggle.addEventListener('click', () => {
             navList.classList.toggle('active');
             menuToggle.querySelector('i').className = navList.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+        });
+
+        // Dropdown Toggle Logic para sa Mobile List View
+        const dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(dropdown => {
+            dropdown.querySelector('.dropdown-trigger').addEventListener('click', (e) => {
+                if (window.innerWidth <= 992) {
+                    e.preventDefault(); 
+                    dropdown.classList.toggle('active');
+                }
+            });
         });
 
         // ROBOT ASSISTANT LOGIC (Fixed & Draggable)
