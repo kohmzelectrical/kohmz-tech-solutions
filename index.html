@@ -1078,51 +1078,47 @@ async function askGemini() {
 
     if (!userMsg) return;
 
-    // 1. User Message Display
-    chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
+    // 1. User Bubble
+    chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
     inputField.value = ""; 
     chatBody.scrollTop = chatBody.scrollHeight;
 
     // 2. Loading State
     const loadingId = "loading-" + Date.now();
-    chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Searching Technical Logs...</div>`;
+    chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Analyzing via v1beta...</div>`;
     chatBody.scrollTop = chatBody.scrollHeight;
 
     try {
-        // GUMAGAMIT NG v1 (STABLE) - Bagong URL format para sa Google Cloud Projects
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`, {
+        // PINALITAN NATIN: Gagamit tayo ng v1beta at saktong endpoint address
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                contents: [{
-                    parts: [{
-                        text: `Context: You are UNIT-01, a highly advanced technical AI assistant for KOHMZ Electrical Design and Build in the Philippines. Answer strictly in professional Taglish. If asked about pricing, suggest an electrical audit via the Book Now page. Question: ${userMsg}`
-                    }]
-                }]
+                contents: [{ parts: [{ text: userMsg }] }]
             })
         });
 
         const data = await response.json();
 
-        // 🔍 Kung may error, ipapakita ang dahilan
+        // 🔍 Kung may error, kukunin natin ang mismong MESSAGE text
         if (data.error) {
-            console.error("API ERROR:", data.error);
-            document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: ${data.error.message} (${data.error.status})`;
+            console.error("FULL ERROR DATA:", data.error);
+            const errorMsg = data.error.message || "Unknown API Error";
+            document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: ${errorMsg}`;
             return;
         }
 
-        // 3. Display the AI Answer
         if (data.candidates && data.candidates[0].content) {
             const botReply = data.candidates[0].content.parts[0].text;
             document.getElementById(loadingId).remove();
             chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: ${botReply}</div>`;
         } else {
-            document.getElementById(loadingId).innerHTML = "UNIT-01: Empty response received. Try a different question.";
+            document.getElementById(loadingId).innerHTML = "UNIT-01: Format error. Check console.";
         }
 
     } catch (error) {
-        document.getElementById(loadingId).innerHTML = "UNIT-01: Connection failed. Check if API is enabled in Cloud Project.";
-        console.error("CRITICAL FETCH ERROR:", error);
+        document.getElementById(loadingId).innerHTML = "UNIT-01: Connection failed.";
+        console.error("FETCH ERROR:", error);
     }
     chatBody.scrollTop = chatBody.scrollHeight;
 }
