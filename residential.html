@@ -216,5 +216,236 @@
             });
         });
     </script>
-</body>
-</html>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+/* Main Wrapper - Draggable at laging nasa ibabaw */
+.kohmz-bot-wrapper {
+    position: fixed;
+    bottom: 120px; /* Adjusted para hindi tabunan ang email/messenger */
+    right: 20px;
+    z-index: 999999;
+    font-family: 'Share Tech Mono', monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    touch-action: none;
+    user-select: none;
+}
+
+/* Tooltip/Hint sa taas ng robot */
+.bot-value-tag {
+    background: #00e5ff;
+    color: #000;
+    padding: 5px 12px;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+    cursor: grab;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Chat Window - Futuristic Design */
+.kohmz-chat-window {
+    display: none;
+    width: 300px;
+    max-width: 85vw;
+    background: rgba(8, 16, 24, 0.98);
+    border: 1px solid #00e5ff;
+    border-top: 4px solid #00e5ff;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.9);
+    margin-bottom: 12px;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+}
+
+.kohmz-chat-header {
+    background: #000;
+    color: #00e5ff;
+    padding: 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+.kohmz-chat-body {
+    padding: 15px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.chat-bubble {
+    background: rgba(255, 255, 255, 0.05);
+    color: #e0faff;
+    padding: 10px;
+    border-radius: 0 12px 12px 12px;
+    margin-bottom: 10px;
+    border-left: 2px solid #00e5ff;
+    font-size: 12px;
+}
+
+/* Buttons inside the chat */
+.kohmz-chat-options {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-btn {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #00e5ff;
+    padding: 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    text-align: left;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.chat-btn:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 10px #00e5ff; }
+
+/* The Toggle Button containing the Lottie Animation */
+.kohmz-bot-toggle {
+    width: 85px; 
+    height: 85px;
+    background: transparent;
+    cursor: grab;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bot-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: #ff3b3b; color: #fff; font-size: 10px;
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 0 10px #ff3b3b;
+    z-index: 10;
+}
+
+@media (max-width: 480px) {
+    .kohmz-chat-window { width: 260px; }
+    .kohmz-bot-toggle { width: 75px; height: 75px; }
+}
+</style>
+
+<div class="kohmz-bot-wrapper" id="draggableBot">
+    <div class="bot-value-tag" id="dragHint">⚡ KOHMZ Expert AI</div>
+
+    <div class="kohmz-chat-window" id="chatWindow">
+        <div class="kohmz-chat-header">
+            <span>UNIT-01: SYSTEM ACTIVE</span>
+            <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
+        </div>
+        <div class="kohmz-chat-body" id="chatBody">
+            <div class="chat-bubble">Initialization complete. Kumusta! Ako ang iyong Cyber-Assistant. Ready na tayo para sa iyong project optimization.</div>
+        </div>
+        <div class="kohmz-chat-options">
+            <button class="chat-btn" onclick="botAction('audit')" style="border-color:#ffd700; color:#ffd700;">
+                <i class="fas fa-bolt"></i> > [RUN_AUDIT_ROUTINE]
+            </button>
+            <button class="chat-btn" onclick="botAction('fb')">
+                <i class="fab fa-facebook-messenger"></i> > [FB_COMM_LINK]
+            </button>
+            <button class="chat-btn" onclick="botAction('wa')">
+                <i class="fab fa-whatsapp"></i> > [DIRECT_WHATSAPP]
+            </button>
+        </div>
+    </div>
+
+    <div class="kohmz-bot-toggle" id="botToggle">
+        <lottie-player 
+            src="Live chatbot.json" 
+            background="transparent" 
+            speed="1" 
+            style="width: 100%; height: 100%;" 
+            loop 
+            autoplay>
+        </lottie-player>
+        <div class="bot-badge" id="botBadge">!</div>
+    </div>
+</div>
+
+<script>
+const wrapper = document.getElementById('draggableBot');
+const toggle = document.getElementById('botToggle');
+const chat = document.getElementById('chatWindow');
+const badge = document.getElementById('botBadge');
+const hint = document.getElementById('dragHint');
+
+let isDragging = false;
+let startX, startY, xOffset = 0, yOffset = 0;
+let dragStartTime; 
+
+function toggleBotWindow() {
+    if (chat.style.display === 'flex') {
+        chat.style.display = 'none';
+        hint.innerHTML = "⚡ KOHMZ Expert AI";
+    } else {
+        chat.style.display = 'flex';
+        badge.style.display = 'none';
+        hint.innerHTML = "🖐️ Drag to Move";
+    }
+}
+
+// Logic para sa Mouse at Touch (Dragging)
+const dragStart = (e) => {
+    isDragging = true;
+    dragStartTime = Date.now();
+    const clientX = (e.type === "touchstart") ? e.touches[0].clientX - xOffset : e.clientX - xOffset;
+    const clientY = (e.type === "touchstart") ? e.touches[0].clientY - yOffset : e.clientY - yOffset;
+    startX = clientX;
+    startY = clientY;
+};
+
+const dragMove = (e) => {
+    if (!isDragging) return;
+    if (e.cancelable) e.preventDefault();
+    const clientX = (e.type === "touchmove") ? e.touches[0].clientX : e.clientX;
+    const clientY = (e.type === "touchmove") ? e.touches[0].clientY : e.clientY;
+    
+    xOffset = clientX - startX;
+    yOffset = clientY - startY;
+    wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
+};
+
+const dragEnd = (e) => {
+    if (!isDragging) return;
+    const dragDuration = Date.now() - dragStartTime;
+    isDragging = false;
+    
+    // Kung mabilis lang ang pagpindot (click), buksan ang window.
+    // Kung matagal na nakapindot, ibig sabihin nililipat lang (drag).
+    if (dragDuration < 200) {
+        toggleBotWindow();
+    }
+};
+
+toggle.addEventListener('mousedown', dragStart);
+toggle.addEventListener('touchstart', dragStart, {passive: false});
+window.addEventListener('mousemove', dragMove);
+window.addEventListener('touchmove', dragMove, {passive: false});
+window.addEventListener('mouseup', dragEnd);
+window.addEventListener('touchend', dragEnd);
+
+function botAction(type) {
+    if(type === 'audit') window.location.href = 'https://kohmzelectrical.github.io/kohmz-electrical-services/book-now.html';
+    else if(type === 'fb') window.open('https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/', '_blank');
+    else if(type === 'wa') window.location.href = 'https://wa.me/639266174131';
+}
+
+// Auto pop-up pagkatapos ng 6 seconds
+setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 6000);
+</script> 
