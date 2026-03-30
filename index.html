@@ -837,5 +837,201 @@
             }
         });
     </script>
+<style>
+    .kohmz-bot-wrapper {
+        position: fixed;
+        bottom: 25px;
+        left: 25px;
+        z-index: 10000;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .kohmz-chat-window {
+        display: none;
+        width: 320px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        margin-bottom: 15px;
+        overflow: hidden;
+        flex-direction: column;
+        border: 1px solid #e2e8f0;
+        animation: slideUp 0.4s ease-out;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .kohmz-chat-header {
+        background: #0f172a;
+        color: #fff;
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .kohmz-chat-header span { font-weight: 600; font-size: 15px; }
+    .close-chat { cursor: pointer; opacity: 0.8; transition: 0.2s; font-style: normal; }
+    .close-chat:hover { opacity: 1; }
+
+    .kohmz-chat-body {
+        padding: 20px;
+        max-height: 250px;
+        overflow-y: auto;
+        background: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .chat-bubble {
+        background: #fff;
+        color: #334155;
+        padding: 12px 14px;
+        border-radius: 4px 14px 14px 14px;
+        font-size: 13px;
+        line-height: 1.5;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        border: 1px solid #e2e8f0;
+    }
+
+    .kohmz-chat-options {
+        padding: 15px;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .chat-btn {
+        background: #f1f5f9;
+        color: #0f172a;
+        border: 1px solid #e2e8f0;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: 0.2s;
+        text-align: left;
+    }
+
+    .chat-btn:hover { background: #e2e8f0; border-color: #cbd5e1; }
+    .chat-btn.primary { background: #2563eb; color: #fff; border: none; }
+    .chat-btn.primary:hover { background: #1d4ed8; }
+
+    .kohmz-bot-toggle {
+        width: 60px; height: 60px;
+        background: #2563eb;
+        border-radius: 50%;
+        display: flex; justify-content: center; align-items: center;
+        color: white; font-size: 24px; cursor: pointer;
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        transition: 0.3s;
+        position: relative;
+    }
+
+    .kohmz-bot-toggle:hover { transform: scale(1.05); background: #1d4ed8; }
+
+    .bot-badge {
+        position: absolute; top: 0; right: 0;
+        background: #ef4444; color: white; font-size: 10px;
+        width: 20px; height: 20px; border-radius: 50%;
+        display: flex; justify-content: center; align-items: center;
+        border: 2px solid #fff;
+    }
+</style>
+
+<div class="kohmz-bot-wrapper">
+    <div class="kohmz-chat-window" id="chatWindow">
+        <div class="kohmz-chat-header">
+            <span>👋 KOHMZ Expert Assistant</span>
+            <span class="close-chat" id="closeChat" style="cursor:pointer">✕</span>
+        </div>
+
+        <div class="kohmz-chat-body" id="chatBody">
+            <div class="chat-bubble">
+                Good day! Alam niyo ba na ang regular na electrical audit ay nakakatulong para makatipid sa kuryente at maiwasan ang overloading? 💡
+            </div>
+            <div class="chat-bubble">
+                Kumusta! Ako ang iyong KOHMZ assistant. Paano kita matutulungan sa iyong electrical o solar needs ngayon?
+            </div>
+        </div>
+
+        <div class="kohmz-chat-options" id="chatOptions">
+            <button class="chat-btn primary" onclick="botReply('audit')">📅 Mag-book ng Technical Audit</button>
+            <button class="chat-btn" onclick="botReply('quote')">📝 Humingi ng Free Quote</button>
+            <button class="chat-btn" onclick="botReply('solar')">☀️ Magtanong tungkol sa Solar</button>
+        </div>
+    </div>
+
+    <div class="kohmz-bot-toggle" id="botToggle">
+        <span style="font-style: normal;">💬</span>
+        <div class="bot-badge" id="botBadge">1</div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const botToggle = document.getElementById('botToggle');
+    const chatWindow = document.getElementById('chatWindow');
+    const closeChat = document.getElementById('closeChat');
+    const botBadge = document.getElementById('botBadge');
+
+    botToggle.addEventListener('click', () => {
+        const isVisible = chatWindow.style.display === 'flex';
+        chatWindow.style.display = isVisible ? 'none' : 'flex';
+        botBadge.style.display = 'none';
+    });
+
+    closeChat.addEventListener('click', () => {
+        chatWindow.style.display = 'none';
+    });
+
+    // Bubukas mag-isa after 7 seconds
+    setTimeout(() => {
+        if(chatWindow.style.display !== 'flex') {
+            chatWindow.style.display = 'flex';
+            botBadge.style.display = 'none';
+        }
+    }, 7000);
+});
+
+function botReply(action) {
+    const chatBody = document.getElementById('chatBody');
+    const chatOptions = document.getElementById('chatOptions');
+    
+    chatBody.innerHTML += `<div class="chat-bubble" id="typing"><em>Nag-iisip...</em></div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+    chatOptions.style.display = 'none';
+
+    setTimeout(() => {
+        const typing = document.getElementById('typing');
+        if(typing) typing.remove();
+        
+        let msg = "";
+        if(action === 'audit') {
+            msg = "Sige po! Dadalhin kita sa aming scheduling page.";
+            chatBody.innerHTML += `<div class="chat-bubble" style="background:#dbeafe">${msg}</div>`;
+            setTimeout(() => { window.location.href = 'book-now.html'; }, 2000);
+        } else if(action === 'quote') {
+            msg = "Sure! Bubuksan ko ang aming Quotation Form.";
+            chatBody.innerHTML += `<div class="chat-bubble">${msg}</div>`;
+            setTimeout(() => { window.open('https://docs.google.com/forms/your-link', '_blank'); }, 2000);
+        } else {
+            msg = "Magandang choice ang solar! Dadalhin kita sa aming info page.";
+            chatBody.innerHTML += `<div class="chat-bubble">${msg}</div>`;
+            setTimeout(() => { window.location.href = 'solar-info.html'; }, 2000);
+        }
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }, 1500);
+}
+</script>
 </body>
 </html>
