@@ -230,11 +230,12 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
+/* Main Wrapper - Draggable at laging nasa ibabaw */
 .kohmz-bot-wrapper {
     position: fixed;
-    bottom: 120px;
+    bottom: 120px; 
     right: 20px;
-    z-index: 999999;
+    z-index: 9999999; /* Tinitiyak na nasa ibabaw ng lahat */
     font-family: 'Share Tech Mono', monospace;
     display: flex;
     flex-direction: column;
@@ -243,6 +244,7 @@
     user-select: none;
 }
 
+/* Tooltip/Hint sa taas ng robot */
 .bot-value-tag {
     background: #00e5ff;
     color: #000;
@@ -257,6 +259,7 @@
     white-space: nowrap;
 }
 
+/* Chat Window - Futuristic Design */
 .kohmz-chat-window {
     display: none;
     width: 300px;
@@ -297,6 +300,7 @@
     font-size: 12px;
 }
 
+/* Buttons inside the chat */
 .kohmz-chat-options {
     padding: 12px;
     display: flex;
@@ -319,6 +323,7 @@
 
 .chat-btn:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 10px #00e5ff; }
 
+/* The Toggle Button containing the Lottie Animation */
 .kohmz-bot-toggle {
     width: 85px; 
     height: 85px;
@@ -354,7 +359,7 @@
             <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
         </div>
         <div class="kohmz-chat-body" id="chatBody">
-            <div class="chat-bubble">Initialization complete. Kumusta! Ako ang iyong Cyber-Assistant. Ready na tayo para sa iyong project optimization.</div>
+            <div class="chat-bubble">Initialization complete. Kumusta! Ako ang iyong Cyber-Assistant. Ready na tayo para sa iyong commercial project optimization.</div>
         </div>
         <div class="kohmz-chat-options">
             <button class="chat-btn" onclick="botAction('audit')" style="border-color:#ffd700; color:#ffd700;">
@@ -422,7 +427,7 @@ const dragMove = (e) => {
     xOffset = clientX - startX;
     yOffset = clientY - startY;
 
-    // GAMITIN ANG BACKTICKS ( ` ) DITO SA ILALIM:
+    // FIX: Gumamit ng backticks ( ` ) para gumana ang dragging
     wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
 };
 
@@ -431,6 +436,7 @@ const dragEnd = (e) => {
     const dragDuration = Date.now() - dragStartTime;
     isDragging = false;
     
+    // Open chat only if it's a click (less than 200ms)
     if (dragDuration < 200) {
         toggleBotWindow();
     }
