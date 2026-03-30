@@ -7,109 +7,139 @@
     
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <style>
-        /* Strict Font Scale: 20-14-12-10 */
-        body { font-size: 12px; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; overflow-x: hidden; } 
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        /* Strict Font Scale & FUTURISTIC BACKGROUND */
+        body { 
+            font-size: 12px; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            margin: 0; padding: 0; 
+            background-color: #081018; /* Dark Cyber Background */
+            background-image: 
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px; /* Cyber Grid */
+            color: #e0faff; 
+            overflow-x: hidden; 
+        } 
         
-        /* --- ANIMATION EFFECTS --- */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        /* SCROLL REVEAL ANIMATIONS */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
-        .moving-ads marquee { font-size: 10px; } 
+        .moving-ads { background: #ffb703; color: #000; padding: 5px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 2px 10px rgba(255, 183, 3, 0.4); }
+        .moving-ads marquee { font-size: 10px; font-family: 'Share Tech Mono', monospace; } 
         
         /* MODERN RESPONSIVE HEADER */
         header { 
-            background: #0d1b2a; color: white; padding: 15px 20px; 
+            background: rgba(8, 16, 24, 0.95); padding: 15px 20px; 
             display: flex; justify-content: space-between; align-items: center; 
-            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
+            position: sticky; top: 0; z-index: 1000; 
+            border-bottom: 1px solid #00e5ff;
+            box-shadow: 0 4px 30px rgba(0, 229, 255, 0.15);
+            backdrop-filter: blur(10px);
         }
         .logo { display: flex; align-items: center; gap: 10px; }
-        .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; }
-        .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
-        .logo span { color: #ffb703; }
+        .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
+        .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.3); } 
+        .logo span { color: #ffb703; text-shadow: 0 0 10px rgba(255,183,3,0.5); }
 
-        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; z-index: 1001; }
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #00e5ff; z-index: 1001; }
 
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s ease; }
         .nav-links li { margin-left: 18px; position: relative; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
-        .nav-links li a:hover { color: #ffb703; }
+        .nav-links li a { color: #e0faff; text-decoration: none; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; font-family: 'Share Tech Mono', monospace; }
+        .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
         
         .dropdown-content { 
-            display: none; position: absolute; background-color: #ffffff; min-width: 175px; 
-            box-shadow: 0px 8px 25px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; 
-            overflow: hidden; top: 100%; left: 0; border-top: 3px solid #ffb703; 
+            display: none; position: absolute; background-color: rgba(8,16,24,0.95); min-width: 175px; 
+            box-shadow: 0px 8px 25px rgba(0,229,255,0.2); z-index: 1001; border-radius: 4px; 
+            overflow: hidden; top: 100%; left: 0; border-top: 3px solid #00e5ff; backdrop-filter: blur(5px);
         }
-        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 12px !important; border-bottom: 1px solid #eee; transition: 0.2s; font-weight: 600; }
-        .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; }
+        .dropdown-content a { color: #e0faff !important; padding: 12px 16px; border-bottom: 1px solid rgba(0,229,255,0.1); font-weight: 600; }
+        .dropdown-content a:hover { background-color: rgba(0,229,255,0.1); color: #00e5ff !important; padding-left: 22px; }
         .dropdown:hover .dropdown-content { display: block; }
 
         @media (max-width: 992px) {
             .menu-toggle { display: block; }
             .nav-links {
                 display: none; flex-direction: column; position: absolute; 
-                top: 100%; left: 0; width: 100%; background: #0d1b2a; 
-                padding: 20px 0; border-bottom: 4px solid #ffb703;
+                top: 100%; left: 0; width: 100%; background: rgba(8,16,24,0.98); 
+                padding: 20px 0; border-bottom: 4px solid #00e5ff; backdrop-filter: blur(10px);
             }
             .nav-links.active { display: flex; }
             .nav-links li { margin: 15px 0; text-align: center; width: 100%; margin-left: 0; }
-            .nav-links li a { font-size: 18px; width: 100%; }
-            .dropdown-content { position: static; box-shadow: none; background: #1a2e44; display: none; width: 100%; }
-            .dropdown.active .dropdown-content { display: block; }
+            .nav-links li a { font-size: 16px; width: 100%; }
+            .dropdown-content { position: static; box-shadow: none; background: transparent; border-top: none; display: none; width: 100%; }
+            .dropdown.active .dropdown-content { display: block; border-left: 2px solid #00e5ff; margin-left: 20px; }
         }
 
-        /* HERO SECTION */
+        /* --- ANIMATED HERO SECTION --- */
         .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.8), rgba(13, 27, 42, 0.8)), url('background%20picture%20KOHMZ.jpg') no-repeat center center; 
+            background: linear-gradient(rgba(8, 16, 24, 0.85), rgba(8, 16, 24, 0.95)), url('background%20picture%20KOHMZ.jpg') no-repeat center center; 
             background-size: cover; padding: 120px 10%; text-align: center; color: white; 
-            display: flex; align-items: center; justify-content: center; min-height: 350px;
+            display: flex; align-items: center; justify-content: center; min-height: 380px;
+            position: relative; overflow: hidden; border-bottom: 1px solid rgba(0, 229, 255, 0.3);
         }
-        .hero-inner { max-width: 850px; }
-        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; line-height: 1.3; } 
-        .hero p { font-size: 14px; max-width: 750px; margin: 0 auto 20px; line-height: 1.8; } 
+        /* Glowing Line Animation passing through the hero */
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 2px;
+            background: linear-gradient(90deg, transparent, #00e5ff, transparent);
+            animation: scanline 4s infinite linear;
+        }
+        @keyframes scanline { 100% { left: 200%; } }
+
+        .hero-inner { max-width: 850px; position: relative; z-index: 2; }
+        .hero h2 { font-size: 28px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; text-shadow: 0 0 15px rgba(255, 183, 3, 0.5); font-family: 'Share Tech Mono', monospace; } 
+        .hero p { font-size: 15px; max-width: 750px; margin: 0 auto 20px; line-height: 1.8; color: #bdf3ff; } 
 
         /* FLOATING BUTTONS */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
-        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
-        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
+        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.8); transition: 0.3s; border: 1px solid rgba(255,255,255,0.2); }
+        .float-btn:hover { transform: scale(1.15); filter: brightness(1.2); box-shadow: 0 0 15px #00e5ff; border-color: #00e5ff; }
         .fb-messenger { background: #0084ff; }
         .viber { background: #7360f2; }
         .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
-        /* CONTENT SECTIONS */
-        .content-section { padding: 70px 10%; text-align: center; }
-        .content-section h2 { font-size: 20px; color: #0d1b2a; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; position: relative; display: inline-block; }
-        .content-section h2::after { content: ''; width: 50px; height: 3px; background: #ffb703; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); }
-        .content-section p { max-width: 900px; margin: 0 auto 20px; line-height: 1.8; color: #444; }
+        /* EXPANDED CONTENT SECTIONS */
+        .content-section { padding: 80px 10%; text-align: center; }
+        .content-section h2 { font-size: 22px; color: #00e5ff; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 10px rgba(0,229,255,0.3); position: relative; display: inline-block; }
+        .content-section h2::after { content: ''; width: 60px; height: 3px; background: #ffb703; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 10px #ffb703; }
+        .content-section p { max-width: 900px; margin: 0 auto 20px; line-height: 1.9; color: #a0aec0; font-size: 13px; text-align: justify; text-align-last: center; }
 
-        /* CARDS */
-        .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
-        .card { background: white; width: 320px; padding: 35px 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border-radius: 8px; border-top: 4px solid #ffb703; text-align: left; transition: 0.3s; display: flex; flex-direction: column; }
-        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
-        .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 900; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-        .card p { font-size: 12px; line-height: 1.7; color: #334155; }
+        /* CYBER CARDS */
+        .cards-container { display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; margin-top: 40px; }
+        .card { 
+            background: rgba(13, 27, 42, 0.6); width: 320px; padding: 35px 25px; 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); border-radius: 8px; 
+            border: 1px solid rgba(0, 229, 255, 0.1); border-top: 4px solid #ffb703; 
+            text-align: left; transition: 0.4s; backdrop-filter: blur(5px);
+        }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2); border-color: #00e5ff; }
+        .card h3 { font-size: 16px; margin-bottom: 15px; color: #fff; font-weight: 900; text-transform: uppercase; font-family: 'Share Tech Mono', monospace; letter-spacing: 1px; }
+        .card p { font-size: 12px; line-height: 1.8; color: #94a3b8; text-align: left; }
 
-        /* SOLAR SECTION */
-        .solar-deep-dive { background: #fff; padding: 40px 10%; border-radius: 15px; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; border: 1px solid #ffb703; }
-        .solar-type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
-        .solar-type-card { background: #fdfdfd; padding: 20px; border-radius: 8px; border-left: 4px solid #34a853; }
-        .solar-type-card h4 { font-size: 13px; color: #0d1b2a; margin-bottom: 8px; text-transform: uppercase; }
-        .solar-type-card ul { padding-left: 15px; font-size: 11px; color: #555; }
-        .best-pick-tag { background: #ffb703; color: #0d1b2a; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 3px; display: inline-block; margin-bottom: 10px; }
-
-        /* QR SECTION */
-        .qr-section { background: #fff; padding: 40px; border-radius: 12px; margin: 40px auto; max-width: 750px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; border: 1px solid #eee; }
-        .qr-image { width: 180px; height: 180px; border: 6px solid #0d1b2a; border-radius: 15px; background: white; overflow: hidden; }
-        .btn-group-vcard { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
-        .vcard-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #0d1b2a; color: #ffb703 !important; padding: 14px 20px; text-decoration: none; border-radius: 6px; font-weight: 900; font-size: 12px; transition: 0.3s; border: 2px solid #ffb703; cursor: pointer; }
-        .vcard-btn:hover { background: #ffb703; color: #0d1b2a !important; transform: translateY(-3px); }
-        .btn-map-about { background: #1155cc; color: white !important; border-color: #1155cc; }
+        /* QR SECTION - GLASSMORPHISM */
+        .qr-section { 
+            background: rgba(255, 255, 255, 0.03); padding: 40px; border-radius: 12px; 
+            margin: 50px auto; max-width: 800px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); 
+            display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; 
+            border: 1px solid rgba(0, 229, 255, 0.2); backdrop-filter: blur(10px);
+        }
+        .qr-image { width: 180px; height: 180px; border: 4px solid #00e5ff; border-radius: 10px; background: white; overflow: hidden; box-shadow: 0 0 20px rgba(0,229,255,0.4); padding: 5px; }
+        .btn-group-vcard { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 300px; margin-top: 15px; }
+        .vcard-btn { 
+            display: flex; align-items: center; justify-content: center; gap: 10px; 
+            background: rgba(0, 229, 255, 0.1); color: #00e5ff !important; padding: 14px 20px; 
+            text-decoration: none; border-radius: 6px; font-weight: 900; font-size: 11px; 
+            transition: 0.3s; border: 1px solid #00e5ff; cursor: pointer; width: 100%; font-family: 'Share Tech Mono', monospace; letter-spacing: 1px;
+        }
+        .vcard-btn:hover { background: #00e5ff; color: #000 !important; transform: scale(1.03); box-shadow: 0 0 15px #00e5ff; }
 
         /* ROBOT STYLES */
         .kohmz-bot-wrapper { position: fixed; bottom: 120px; right: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-end; touch-action: none; user-select: none; }
@@ -123,8 +153,12 @@
         .kohmz-bot-toggle { width: 85px; height: 85px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; }
         .bot-badge { position: absolute; top: 12px; right: 12px; background: #ff3b3b; color: #fff; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px #ff3b3b; z-index: 10; }
 
-        /* FOOTER */
-        footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
+        /* FOOTER (Retained exactly as requested) */
+        footer { background: #050a0f; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; border-top: 1px solid rgba(0,229,255,0.2); }
+        .footer-content { font-size: 10px; line-height: 1.8; color: #94a3b8; }
+        .footer-content p strong { font-size: 12px; color: #ffb703; }
+        .footer-content a { color: #00e5ff; text-decoration: none; transition: 0.3s; }
+        .footer-content a:hover { color: #fff; text-shadow: 0 0 8px #00e5ff; }
     </style>
 </head>
 <body>
@@ -137,7 +171,7 @@
     </div>
 
     <div class="moving-ads">
-        <marquee behavior="scroll" direction="left">⚡ KOHMZ Electrical Design and Build: Specialist Technical Firm | 24/7 Professional Support | Certified Solar & Power Implementations ⚡</marquee>
+        <marquee behavior="scroll" direction="left">⚡ [SYSTEM ONLINE] KOHMZ ELECTRICAL: Precision Engineering | 24/7 Technical Support | Next-Gen Solar & Power Infrastructures ⚡</marquee>
     </div>
 
     <header>
@@ -166,7 +200,7 @@
                         <a href="electrical-materials.html">Materials</a>
                     </div>
                 </li>
-                <li><a href="about-us.html" style="color: #ffb703;">About Us</a></li>
+                <li><a href="about-us.html" style="color: #ffb703; border-bottom: 1px solid #ffb703;">About Us</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
                 <li><a href="faq.html">FAQ</a></li>
             </ul>
@@ -176,108 +210,53 @@
     <main>
         <section class="hero">
             <div class="hero-inner">
-                <h2>Precision in Every Connection</h2>
-                <p>A specialist technical firm dedicated to high-standard electrical architecture and renewable energy integration.</p>
+                <h2>Engineering the Future of Power</h2>
+                <p>We are a specialist technical firm dedicated to high-standard electrical architecture, absolute compliance, and advanced renewable energy integration. We don't just wire buildings; we program power environments.</p>
             </div>
         </section>
 
         <section class="content-section reveal">
-            <h2>Our Identity & Technical Commitment</h2>
-            <p><strong>KOHMZ Electrical Design and Build</strong> is a premier professional contracting firm. We don't just "wire" properties; we curate safe, sustainable, and high-performance power environments. Our specialty lies in the meticulous synergy of technical design, certified installation, and 24/7 technical oversight for residential, commercial, and industrial landscapes.</p>
-            <p>We operate with a **Design-First Philosophy**, ensuring that every circuit, breaker, and solar panel is placed with calculated precision. Our team of technical specialists is committed to future-proofing your investments through rigorous testing and adherence to the highest safety protocols.</p>
+            <h2>The Design-First Philosophy</h2>
+            <p>At <strong>KOHMZ Electrical Design and Build</strong>, we believe that world-class electrical systems are engineered before a single wire is pulled. Born from the necessity to elevate Philippine electrical standards, our firm bridges the gap between conventional contracting and cutting-edge technical architecture.</p>
+            <p>Our approach eliminates guesswork. Through rigorous CAD-based layouts, precise load calculations, and adherence to the Philippine Electrical Code (PEC), we curate infrastructures that are not only safe today but are fully capable of adapting to the technological demands of tomorrow.</p>
         </section>
 
-        <section class="content-section reveal" style="background: white;">
-            <h2>Sector-Specific Expertise</h2>
+        <section class="content-section reveal" style="background: rgba(0, 229, 255, 0.02); border-top: 1px solid rgba(0,229,255,0.1); border-bottom: 1px solid rgba(0,229,255,0.1);">
+            <h2>Infrastructure Expertise</h2>
             <div class="cards-container">
                 <div class="card">
-                    <h3>Residential Specialists</h3>
-                    <p>Creating "Smart & Safe" homes. We focus on load optimization, dedicated appliance circuits, and advanced protection systems to ensure your family's absolute peace of mind.</p>
+                    <h3 style="color: #ffb703;">Residential Protocols</h3>
+                    <p>We transform ordinary houses into "Smart & Safe" havens. From dedicated circuits for heavy appliances to high-grade GFCI/AFCI installations, we ensure your family’s absolute protection against electrical fire hazards.</p>
                 </div>
-                <div class="card" style="border-top-color: #1a73e8;">
-                    <h3>Commercial Architecture</h3>
-                    <p>Efficiency-driven power distribution for businesses. We specialize in custom office fit-outs, workstation integration, and rapid-response maintenance to eliminate downtime.</p>
+                <div class="card" style="border-top-color: #00e5ff;">
+                    <h3 style="color: #00e5ff;">Commercial Systems</h3>
+                    <p>Downtime is not an option. We specialize in robust 3-phase power distributions, custom workstation fit-outs, and preventive maintenance designed to keep your business operations running 24/7 without interruption.</p>
                 </div>
-                <div class="card" style="border-top-color: #34a853;">
-                    <h3>Renewable Integration</h3>
-                    <p>Transitioning properties to clean energy. We provide certified solar assessments and high-ROI implementations tailored to the Philippine tropical climate.</p>
-                </div>
-            </div>
-
-            <div class="solar-deep-dive">
-                <div class="best-pick-tag">⭐ PROFESSIONAL SOLAR GUIDE</div>
-                <h3 style="font-size: 16px; color: #0d1b2a; margin-bottom: 15px;">Smart Solar Solutions: The Future of Energy Independence</h3>
-                <p style="font-size: 11px; margin-bottom: 20px;">Investing in Solar is the single most effective way to eliminate rising electricity costs. At KOHMZ, we use only Tier-1 equipment to guarantee 25+ years of performance. Here is how we pick the right system for you:</p>
-                
-                <div class="solar-type-grid">
-                    <div class="solar-type-card">
-                        <h4>1. Grid-Tied System</h4>
-                        <p style="font-size: 10px; font-style: italic; color: #34a853; margin-bottom: 5px;">"Best for Maximum ROI"</p>
-                        <ul>
-                            <li>Lowers daytime bills by up to 80%.</li>
-                            <li>Directly feeds excess power back to the grid.</li>
-                            <li>Simple, low maintenance, and fastest payback.</li>
-                        </ul>
-                    </div>
-                    <div class="solar-type-card" style="border-left-color: #ea4335;">
-                        <h4>2. Off-Grid System</h4>
-                        <p style="font-size: 10px; font-style: italic; color: #ea4335; margin-bottom: 5px;">"Best for Remote Areas"</p>
-                        <ul>
-                            <li>100% independence from utility companies.</li>
-                            <li>Relies on heavy-duty battery storage.</li>
-                            <li>Perfect for rest houses or areas with frequent blackouts.</li>
-                        </ul>
-                    </div>
-                    <div class="solar-type-card" style="border-left-color: #ffb703; background: #fffcf0;">
-                        <div class="best-pick-tag" style="background: #0d1b2a; color: #ffb703;">PRO'S TOP PICK</div>
-                        <h4>3. Hybrid System</h4>
-                        <p style="font-size: 10px; font-style: italic; color: #ffb703; margin-bottom: 5px;">"Best for Modern PH Homes"</p>
-                        <ul>
-                            <li>BILL REDUCTION + BACKUP POWER.</li>
-                            <li>Seamlessly switches to batteries during brownouts.</li>
-                            <li>The ultimate balance of savings and reliability.</li>
-                        </ul>
-                    </div>
-                </div>
-                <p style="margin-top: 25px; font-size: 12px; font-weight: bold; color: #0d1b2a; text-align: center; border-top: 1px dashed #ddd; padding-top: 15px;">
-                    "Our Recommendation: For most Metro Manila homes, a **Hybrid System** is the best pick. It protects your comfort during outages while slashing your Meralco bills simultaneously."
-                </p>
-            </div>
-        </section>
-
-        <section class="content-section reveal">
-            <h2>Why Trust KOHMZ Specialists?</h2>
-            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; text-align: left;">
-                <div style="flex: 1; min-width: 250px; background: #0d1b2a; color: white; padding: 25px; border-radius: 10px;">
-                    <h4 style="color: #ffb703; margin-bottom: 10px;">The KOHMZ Guarantee</h4>
-                    <ul style="font-size: 11px; line-height: 1.8;">
-                        <li>✅ Certified Technical Inspections</li>
-                        <li>✅ Precision CAD-based Power Layouts</li>
-                        <li>✅ Tier-1 Material Procurement Only</li>
-                        <li>✅ 24/7 Post-Installation Support</li>
-                    </ul>
-                </div>
-                <div style="flex: 1; min-width: 250px; background: #fff; padding: 25px; border-radius: 10px; border: 1px solid #ddd;">
-                    <h4 style="color: #0d1b2a; margin-bottom: 10px;">Our Seamless Process</h4>
-                    <p style="font-size: 11px; color: #666;">From the initial site visit to the final energization, we handle everything. We provide detailed Load Schedules and technical documentation so you never have to guess about your property's safety.</p>
+                <div class="card" style="border-top-color: #25d366;">
+                    <h3 style="color: #25d366;">Renewable Integration</h3>
+                    <p>We lead the transition to energy independence. By deploying Tier-1 Solar components and Hybrid inverter systems, we provide sustainable solutions that slash utility costs and protect against grid blackouts.</p>
                 </div>
             </div>
         </section>
 
         <section class="content-section reveal">
-            <div style="margin-bottom: 40px;"><a href="book-now.html" class="vcard-btn" style="background: #25d366; border-color: #25d366; color: white !important;"><i class="fas fa-calendar-check"></i> SCHEDULE A CONSULTATION</a></div>
+            <h2>The KOHMZ Quality Guarantee</h2>
+            <p>Trust is built on transparency and technical execution. When you hire KOHMZ, you are partnering with specialists who utilize industrial-grade tools—from Megohmmeter insulation testing to precise voltage diagnostics—guaranteeing that every connection is flawless.</p>
+            <p>We procure only authentic, high-grade materials (THHN/THWN copper, NEMA-rated enclosures) to ensure your system’s longevity. We don't cut corners; we set the standard.</p>
+        </section>
 
+        <section class="content-section reveal">
             <div class="qr-section">
                 <div class="qr-image">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://kohmzelectrical.github.io/kohmz-electrical-services/vcard.html" alt="KOHMZ QR">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://kohmzelectrical.github.io/kohmz-electrical-services/vcard.html" alt="KOHMZ QR" style="width:100%;">
                 </div>
                 <div style="flex: 1; text-align: left; min-width: 280px;">
-                    <h3 style="color: #0d1b2a; font-size: 14px; margin-bottom: 8px; text-transform: uppercase; font-weight: 800;">KOHMZ INDUSTRIAL DESIGN SERVICES</h3>
-                    <p style="font-size: 10px; color: #666; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px;">Electrical Contractor / Technical Governance</p>
-                    <p style="font-size: 11px; margin-bottom: 20px; color: #444; line-height: 1.6;">Scan QR to save our digital identity, or use the professional actions below to connect and locate us immediately.</p>
+                    <h3 style="color: #fff; font-size: 16px; margin-bottom: 5px; font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 8px rgba(255,255,255,0.5);">KOHMZ DATALINK / VCARD</h3>
+                    <p style="font-size: 11px; color: #00e5ff; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1.5px;">Electrical Contractor / Tech Governance</p>
+                    <p style="font-size: 12px; margin-bottom: 25px; color: #a0aec0; line-height: 1.6;">Scan the QR code to instantly sync our operational details to your database, or deploy the fast-link protocols below for direct communication.</p>
                     <div class="btn-group-vcard">
-                        <a href="http://googleusercontent.com/maps.google.com/7" target="_blank" class="vcard-btn btn-map-about"><i class="fas fa-map-marked-alt"></i> VIEW ON MAP</a>
-                        <button onclick="downloadVCard()" class="vcard-btn"><i class="fas fa-address-card"></i> DOWNLOAD V-CARD</button>
+                        <button onclick="downloadVCard()" class="vcard-btn"><i class="fas fa-download"></i> [DOWNLOAD_CONTACT_DATA]</button>
+                        <a href="book-now.html" class="vcard-btn" style="background: rgba(255, 183, 3, 0.1); border-color: #ffb703; color: #ffb703 !important;"><i class="fas fa-calendar-check"></i> [INITIALIZE_AUDIT_REQUEST]</a>
                     </div>
                 </div>
             </div>
@@ -292,13 +271,15 @@
                 <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
             </div>
             <div class="kohmz-chat-body">
-                <div class="chat-bubble">Awaiting command... Ready to provide technical background or solar consultation details.</div>
-                <button class="chat-btn" onclick="window.location.href='book-now.html'">> [RUN_AUDIT_ROUTINE]</button>
+                <div class="chat-bubble">Diagnostics online. How can I assist you with KOHMZ company details or service bookings today?</div>
+            </div>
+            <div class="kohmz-chat-options">
+                <button class="chat-btn" onclick="window.location.href='book-now.html'" style="border-color:#ffd700; color:#ffd700;">> [RUN_AUDIT_ROUTINE]</button>
                 <button class="chat-btn" onclick="window.open('https://m.me/100093260504264','_blank')">> [FB_COMM_LINK]</button>
             </div>
         </div>
         <div class="kohmz-bot-toggle" id="botToggle">
-            <lottie-player src="Live chatbot.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
+            <lottie-player src="live-chatbot.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
             <div class="bot-badge">!</div>
         </div>
     </div>
@@ -307,14 +288,15 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a></p>
-            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
+            <p>FB Page: <a href="https://m.me/100093260504264" target="_blank">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
+            <hr style="margin:15px auto; border:0; border-top:1px solid rgba(255,255,255,0.1); max-width: 800px;">
             <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
         </div>
     </footer>
 
     <script>
-        // MOBILE MENU LOGIC
+        // --- MOBILE MENU LOGIC ---
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         menuToggle.addEventListener('click', () => {
@@ -322,32 +304,34 @@
             menuToggle.querySelector('i').className = navList.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
         });
 
-        // SCROLL REVEAL LOGIC
+        // --- SCROLL REVEAL ANIMATIONS ---
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) {
+                if (elementTop < windowHeight - 80) {
                     reveals[i].classList.add("active");
                 }
             }
         }
         window.addEventListener("scroll", reveal);
-        window.addEventListener("load", reveal); // Initial check
+        window.addEventListener("load", reveal); // Trigger on load
 
-        // VCARD DOWNLOAD LOGIC
+        // --- VCARD DOWNLOAD LOGIC ---
         function downloadVCard() {
-            const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Samuel Millano\nORG:KOHMZ INDUSTRIAL DESIGN SERVICES\nTITLE:Owner / Electrical Contractor\nTEL;TYPE=CELL,VOICE:+639266174131\nEMAIL:kohmzelectrical@gmail.com\nURL:https://kohmzelectrical.github.io/kohmz-electrical-services/\nNOTE:KOHMZ ELECTRICAL DESIGN AND BUILD\nEND:VCARD`;
+            const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Samuel Millano\nORG:KOHMZ INDUSTRIAL DESIGN SERVICES\nTITLE:Owner / Electrical Contractor\nTEL;TYPE=CELL,VOICE:+639266174131\nEMAIL:kohmzelectrical@gmail.com\nURL:https://kohmzelectrical.github.io/kohmz-electrical-services/\nADR;TYPE=WORK:;;CALABARZON;NCR;;Philippines\nNOTE:KOHMZ ELECTRICAL DESIGN AND BUILD\nEND:VCARD`;
             const blob = new Blob([vCardData], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', 'Samuel_Millano_KOHMZ.vcf');
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
         }
 
-        // ROBOT CONTROL LOGIC
+        // --- ROBOT ASSISTANT LOGIC (Fixed & Draggable) ---
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         const chat = document.getElementById('chatWindow');
@@ -371,6 +355,7 @@
 
         const dragMove = (e) => {
             if (!isDragging) return;
+            if (e.cancelable) e.preventDefault();
             const clientX = (e.type === "touchmove") ? e.touches[0].clientX : e.clientX;
             const clientY = (e.type === "touchmove") ? e.touches[0].clientY : e.clientY;
             xOffset = clientX - startX; yOffset = clientY - startY;
