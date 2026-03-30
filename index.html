@@ -1111,12 +1111,15 @@ async function askGemini() {
         chatBody.innerHTML += `<div class="chat-bubble">UNIT-01: ${botReply}</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
 
-    } catch (error) {
+} catch (error) {
         const loadingElem = document.getElementById(loadingId);
-        if(loadingElem) loadingElem.innerHTML = "UNIT-01: Connection error. Please check your signal.";
+        if(loadingElem) loadingElem.innerHTML = "UNIT-01: System offline. Checking logs...";
+        
+        // IPRI-PRINT NITO ANG TUNAY NA ERROR SA CONSOLE
+        console.error("MENSAGE GALING KAY GOOGLE GEMINI: ", error);
+        alert("May error sa Gemini AI. Pakicheck ang 'Console' (F12) para sa detalye.");
     }
-}
-
+} //
 // 4. Enter Key Support (Para pag-press ng Enter, mag-send agad)
 document.getElementById('userQuery')?.addEventListener("keypress", (e) => {
     if (e.key === "Enter") askGemini();
