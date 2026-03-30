@@ -53,28 +53,37 @@
         .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; } 
         .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
 
-        /* URGENCY BOX */
-        .urgency-box { max-width: 800px; margin: -30px auto 30px; background: #fff; border-top: 5px solid #db4437; padding: 25px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; position: relative; z-index: 10; }
-        .urgency-box h3 { font-size: 14px; color: #0d1b2a; margin-bottom: 10px; text-transform: uppercase; font-weight: 800; }
-        .highlight-red { color: #db4437; font-weight: bold; }
+        /* NEW GREEN URGENCY BOX */
+        .urgency-box { max-width: 800px; margin: -30px auto 30px; background: #eaf3ea; border-top: 5px solid #2e7d32; padding: 25px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 10; border-left: 5px solid #2e7d32; }
+        .urgency-box h3 { font-size: 15px; color: #2e7d32; margin-bottom: 10px; text-transform: uppercase; font-weight: 900; text-align: center; }
+        
+        /* 4 REASONS STYLING */
+        .urgency-reasons { background: #ffffff; padding: 15px 20px; border-radius: 6px; border-left: 4px solid #db4437; margin-top: 15px; box-shadow: inset 0 0 10px rgba(0,0,0,0.02); }
+        .urgency-reasons ul { list-style: none; padding: 0; margin: 0; }
+        .urgency-reasons li { font-size: 11px; color: #333; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+        .urgency-reasons li i { color: #db4437; font-size: 14px; margin-top: 2px; min-width: 15px; text-align: center; }
+        .urgency-reasons li strong { color: #0d1b2a; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
 
-        /* FORM STYLING */
-        .main-container { max-width: 800px; margin: 0 auto 50px; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); }
-        .section-title { background: #f8fafc; padding: 12px 15px; font-size: 13px; font-weight: 900; color: #0d1b2a; text-transform: uppercase; margin: 30px 0 20px 0; border-left: 5px solid #1155cc; letter-spacing: 1px; }
+        /* UPDATED FORM STYLING (Soft Blue-Gray Background) */
+        .main-container { max-width: 800px; margin: 0 auto 50px; background: #eef2f5; padding: 40px; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); border: 1px solid #dce4ec; border-top: 5px solid #ffb703; }
+        .section-title { background: #ffffff; padding: 12px 15px; font-size: 13px; font-weight: 900; color: #0d1b2a; text-transform: uppercase; margin: 30px 0 20px 0; border-left: 5px solid #ffb703; letter-spacing: 1px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .field-group { display: flex; flex-direction: column; margin-bottom: 15px; text-align: left; }
         label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #0d1b2a; margin-bottom: 8px; }
-        input[type="text"], input[type="email"], input[type="tel"], select, textarea { padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; font-family: inherit; }
+        
+        /* Pure white inputs to pop out from the grayish form background */
+        input[type="text"], input[type="email"], input[type="tel"], select, textarea { padding: 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; font-family: inherit; background: #ffffff; transition: 0.3s; }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, select:focus, textarea:focus { outline: none; border-color: #ffb703; box-shadow: 0 0 5px rgba(255, 183, 3, 0.3); }
         
         .option-container { display: flex; flex-direction: column; gap: 8px; padding: 5px 0; }
-        .radio-item { display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer; }
+        .radio-item { display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer; color: #333; }
         
-        .file-upload { border: 2px dashed #ddd; padding: 20px; text-align: center; border-radius: 6px; background: #fafafa; transition: 0.3s; }
+        .file-upload { border: 2px dashed #cbd5e1; padding: 20px; text-align: center; border-radius: 6px; background: #ffffff; transition: 0.3s; }
         .file-upload:hover { border-color: #ffb703; background: #fffdf5; }
 
         .submit-btn { width: 100%; background: #0d1b2a; color: #ffb703; border: 2px solid #ffb703; padding: 18px; border-radius: 4px; font-size: 15px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.3s; margin-top: 40px; }
-        .submit-btn:hover { background: #ffb703; color: #0d1b2a; transform: translateY(-3px); }
+        .submit-btn:hover { background: #ffb703; color: #0d1b2a; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255, 183, 3, 0.3); }
 
         /* FLOATING ACTION BUTTONS */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
@@ -139,12 +148,23 @@
         </section>
 
         <section class="urgency-box">
-            <h3>⚠️ Do Not Compromise Your Safety!</h3>
-            <p style="font-size: 11px; color: #444; line-height: 1.6;">Electrical faults are the <span class="highlight-green">#1 cause of structural fires</span>. Do not wait for sparks or burning odors to occur before consulting an expert.</p>
+            <h3>⚠️ Act Now! Do Not Compromise Your Safety</h3>
+            <p style="font-size: 12px; color: #2e7d32; text-align: center; margin-bottom: 10px; font-weight: bold;">Electrical faults are the #1 cause of structural fires. Do not wait for sparks or burning odors before consulting an expert.</p>
+            
+            <div class="urgency-reasons">
+                <ul>
+                    <li><i class="fas fa-fire-alt"></i> <div><strong>1. Fire Hazards</strong><br>Overloaded circuits and degraded wiring can overheat rapidly, putting your property at risk of sudden electrical fires.</div></li>
+                    <li><i class="fas fa-bolt"></i> <div><strong>2. Appliance Damage</strong><br>Unstable voltage and power surges can permanently fry expensive appliances like Air Conditioners, Refrigerators, and Smart TVs.</div></li>
+                    <li><i class="fas fa-file-invoice-dollar"></i> <div><strong>3. Higher Electricity Bills</strong><br>Faulty wiring and grounded lines lead to power leakage, meaning you are paying for electricity you are not even using.</div></li>
+                    <li><i class="fas fa-skull-crossbones"></i> <div><strong>4. Fatal Shock Risks</strong><br>Exposed wires or improperly grounded systems pose a direct and deadly electrocution hazard to your family or employees.</div></li>
+                </ul>
+            </div>
         </section>
 
         <div class="main-container">
             <form action="https://formspree.io/f/xjgpypdl" method="POST" enctype="multipart/form-data">
+                
+                <input type="hidden" name="_next" value="thank-you.html">
                 
                 <div class="section-title">SECTION 1: Contact Information</div>
                 <div class="form-grid">
@@ -189,7 +209,7 @@
                 </div>
 
                 <div class="field-group">
-                    <label>Detailed Concerns</label>
+                    <label>Detailed Requirements</label>
                     <textarea name="Description" placeholder="Describe your project or the electrical issue..." required></textarea>
                 </div>
 
@@ -222,7 +242,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="submit-btn">Submit Inquiry to KOHMZ</button>
+                <button type="submit" class="submit-btn">Submit Inquiry to KOHMZ Specialists</button>
             </form>
         </div>
     </main>
