@@ -7,12 +7,18 @@
     
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
     <style>
-        /* Strict Font Scale: 20-14-12-10 */
+        /* Strict Font Scale */
         body { font-size: 12px; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; overflow-x: hidden; } 
-        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
+        
+        /* --- ANIMATION EFFECTS --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; position: relative; z-index: 1001; }
         .moving-ads marquee { font-size: 10px; } 
         
         /* MODERN RESPONSIVE HEADER */
@@ -30,7 +36,6 @@
 
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s ease; }
         .nav-links li { margin-left: 18px; position: relative; }
-        /* NAVIGATION FONT SIZE CHANGED TO 11px */
         .nav-links li a { color: white; text-decoration: none; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
         .nav-links li a:hover { color: #ffb703; }
         
@@ -44,7 +49,6 @@
         .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; }
         .dropdown:hover .dropdown-content { display: block; }
 
-        /* MOBILE OVERLAY */
         @media (max-width: 992px) {
             .menu-toggle { display: block; }
             .nav-links {
@@ -55,82 +59,59 @@
             .nav-links.active { display: flex; }
             .nav-links li { margin: 15px 0; text-align: center; width: 100%; margin-left: 0; }
             .nav-links li a { font-size: 18px; width: 100%; }
-            .dropdown-content { position: static; box-shadow: none; background: #1a2e44; display: none; width: 100%; }
-            .dropdown.active .dropdown-content { display: block; }
         }
 
-        /* --- HERO SECTION - FIXED BACKGROUND IMAGE --- */
+        /* HERO SECTION */
         .hero { 
             background: linear-gradient(rgba(13, 27, 42, 0.8), rgba(13, 27, 42, 0.8)), url('background%20picture%20KOHMZ.jpg') no-repeat center center; 
-            background-size: cover; 
-            padding: 120px 10%; 
-            text-align: center; 
-            color: white; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 350px;
+            background-size: cover; padding: 120px 10%; text-align: center; color: white; min-height: 350px; display: flex; align-items: center; justify-content: center;
         }
-        .hero-inner { max-width: 850px; }
-        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; line-height: 1.3; } 
-        .hero p { font-size: 14px; max-width: 750px; margin: 0 auto 20px; line-height: 1.8; } 
+        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; animation: fadeInDown 1s both; } 
+        .hero p { font-size: 14px; max-width: 750px; margin: 0 auto; line-height: 1.8; animation: fadeInUp 1s 0.3s both; } 
 
-        /* FLOATING BUTTONS */
-        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
-        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
-        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
-        .fb-messenger { background: #0084ff; }
-        .viber { background: #7360f2; }
-        .whatsapp { background: #25d366; }
-        .email { background: #db4437; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* CONTENT SECTIONS */
         .content-section { padding: 70px 10%; text-align: center; }
         .content-section h2 { font-size: 20px; color: #0d1b2a; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; position: relative; display: inline-block; }
         .content-section h2::after { content: ''; width: 50px; height: 3px; background: #ffb703; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); }
-        .content-section p { max-width: 900px; margin: 0 auto 20px; line-height: 1.8; color: #444; }
 
         /* CARDS */
         .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
-        .card { background: white; width: 320px; padding: 35px 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border-radius: 8px; border-top: 4px solid #ffb703; text-align: left; transition: 0.3s; display: flex; flex-direction: column; }
-        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
-        .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 900; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-        .card p { font-size: 12px; line-height: 1.7; color: #334155; }
+        .card { background: white; width: 320px; padding: 35px 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border-radius: 8px; border-top: 4px solid #ffb703; text-align: left; transition: 0.3s; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.08); border-top-color: #1a73e8; }
+        .card h3 { font-size: 14px; margin-bottom: 12px; color: #0d1b2a; font-weight: 900; text-transform: uppercase; }
 
         /* SOLAR SECTION */
-        .solar-deep-dive { background: #fff; padding: 40px 10%; border-radius: 15px; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; border: 1px solid #ffb703; }
-        .solar-type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
-        .solar-type-card { background: #fdfdfd; padding: 20px; border-radius: 8px; border-left: 4px solid #34a853; }
-        .solar-type-card h4 { font-size: 13px; color: #0d1b2a; margin-bottom: 8px; text-transform: uppercase; }
-        .solar-type-card ul { padding-left: 15px; font-size: 11px; color: #555; }
-        .best-pick-tag { background: #ffb703; color: #0d1b2a; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 3px; display: inline-block; margin-bottom: 10px; }
+        .solar-deep-dive { background: #fff; padding: 40px 5%; border-radius: 15px; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; border: 1px solid #ffb703; }
+        .solar-type-card { background: #fdfdfd; padding: 20px; border-radius: 8px; border-left: 4px solid #34a853; transition: 0.3s; }
+        .solar-type-card:hover { background: #f0fff4; transform: scale(1.02); }
 
         /* QR SECTION */
         .qr-section { background: #fff; padding: 40px; border-radius: 12px; margin: 40px auto; max-width: 750px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; border: 1px solid #eee; }
-        .qr-image { width: 180px; height: 180px; border: 6px solid #0d1b2a; border-radius: 15px; background: white; overflow: hidden; }
-        .btn-group-vcard { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
-        .vcard-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #0d1b2a; color: #ffb703 !important; padding: 14px 20px; text-decoration: none; border-radius: 6px; font-weight: 900; font-size: 12px; transition: 0.3s; border: 2px solid #ffb703; cursor: pointer; }
+        .vcard-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #0d1b2a; color: #ffb703 !important; padding: 14px 20px; text-decoration: none; border-radius: 6px; font-weight: 900; font-size: 12px; transition: 0.3s; border: 2px solid #ffb703; cursor: pointer; width: 100%; }
         .vcard-btn:hover { background: #ffb703; color: #0d1b2a !important; transform: translateY(-3px); }
-        .btn-map-about { background: #1155cc; color: white !important; border-color: #1155cc; }
 
-        /* FOOTER */
+        /* --- ROBOT ASSISTANT STYLES --- */
+        .kohmz-bot-wrapper { position: fixed; bottom: 120px; right: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-end; touch-action: none; user-select: none; }
+        .bot-value-tag { background: #00e5ff; color: #000; padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); cursor: grab; text-transform: uppercase; white-space: nowrap; }
+        .kohmz-chat-window { display: none; width: 300px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
+        .kohmz-chat-header { background: #000; color: #00e5ff; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
+        .kohmz-chat-body { padding: 15px; max-height: 220px; overflow-y: auto; }
+        .chat-bubble { background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; margin-bottom: 10px; border-left: 2px solid #00e5ff; font-size: 12px; }
+        .chat-btn { background: transparent; color: #fff; border: 1px solid #00e5ff; padding: 10px; font-size: 10px; cursor: pointer; text-align: left; text-transform: uppercase; margin-bottom: 5px; transition: 0.3s; width: 100%; }
+        .chat-btn:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 10px #00e5ff; }
+        .kohmz-bot-toggle { width: 85px; height: 85px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; }
+        .bot-badge { position: absolute; top: 12px; right: 12px; background: #ff3b3b; color: #fff; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px #ff3b3b; z-index: 10; }
+
         footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
-        .footer-content { font-size: 10px; line-height: 1.8; }
-        .footer-content p strong { font-size: 12px; color: #ffb703; }
-        .footer-content a { color: #ffb703; text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <div class="floating-container">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber"><i class="fab fa-viber"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email"><i class="fas fa-envelope"></i></a>
-    </div>
-
     <div class="moving-ads">
-        <marquee behavior="scroll" direction="left">⚡ KOHMZ Electrical Design and Build: Specialist Technical Firm | 24/7 Professional Support | Certified Solar & Power Implementations ⚡</marquee>
+        <marquee behavior="scroll" direction="left">⚡ KOHMZ Electrical Design and Build: Specialist Technical Firm | Precision Power Implementations | 24/7 Support ⚡</marquee>
     </div>
 
     <header>
@@ -151,17 +132,8 @@
                     </div>
                 </li>
                 <li><a href="book-now.html">Book Now</a></li>
-                <li class="dropdown">
-                    <a href="#">Affiliate Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
-                    <div class="dropdown-content">
-                        <a href="solar-parts.html">Solar Parts</a>
-                        <a href="powertools.html">Power Tools</a>
-                        <a href="electrical-materials.html">Materials</a>
-                    </div>
-                </li>
                 <li><a href="about-us.html" style="color: #ffb703;">About Us</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="faq.html">FAQ</a></li>
             </ul>
         </nav>
     </header>
@@ -174,102 +146,60 @@
             </div>
         </section>
 
-        <section class="content-section">
+        <section class="content-section reveal">
             <h2>Our Identity & Technical Commitment</h2>
-            <p><strong>KOHMZ Electrical Design and Build</strong> is a premier professional contracting firm. We don't just "wire" properties; we curate safe, sustainable, and high-performance power environments. Our specialty lies in the meticulous synergy of technical design, certified installation, and 24/7 technical oversight for residential, commercial, and industrial landscapes.</p>
-            <p>We operate with a **Design-First Philosophy**, ensuring that every circuit, breaker, and solar panel is placed with calculated precision. Our team of technical specialists is committed to future-proofing your investments through rigorous testing and adherence to the highest safety protocols.</p>
+            <p><strong>KOHMZ Electrical Design and Build</strong> is a premier professional contracting firm. We curate safe, sustainable, and high-performance power environments. We operate with a **Design-First Philosophy**, ensuring every circuit is calculated for absolute safety.</p>
         </section>
 
-        <section class="content-section" style="background: white;">
+        <section class="content-section reveal" style="background: white;">
             <h2>Sector-Specific Expertise</h2>
             <div class="cards-container">
                 <div class="card">
                     <h3>Residential Specialists</h3>
-                    <p>Creating "Smart & Safe" homes. We focus on load optimization, dedicated appliance circuits, and advanced protection systems to ensure your family's absolute peace of mind.</p>
+                    <p>Focusing on load optimization, dedicated circuits, and advanced protection systems for your home.</p>
                 </div>
-                <div class="card" style="border-top-color: #1a73e8;">
+                <div class="card">
                     <h3>Commercial Architecture</h3>
-                    <p>Efficiency-driven power distribution for businesses. We specialize in custom office fit-outs, workstation integration, and rapid-response maintenance to eliminate downtime.</p>
+                    <p>Efficiency-driven power distribution and rapid-response maintenance for modern businesses.</p>
                 </div>
-                <div class="card" style="border-top-color: #34a853;">
+                <div class="card">
                     <h3>Renewable Integration</h3>
-                    <p>Transitioning properties to clean energy. We provide certified solar assessments and high-ROI implementations tailored to the Philippine tropical climate.</p>
+                    <p>High-ROI solar implementations tailored for the Philippine tropical climate.</p>
                 </div>
             </div>
+        </section>
 
+        <section class="content-section reveal">
             <div class="solar-deep-dive">
-                <div class="best-pick-tag">⭐ PROFESSIONAL SOLAR GUIDE</div>
-                <h3 style="font-size: 16px; color: #0d1b2a; margin-bottom: 15px;">Smart Solar Solutions: The Future of Energy Independence</h3>
-                <p style="font-size: 11px; margin-bottom: 20px;">Investing in Solar is the single most effective way to eliminate rising electricity costs. At KOHMZ, we use only Tier-1 equipment to guarantee 25+ years of performance. Here is how we pick the right system for you:</p>
-                
-                <div class="solar-type-grid">
-                    <div class="solar-type-card">
-                        <h4>1. Grid-Tied System</h4>
-                        <p style="font-size: 10px; font-style: italic; color: #34a853; margin-bottom: 5px;">"Best for Maximum ROI"</p>
-                        <ul>
-                            <li>Lowers daytime bills by up to 80%.</li>
-                            <li>Directly feeds excess power back to the grid.</li>
-                            <li>Simple, low maintenance, and fastest payback.</li>
-                        </ul>
+                <div style="background:#ffb703; color:#0d1b2a; display:inline-block; padding:3px 8px; font-weight:800; margin-bottom:15px; border-radius:3px;">⭐ PROFESSIONAL SOLAR GUIDE</div>
+                <h3>Smart Solar Solutions</h3>
+                <div class="cards-container" style="text-align:left;">
+                    <div class="solar-type-card" style="width:250px;">
+                        <h4>1. Grid-Tied</h4>
+                        <p>Best for ROI. Lowers daytime bills by up to 80% by feeding excess power back.</p>
                     </div>
-                    <div class="solar-type-card" style="border-left-color: #ea4335;">
-                        <h4>2. Off-Grid System</h4>
-                        <p style="font-size: 10px; font-style: italic; color: #ea4335; margin-bottom: 5px;">"Best for Remote Areas"</p>
-                        <ul>
-                            <li>100% independence from utility companies.</li>
-                            <li>Relies on heavy-duty battery storage.</li>
-                            <li>Perfect for rest houses or areas with frequent blackouts.</li>
-                        </ul>
+                    <div class="solar-type-card" style="width:250px; border-left-color:#ea4335;">
+                        <h4>2. Off-Grid</h4>
+                        <p>100% Independence. Ideal for remote rest houses or frequent blackout areas.</p>
                     </div>
-                    <div class="solar-type-card" style="border-left-color: #ffb703; background: #fffcf0;">
-                        <div class="best-pick-tag" style="background: #0d1b2a; color: #ffb703;">PRO'S TOP PICK</div>
-                        <h4>3. Hybrid System</h4>
-                        <p style="font-size: 10px; font-style: italic; color: #ffb703; margin-bottom: 5px;">"Best for Modern PH Homes"</p>
-                        <ul>
-                            <li>BILL REDUCTION + BACKUP POWER.</li>
-                            <li>Seamlessly switches to batteries during brownouts.</li>
-                            <li>The ultimate balance of savings and reliability.</li>
-                        </ul>
+                    <div class="solar-type-card" style="width:250px; border-left-color:#ffb703; background:#fffcf0;">
+                        <h4>3. Hybrid (Top Pick)</h4>
+                        <p>Savings + Backup. Seamlessly switches power during brownouts.</p>
                     </div>
-                </div>
-                <p style="margin-top: 25px; font-size: 12px; font-weight: bold; color: #0d1b2a; text-align: center; border-top: 1px dashed #ddd; padding-top: 15px;">
-                    "Our Recommendation: For most Metro Manila homes, a **Hybrid System** is the best pick. It protects your comfort during outages while slashing your Meralco bills simultaneously."
-                </p>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h2>Why Trust KOHMZ Specialists?</h2>
-            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; text-align: left;">
-                <div style="flex: 1; min-width: 250px; background: #0d1b2a; color: white; padding: 25px; border-radius: 10px;">
-                    <h4 style="color: #ffb703; margin-bottom: 10px;">The KOHMZ Guarantee</h4>
-                    <ul style="font-size: 11px; line-height: 1.8;">
-                        <li>✅ Certified Technical Inspections</li>
-                        <li>✅ Precision CAD-based Power Layouts</li>
-                        <li>✅ Tier-1 Material Procurement Only</li>
-                        <li>✅ 24/7 Post-Installation Support</li>
-                    </ul>
-                </div>
-                <div style="flex: 1; min-width: 250px; background: #fff; padding: 25px; border-radius: 10px; border: 1px solid #ddd;">
-                    <h4 style="color: #0d1b2a; margin-bottom: 10px;">Our Seamless Process</h4>
-                    <p style="font-size: 11px; color: #666;">From the initial site visit to the final energization, we handle everything. We provide detailed Load Schedules and technical documentation so you never have to guess about your property's safety.</p>
                 </div>
             </div>
         </section>
 
-        <section class="content-section">
-            <div style="margin-bottom: 40px;"><a href="book-now.html" class="vcard-btn" style="background: #25d366; border-color: #25d366; color: white !important;"><i class="fas fa-calendar-check"></i> SCHEDULE A CONSULTATION</a></div>
-
+        <section class="content-section reveal">
             <div class="qr-section">
                 <div class="qr-image">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://kohmzelectrical.github.io/kohmz-electrical-services/vcard.html" alt="KOHMZ QR">
                 </div>
                 <div style="flex: 1; text-align: left; min-width: 280px;">
-                    <h3 style="color: #0d1b2a; font-size: 14px; margin-bottom: 8px; text-transform: uppercase; font-weight: 800;">KOHMZ INDUSTRIAL DESIGN SERVICES</h3>
-                    <p style="font-size: 10px; color: #666; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px;">Electrical Contractor / Technical Governance</p>
-                    <p style="font-size: 11px; margin-bottom: 20px; color: #444; line-height: 1.6;">Scan QR to save our digital identity, or use the professional actions below to connect and locate us immediately.</p>
-                    <div class="btn-group-vcard">
-                        <a href="http://googleusercontent.com/maps.google.com/7" target="_blank" class="vcard-btn btn-map-about"><i class="fas fa-map-marked-alt"></i> VIEW ON MAP</a>
+                    <h3 style="font-weight: 800;">KOHMZ INDUSTRIAL DESIGN</h3>
+                    <p>Scan to save our digital identity or connect with us immediately.</p>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <a href="https://maps.google.com" target="_blank" class="vcard-btn" style="background:#1155cc; border-color:#1155cc; color:white !important;"><i class="fas fa-map-marker-alt"></i> VIEW ON MAP</a>
                         <button onclick="downloadVCard()" class="vcard-btn"><i class="fas fa-address-card"></i> DOWNLOAD V-CARD</button>
                     </div>
                 </div>
@@ -277,48 +207,95 @@
         </section>
     </main>
 
-    <footer>
-        <div class="footer-content">
-            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
-            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
-            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
-            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
-            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+    <div class="kohmz-bot-wrapper" id="draggableBot">
+        <div class="bot-value-tag" id="dragHint">⚡ KOHMZ Expert AI</div>
+        <div class="kohmz-chat-window" id="chatWindow">
+            <div class="kohmz-chat-header">
+                <span>UNIT-01: ACTIVE</span>
+                <span onclick="toggleBotWindow()" style="cursor:pointer;">✕</span>
+            </div>
+            <div class="kohmz-chat-body">
+                <div class="chat-bubble">Initialization complete. Need help with our technical background or a solar quote?</div>
+                <button class="chat-btn" onclick="window.location.href='book-now.html'">> [RUN_AUDIT_ROUTINE]</button>
+                <button class="chat-btn" onclick="window.open('https://facebook.com','_blank')">> [FB_COMM_LINK]</button>
+            </div>
         </div>
+        <div class="kohmz-bot-toggle" id="botToggle">
+            <lottie-player src="Live chatbot.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
+            <div class="bot-badge">!</div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™</p>
     </footer>
 
     <script>
-        const menuToggle = document.getElementById('mobile-menu');
-        const navList = document.getElementById('nav-list');
-        const dropdowns = document.querySelectorAll('.dropdown');
-
-        menuToggle.addEventListener('click', () => {
-            navList.classList.toggle('active');
-            const icon = menuToggle.querySelector('i');
-            if (navList.classList.contains('active')) {
-                icon.className = 'fas fa-times';
-            } else {
-                icon.className = 'fas fa-bars';
+        // --- SCROLL REVEAL LOGIC ---
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
             }
+        }
+        window.addEventListener("scroll", reveal);
+
+        // --- MOBILE MENU ---
+        document.getElementById('mobile-menu').addEventListener('click', function() {
+            document.getElementById('nav-list').classList.toggle('active');
         });
 
-        dropdowns.forEach(dropdown => {
-            dropdown.addEventListener('click', () => {
-                if (window.innerWidth <= 992) dropdown.classList.toggle('active');
-            });
-        });
+        // --- ROBOT LOGIC (DRAGGABLE & TOGGLE) ---
+        const wrapper = document.getElementById('draggableBot');
+        const toggle = document.getElementById('botToggle');
+        const chat = document.getElementById('chatWindow');
+        const hint = document.getElementById('dragHint');
+        let isDragging = false, startX, startY, xOffset = 0, yOffset = 0, dragStartTime;
+
+        function toggleBotWindow() {
+            if (chat.style.display === 'flex') { chat.style.display = 'none'; hint.innerHTML = "⚡ KOHMZ Expert AI"; }
+            else { chat.style.display = 'flex'; hint.innerHTML = "🖐️ Drag to Move"; }
+        }
+
+        const dragStart = (e) => {
+            isDragging = true; dragStartTime = Date.now();
+            const clientX = (e.type === "touchstart") ? e.touches[0].clientX : e.clientX;
+            const clientY = (e.type === "touchstart") ? e.touches[0].clientY : e.clientY;
+            startX = clientX - xOffset; startY = clientY - yOffset;
+        };
+
+        const dragMove = (e) => {
+            if (!isDragging) return;
+            const clientX = (e.type === "touchmove") ? e.touches[0].clientX : e.clientX;
+            const clientY = (e.type === "touchmove") ? e.touches[0].clientY : e.clientY;
+            xOffset = clientX - startX; yOffset = clientY - startY;
+            wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
+        };
+
+        const dragEnd = () => {
+            isDragging = false;
+            if (Date.now() - dragStartTime < 200) toggleBotWindow();
+        };
+
+        toggle.addEventListener('mousedown', dragStart);
+        toggle.addEventListener('touchstart', dragStart, {passive:false});
+        window.addEventListener('mousemove', dragMove);
+        window.addEventListener('touchmove', dragMove, {passive:false});
+        window.addEventListener('mouseup', dragEnd);
+        window.addEventListener('touchend', dragEnd);
 
         function downloadVCard() {
-            const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Samuel Millano\nORG:KOHMZ INDUSTRIAL DESIGN SERVICES\nTITLE:Owner / Electrical Contractor\nTEL;TYPE=CELL,VOICE:+639266174131\nEMAIL:kohmzelectrical@gmail.com\nURL:https://kohmzelectrical.github.io/kohmz-electrical-services/\nADR;TYPE=WORK:;;CALABARZON;NCR;;Philippines\nNOTE:KOHMZ ELECTRICAL DESIGN AND BUILD\nEND:VCARD`;
+            const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Samuel Millano\nORG:KOHMZ INDUSTRIAL DESIGN\nTEL:+639266174131\nEND:VCARD`;
             const blob = new Blob([vCardData], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'Samuel_Millano_KOHMZ.vcf');
-            document.body.appendChild(link);
+            link.href = url; link.setAttribute('download', 'Samuel_Millano.vcf');
             link.click();
-            document.body.removeChild(link);
         }
     </script>
 </body>
