@@ -18,11 +18,11 @@
             font-size: 12px; 
             font-family: 'Segoe UI', Arial, sans-serif; 
             margin: 0; padding: 0; 
-            background-color: #081018; /* Dark Cyber Background */
+            background-color: #081018; 
             background-image: 
                 linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px; /* Cyber Grid */
+            background-size: 40px 40px; 
             color: #e0faff; 
             overflow-x: hidden; 
         } 
@@ -85,7 +85,6 @@
             display: flex; align-items: center; justify-content: center; min-height: 380px;
             position: relative; overflow: hidden; border-bottom: 1px solid rgba(0, 229, 255, 0.3);
         }
-        /* Glowing Line Animation passing through the hero */
         .hero::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 2px;
             background: linear-gradient(90deg, transparent, #00e5ff, transparent);
@@ -94,8 +93,12 @@
         @keyframes scanline { 100% { left: 200%; } }
 
         .hero-inner { max-width: 850px; position: relative; z-index: 2; }
-        .hero h2 { font-size: 28px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; text-shadow: 0 0 15px rgba(255, 183, 3, 0.5); font-family: 'Share Tech Mono', monospace; } 
+        .hero h2 { font-size: 28px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; text-shadow: 0 0 15px rgba(255, 183, 3, 0.5); font-family: 'Share Tech Mono', monospace; min-height: 40px; } 
         .hero p { font-size: 15px; max-width: 750px; margin: 0 auto 20px; line-height: 1.8; color: #bdf3ff; } 
+
+        /* TYPEWRITER CURSOR BLINK */
+        .cursor { color: #00e5ff; animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
 
         /* FLOATING BUTTONS */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
@@ -153,7 +156,7 @@
         .kohmz-bot-toggle { width: 85px; height: 85px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; }
         .bot-badge { position: absolute; top: 12px; right: 12px; background: #ff3b3b; color: #fff; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px #ff3b3b; z-index: 10; }
 
-        /* FOOTER (Retained exactly as requested) */
+        /* FOOTER */
         footer { background: #050a0f; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; border-top: 1px solid rgba(0,229,255,0.2); }
         .footer-content { font-size: 10px; line-height: 1.8; color: #94a3b8; }
         .footer-content p strong { font-size: 12px; color: #ffb703; }
@@ -210,8 +213,9 @@
     <main>
         <section class="hero">
             <div class="hero-inner">
-                <h2>Engineering the Future of Power</h2>
-                <p>We are a specialist technical firm dedicated to high-standard electrical architecture, absolute compliance, and advanced renewable energy integration. We don't just wire buildings; we program power environments.</p>
+                <h2><span id="typewriter-text"></span><span class="cursor">_</span></h2>
+                
+                <p class="reveal">We are a specialist technical firm dedicated to high-standard electrical architecture, absolute compliance, and advanced renewable energy integration. We don't just wire buildings; we program power environments.</p>
             </div>
         </section>
 
@@ -304,6 +308,19 @@
             menuToggle.querySelector('i').className = navList.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
         });
 
+        // --- TYPEWRITER LOGIC ---
+        const typeText = "ENGINEERING THE FUTURE OF POWER";
+        let typeIndex = 0;
+        const typeElement = document.getElementById("typewriter-text");
+
+        function typeWriterEffect() {
+            if (typeIndex < typeText.length) {
+                typeElement.innerHTML += typeText.charAt(typeIndex);
+                typeIndex++;
+                setTimeout(typeWriterEffect, 70); // Bilis ng pag-type (70ms)
+            }
+        }
+
         // --- SCROLL REVEAL ANIMATIONS ---
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
@@ -315,8 +332,13 @@
                 }
             }
         }
-        window.addEventListener("scroll", reveal);
-        window.addEventListener("load", reveal); // Trigger on load
+        
+        // Pag-load ng page, simulan ang reveal at typewriter
+        window.addEventListener("load", () => {
+            reveal();
+            setTimeout(typeWriterEffect, 400); // Delay bago mag-start mag-type
+        });
+        window.addEventListener("scroll", reveal); 
 
         // --- VCARD DOWNLOAD LOGIC ---
         function downloadVCard() {
