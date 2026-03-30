@@ -531,96 +531,98 @@
                 </details>
                 <details>
                     <summary>Can you design the electrical layout for a new commercial space?</summary>
-                    <p>Absolutely. Nagpapakadalubhasa kami sa custom wiring architecture, scalable power grids para sa workstation ergonomics, at NEMA-compliant enclosures. Ang aming CAD documents ay meticulously prepared para makapasa sa rigorous LGU safety permits at commercial building inspections.</p>
+                    <p>Absolutely. Nagpapakadalubhasa kami sa custom wiring architecture na sumusunod sa Philippine Electrical Code (PEC). Tinitiyak namin na ang iyong negosyo ay handa para sa future expansions at heavy equipment loads nang walang risk of overloading.</p>
                 </details>
             </div>
         </section>
 
         <section class="content-section">
             <div class="vip-advisory" data-aos="fade-up">
-                <i class="fas fa-shield-bolt" style="font-size:40px; color:var(--neon-gold);"></i>
-                <div style="text-align:left;">
-                    <h3 style="color:var(--neon-gold); margin-top:0; font-weight:900; text-transform:uppercase;">Priority Project Enrollment & Site Audits</h3>
-                    <p style="color:#cbd5e1;">Secure your property's technical evaluation today bago magkaroon ng milyong structural damage. Kasalukuyan kaming tumatanggap ng assessments para sa residential safety audits at commercial system integrations.</p>
-                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">
-                        <span class="adv-tag"><i class="fas fa-shield-alt"></i> Fire-Prevention</span>
-                        <span class="adv-tag"><i class="fas fa-chart-line"></i> Load Balancing</span>
-                        <span class="adv-tag"><i class="fas fa-file-contract"></i> CAD Review</span>
-                    </div>
+                <div>
+                    <span class="adv-tag"><i class="fas fa-bolt"></i> VIP Booking</span>
+                    <h3 style="color: #00e5ff; margin: 10px 0; font-size: 14px; text-transform: uppercase;">Priority Emergency Dispatch</h3>
+                    <p style="font-size: 12px; color: #cbd5e1; margin: 0;">For commercial outages or severe residential faults, secure an immediate technical audit. Fast deployment for hazard mitigation.</p>
                 </div>
-            </div>
-            <h2 style="margin-top:60px;">Ready to Secure Your Investment?</h2>
-            <div style="margin-top:30px;">
-                <a href="mailto:kohmzelectrical@gmail.com" class="cta-button" style="background:#c5221f; color:white;"><i class="fas fa-envelope"></i> SUBMIT FORMAL INQUIRY</a>
-                <a href="https://wa.me/639266174131" target="_blank" class="cta-button" style="background:#1da851; color:white; margin-left:15px;"><i class="fab fa-whatsapp"></i> CONNECT WITH A SPECIALIST</a>
+                <a href="book-now.html" class="cta-button btn-primary" style="white-space: nowrap;">DISPATCH TEAM</a>
             </div>
         </section>
+
     </main>
 
     <div class="floating-container">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn" style="background:#006aff;"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn" style="background:#1da851;"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn" style="background:#c5221f;"><i class="fas fa-envelope"></i></a>
+        <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" class="float-btn" style="background: #0084ff;"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="tel:+63XXXXXXXXXX" class="float-btn" style="background: #25d366;"><i class="fas fa-phone"></i></a>
     </div>
 
-    <footer style="background:#000; padding:60px 20px; border-top:2px solid var(--neon-gold); text-align:center;">
-        <p style="color:var(--neon-gold); font-weight:900; font-size:14px;">KOHMZ ELECTRICAL DESIGN AND BUILD</p>
-        <p style="font-size:11px;">Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-        <div style="margin-top:15px; opacity:0.6;">
-            <a href="privacy-policy.html" style="color:#fff; text-decoration:none;">Privacy Policy</a> | <a href="terms-of-service.html" style="color:#fff; text-decoration:none;">Terms of Service</a>
+    <footer>
+        <div class="logo" style="justify-content: center; margin-bottom: 20px;">
+            <img src="logo.jpg" alt="KOHMZ Logo">
+            <h1>KOHMZ <span>Electrical</span></h1>
         </div>
-        <p style="font-size:10px; opacity:0.5; margin-top:30px;">Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+        <p>&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
+        <p style="font-size: 11px; color: #94a3b8; margin-top: 10px;">Technical Governance | Asset Protection | PEC-Compliant Architecture</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true });
+        // Initialize Animate On Scroll
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
 
-        // TYPEWRITER
+        // Mobile Menu Toggle Logic
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+
+        mobileMenu.addEventListener('click', () => {
+            navList.classList.toggle('active');
+        });
+        
+        // Animated Typing Text Logic for Hero Section
         class TypeWriter {
             constructor(txtElement, words, wait = 3000) {
-                this.txtElement = txtElement; this.words = words; this.txt = '';
-                this.wordIndex = 0; this.wait = parseInt(wait, 10);
-                this.type(); this.isDeleting = false;
+                this.txtElement = txtElement;
+                this.words = words;
+                this.txt = '';
+                this.wordIndex = 0;
+                this.wait = parseInt(wait, 10);
+                this.type();
+                this.isDeleting = false;
             }
             type() {
                 const current = this.wordIndex % this.words.length;
                 const fullTxt = this.words[current];
-                if(this.isDeleting) { this.txt = fullTxt.substring(0, this.txt.length - 1); } 
-                else { this.txt = fullTxt.substring(0, this.txt.length + 1); }
-                this.txtElement.innerHTML = `<span class="txt" style="border-right:3px solid #ffb703; padding-right:5px;">${this.txt}</span>`;
+                if(this.isDeleting) {
+                    this.txt = fullTxt.substring(0, this.txt.length - 1);
+                } else {
+                    this.txt = fullTxt.substring(0, this.txt.length + 1);
+                }
+                this.txtElement.innerHTML = `<span class="txt">${this.txt}</span>`;
                 let typeSpeed = 100;
-                if(this.isDeleting) typeSpeed /= 2;
-                if(!this.isDeleting && this.txt === fullTxt) { typeSpeed = this.wait; this.isDeleting = true; } 
-                else if(this.isDeleting && this.txt === '') { this.isDeleting = false; this.wordIndex++; typeSpeed = 500; }
+                if(this.isDeleting) { typeSpeed /= 2; }
+                if(!this.isDeleting && this.txt === fullTxt) {
+                    typeSpeed = this.wait;
+                    this.isDeleting = true;
+                } else if(this.isDeleting && this.txt === '') {
+                    this.isDeleting = false;
+                    this.wordIndex++;
+                    typeSpeed = 500;
+                }
                 setTimeout(() => this.type(), typeSpeed);
             }
         }
-        document.addEventListener('DOMContentLoaded', () => {
+
+        document.addEventListener('DOMContentLoaded', init);
+        function init() {
             const txtElement = document.querySelector('.txt-type');
-            if(txtElement) {
-                const words = JSON.parse(txtElement.getAttribute('data-words'));
-                new TypeWriter(txtElement, words, txtElement.getAttribute('data-wait'));
+            const words = JSON.parse(txtElement.getAttribute('data-words'));
+            const wait = txtElement.getAttribute('data-wait');
+            if (txtElement && words) {
+                new TypeWriter(txtElement, words, wait);
             }
-        });
-
-        // MAGNETIC 3D TILT EFFECT
-        document.querySelectorAll('.card, .workflow-step, .vip-advisory').forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-                const rect = el.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                el.style.transform = `perspective(1000px) rotateY(${x * 12}deg) rotateX(${y * -12}deg) translateY(-10px)`;
-            });
-            el.addEventListener('mouseleave', () => {
-                el.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0)`;
-            });
-        });
-
-        // MOBILE MENU (RETAINED)
-        document.getElementById('mobile-menu').addEventListener('click', () => {
-            document.getElementById('nav-list').classList.toggle('active');
-        });
+        }
     </script>
 </body>
 </html>
