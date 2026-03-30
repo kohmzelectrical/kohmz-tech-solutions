@@ -1068,10 +1068,11 @@ window.addEventListener('mouseup', dragEnd);
 window.addEventListener('touchend', dragEnd);
 
 // --- GEMINI AI CONFIGURATION ---
-const GEMINI_API_KEY = "AIzaSyBoQDn29ivi5ou6lRWWB_UTT7BZjWV4Vgk"; 
-const GEMINI_MODEL = "gemini-pro"; // Pinalitan natin ang model name para mas sigurado
+const GEMINI_API_KEY = "AIzaSyAgqh4ugQxbc56y54etps22Km3ahk90b9M"; // ITO NA YUNG BAGONG KEY MO
+const GEMINI_MODEL = "gemini-1.5-flash"; // Ibalik natin dito dahil ito ang pinakamabilis
 
 async function askGemini() {
+// ... (tuloy-tuloy lang yung code mo sa ibaba)
     const inputField = document.getElementById('userQuery');
     const chatBody = document.getElementById('chatBody');
     const userMsg = inputField.value.trim();
