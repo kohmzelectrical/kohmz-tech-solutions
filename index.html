@@ -18,6 +18,7 @@
     <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
     
     <link rel="preload" as="image" href="logo.jpg" fetchpriority="high">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -62,12 +63,13 @@
             z-index: -2; pointer-events: none;
         }
 
-        /* ENERGY BOLT ANIMATION - ENHANCED */
+        /* ENERGY BOLT ANIMATION - OPTIMIZED */
         .energy-line {
             position: fixed; top: 0; width: 2px; height: 200px;
             background: linear-gradient(to bottom, transparent, var(--cyber-blue), var(--neon-gold), transparent);
             opacity: 0.4; z-index: -1; animation: flowBolt 6s ease-in-out infinite;
             filter: drop-shadow(0 0 8px var(--cyber-blue));
+            will-change: transform, opacity; /* GPU Acceleration for smoother animation */
         }
 
         @keyframes flowBolt {
@@ -97,6 +99,19 @@
         }
         .tech-bar-content span:last-child::after { content: ''; }
 
+        /* UX OPTIMIZATION: DYNAMIC TOOLTIP */
+        .tooltip-container { position: relative; cursor: help; }
+        .tooltip-container::before {
+            content: attr(data-tooltip); position: absolute; bottom: -28px; left: 50%;
+            transform: translateX(-50%); background: #0d1b2a; color: var(--neon-gold);
+            padding: 5px 10px; border-radius: 4px; font-size: 9px; white-space: nowrap;
+            opacity: 0; visibility: hidden; transition: 0.3s ease; border: 1px solid var(--neon-gold);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none; z-index: 100;
+        }
+        .tooltip-container:hover::before, .tooltip-container:focus::before {
+            opacity: 1; visibility: visible;
+        }
+
         /* HEADER & NAVIGATION */
         header {
             background: var(--panel-bg); backdrop-filter: blur(15px); color: white;
@@ -104,22 +119,22 @@
             position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--power-glow); transition: all 0.3s ease;
         }
 
-        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
         .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; filter: drop-shadow(0 0 5px var(--neon-gold)); }
         .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; }
         .logo span { color: #ffb703; text-shadow: 0 0 10px var(--neon-gold); }
 
-        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; }
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; background: none; border: none; padding: 5px; }
 
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s; }
         .nav-links li { margin-left: 18px; position: relative; }
         .nav-links li a {
             color: white; text-decoration: none; font-size: 11px; transition: 0.3s;
-            font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 5px;
         }
-        .nav-links li a:hover { color: #ffb703; text-shadow: 0 0 10px rgba(255,183,3,0.8); }
+        .nav-links li a:hover, .nav-links li a:focus { color: #ffb703; text-shadow: 0 0 10px rgba(255,183,3,0.8); outline: none; }
 
-        /* DROPDOWNS */
+        /* DROPDOWNS & KEYBOARD ACCESSIBILITY */
         .dropdown-content {
             display: none; position: absolute; background-color: #ffffff; min-width: 180px;
             box-shadow: 0px 8px 25px rgba(0,0,0,0.5); z-index: 1001; border-radius: 4px;
@@ -129,10 +144,12 @@
             color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block;
             font-size: 11px !important; border-bottom: 1px solid #f1f5f9; font-weight: 600; transition: 0.2s;
         }
-        .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; padding-left: 20px; }
+        .dropdown-content a:hover, .dropdown-content a:focus { background-color: #f8fafc; color: #ffb703 !important; padding-left: 20px; outline: none; }
 
+        /* focus-within allows keyboard tabbing to open the dropdown on desktop */
         @media (min-width: 993px) {
-            .dropdown:hover .dropdown-content { display: block; animation: fadeInUp 0.3s ease; }
+            .dropdown:hover .dropdown-content,
+            .dropdown:focus-within .dropdown-content { display: block; animation: fadeInUp 0.3s ease; }
         }
 
         @keyframes fadeInUp {
@@ -183,11 +200,11 @@
             background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.4), rgba(255,255,255,0));
             transform: skewX(-25deg); transition: all 0.6s ease;
         }
-        .cta-button:hover::before { left: 200%; }
+        .cta-button:hover::before, .cta-button:focus::before { left: 200%; }
         .btn-primary { background: #ffb703; color: #0d1b2a; border: 2px solid #ffb703; box-shadow: 0 0 15px var(--power-glow); }
-        .btn-primary:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 30px #ffb703; color: #000; }
+        .btn-primary:hover, .btn-primary:focus { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 30px #ffb703; color: #000; outline: none; }
         .btn-outline { background: rgba(0,0,0,0.8); color: #ffb703; border: 2px solid #ffb703; backdrop-filter: blur(5px); }
-        .btn-outline:hover { background: #ffb703; color: #0d1b2a; box-shadow: 0 0 15px #ffb703; }
+        .btn-outline:hover, .btn-outline:focus { background: #ffb703; color: #0d1b2a; box-shadow: 0 0 15px #ffb703; outline: none; }
 
         /* PERFORMANCE STATS */
         .stats-bar {
@@ -227,7 +244,7 @@
             border-right: 3px solid #ffb703; padding: 0 20px;
         }
 
-        /* CARD SYSTEM */
+        /* CARD SYSTEM - Semantic Update to Article */
         .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: stretch; }
         .card {
             background: rgba(30, 41, 59, 0.4); width: 320px; padding: 35px 25px;
@@ -306,7 +323,7 @@
             outline: none; border-left: 5px solid #ffb703; display: flex; justify-content: space-between;
             align-items: center; transition: 0.3s;
         }
-        summary:hover { background: rgba(255,183,3,0.05); }
+        summary:hover, summary:focus { background: rgba(255,183,3,0.05); outline: 2px solid var(--cyber-blue); outline-offset: -2px; }
         details p { font-size: 12px; padding: 25px; margin: 0; color: #cbd5e1; line-height: 1.9; background: rgba(0,0,0,0.2); }
 
         /* VIP BOOKING ADVISORY */
@@ -337,8 +354,8 @@
             content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%;
             background: inherit; z-index: -1; filter: blur(10px); opacity: 0.6; transition: 0.3s;
         }
-        .float-btn:hover { transform: scale(1.15) translateY(-5px); }
-        .float-btn:hover::before { opacity: 1; filter: blur(15px); }
+        .float-btn:hover, .float-btn:focus { transform: scale(1.15) translateY(-5px); outline: none; }
+        .float-btn:hover::before, .float-btn:focus::before { opacity: 1; filter: blur(15px); }
 
         /* FOOTER */
         footer {
@@ -346,7 +363,7 @@
             border-top: 2px solid var(--neon-gold); position: relative;
         }
         footer a { color: #ffb703; text-decoration: none; transition: 0.3s; }
-        footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); }
+        footer a:hover, footer a:focus { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
         .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
     </style>
 </head>
@@ -358,7 +375,7 @@
 
     <div class="tech-bar">
         <div class="tech-bar-content">
-            <span>⚡ TECHNICAL GOVERNANCE</span>
+            <span class="tooltip-container" tabindex="0" data-tooltip="Ensuring 100% PEC Engineering Standards">⚡ TECHNICAL GOVERNANCE</span>
             <span>⚡ ASSET PROTECTION</span>
             <span>⚡ PEC-COMPLIANT ARCHITECTURE</span>
             <span>⚡ 24/7 SPECIALIST RESPONSE</span>
@@ -367,16 +384,16 @@
     </div>
 
     <header>
-        <div class="logo">
+        <a href="index.html" class="logo" aria-label="KOHMZ Electrical Homepage">
             <img src="logo.jpg" alt="KOHMZ Electrical Design and Build Official Logo" loading="lazy">
             <h1>KOHMZ <span>Electrical</span></h1>
-        </div>
-        <div class="menu-toggle" id="mobile-menu" aria-label="Toggle Mobile Menu" role="button" tabindex="0">
-            <i class="fas fa-bars"></i>
-        </div>
-        <nav>
+        </a>
+        <button class="menu-toggle" id="mobile-menu" aria-label="Toggle Mobile Navigation Menu" aria-expanded="false">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+        <nav aria-label="Main Navigation">
             <ul class="nav-links" id="nav-list">
-                <li><a href="index.html" style="color: #ffb703;">Overview</a></li>
+                <li><a href="index.html" style="color: #ffb703;" aria-current="page">Overview</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false">Services &#9662;</a>
                     <div class="dropdown-content" aria-label="Services Submenu">
@@ -403,115 +420,114 @@
     </header>
 
     <main>
-        <section class="hero">
+        <section class="hero" aria-labelledby="hero-heading">
             <div class="hero-inner" data-aos="zoom-out">
-                <h2>INTEGRATED POWER ARCHITECTURE & <br>
+                <h2 id="hero-heading">INTEGRATED POWER ARCHITECTURE & <br>
                     <span class="sr-only">TECHNICAL GOVERNANCE, SMART INTEGRATION, SOLAR SOLUTIONS</span>
                     <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["TECHNICAL GOVERNANCE", "SMART INTEGRATION", "SOLAR SOLUTIONS"]'></span>
                 </h2>
                 <p>Generic electrical work is a massive liability; Technical Governance is a permanent investment. We architect high-performance, future-proof power systems that secure your property’s legacy. Whether you are building a luxury residence, outfitting a corporate workspace, scaling an industrial facility, or transitioning to hybrid solar energy, we deliver uncompromised safety, strict PEC compliance, and absolute operational efficiency.</p>
                 <div style="margin-top: 25px;">
-                    <a href="book-now.html" class="cta-button btn-primary"><i class="fas fa-clipboard-check"></i> SECURE TECHNICAL AUDIT</a>
-                    <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" rel="noopener noreferrer" class="cta-button btn-fb" style="background:#0c5bb5; color:white; border: 2px solid #0c5bb5; margin-left:10px;"><i class="fab fa-facebook"></i> OFFICIAL UPDATES</a>
+                    <a href="book-now.html" class="cta-button btn-primary"><i class="fas fa-clipboard-check" aria-hidden="true"></i> SECURE TECHNICAL AUDIT</a>
+                    <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" rel="noopener noreferrer" class="cta-button btn-fb" style="background:#0c5bb5; color:white; border: 2px solid #0c5bb5; margin-left:10px;"><i class="fab fa-facebook" aria-hidden="true"></i> OFFICIAL UPDATES</a>
                     <a href="portfolio.html" class="cta-button btn-outline" style="margin-left:10px;">VIEW CAPABILITIES</a>
                 </div>
             </div>
         </section>
 
-        <section class="stats-bar" data-aos="fade-up">
+        <section class="stats-bar" data-aos="fade-up" aria-label="Company Statistics">
             <div class="stat-item"><h4>500+</h4><p>Projects Delivered</p></div>
             <div class="stat-item"><h4>100%</h4><p>PEC Code Compliance</p></div>
             <div class="stat-item"><h4>24/7</h4><p>Specialist Support</p></div>
             <div class="stat-item"><h4>ZERO</h4><p>System Failures</p></div>
         </section>
 
-        <div class="trust-bar" data-aos="fade-up">
-            <div class="trust-item"><i class="fas fa-id-card-clip"></i> PROFESSIONAL ELECTRICIANS</div>
-            <div class="trust-item"><i class="fas fa-shield-halved"></i> ELECTRICAL & FIRE CODE COMPLIANT</div>
-            <div class="trust-item"><i class="fas fa-truck-fast"></i> 24/7 EMERGENCY DEPLOYMENT</div>
-            <div class="trust-item"><i class="fas fa-file-signature"></i> DATA-DRIVEN LOAD BALANCING</div>
+        <div class="trust-bar" data-aos="fade-up" aria-label="Trust Indicators">
+            <div class="trust-item"><i class="fas fa-id-card-clip" aria-hidden="true"></i> PROFESSIONAL ELECTRICIANS</div>
+            <div class="trust-item"><i class="fas fa-shield-halved" aria-hidden="true"></i> ELECTRICAL & FIRE CODE COMPLIANT</div>
+            <div class="trust-item"><i class="fas fa-truck-fast" aria-hidden="true"></i> 24/7 EMERGENCY DEPLOYMENT</div>
+            <div class="trust-item"><i class="fas fa-file-signature" aria-hidden="true"></i> DATA-DRIVEN LOAD BALANCING</div>
         </div>
 
-        <section class="content-section">
-            <h2 data-aos="fade-down">Priority Sectors of Operation</h2>
+        <section class="content-section" aria-labelledby="sectors-heading">
+            <h2 id="sectors-heading" data-aos="fade-down">Priority Sectors of Operation</h2>
             <p class="intro-text" data-aos="fade-up">"The KOHMZ Advantage: We don't just install wires; we engineer resilience. Every project begins with rigorous mathematical load profiling to ensure your infrastructure can handle peak demands without thermal stress or voltage drops."</p>
-            
             <p class="section-subtitle">We deploy specialized professional teams tailored to the unique demands of your environment. Every conduit run and terminal connection serves a strategic purpose for your property's longevity.</p>
             
             <div class="cards-container">
-                <div class="card" style="border-top-color: #1155cc;" data-aos="fade-right">
-                    <i class="fas fa-building-circle-check" style="color:#1155cc;"></i>
+                <article class="card" style="border-top-color: #1155cc;" data-aos="fade-right">
+                    <i class="fas fa-building-circle-check" style="color:#1155cc;" aria-hidden="true"></i>
                     <h3>Commercial Asset Management</h3>
                     <p>Maximizing business uptime sa pamamagitan ng strategic wiring architecture. Tinitiyak namin ang zero interruptions at strict local government compliance para mapanatiling legally protected at profoundly safe ang iyong operasyon.</p>
-                    <ul class="tech-list">
-                        <li><i class="fas fa-check"></i> 3-Phase Workstation Power Grids</li>
-                        <li><i class="fas fa-check"></i> Architectural & Retail Lighting Control</li>
-                        <li><i class="fas fa-check"></i> LGU & Fire Department Permit Assistance</li>
+                    <ul class="tech-list" aria-label="Commercial Features">
+                        <li><i class="fas fa-check" aria-hidden="true"></i> 3-Phase Workstation Power Grids</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Architectural & Retail Lighting Control</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> LGU & Fire Department Permit Assistance</li>
                     </ul>
-                </div>
-                <div class="card" style="border-top-color: #22863a;" data-aos="fade-up">
-                    <i class="fas fa-house-shield" style="color:#22863a;"></i>
+                </article>
+                <article class="card" style="border-top-color: #22863a;" data-aos="fade-up">
+                    <i class="fas fa-house-shield" style="color:#22863a;" aria-hidden="true"></i>
                     <h3>Premium Residential Security</h3>
                     <p>Securing high-end residences sa pamamagitan ng code-compliant panel upgrades at smart-infrastructure readiness. Hinahawakan namin ang iyong private estate nang may utmost respect, delivering clean, hidden wire management.</p>
-                    <ul class="tech-list">
-                        <li><i class="fas fa-check"></i> Main Distribution Board (MDB) Upgrades</li>
-                        <li><i class="fas fa-check"></i> EV Charger & Smart Home Provisioning</li>
-                        <li><i class="fas fa-check"></i> AFCI/GFCI Life-Safety Implementation</li>
+                    <ul class="tech-list" aria-label="Residential Features">
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Main Distribution Board (MDB) Upgrades</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> EV Charger & Smart Home Provisioning</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> AFCI/GFCI Life-Safety Implementation</li>
                     </ul>
-                </div>
-                <div class="card" style="border-top-color: #d93025;" data-aos="fade-up">
-                    <i class="fas fa-industry" style="color:#d93025;"></i>
+                </article>
+                <article class="card" style="border-top-color: #d93025;" data-aos="fade-up">
+                    <i class="fas fa-industry" style="color:#d93025;" aria-hidden="true"></i>
                     <h3>Heavy-Duty Power Systems</h3>
                     <p>Executing high-capacity service entrances at 3-phase distribution para sa high-stakes environments. Binuo para sa absolute endurance at minimal thermal stress sa ilalim ng continuous heavy industrial loads.</p>
-                    <ul class="tech-list">
-                        <li><i class="fas fa-check"></i> High-Capacity Service Entrances</li>
-                        <li><i class="fas fa-check"></i> Industrial Motor Control Centers (MCC)</li>
-                        <li><i class="fas fa-check"></i> NEMA-Compliant Outdoor Enclosures</li>
+                    <ul class="tech-list" aria-label="Industrial Features">
+                        <li><i class="fas fa-check" aria-hidden="true"></i> High-Capacity Service Entrances</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Industrial Motor Control Centers (MCC)</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> NEMA-Compliant Outdoor Enclosures</li>
                     </ul>
-                </div>
-                <div class="card" style="border-top-color: #f59e0b;" data-aos="fade-left">
-                    <i class="fas fa-solar-panel" style="color:#f59e0b;"></i>
+                </article>
+                <article class="card" style="border-top-color: #f59e0b;" data-aos="fade-left">
+                    <i class="fas fa-solar-panel" style="color:#f59e0b;" aria-hidden="true"></i>
                     <h3>Hybrid Solar Integration</h3>
                     <p>Seamlessly merging commercial grid power with tier-1 solar technology. We design hybrid systems that prioritize grid independence and massive cost reduction without compromising power stability.</p>
-                    <ul class="tech-list">
-                        <li><i class="fas fa-check"></i> Tier-1 Inverter & Battery Setup</li>
-                        <li><i class="fas fa-check"></i> Net-Metering Compliance Ready</li>
-                        <li><i class="fas fa-check"></i> Structural & Wind-Load Assessed</li>
+                    <ul class="tech-list" aria-label="Solar Features">
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Tier-1 Inverter & Battery Setup</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Net-Metering Compliance Ready</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Structural & Wind-Load Assessed</li>
                     </ul>
-                </div>
+                </article>
             </div>
         </section>
 
-        <section class="content-section" style="background: rgba(13, 27, 42, 0.4);">
-            <h2 data-aos="fade-down">Comprehensive Wiring Architecture</h2>
+        <section class="content-section" style="background: rgba(13, 27, 42, 0.4);" aria-labelledby="wiring-heading">
+            <h2 id="wiring-heading" data-aos="fade-down">Comprehensive Wiring Architecture</h2>
             <p class="section-subtitle">Hindi sapat ang "umaandar lang." Ang aming engineering standards ay nakadisenyo para sa future expansions, heavy loads, at maximum efficiency.</p>
             <div class="feature-grid" style="text-align: left; max-width: 900px; margin: 0 auto;">
                 <div class="feature-box" data-aos="fade-right">
-                    <h3 style="color: #00e5ff; margin-bottom: 12px; font-size: 14px; text-transform: uppercase;"><i class="fas fa-city" style="margin-right: 8px;"></i> Commercial Wiring Dynamics</h3>
+                    <h3 style="color: #00e5ff; margin-bottom: 12px; font-size: 14px; text-transform: uppercase;"><i class="fas fa-city" style="margin-right: 8px;" aria-hidden="true"></i> Commercial Wiring Dynamics</h3>
                     <p style="color: #cbd5e1; font-size: 12px; margin-bottom: 15px;">Modern commercial spaces demand rigorous power distribution to handle heavy HVAC networks, server rooms, and continuous high-lumen lighting outputs without dangerous voltage drops.</p>
                     <ul class="tech-list" style="border: none; padding-top: 0;">
-                        <li><i class="fas fa-angle-right"></i> <strong>Load Balancing:</strong> Precision engineering across 3-phase panels to eliminate thermal stress and extend the lifespan of your main circuit breakers.</li>
-                        <li><i class="fas fa-angle-right"></i> <strong>Dedicated IT Circuits:</strong> Using Isolated Ground Receptacles (IGRs) to prevent electrical noise from causing data loss in critical server infrastructure.</li>
-                        <li><i class="fas fa-angle-right"></i> <strong>Redundancy Wiring:</strong> Automated Transfer Switch (ATS) installations para sa seamless transition to generator or commercial solar backup power.</li>
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>Load Balancing:</strong> Precision engineering across 3-phase panels to eliminate thermal stress and extend the lifespan of your main circuit breakers.</li>
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>Dedicated IT Circuits:</strong> Using Isolated Ground Receptacles (IGRs) to prevent electrical noise from causing data loss in critical server infrastructure.</li>
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>Redundancy Wiring:</strong> Automated Transfer Switch (ATS) installations para sa seamless transition to generator or commercial solar backup power.</li>
                     </ul>
                 </div>
                 <div class="feature-box" style="border-left-color: #ffb703;" data-aos="fade-left">
-                    <h3 style="color: #ffb703; margin-bottom: 12px; font-size: 14px; text-transform: uppercase;"><i class="fas fa-home" style="margin-right: 8px;"></i> Residential Smart Load Systems</h3>
+                    <h3 style="color: #ffb703; margin-bottom: 12px; font-size: 14px; text-transform: uppercase;"><i class="fas fa-home" style="margin-right: 8px;" aria-hidden="true"></i> Residential Smart Load Systems</h3>
                     <p style="color: #cbd5e1; font-size: 12px; margin-bottom: 15px;">Residential demands have evolved. We future-proof homes for high-amperage smart appliances, EV charging, and automated lifestyle integrations safely.</p>
                     <ul class="tech-list" style="border: none; padding-top: 0;">
-                        <li><i class="fas fa-angle-right"></i> <strong>High-Demand Kitchens:</strong> Independent, dedicated circuits para sa induction cooktops, heavy-duty microwaves, at sub-zero refrigerators para iwas tripping.</li>
-                        <li><i class="fas fa-angle-right"></i> <strong>EV Charging Readiness:</strong> Nag-i-install kami ng dedicated 40A to 60A lines (NEMA 14-50) directly from the Main Distribution Panel (MDP) for electric vehicles.</li>
-                        <li><i class="fas fa-angle-right"></i> <strong>Smart Home Neutral Integration:</strong> Comprehensive neutral wire inclusion sa lahat ng switch boxes para madali at ligtas ang pag-install ng mga WiFi/IoT smart switches.</li>
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>High-Demand Kitchens:</strong> Independent, dedicated circuits para sa induction cooktops, heavy-duty microwaves, at sub-zero refrigerators para iwas tripping.</li>
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>EV Charging Readiness:</strong> Nag-i-install kami ng dedicated 40A to 60A lines (NEMA 14-50) directly from the Main Distribution Panel (MDP) for electric vehicles.</li>
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>Smart Home Neutral Integration:</strong> Comprehensive neutral wire inclusion sa lahat ng switch boxes para madali at ligtas ang pag-install ng mga WiFi/IoT smart switches.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <section class="content-section">
-            <h2 data-aos="fade-up">Precision in Motion</h2>
+        <section class="content-section" aria-labelledby="video-heading">
+            <h2 id="video-heading" data-aos="fade-up">Precision in Motion</h2>
             <p class="section-subtitle">Watch our technical specialists execute the <strong>KOHMZ Standard</strong> in real-time. Quality workmanship, zero compromises.</p>
             <div style="max-width: 850px; margin: 0 auto; border: 4px solid var(--neon-gold); border-radius: 15px; overflow: hidden; box-shadow: 0 0 40px var(--power-glow);" data-aos="zoom-in">
-                <video width="100%" height="auto" controls loop muted playsinline preload="metadata" poster="logo.jpg">
+                <video width="100%" height="auto" controls loop muted playsinline preload="metadata" poster="logo.jpg" aria-label="Video demonstrating KOHMZ Electrical installation precision">
                     <source src="presentation_kohmz.webm" type="video/webm">
                     <source src="presentation%20kohmz%20electrical%20design%20and%20build.pptx.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -520,68 +536,68 @@
             
             <div style="margin-top: 40px; text-align: left; max-width: 850px; margin-left: auto; margin-right: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;" data-aos="fade-up">
                 <div style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border-top: 2px solid #00e5ff;">
-                    <h4 style="color:#00e5ff; margin-top:0; margin-bottom: 10px; font-size: 13px; text-transform: uppercase;"><i class="fas fa-microscope" style="margin-right: 8px;"></i> Micro-Tolerance Execution</h4>
+                    <h4 style="color:#00e5ff; margin-top:0; margin-bottom: 10px; font-size: 13px; text-transform: uppercase;"><i class="fas fa-microscope" style="margin-right: 8px;" aria-hidden="true"></i> Micro-Tolerance Execution</h4>
                     <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin: 0;">Every wire strip and terminal block torque is measured to exact specifications. We eliminate loose connections to prevent micro-arcing and future thermal hazards.</p>
                 </div>
                 <div style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border-top: 2px solid #ffb703;">
-                    <h4 style="color:#ffb703; margin-top:0; margin-bottom: 10px; font-size: 13px; text-transform: uppercase;"><i class="fas fa-temperature-low" style="margin-right: 8px;"></i> Thermal Diagnostics</h4>
+                    <h4 style="color:#ffb703; margin-top:0; margin-bottom: 10px; font-size: 13px; text-transform: uppercase;"><i class="fas fa-temperature-low" style="margin-right: 8px;" aria-hidden="true"></i> Thermal Diagnostics</h4>
                     <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin: 0;">Post-installation load testing ensures zero hotspots on your distribution boards. We don't just guess it works; we prove it works under full capacity.</p>
                 </div>
                 <div style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border-top: 2px solid #00e5ff;">
-                    <h4 style="color:#00e5ff; margin-top:0; margin-bottom: 10px; font-size: 13px; text-transform: uppercase;"><i class="fas fa-laptop-code" style="margin-right: 8px;"></i> CAD-to-Reality</h4>
+                    <h4 style="color:#00e5ff; margin-top:0; margin-bottom: 10px; font-size: 13px; text-transform: uppercase;"><i class="fas fa-laptop-code" style="margin-right: 8px;" aria-hidden="true"></i> CAD-to-Reality</h4>
                     <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin: 0;">What we engineer in AutoCAD is exactly what is deployed on the field. This means highly organized conduit runs, accurate load schedules, and zero guesswork.</p>
                 </div>
             </div>
         </section>
 
-        <section class="content-section" style="background: linear-gradient(rgba(1, 4, 9, 1), rgba(13, 27, 42, 0.6));">
-            <h2 data-aos="fade-up">The Precision Implementation Lifecycle</h2>
+        <section class="content-section" style="background: linear-gradient(rgba(1, 4, 9, 1), rgba(13, 27, 42, 0.6));" aria-labelledby="lifecycle-heading">
+            <h2 id="lifecycle-heading" data-aos="fade-up">The Precision Implementation Lifecycle</h2>
             <div class="workflow-grid">
-                <div class="workflow-step" data-aos="zoom-in" data-aos-delay="100">
-                    <span class="step-num">01</span>
+                <article class="workflow-step" data-aos="zoom-in" data-aos-delay="100">
+                    <span class="step-num" aria-hidden="true">01</span>
                     <h3>Diagnostics</h3>
                     <p>Mathematical load balancing at CAD layout approvals bago bumili ng isang materyal. Proper planning prevents electrical bottlenecks.</p>
-                    <span class="deliverable"><i class="fas fa-file-pdf"></i> CAD Layouts</span>
-                </div>
-                <div class="workflow-step" data-aos="zoom-in" data-aos-delay="200">
-                    <span class="step-num">02</span>
+                    <span class="deliverable"><i class="fas fa-file-pdf" aria-hidden="true"></i> CAD Layouts</span>
+                </article>
+                <article class="workflow-step" data-aos="zoom-in" data-aos-delay="200">
+                    <span class="step-num" aria-hidden="true">02</span>
                     <h3>Execution</h3>
                     <p>Licensed technicians ay gumagamit lamang ng authentic, pure copper wires. Conduit bends executed with surgical precision.</p>
-                    <span class="deliverable"><i class="fas fa-clipboard-check"></i> PEC Standard</span>
-                </div>
-                <div class="workflow-step" data-aos="zoom-in" data-aos-delay="300">
-                    <span class="step-num">03</span>
+                    <span class="deliverable"><i class="fas fa-clipboard-check" aria-hidden="true"></i> PEC Standard</span>
+                </article>
+                <article class="workflow-step" data-aos="zoom-in" data-aos-delay="300">
+                    <span class="step-num" aria-hidden="true">03</span>
                     <h3>QA Stress-Testing</h3>
                     <p>Rigorous continuity tests at Digital Insulation Resistance checks to guarantee lifelong reliability sa ilalim ng peak demand.</p>
-                    <span class="deliverable"><i class="fas fa-search-plus"></i> Safety Clearance</span>
-                </div>
-                <div class="workflow-step" data-aos="zoom-in" data-aos-delay="400">
-                    <span class="step-num">04</span>
+                    <span class="deliverable"><i class="fas fa-search-plus" aria-hidden="true"></i> Safety Clearance</span>
+                </article>
+                <article class="workflow-step" data-aos="zoom-in" data-aos-delay="400">
+                    <span class="step-num" aria-hidden="true">04</span>
                     <h3>Official Turnover</h3>
                     <p>You receive complete as-built technical plans, walkthroughs, at solid workmanship warranty. Absolute peace of mind.</p>
-                    <span class="deliverable"><i class="fas fa-file-signature"></i> Warranty Plans</span>
-                </div>
+                    <span class="deliverable"><i class="fas fa-file-signature" aria-hidden="true"></i> Warranty Plans</span>
+                </article>
             </div>
         </section>
 
-        <section class="content-section">
-            <h2 data-aos="fade-down">In-Depth Scope of Work</h2>
+        <section class="content-section" aria-labelledby="scope-heading">
+            <h2 id="scope-heading" data-aos="fade-down">In-Depth Scope of Work</h2>
             <p class="section-subtitle">We don't do shortcuts. Every sector we handle is governed by strict technical parameters. Here is exactly what we deliver for your specific property type.</p>
             
             <div class="text-block" data-aos="fade-up">
-                <h3><i class="fas fa-home" style="color: #00e5ff; margin-right: 10px;"></i> Residential Electrical Upgrades</h3>
+                <h3><i class="fas fa-home" style="color: #00e5ff; margin-right: 10px;" aria-hidden="true"></i> Residential Electrical Upgrades</h3>
                 <p>Karamihan sa mga lumang bahay ay hindi nakadisenyo para sa modern power demands ng inverter aircons, induction stoves, at water heaters. Ang aming scope of work ay nakasentro sa pag-aalis ng mga nakatagong fire hazards. Kasama dito ang <strong>Full House Rewiring</strong> gamit ang proper color-coded THHN/THWN-2 wires, pag-a-upgrade ng lumang fuse box papunta sa modern <strong>Miniature Circuit Breaker (MCB) Panels</strong>, at ang pag-install ng dedicated home-run lines para sa mga heavy appliances para maiwasan ang overloading at constant tripping.</p>
                 
-                <h3><i class="fas fa-city" style="color: #00e5ff; margin-right: 10px;"></i> Commercial & Industrial Installations</h3>
+                <h3><i class="fas fa-city" style="color: #00e5ff; margin-right: 10px;" aria-hidden="true"></i> Commercial & Industrial Installations</h3>
                 <p>Sa negosyo, ang power interruption ay pagkalugi. We build highly resilient electrical infrastructures para sa mga offices, restaurants, at warehouses. Ang aming scope ay sumasaklaw sa <strong>3-Phase Power Distribution</strong>, pag-install ng <strong>Motor Control Centers (MCC)</strong> para sa heavy machineries, at structured cabling para sa server rooms. Kasama rin ang pag-aayos ng LGU Electrical Permits at Fire Safety Inspection Certificate (FSIC) compliance para makapag-operate ang iyong negosyo ng legal at walang abala.</p>
 
-                <h3><i class="fas fa-solar-panel" style="color: #00e5ff; margin-right: 10px;"></i> Solar Power Integration (Reduced Dependency)</h3>
+                <h3><i class="fas fa-solar-panel" style="color: #00e5ff; margin-right: 10px;" aria-hidden="true"></i> Solar Power Integration (Reduced Dependency)</h3>
                 <p>Habang ang main focus namin ay electrical architecture, we seamlessly integrate renewable energy into your existing grid. We prepare your system for <strong>Hybrid or On-Grid Solar installations</strong>. Kabilang dito ang pag-install ng tamang size ng mga DC breakers, Surge Protection Devices (SPD), at pag-setup ng bi-directional meters (Net Metering) ready lines. Sinisiguro namin na ang pagpasok ng solar power sa iyong main panel ay balanse, ligtas, at hindi magdudulot ng backfeeding sa Meralco grid.</p>
             </div>
         </section>
 
-        <section class="content-section" style="background: rgba(13, 27, 42, 0.4);">
-            <h2 data-aos="fade-up">Technical Advisory (FAQ)</h2>
+        <section class="content-section" style="background: rgba(13, 27, 42, 0.4);" aria-labelledby="faq-heading">
+            <h2 id="faq-heading" data-aos="fade-up">Technical Advisory (FAQ)</h2>
             <p class="section-subtitle">Common technical questions regarding our procedures, safety protocols, and deployment standards.</p>
             <div class="faq-container" data-aos="fade-up">
                 <details>
@@ -627,103 +643,115 @@
             </div>
         </section>
 
-        <section class="content-section">
+        <section class="content-section" aria-labelledby="vip-heading">
             <div class="vip-advisory" data-aos="fade-up">
                 <div style="display: flex; gap: 20px; align-items: center; width: 100%; border-bottom: 1px solid rgba(0, 229, 255, 0.2); padding-bottom: 20px; margin-bottom: 25px;">
-                    <span class="adv-tag"><i class="fas fa-bolt"></i> VIP Booking</span>
-                    <h3 style="color: #00e5ff; margin: 0; font-size: 16px; text-transform: uppercase; font-weight: 900;">Priority Emergency & Technical Dispatch</h3>
+                    <span class="adv-tag"><i class="fas fa-bolt" aria-hidden="true"></i> VIP Booking</span>
+                    <h3 id="vip-heading" style="color: #00e5ff; margin: 0; font-size: 16px; text-transform: uppercase; font-weight: 900;">Priority Emergency & Technical Dispatch</h3>
                 </div>
                 
                 <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-between; width: 100%; align-items: center;">
                     <div style="flex: 1; min-width: 300px;">
-                        <h4 style="color: #ffb703; font-size: 13px; text-transform: uppercase; margin-top: 0; margin-bottom: 15px;"><i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i> Bakit Kailangan Mo Nang Mag-Book Ngayon?</h4>
+                        <h4 style="color: #ffb703; font-size: 13px; text-transform: uppercase; margin-top: 0; margin-bottom: 15px;"><i class="fas fa-exclamation-triangle" style="margin-right: 8px;" aria-hidden="true"></i> Bakit Kailangan Mo Nang Mag-Book Ngayon?</h4>
                         <ul class="tech-list" style="border: none; padding-top: 0; margin-bottom: 0;">
-                            <li style="margin-bottom: 12px;"><i class="fas fa-angle-right" style="color: #00e5ff; font-size: 14px;"></i> <strong>Prevent Irreversible Damage:</strong> Ang maliit na pag-spark o madalas na pag-trip ng breaker ngayon ay pwedeng sumunog ng mamahaling appliances at equipments bukas. Huwag hintayin ang sunog.</li>
-                            <li style="margin-bottom: 12px;"><i class="fas fa-angle-right" style="color: #00e5ff; font-size: 14px;"></i> <strong>Stop Revenue Leaks:</strong> Para sa mga negosyo, ang commercial power interruptions at system failures ay direktang pagkalugi at nagpapatigil ng inyong operasyon.</li>
-                            <li><i class="fas fa-angle-right" style="color: #00e5ff; font-size: 14px;"></i> <strong>Secure the Schedule:</strong> Ang aming specialized technical teams ay madalas fully booked. Ang pagkuha ng VIP slot ay nagtitiyak ng immediate hazard mitigation at diagnostic deployment para sa iyong property.</li>
+                            <li style="margin-bottom: 12px;"><i class="fas fa-angle-right" style="color: #00e5ff; font-size: 14px;" aria-hidden="true"></i> <strong>Prevent Irreversible Damage:</strong> Ang maliit na pag-spark o madalas na pag-trip ng breaker ngayon ay pwedeng sumunog ng mamahaling appliances at equipments bukas. Huwag hintayin ang sunog.</li>
+                            <li style="margin-bottom: 12px;"><i class="fas fa-angle-right" style="color: #00e5ff; font-size: 14px;" aria-hidden="true"></i> <strong>Stop Revenue Leaks:</strong> Para sa mga negosyo, ang commercial power interruptions at system failures ay direktang pagkalugi at nagpapatigil ng inyong operasyon.</li>
+                            <li><i class="fas fa-angle-right" style="color: #00e5ff; font-size: 14px;" aria-hidden="true"></i> <strong>Secure the Schedule:</strong> Ang aming specialized technical teams ay madalas fully booked. Ang pagkuha ng VIP slot ay nagtitiyak ng immediate hazard mitigation at diagnostic deployment para sa iyong property.</li>
                         </ul>
                     </div>
                     <div style="text-align: center;">
                         <p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px; font-weight: bold;">Fast deployment for hazard mitigation.</p>
-                        <a href="book-now.html" class="cta-button btn-primary" style="white-space: nowrap; font-size: 13px; padding: 15px 35px;"><i class="fas fa-calendar-check" style="margin-right: 8px;"></i> SECURE YOUR SLOT NOW</a>
+                        <a href="book-now.html" class="cta-button btn-primary" style="white-space: nowrap; font-size: 13px; padding: 15px 35px;"><i class="fas fa-calendar-check" style="margin-right: 8px;" aria-hidden="true"></i> SECURE YOUR SLOT NOW</a>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <div class="floating-container">
-        <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" rel="noopener noreferrer" class="float-btn" style="background: #0084ff;" aria-label="Message us on Facebook Messenger">
-            <i class="fab fa-facebook-messenger"></i>
+    <aside class="floating-container" aria-label="Quick Contact Options">
+        <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" rel="noopener noreferrer" class="float-btn" style="background: #0084ff;" aria-label="Message KOHMZ Electrical on Facebook Messenger">
+            <i class="fab fa-facebook-messenger" aria-hidden="true"></i>
         </a>
-        <a href="https://wa.me/639266174131" target="_blank" rel="noopener noreferrer" class="float-btn" style="background: #25d366;" aria-label="Message us on WhatsApp">
-            <i class="fab fa-whatsapp"></i>
+        <a href="https://wa.me/639266174131" target="_blank" rel="noopener noreferrer" class="float-btn" style="background: #25d366;" aria-label="Message KOHMZ Electrical on WhatsApp">
+            <i class="fab fa-whatsapp" aria-hidden="true"></i>
         </a>
-        <a href="viber://chat?number=%2B639266174131" target="_blank" rel="noopener noreferrer" class="float-btn" style="background: #7360f2;" aria-label="Message us on Viber">
-            <i class="fab fa-viber"></i>
+        <a href="viber://chat?number=%2B639266174131" target="_blank" rel="noopener noreferrer" class="float-btn" style="background: #7360f2;" aria-label="Message KOHMZ Electrical on Viber">
+            <i class="fab fa-viber" aria-hidden="true"></i>
         </a>
-        <a href="tel:09266174131" class="float-btn" style="background: #ffb703; color: #000;" aria-label="Call our Technical Support">
-            <i class="fas fa-phone"></i>
+        <a href="tel:09266174131" class="float-btn" style="background: #ffb703; color: #000;" aria-label="Call KOHMZ Electrical Technical Support via Phone">
+            <i class="fas fa-phone" aria-hidden="true"></i>
         </a>
-    </div>
+    </aside>
 
-    <footer>
+    <footer aria-label="Site Footer">
         <div class="logo" style="justify-content: center; margin-bottom: 20px;">
             <img src="logo.jpg" alt="KOHMZ Electrical Design and Build Official Logo" loading="lazy">
             <h1>KOHMZ <span>Electrical</span></h1>
         </div>
         <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 12px; line-height: 1.6;">Your trusted partner in structural power integrity. We specialize in bringing world-class electrical engineering standards to every Philippine home and business facility.</p>
         <p>&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
-        <div class="footer-links">
+        <nav class="footer-links" aria-label="Footer Navigation">
             <p style="margin-bottom: 5px; color: #ffb703; font-weight: 800;">Technical Governance | Asset Protection | PEC-Compliant Architecture</p>
             <a href="privacy-policy.html" style="font-weight: bold; text-decoration: underline;">Privacy Policy</a> &nbsp;|&nbsp; 
             <a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
             <a href="about-us.html">About Us</a>
-        </div>
+        </nav>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     <script>
-        // Wait for DOM to load before triggering logic
+        // Wait for DOM to load before executing custom logic
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Animate On Scroll
+            
+            // Initialize Animate On Scroll (with slightly reduced delay/duration for performance)
             if (typeof AOS !== 'undefined') {
-                AOS.init({ duration: 800, once: true, offset: 100 });
+                AOS.init({ duration: 600, once: true, offset: 100 });
             }
 
-            // Mobile Menu Toggle Logic
+            // Mobile Menu Toggle & Accessibility Logic
             const mobileMenu = document.getElementById('mobile-menu');
             const navList = document.getElementById('nav-list');
             
-            mobileMenu.addEventListener('click', () => {
-                navList.classList.toggle('active');
-                // Accessibility toggle
-                const expanded = navList.classList.contains('active');
-                mobileMenu.setAttribute('aria-expanded', expanded);
-            });
+            if (mobileMenu && navList) {
+                mobileMenu.addEventListener('click', () => {
+                    navList.classList.toggle('active');
+                    const isExpanded = navList.classList.contains('active');
+                    mobileMenu.setAttribute('aria-expanded', isExpanded);
+                });
+            }
 
-            // Mobile Dropdown Toggle Logic
+            // Dropdown Click & Keyboard (Space/Enter) Logic
             const dropdowns = document.querySelectorAll('.dropdown');
             dropdowns.forEach(dropdown => {
                 const dropbtn = dropdown.querySelector('.dropbtn');
-                dropbtn.addEventListener('click', (e) => {
-                    if (window.innerWidth <= 992) {
+                
+                const handleDropdownToggle = (e) => {
+                    if (window.innerWidth <= 992 || e.type === 'keydown') {
                         e.preventDefault(); 
                         
                         dropdowns.forEach(d => {
                             if (d !== dropdown) {
                                 d.classList.remove('active');
-                                d.querySelector('.dropbtn').setAttribute('aria-expanded', 'false');
+                                const otherBtn = d.querySelector('.dropbtn');
+                                if(otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
                             }
                         });
                         
                         const isActive = dropdown.classList.toggle('active');
                         dropbtn.setAttribute('aria-expanded', isActive);
                     }
+                };
+
+                dropbtn.addEventListener('click', handleDropdownToggle);
+                dropbtn.addEventListener('keydown', (e) => {
+                    // Trigger dropdown if Space or Enter is pressed while focused
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        handleDropdownToggle(e);
+                    }
                 });
             });
 
-            // Animated Typing Text Logic for Hero Section
+            // Animated Typing Text Logic
             class TypeWriter {
                 constructor(txtElement, words, wait = 3000) {
                     this.txtElement = txtElement;
@@ -731,8 +759,8 @@
                     this.txt = '';
                     this.wordIndex = 0;
                     this.wait = parseInt(wait, 10);
-                    this.type();
                     this.isDeleting = false;
+                    this.type();
                 }
                 
                 type() {
