@@ -401,7 +401,17 @@
         footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; }
         footer a:hover, footer a:focus { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
         .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
-    </style>
+    </style>/* --- NAV FIX --- */
+.nav-links { gap: 30px !important; }
+@media (max-width: 992px) {
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: #0d1b2a; padding: 0; margin: 0; border-bottom: 4px solid #ffb703; }
+    .nav-links.active { display: flex; }
+    .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); margin: 0; }
+    .nav-links li a { font-size: 14px; width: 100%; padding: 20px 25px; display: flex; justify-content: space-between; }
+    .dropdown-content { position: static; box-shadow: none; background: rgba(0,0,0,0.3); display: none; width: 100%; padding-left: 0; border: none; }
+    .dropdown.active .dropdown-content { display: block; }
+    .dropdown-content a { padding: 15px 20px 15px 45px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; }
+}
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -460,10 +470,11 @@
     <main id="main-content">
         <section class="hero" aria-labelledby="hero-heading">
             <div class="hero-inner" data-aos="zoom-out">
-                <h1 id="hero-heading">INTEGRATED POWER ARCHITECTURE & <br>
-                    <span class="sr-only">TECHNICAL GOVERNANCE, SMART INTEGRATION, SOLAR SOLUTIONS</span>
-                    <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["TECHNICAL GOVERNANCE", "SMART INTEGRATION", "SOLAR SOLUTIONS"]'></span>
-                </h1>
+                <h1 id="hero-heading" style="margin-bottom: 20px;">
+    <span id="main-typewriter-text"></span><span class="cursor" style="color: #00e5ff; animation: blink 1s step-end infinite;">_</span><br>
+    <span class="sr-only">TECHNICAL GOVERNANCE, SMART INTEGRATION, SOLAR SOLUTIONS</span>
+    <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["TECHNICAL GOVERNANCE", "SMART INTEGRATION", "SOLAR SOLUTIONS"]'></span>
+</h1>
                 <p>Generic electrical work is a massive liability; Technical Governance is a permanent investment. We architect high-performance, future-proof power systems that secure your property’s legacy. Whether you are building a luxury residence, outfitting a corporate workspace, scaling an industrial facility, or transitioning to hybrid solar energy, we deliver uncompromised safety, strict PEC compliance, and absolute operational efficiency.</p>
                 <div style="margin-top: 25px;">
                     <a href="book-now.html" class="cta-button btn-primary"><i class="fas fa-clipboard-check" aria-hidden="true"></i> SECURE TECHNICAL AUDIT</a>
@@ -1069,4 +1080,22 @@ function botAction(type) {
 
 // Auto pop-up pagkatapos ng 6 seconds
 setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 6000);
-</script>
+</script>const mainTypeText = "INTEGRATED POWER ARCHITECTURE & ";
+let mainTypeIndex = 0;
+const mainTypeElement = document.getElementById("main-typewriter-text");
+function startTyping() {
+    if (mainTypeElement && mainTypeIndex < mainTypeText.length) {
+        mainTypeElement.innerHTML += mainTypeText.charAt(mainTypeIndex++);
+        setTimeout(startTyping, 60);
+    }
+}
+startTyping();document.querySelectorAll('.dropdown > a').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        if (window.innerWidth <= 992) {
+            e.preventDefault();
+            const parent = this.parentElement;
+            document.querySelectorAll('.dropdown').forEach(d => { if (d !== parent) d.classList.remove('active'); });
+            parent.classList.toggle('active');
+        }
+    });
+});
