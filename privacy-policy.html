@@ -109,7 +109,13 @@
             background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; 
             background-size: cover; padding: 100px 20px; text-align: center; color: white; position: relative; z-index: 2;
         }
-        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
+        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }/* Typewriter Cursor Styling */
+#typewriter-title { color: #ffb703; }
+.cursor-policy { 
+    color: #00e5ff; 
+    animation: blink-policy 1s step-end infinite; 
+}
+@keyframes blink-policy { 50% { opacity: 0; } }
 
         /* --- COLLAPSIBLES --- */
         .policy-container { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 2; }
@@ -208,9 +214,13 @@
 
     <main>
         <section class="hero">
-            <h2>Corporate Policies & Terms</h2>
-            <p>Our commitment to data privacy and professional operational standards.</p>
-        </section>
+    <div class="hero-inner">
+        <h2>
+    <span id="typewriter-title">Corporate Policies & Terms</span><span class="cursor-policy">_</span>
+</h2>
+        <p>Our commitment to data privacy and professional operational standards.</p>
+    </div>
+</section>
 
         <div class="policy-container">
             <button type="button" class="collapsible">Data Privacy Policy</button>
@@ -294,6 +304,29 @@
     </footer>
 
     <script>
+        // --- TYPEWRITER LOGIC FOR CORPORATE POLICIES ---
+const policyTitleText = "Corporate Policies & Terms";
+let policyTitleIndex = 0;
+const policyTitleElement = document.getElementById("typewriter-title");
+
+function typeWriterPolicy() {
+    // SEO FIX: Burahin muna ang text na nilagay natin sa HTML 
+    // bago magsimula ang animation (para hindi mag-doble)
+    if (policyTitleIndex === 0) {
+        policyTitleElement.innerHTML = '';
+    }
+
+    if (policyTitleIndex < policyTitleText.length) {
+        policyTitleElement.innerHTML += policyTitleText.charAt(policyTitleIndex);
+        policyTitleIndex++;
+        setTimeout(typeWriterPolicy, 70); 
+    }
+}
+
+// I-trigger ang effect pag-load ng page
+window.addEventListener('load', () => {
+    typeWriterPolicy();
+});
         // Collapsible logic
         var coll = document.getElementsByClassName("collapsible");
         for (var i = 0; i < coll.length; i++) {
