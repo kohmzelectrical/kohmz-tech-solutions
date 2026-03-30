@@ -840,241 +840,252 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-/* Main Wrapper - Fixed sa kanan, laging nandoon */
+/* Main Wrapper - Naka-set sa initial position pero movable */
 .kohmz-bot-wrapper {
     position: fixed;
-    bottom: 25px;
+    bottom: 120px; /* Initial height para iwas sa Messenger */
     right: 25px;
     z-index: 999999;
     font-family: 'Share Tech Mono', monospace;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    touch-action: none; /* Required para sa smooth dragging sa mobile */
 }
 
-/* Tooltip - Ang "Pangungulit" na may Value (Bakit sila mag-click?) */
+/* Tooltip - "Drag Me" hint */
 .bot-value-tag {
     background: #00e5ff;
     color: #000;
-    padding: 6px 12px;
-    font-size: 11px;
+    padding: 5px 10px;
+    font-size: 9px;
     font-weight: bold;
     border-radius: 4px;
-    margin-bottom: 10px;
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
-    animation: floatAnim 3s ease-in-out infinite;
-    cursor: pointer;
+    margin-bottom: 5px;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+    cursor: grab;
     text-transform: uppercase;
+    user-select: none;
 }
 
-/* Floating Animation */
-@keyframes floatAnim {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-/* Chat Window - Futuristic Hologram Interface */
+/* Chat Window - Futuristic Hologram */
 .kohmz-chat-window {
     display: none;
-    width: 330px;
-    background: rgba(10, 20, 30, 0.95);
+    width: 300px;
+    background: rgba(10, 20, 30, 0.98);
     border: 1px solid #00e5ff;
-    border-top: 4px solid #00e5ff; /* Makapal sa taas para sa accent */
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px rgba(0, 229, 255, 0.2);
-    margin-bottom: 15px;
+    border-top: 4px solid #00e5ff;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    margin-bottom: 10px;
     flex-direction: column;
     backdrop-filter: blur(10px);
-    animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 .kohmz-chat-header {
-    background: rgba(0, 0, 0, 0.5);
+    background: #000;
     color: #00e5ff;
-    padding: 15px;
+    padding: 10px;
     font-weight: bold;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
-    font-size: 13px;
-    align-items: center; /* I-align ang icon at text */
-}
-
-.kohmz-chat-header img.bot-head-icon {
-    width: 25px; /* Maliit na head icon sa header */
-    height: 25px;
-    margin-right: 10px;
+    font-size: 12px;
 }
 
 .kohmz-chat-body {
     padding: 15px;
-    max-height: 220px;
+    max-height: 200px;
     overflow-y: auto;
-    background: rgba(0, 229, 255, 0.02);
+    font-size: 12px;
+    color: #fff;
 }
 
 .chat-bubble {
     background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-    padding: 12px;
-    border-radius: 2px 12px 12px 12px;
-    font-size: 12px;
-    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 2px 10px 10px 10px;
+    margin-bottom: 10px;
     border-left: 2px solid #00e5ff;
-    line-height: 1.5;
 }
 
 .kohmz-chat-options {
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
-/* Futuristic Action Buttons */
 .chat-btn {
     background: transparent;
     color: #00e5ff;
     border: 1px solid #00e5ff;
-    padding: 12px;
+    padding: 10px;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
+    transition: 0.2s;
 }
 
-.chat-btn:hover {
-    background: rgba(0, 229, 255, 0.1);
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
-    transform: scale(1.02);
-}
+.chat-btn:hover { background: rgba(0, 229, 255, 0.1); }
 
-.chat-btn i { margin-right: 10px; font-size: 14px; }
-
-/* Main Toggle Icon - Ang "Buhay" na Robot mula image_0.png */
+/* Floating Toggle Button - Draggable Icon */
 .kohmz-bot-toggle {
-    width: 60px; height: 60px;
+    width: 70px; height: 70px;
     background: #0a141e;
     border: 2px solid #00e5ff;
     border-radius: 50%;
     display: flex; justify-content: center; align-items: center;
-    color: #00e5ff; cursor: pointer;
+    cursor: grab; /* Kamay na nakabukas para sa drag */
     box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
-    transition: 0.3s;
     position: relative;
-    overflow: hidden; /* Para circular ang mask sa imahe */
+    overflow: hidden;
+    user-select: none;
 }
 
-/* I-define ang imahe ng nag-waving robot (animated WebP/GIF) */
-.kohmz-bot-toggle img.bot-waving-icon {
-    width: 100%; /* Gamitin ang buong puwang ng circle */
-    height: 100%;
-    object-fit: cover; /* Siguraduhing circular ang frame sa imahe */
-    animation: waveAnim 2s infinite; /* Subtle waving effect */
-    mask-image: radial-gradient(circle, white 100%, black 100%); /* Dagdag na circular mask */
-}
+.kohmz-bot-toggle:active { cursor: grabbing; } /* Nakasara ang kamay pag dina-drag */
 
-@keyframes waveAnim {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(-5px); }
-}
-
-.kohmz-bot-toggle:hover {
-    transform: rotate(15deg) scale(1.1);
+.bot-waving-img {
+    width: 120%; height: 120%;
+    object-fit: cover;
+    pointer-events: none; /* Para hindi ma-drag yung image mismo */
 }
 
 .bot-badge {
-    position: absolute; bottom: -2px; right: -2px;
-    background: #00e5ff; color: #000; font-size: 10px; font-weight: bold;
+    position: absolute; top: 0; right: 2px;
+    background: #ff0000; color: #fff; font-size: 10px;
     width: 20px; height: 20px; border-radius: 50%;
     display: flex; justify-content: center; align-items: center;
-    box-shadow: 0 0 10px #00e5ff;
 }
 </style>
 
-<div class="kohmz-bot-wrapper">
-    <div class="bot-value-tag" id="botValueTag" onclick="toggleBot()">
-        ⚡ Need an Electrical Expert?
-    </div>
+<div class="kohmz-bot-wrapper" id="draggableBot">
+    <div class="bot-value-tag">🖐️ Drag to Move</div>
 
     <div class="kohmz-chat-window" id="chatWindow">
         <div class="kohmz-chat-header">
-            <span><i class="fas fa-robot"></i> KOHMZ DIGITAL ASSISTANT</span>
-            <span onclick="toggleBot()" style="cursor:pointer">✕</span>
+            <span>SYSTEM-AI: ACTIVE</span>
+            <span onclick="toggleBotWindow()" style="cursor:pointer">✕</span>
         </div>
         <div class="kohmz-chat-body" id="chatBody">
-            <div class="chat-bubble">
-                Hello! I am your KOHMZ AI guide. My objective is to help you secure your property with professional electrical design and solar solutions.
-            </div>
-            <div class="chat-bubble">
-                How can I assist your technical requirements today?
-            </div>
+            <div class="chat-bubble">Initialization successful. I am your KOHMZ Cyber-Assistant. Ready to optimize your project.</div>
         </div>
         <div class="kohmz-chat-options">
-            <button class="chat-btn" onclick="botAction('audit')">
-                <i class="fas fa-calendar-check"></i> > [RUN_AUDIT_ROUTINE]
-            </button>
-            <button class="chat-btn" onclick="botAction('fb')">
-                <i class="fab fa-facebook-messenger"></i> > [ESTABLISH_FB_LINK]
-            </button>
-            <button class="chat-btn" onclick="botAction('wa')">
-                <i class="fab fa-whatsapp"></i> > [URGENT_WHATSAPP_COMMS]
-            </button>
+            <button class="chat-btn" onclick="botAction('audit')">> [RUN_AUDIT_ROUTINE]</button>
+            <button class="chat-btn" onclick="botAction('fb')">> [FB_MAINFRAME]</button>
+            <button class="chat-btn" onclick="botAction('wa')">> [DIRECT_WHATSAPP]</button>
         </div>
     </div>
 
-    <div class="kohmz-bot-toggle" id="botToggle" onclick="toggleBot()">
-        <img src="path/to/kohmz-living-robot-icon.webp" alt="Animated KOHMZ Robot Icon" class="bot-waving-icon">
+    <div class="kohmz-bot-toggle" id="botToggle">
+        <img src="https://raw.githubusercontent.com/kohmzelectrical/kohmz-electrical-services/main/robot-waving.png" alt="Robot" class="bot-waving-img">
         <div class="bot-badge" id="botBadge">!</div>
     </div>
 </div>
 
 <script>
-function toggleBot() {
-    const chat = document.getElementById('chatWindow');
-    const badge = document.getElementById('botBadge');
-    const valueTag = document.getElementById('botValueTag');
-    
-    if(chat.style.display === 'flex') {
-        chat.style.display = 'none';
-        valueTag.style.display = 'block'; // Pakita ulit yung floating text
+const draggableBot = document.getElementById('draggableBot');
+const botToggle = document.getElementById('botToggle');
+const chatWindow = document.getElementById('chatWindow');
+const badge = document.getElementById('botBadge');
+
+let isDragging = false;
+let offset = { x: 0, y: 0 };
+
+// Function para buksan/isara ang chat
+function toggleBotWindow() {
+    if (chatWindow.style.display === 'flex') {
+        chatWindow.style.display = 'none';
     } else {
-        chat.style.display = 'flex';
+        chatWindow.style.display = 'flex';
         badge.style.display = 'none';
-        valueTag.style.display = 'none'; // Tago yung floating text pag open na ang chat
     }
 }
 
-// Auto-suggest after 6 seconds
-setTimeout(() => {
-    const chat = document.getElementById('chatWindow');
-    if(chat.style.display !== 'flex') {
-        toggleBot();
+// Logic para sa DRAG
+botToggle.addEventListener('mousedown', startDragging);
+window.addEventListener('mousemove', drag);
+window.addEventListener('mouseup', stopDragging);
+
+// Support para sa Mobile (Touch)
+botToggle.addEventListener('touchstart', (e) => startDragging(e.touches[0]), {passive: false});
+window.addEventListener('touchmove', (e) => drag(e.touches[0]), {passive: false});
+window.addEventListener('touchend', stopDragging);
+
+let startX, startY;
+
+function startDragging(e) {
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    
+    const rect = draggableBot.getBoundingClientRect();
+    offset.x = e.clientX - rect.left;
+    offset.y = e.clientY - rect.top;
+    
+    // Disable transition habang dina-drag para hindi delay
+    draggableBot.style.transition = 'none';
+}
+
+function drag(e) {
+    if (!isDragging) return;
+    
+    // Iwasan ang scroll habang nag-drag sa mobile
+    if (e.preventDefault) e.preventDefault();
+
+    let newX = e.clientX - offset.x;
+    let newY = e.clientY - offset.y;
+
+    // Boundary check (hindi lalabas ng screen)
+    const maxX = window.innerWidth - draggableBot.offsetWidth;
+    const maxY = window.innerHeight - draggableBot.offsetHeight;
+
+    newX = Math.max(0, Math.min(newX, maxX));
+    newY = Math.max(0, Math.min(newY, maxY));
+
+    draggableBot.style.left = newX + 'px';
+    draggableBot.style.top = newY + 'px';
+    draggableBot.style.bottom = 'auto';
+    draggableBot.style.right = 'auto';
+}
+
+function stopDragging(e) {
+    if (!isDragging) return;
+    
+    // Check kung "click" lang ba o "drag"
+    const endX = e.clientX || startX; 
+    const endY = e.clientY || startY;
+    const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+
+    isDragging = false;
+
+    // Kung hindi lumayo ang mouse (less than 5px), toggle ang window
+    if (distance < 5) {
+        toggleBotWindow();
     }
-}, 6000);
+}
 
 function botAction(type) {
     const chatBody = document.getElementById('chatBody');
-    chatBody.innerHTML += `<div class="chat-bubble" style="border-left-color: #ffd700;">Initiating connection... Please wait.</div>`;
+    chatBody.innerHTML += `<div class="chat-bubble" style="border-left-color: #ffd700;">Processing request...</div>`;
     chatBody.scrollTop = chatBody.scrollHeight;
 
     setTimeout(() => {
         if(type === 'audit') {
-            window.location.href = 'book-now.html';
+            window.location.href = 'https://kohmzelectrical.github.io/kohmz-electrical-services/book-now.html';
         } else if(type === 'fb') {
-            window.open('https://kohmzelectrical.github.io/kohmz-electrical-services/book-now.html', '_blank');
+            window.open('https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/', '_blank');
         } else if(type === 'wa') {
             window.location.href = 'https://wa.me/639266174131';
         }
     }, 1200);
 }
+
+// Auto-suggest after 6 seconds
+setTimeout(() => {
+    if(chatWindow.style.display !== 'flex') {
+        toggleBotWindow();
+    }
+}, 6000);
 </script>
 </body>
 </html>
