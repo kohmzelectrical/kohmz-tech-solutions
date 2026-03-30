@@ -225,7 +225,7 @@
     position: fixed;
     bottom: 120px;
     right: 20px;
-    z-index: 999999;
+    z-index: 9999999; /* Tinaasan ko para sigurado sa ibabaw */
     font-family: 'Share Tech Mono', monospace;
     display: flex;
     flex-direction: column;
@@ -345,7 +345,7 @@
             <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
         </div>
         <div class="kohmz-chat-body" id="chatBody">
-            <div class="chat-bubble">Initialization complete. Kumusta! Ako ang iyong Cyber-Assistant. Ready na tayo para sa iyong project optimization.</div>
+            <div class="chat-bubble">Initialization complete. Kumusta! Ako ang iyong Cyber-Assistant. Ready na tayo para sa iyong Residential project.</div>
         </div>
         <div class="kohmz-chat-options">
             <button class="chat-btn" onclick="botAction('audit')" style="border-color:#ffd700; color:#ffd700;">
@@ -413,7 +413,7 @@ const dragMove = (e) => {
     xOffset = clientX - startX;
     yOffset = clientY - startY;
 
-    // GAMITIN ANG BACKTICKS ( ` ) DITO SA ILALIM:
+    // FIX: Gumamit ng backticks dito:
     wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
 };
 
@@ -442,6 +442,3 @@ function botAction(type) {
 
 setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 6000);
 </script>
-
-</body>
-</html>
