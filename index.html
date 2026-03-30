@@ -1069,7 +1069,7 @@ window.addEventListener('touchend', dragEnd);
 
 // --- GEMINI AI CONFIGURATION ---
 const GEMINI_API_KEY = "AIzaSyBoQDn29ivi5ou6lRWWB_UTT7BZjWV4Vgk"; 
-const GEMINI_MODEL = "gemini-1.5-flash"; 
+const GEMINI_MODEL = "gemini-1.5-flash-latest"; // Pinalitan natin ang model name para mas sigurado
 
 async function askGemini() {
     const inputField = document.getElementById('userQuery');
@@ -1102,6 +1102,14 @@ async function askGemini() {
         });
 
         const data = await response.json();
+
+        // BAGO: Haharangin natin kung may ibabatong error si Google bago pa mag-crash ang site
+        if (data.error) {
+            console.error("API ERROR DETAILED: ", data.error);
+            document.getElementById(loadingId).innerHTML = "UNIT-01 ERROR: " + data.error.message;
+            return; // Itigil ang code para hindi mag-crash
+        }
+
         const botReply = data.candidates[0].content.parts[0].text;
 
         // 3. Ipakita ang sagot ni UNIT-01
@@ -1111,20 +1119,17 @@ async function askGemini() {
         chatBody.innerHTML += `<div class="chat-bubble">UNIT-01: ${botReply}</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
 
-} catch (error) {
+    } catch (error) {
         const loadingElem = document.getElementById(loadingId);
         if(loadingElem) loadingElem.innerHTML = "UNIT-01: System offline. Checking logs...";
-        
-        // IPRI-PRINT NITO ANG TUNAY NA ERROR SA CONSOLE
         console.error("MENSAGE GALING KAY GOOGLE GEMINI: ", error);
-        alert("May error sa Gemini AI. Pakicheck ang 'Console' (F12) para sa detalye.");
     }
-} //
+}
+
 // 4. Enter Key Support (Para pag-press ng Enter, mag-send agad)
 document.getElementById('userQuery')?.addEventListener("keypress", (e) => {
     if (e.key === "Enter") askGemini();
 });
-
 // Auto pop-up pagkatapos ng 6 seconds
 setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 6000);
     // --- TYPEWRITER & NAV CLICK LOGIC ---
