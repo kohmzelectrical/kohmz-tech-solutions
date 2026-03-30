@@ -1068,7 +1068,7 @@ window.addEventListener('mouseup', dragEnd);
 window.addEventListener('touchend', dragEnd);
 
 // --- GEMINI AI CONFIGURATION ---
-const GEMINI_API_KEY = "AIzaSyAgqh4ugQxbc56y54etps22Km3ahk90b9M"; 
+const GEMINI_API_KEY = "AIzaSyAgqh4ugQxbc56y54etps22Km3ahk90b9M"; // YUNG FRESH KEY MO
 const GEMINI_MODEL = "gemini-1.5-flash"; 
 
 async function askGemini() {
@@ -1078,7 +1078,7 @@ async function askGemini() {
 
     if (!userMsg) return;
 
-    // 1. Ipakita ang text ni User
+    // 1. User Message
     chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
     inputField.value = ""; 
     chatBody.scrollTop = chatBody.scrollHeight;
@@ -1096,7 +1096,7 @@ async function askGemini() {
             body: JSON.stringify({
                 contents: [{
                     parts: [{
-                        text: `Context: You are UNIT-01, the technical AI of KOHMZ Electrical Philippines. Speak in professional Taglish. Suggest site audit for pricing. User question: ${userMsg}`
+                        text: `Context: You are UNIT-01, the advanced technical AI of KOHMZ Electrical Design and Build in the Philippines. Tone: Professional, expert, Taglish. Purpose: Assist clients with electrical inquiries and lead them to 'Book Now' for audits. User query: ${userMsg}`
                     }]
                 }]
             })
@@ -1104,24 +1104,24 @@ async function askGemini() {
 
         const data = await response.json();
 
-        // 🔍 Error Catcher para sa API
+        // 🔍 Kung may error pa rin, lalabas dito
         if (data.error) {
             console.error("GOOGLE API ERROR:", data.error);
             document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: ${data.error.message}`;
             return;
         }
 
-        // 3. Ipakita ang sagot ni UNIT-01
+        // 3. Ipakita ang sagot
         if (data.candidates && data.candidates[0].content) {
             const botReply = data.candidates[0].content.parts[0].text;
             document.getElementById(loadingId).remove();
             chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: ${botReply}</div>`;
         } else {
-            document.getElementById(loadingId).innerHTML = "UNIT-01: Received empty response.";
+            document.getElementById(loadingId).innerHTML = "UNIT-01: No response format matches.";
         }
 
     } catch (error) {
-        document.getElementById(loadingId).innerHTML = "UNIT-01: Connection failed. Check API activation.";
+        document.getElementById(loadingId).innerHTML = "UNIT-01: Connection failed. Possible API limit.";
         console.error("FETCH ERROR:", error);
     }
     chatBody.scrollTop = chatBody.scrollHeight;
