@@ -111,7 +111,7 @@
         }
         .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
 
-        /* --- COLLAPSIBLES (DARK MODE) --- */
+        /* --- COLLAPSIBLES --- */
         .policy-container { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 2; }
         .collapsible {
             background-color: rgba(13, 27, 42, 0.8); color: #ffb703; cursor: pointer; padding: 18px 25px; width: 100%; border: 1px solid rgba(0,229,255,0.2);
@@ -119,7 +119,7 @@
             margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s;
             backdrop-filter: blur(10px); font-family: 'Share Tech Mono', monospace;
         }
-        .collapsible.active, .collapsible:hover { background-color: rgba(0, 229, 255, 0.1); border-color: var(--cyber-blue); box-shadow: 0 0 15px rgba(0,229,255,0.2); }
+        .collapsible.active, .collapsible:hover { background-color: rgba(0, 229, 255, 0.1); border-color: var(--cyber-blue); }
         .collapsible:after { content: '\002B'; font-size: 18px; }
         .collapsible.active:after { content: "\2212"; }
 
@@ -131,16 +131,16 @@
         .panel-content { padding: 30px 0; color: #cbd5e1; font-size: 12px; }
         .panel-content h3 { color: #00e5ff; margin-top: 25px; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid rgba(0,229,255,0.1); padding-bottom: 5px; }
 
-        /* --- FLOATING BUTTONS --- */
+        /* --- FLOATING BUTTONS (WITH VIBER) --- */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
-        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
-        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
+        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; border: 1px solid rgba(255,255,255,0.2);}
+        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); box-shadow: 0 0 15px var(--cyber-blue); }
         .fb-messenger { background: #0084ff; }
         .viber { background: #7360f2; }
         .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
-        /* --- CHATBOT --- */
+        /* --- BOT --- */
         .kohmz-bot-wrapper { position: fixed; bottom: 120px; right: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-end; touch-action: none; user-select: none; }
         .bot-value-tag { background: #00e5ff; color: #000; padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); cursor: grab; text-transform: uppercase; white-space: nowrap; }
         .kohmz-chat-window { display: none; width: 300px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
@@ -153,7 +153,7 @@
         .kohmz-bot-toggle { width: 85px; height: 85px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; }
         .bot-badge { position: absolute; top: 12px; right: 12px; background: #ff3b3b; color: #fff; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px #ff3b3b; z-index: 10; }
 
-        /* --- FOOTER (HOME SYNC) --- */
+        /* --- FOOTER SYNC --- */
         footer { 
             background: #000; color: white; text-align: center; padding: 60px 20px 40px; 
             border-top: 2px solid var(--neon-gold); position: relative; z-index: 2; margin-top: 40px;
@@ -171,7 +171,7 @@
     </div>
 
     <div class="moving-ads">
-        <marquee behavior="scroll" direction="left">⚡ KOHMZ Electrical Design and Build: Safety, Quality, and Compliance ⚡</marquee>
+        <marquee behavior="scroll" direction="left">⚡ KOHMZ Electrical Design and Build: Safe, Standard-Compliant, and Reliable ⚡</marquee>
     </div>
 
     <header>
@@ -216,35 +216,44 @@
             <button type="button" class="collapsible">Data Privacy Policy</button>
             <div class="panel">
                 <div class="panel-content">
-                    <p>At <strong>KOHMZ Electrical Design and Build</strong>, we value your privacy. By using our website and submitting inquiries, you agree to the collection and use of information in accordance with this policy.</p>
+                    <p>At <strong>KOHMZ Electrical Design and Build</strong>, we value your privacy and are committed to protecting your personal information. By using our website and submitting inquiries, you agree to the collection and use of information in accordance with this policy.</p>
                     <h3>1. Information Collection</h3>
-                    <p>We collect personal information when you use our forms: Name, Email, Contact, Address, and project blueprints.</p>
-                    <h3>2. Use of Data</h3>
-                    <p>Information is used for technical assessments, quotations, site inspections, and project updates.</p>
-                    <h3>3. Data Security</h3>
-                    <p>We implement strict measures to protect your blueprints and personal details within our technical database.</p>
+                    <p>We collect necessary personal information when you use our "Request a Quote" or "Book Now" forms. This includes your Full Name, Email Address, Contact Number, Property Address, and project-related photos or blueprints.</p>
+                    <h3>2. Use of Collected Data</h3>
+                    <p>Your information is used strictly for operational purposes: to provide accurate technical assessments, issue formal quotations, schedule site inspections, and communicate updates regarding your requested electrical or solar projects.</p>
+                    <h3>3. Data Protection & Security</h3>
+                    <p>We implement strict security measures to maintain the safety of your personal information. All project blueprints, layout photos, and personal details submitted are kept highly confidential and stored securely within our technical database.</p>
+                    <h3>4. Third-Party Disclosure</h3>
+                    <p>We absolutely do not sell, trade, or rent your personally identifiable information to outside parties. Your data is only shared with trusted internal engineers and specialists directly involved in executing your project.</p>
+                    <h3>5. Client Rights & Control</h3>
+                    <p>You have the right to request the deletion or modification of your personal data and project files from our system at any time after the completion of the assessment or project. Simply contact our support team to initiate the request.</p>
                 </div>
             </div>
 
             <button type="button" class="collapsible">Terms of Service</button>
             <div class="panel">
                 <div class="panel-content">
-                    <p>By engaging KOHMZ services, you agree to these professional terms:</p>
-                    <h3>1. Estimates</h3>
-                    <p>Initial quotes are estimates. Final costs are locked only after a physical site inspection.</p>
-                    <h3>2. Code Compliance</h3>
-                    <p>All work strictly follows the Philippine Electrical Code (PEC) and NEMA standards.</p>
-                    <h3>3. Warranty</h3>
-                    <p>KOHMZ provides a workmanship warranty. This is voided if the system is tampered with by unauthorized parties.</p>
+                    <p>By engaging the services of <strong>KOHMZ Electrical Design and Build</strong>, you agree to be bound by the following professional terms and operational guidelines:</p>
+                    <h3>1. Quotations & Estimates</h3>
+                    <p>All initial quotes provided via email or messaging are estimates based on the information provided by the client. Final project costs are subject to change and will only be locked in following a comprehensive, on-site technical inspection by our specialists.</p>
+                    <h3>2. Safety & Code Compliance</h3>
+                    <p>KOHMZ Electrical refuses to compromise on structural safety. All electrical, wiring, and solar installations are executed in strict compliance with the Philippine Electrical Code (PEC) and NEMA standards.</p>
+                    <h3>3. Project Agreements & Payment</h3>
+                    <p>For mid-to-large-scale operations, payment milestones and specific deliverables will be outlined in a formal contract. This agreement must be signed and the initial mobilization fee settled before the commencement of any physical work.</p>
+                    <h3>4. Warranty & Workmanship</h3>
+                    <p>We stand by the quality of our execution. KOHMZ provides a formal workmanship warranty for all new installations and panel upgrades. Warranties are voided if the system is tampered with by unauthorized third-party technicians.</p>
+                    <h3>5. Liability & Project Delays</h3>
+                    <p>While we strive for strict adherence to timelines, KOHMZ Electrical is not liable for project delays caused by unforeseen circumstances such as extreme weather or delays in third-party utility approvals.</p>
                 </div>
             </div>
         </div>
     </main>
 
     <div class="floating-container">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email"><i class="fas fa-envelope"></i></a>
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
     </div>
 
     <div class="kohmz-bot-wrapper" id="draggableBot">
@@ -285,7 +294,7 @@
     </footer>
 
     <script>
-        // Collapsible
+        // Collapsible logic
         var coll = document.getElementsByClassName("collapsible");
         for (var i = 0; i < coll.length; i++) {
             coll[i].addEventListener("click", function() {
@@ -296,7 +305,7 @@
             });
         }
 
-        // Mobile Menu
+        // Mobile Nav logic
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         menuToggle.addEventListener('click', () => {
@@ -304,7 +313,7 @@
             menuToggle.querySelector('i').className = navList.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
         });
 
-        // Chatbot Draggable Logic
+        // Draggable Bot logic
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         const chat = document.getElementById('chatWindow');
