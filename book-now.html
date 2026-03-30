@@ -8,6 +8,8 @@
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <style>
@@ -26,7 +28,7 @@
             overflow-x: hidden; 
         } 
         
-        /* --- LIVE 3D CAD BACKGROUND EFFECT --- */
+        /* --- LIVE 3D CAD BACKGROUND EFFECT (IGNORED / UNTOUCHED) --- */
         .cad-background {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             perspective: 1000px; z-index: -1; overflow: hidden;
@@ -56,7 +58,7 @@
         .moving-ads marquee { font-size: 10px; font-family: 'Share Tech Mono', monospace; } 
         
         /* ==================================================== */
-        /* HEADER & NAVIGATION - PROFESSIONAL DESKTOP VIEW      */
+        /* HEADER & NAVIGATION (KOHMZ STANDARD APPLIED)         */
         /* ==================================================== */
         header { 
             background: rgba(8, 16, 24, 0.95); padding: 15px 30px; 
@@ -64,17 +66,15 @@
             position: sticky; top: 0; z-index: 1000; 
             border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px);
         }
-        .logo { display: flex; align-items: center; gap: 12px; }
-        .logo img { height: 38px; width: 38px; border-radius: 4px; object-fit: cover; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
-        .logo h1 { font-size: 22px; margin: 0; letter-spacing: -1px; font-weight: 900; color: #fff; text-shadow: 0 0 5px rgba(255,255,255,0.3); } 
-        .logo span { color: #ffb703; text-shadow: 0 0 10px rgba(255,183,3,0.5); }
+
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
+        .logo-text { font-size: 22px; margin: 0; font-weight: 900; color: #fff; display: inline-block; font-family: 'Segoe UI', sans-serif;}
+        .logo-text span { color: #ffb703; }
 
         .menu-toggle { display: none; font-size: 26px; cursor: pointer; color: #00e5ff; z-index: 1001;}
 
-        .nav-links { 
-            list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; 
-        }
-        .nav-links li { position: relative; }
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; }
         .nav-links li a { 
             color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; 
             text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; 
@@ -82,67 +82,40 @@
             display: flex; align-items: center; gap: 6px;
         }
         .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
-        
-        /* DESKTOP FLOATING DROPDOWN (Hindi Accordion) */
+
+        .nav-links li.dropdown { position: relative; }
+
         .dropdown-content { 
             display: none; position: absolute; background: rgba(8,16,24,0.98); 
-            min-width: 220px; box-shadow: 0px 10px 30px rgba(0,0,0,0.6); z-index: 1001; 
-            border-radius: 4px; overflow: hidden; top: 100%; left: 0; 
-            border: 1px solid rgba(0, 229, 255, 0.2); border-top: 3px solid #00e5ff; 
-            backdrop-filter: blur(10px); 
+            min-width: 180px; box-shadow: 0px 10px 30px rgba(0,0,0,0.6); z-index: 1001; 
+            top: 100%; left: 0; border-top: 3px solid #00e5ff; 
         }
-        .dropdown-content a { 
-            color: #e0faff !important; padding: 15px 20px; 
-            border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 600; 
-            font-size: 11px !important; display: block; width: 100%;
-        }
-        .dropdown-content a:hover { background: rgba(0,229,255,0.1); color: #00e5ff !important; padding-left: 25px; }
-        
-        /* Desktop Hover Trigger Only */
-        @media (min-width: 993px) {
-            .dropdown:hover .dropdown-content { display: block; }
-        }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-        /* ==================================================== */
-        /* MOBILE NAVIGATION FIX - CLEAN ACCORDION              */
-        /* ==================================================== */
         @media (max-width: 992px) {
-            header { padding: 15px 20px; }
-            .logo h1 { font-size: 18px; }
             .menu-toggle { display: block; }
-            
             .nav-links { 
                 display: none; flex-direction: column; position: absolute; top: 100%; left: 0; 
-                width: 100%; background: rgba(8,16,24,0.98); padding: 0; margin: 0;
-                border-bottom: 4px solid #00e5ff; backdrop-filter: blur(10px); 
-                box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+                width: 100%; background: rgba(8, 16, 24, 0.98); padding: 0; margin: 0;
+                border-bottom: 4px solid #00e5ff; 
             }
             .nav-links.active { display: flex; }
-            .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
-            .nav-links li:last-child { border-bottom: none; }
-            
-            .nav-links li a { 
-                font-size: 14px; width: 100%; padding: 20px 25px; display: flex; justify-content: space-between;
-            }
-            
-            /* Mobile Accordion Dropdown */
-            .dropdown-content { 
-                position: static; box-shadow: none; background: rgba(0,0,0,0.4); 
-                border: none; display: none; width: 100%; padding-left: 0; border-radius: 0;
-            }
-            .dropdown:hover .dropdown-content { display: none; } /* Disable hover on mobile */
+            .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); margin: 0; }
+            .nav-links li a { font-size: 14px; width: 100%; padding: 20px 25px; display: flex; justify-content: space-between; }
+            .dropdown-content { position: static; display: none; background: rgba(0,0,0,0.4); width: 100%; border: none; padding-left: 0; }
             .dropdown.active .dropdown-content { display: block; }
-            
-            .dropdown-content a { 
-                padding: 15px 20px 15px 40px; font-size: 13px !important; 
-                border-left: 3px solid #ffb703; border-bottom: 1px solid rgba(255,255,255,0.02);
-            }
+            .dropdown-content a { padding: 15px 20px 15px 45px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; }
         }
 
-        /* HERO SECTION */
+        /* --- HERO SECTION --- */
         .hero { padding: 80px 20px 40px; text-align: center; position: relative; z-index: 2; }
         .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 15px rgba(255,183,3,0.4); } 
         .hero p { font-size: 13px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; color: #a0aec0; } 
+        
+        /* ADDED: TYPEWRITER CURSOR STYLE */
+        .txt-type > .txt { border-right: 3px solid #ffb703; padding-right: 5px; animation: blink 0.7s infinite; color: #ffffff; text-shadow: 0 0 15px var(--neon-gold); }
+        @keyframes blink { from, to { opacity: 1; } 50% { opacity: 0; } }
 
         /* URGENCY BOX - CYBER THEME */
         .urgency-box { 
@@ -218,7 +191,7 @@
             .floating-container { transform: scale(0.85); transform-origin: bottom right; right: 15px; bottom: 15px; }
         }
 
-        /* --- ROBOT ASSISTANT STYLES (NO BUTTONS) --- */
+        /* --- ROBOT ASSISTANT STYLES (UNTOUCHED) --- */
         .kohmz-bot-wrapper { position: fixed; bottom: 120px; right: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-end; touch-action: none; user-select: none; }
         .bot-value-tag { background: #00e5ff; color: #000; padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); cursor: grab; text-transform: uppercase; white-space: nowrap; }
         .kohmz-chat-window { display: none; width: 280px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
@@ -252,17 +225,19 @@
     </div>
 
     <header>
-        <div class="logo">
+        <a href="index.html" class="logo" aria-label="KOHMZ Electrical Services Homepage">
             <img src="logo.jpg" alt="KOHMZ Logo">
-            <h1>KOHMZ <span>Electrical</span></h1>
-        </div>
-        <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars"></i></div>
-        <nav>
+            <span class="logo-text">KOHMZ <span>Electrical</span></span>
+        </a>
+        <button class="menu-toggle" id="mobile-menu" aria-label="Open Mobile Menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav aria-label="Main Navigation">
             <ul class="nav-links" id="nav-list">
                 <li><a href="index.html">Overview</a></li>
                 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-trigger">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="dropbtn">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="commercial.html">Commercial</a>
                         <a href="residential.html">Residential</a>
@@ -270,10 +245,10 @@
                     </div>
                 </li>
                 
-                <li><a href="book-now.html" style="color: #ffb703; border-bottom: 1px solid #ffb703;">Book Now</a></li>
+                <li><a href="book-now.html" style="color: #ffb703; text-shadow: 0 0 8px #ffb703;">Book Now</a></li>
                 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-trigger">Affiliate Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="dropbtn">Affiliate Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
@@ -288,13 +263,16 @@
         </nav>
     </header>
 
-    <main>
-        <section class="hero">
-            <h2>Project Inquiry & Booking</h2>
+    <main id="main-content">
+        <section class="hero" data-aos="zoom-in">
+            <h2>
+                <span id="main-typewriter-text"></span><span class="cursor" style="color: #00e5ff; animation: blink 1s step-end infinite;">_</span><br>
+                <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["SECURE YOUR SLOT", "TECHNICAL AUDIT", "EXPERT DEPLOYMENT"]'></span>
+            </h2>
             <p>Secure your slot for certified electrical inspections and technical consultations. System ready to receive parameters.</p>
         </section>
 
-        <section class="urgency-box">
+        <section class="urgency-box" data-aos="fade-up">
             <h3>⚠️ Act Now! Do Not Compromise Your Safety</h3>
             <p style="font-size: 12px; color: #ffb703; text-align: center; margin-bottom: 10px;">Electrical faults are the #1 cause of structural fires. Do not wait for sparks or burning odors before consulting an expert.</p>
             
@@ -308,7 +286,7 @@
             </div>
         </section>
 
-        <div class="main-container">
+        <div class="main-container" data-aos="fade-up" data-aos-delay="200">
             <form action="https://formspree.io/f/xjgpypdl" method="POST" enctype="multipart/form-data">
                 
                 <input type="hidden" name="_next" value="thank-you.html">
@@ -422,34 +400,108 @@
         <div class="footer-content">
             <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
             <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
+            <p>FB Page: <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
             <hr style="margin:15px auto; border:0; border-top:1px solid rgba(255,255,255,0.1); max-width: 800px;">
             <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
             <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
         </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
-        // MOBILE MENU LOGIC
-        const menuToggle = document.getElementById('mobile-menu');
-        const navList = document.getElementById('nav-list');
-        menuToggle.addEventListener('click', () => {
-            navList.classList.toggle('active');
-            menuToggle.querySelector('i').className = navList.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+        // INIT ANIMATIONS
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ duration: 800, once: true, offset: 50 });
+            }
         });
 
-        // Dropdown Toggle Logic para sa Mobile List View
+        // MOBILE MENU LOGIC
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
         const dropdowns = document.querySelectorAll('.dropdown');
+
+        if (mobileMenu && navList) {
+            mobileMenu.addEventListener('click', () => {
+                navList.classList.toggle('active');
+                const icon = mobileMenu.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
+        }
+
         dropdowns.forEach(dropdown => {
-            dropdown.querySelector('.dropdown-trigger').addEventListener('click', (e) => {
-                if (window.innerWidth <= 992) {
-                    e.preventDefault(); 
+            const dropbtn = dropdown.querySelector('.dropbtn');
+            const handleDropdownToggle = (e) => {
+                if (window.innerWidth <= 992 || e.type === 'keydown' || e.type === 'touchstart') {
+                    if(dropbtn.getAttribute('href') === '#') e.preventDefault(); 
+                    
+                    dropdowns.forEach(d => {
+                        if (d !== dropdown) {
+                            d.classList.remove('active');
+                        }
+                    });
                     dropdown.classList.toggle('active');
                 }
-            });
+            };
+            dropbtn.addEventListener('click', handleDropdownToggle);
+            dropbtn.addEventListener('touchstart', handleDropdownToggle, {passive: true});
         });
 
-        // ROBOT ASSISTANT LOGIC (Fixed & Draggable)
+        // ADDED: TYPEWRITER LOGIC
+        const mainTypeText = "PROJECT INQUIRY & BOOKING ";
+        let mainTypeIndex = 0;
+        const mainTypeElement = document.getElementById("main-typewriter-text");
+        function startTyping() {
+            if (mainTypeElement && mainTypeIndex < mainTypeText.length) {
+                mainTypeElement.innerHTML += mainTypeText.charAt(mainTypeIndex++);
+                setTimeout(startTyping, 60);
+            }
+        }
+        startTyping();
+
+        class TypeWriter {
+            constructor(txtElement, words, wait = 3000) {
+                this.txtElement = txtElement;
+                this.words = words;
+                this.txt = '';
+                this.wordIndex = 0;
+                this.wait = parseInt(wait, 10);
+                this.isDeleting = false;
+                this.type();
+            }
+            type() {
+                const current = this.wordIndex % this.words.length;
+                const fullTxt = this.words[current];
+                if(this.isDeleting) {
+                    this.txt = fullTxt.substring(0, this.txt.length - 1);
+                } else {
+                    this.txt = fullTxt.substring(0, this.txt.length + 1);
+                }
+                this.txtElement.innerHTML = `<span class="txt">${this.txt}</span>`;
+                let typeSpeed = 100;
+                if(this.isDeleting) { typeSpeed /= 2; }
+                if(!this.isDeleting && this.txt === fullTxt) {
+                    typeSpeed = this.wait;
+                    this.isDeleting = true;
+                } else if(this.isDeleting && this.txt === '') {
+                    this.isDeleting = false;
+                    this.wordIndex++;
+                    typeSpeed = 500;
+                }
+                setTimeout(() => this.type(), typeSpeed);
+            }
+        }
+
+        const txtElement = document.querySelector('.txt-type');
+        if (txtElement) {
+            const wordsData = txtElement.getAttribute('data-words');
+            const wait = txtElement.getAttribute('data-wait');
+            if (wordsData) new TypeWriter(txtElement, JSON.parse(wordsData), wait);
+        }
+
+        // UNTOUCHED: EXACT ROBOT ASSISTANT LOGIC FROM USER
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         const chat = document.getElementById('chatWindow');
