@@ -6,7 +6,7 @@
     <meta name="google-site-verification" content="x_KzHj0x9Ygn2C3ffPnJ8aQTC4EE3n4AhWGtoNODr_k" />
     
     <title>KOHMZ Electrical Design and Build | Technical Governance & Power Architecture</title>
-    <meta name="description" content="Top-tier Specialist Electrical Contractor in the Philippines. We architect and build PEC-compliant power systems, offering Technical Governance for Commercial, Residential, and Industrial assets.">
+    <meta name="description" content="Top-tier Electrical Contractor in the Philippines providing PEC-compliant power systems and Technical Governance for Commercial and Residential properties.">
     <meta name="keywords" content="Electrical Contractor Philippines, Commercial Electrical Design, Residential Rewiring, PEC Compliant, Solar Installation, KOHMZ Electrical">
     
     <meta property="og:title" content="KOHMZ Electrical Design and Build">
@@ -23,6 +23,24 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Electrician",
+      "name": "KOHMZ Electrical Design and Build",
+      "image": "logo.jpg",
+      "description": "Top-tier Electrical Contractor in the Philippines providing PEC-compliant power systems and Technical Governance.",
+      "telephone": "+639266174131",
+      "url": "https://kohmzelectrical.com", 
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Philippines",
+        "addressCountry": "PH"
+      },
+      "priceRange": "$$"
+    }
+    </script>
+
     <style>
         /* --- FUTURISTIC EXTREME SYSTEM --- */
         :root {
@@ -35,21 +53,25 @@
         }
 
         body {
-            font-size: 12px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg-dark);
-            color: #f8fafc;
-            scroll-behavior: smooth;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
+            font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark); color: #f8fafc; scroll-behavior: smooth;
+            line-height: 1.6; margin: 0; padding: 0; overflow-x: hidden;
         }
 
-        /* Screen Reader Only utility class for accessibility */
+        /* ACCESSIBILITY: Screen Reader Only & Skip Link */
         .sr-only {
             position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
             overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+        }
+        .skip-link {
+            position: absolute; top: -40px; left: 0; background: var(--neon-gold); color: #000;
+            padding: 8px 15px; z-index: 10000; font-weight: bold; text-decoration: none; transition: top 0.3s;
+        }
+        .skip-link:focus { top: 0; outline: 3px solid var(--cyber-blue); }
+
+        /* GLOBAL FOCUS STATES FOR KEYBOARD NAVIGATION */
+        a:focus, button:focus, summary:focus, details:focus, .tooltip-container:focus {
+            outline: 2px dashed var(--cyber-blue); outline-offset: 4px;
         }
 
         /* ANIMATED HUD GRID BACKGROUND */
@@ -63,13 +85,13 @@
             z-index: -2; pointer-events: none;
         }
 
-        /* ENERGY BOLT ANIMATION - OPTIMIZED */
+        /* ENERGY BOLT ANIMATION */
         .energy-line {
             position: fixed; top: 0; width: 2px; height: 200px;
             background: linear-gradient(to bottom, transparent, var(--cyber-blue), var(--neon-gold), transparent);
             opacity: 0.4; z-index: -1; animation: flowBolt 6s ease-in-out infinite;
             filter: drop-shadow(0 0 8px var(--cyber-blue));
-            will-change: transform, opacity; /* GPU Acceleration for smoother animation */
+            will-change: transform, opacity; /* GPU Acceleration */
         }
 
         @keyframes flowBolt {
@@ -121,8 +143,10 @@
 
         .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
         .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; filter: drop-shadow(0 0 5px var(--neon-gold)); }
-        .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; }
-        .logo span { color: #ffb703; text-shadow: 0 0 10px var(--neon-gold); }
+        
+        /* SEO Fix: Changed from <h1> to styled span to reserve H1 for the main content */
+        .logo-text { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; display: inline-block; }
+        .logo-text span { color: #ffb703; text-shadow: 0 0 10px var(--neon-gold); }
 
         .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; background: none; border: none; padding: 5px; }
 
@@ -132,7 +156,7 @@
             color: white; text-decoration: none; font-size: 11px; transition: 0.3s;
             font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 5px;
         }
-        .nav-links li a:hover, .nav-links li a:focus { color: #ffb703; text-shadow: 0 0 10px rgba(255,183,3,0.8); outline: none; }
+        .nav-links li a:hover, .nav-links li a:focus { color: #ffb703; text-shadow: 0 0 10px rgba(255,183,3,0.8); }
 
         /* DROPDOWNS & KEYBOARD ACCESSIBILITY */
         .dropdown-content {
@@ -144,9 +168,8 @@
             color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block;
             font-size: 11px !important; border-bottom: 1px solid #f1f5f9; font-weight: 600; transition: 0.2s;
         }
-        .dropdown-content a:hover, .dropdown-content a:focus { background-color: #f8fafc; color: #ffb703 !important; padding-left: 20px; outline: none; }
+        .dropdown-content a:hover, .dropdown-content a:focus { background-color: #f8fafc; color: #ffb703 !important; padding-left: 20px; }
 
-        /* focus-within allows keyboard tabbing to open the dropdown on desktop */
         @media (min-width: 993px) {
             .dropdown:hover .dropdown-content,
             .dropdown:focus-within .dropdown-content { display: block; animation: fadeInUp 0.3s ease; }
@@ -176,7 +199,7 @@
             display: flex; align-items: center; justify-content: center; position: relative;
         }
         .hero-inner { max-width: 850px; position: relative; z-index: 2; }
-        .hero h2 {
+        .hero h1 {
             font-size: 24px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase;
             font-weight: 900; letter-spacing: 2px; line-height: 1.5; min-height: 70px;
             text-shadow: 0 0 15px rgba(255, 183, 3, 0.3);
@@ -244,7 +267,7 @@
             border-right: 3px solid #ffb703; padding: 0 20px;
         }
 
-        /* CARD SYSTEM - Semantic Update to Article */
+        /* CARD SYSTEM */
         .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: stretch; }
         .card {
             background: rgba(30, 41, 59, 0.4); width: 320px; padding: 35px 25px;
@@ -287,7 +310,7 @@
             padding: 6px 10px; background: rgba(0,229,255,0.1); border-radius: 4px; display: inline-block; margin-top: 10px;
         }
 
-        /* CORPORATE IDENTITY & EXPANDED SECTIONS */
+        /* CORPORATE IDENTITY */
         .text-block {
             max-width: 900px; margin: 0 auto; text-align: justify; font-size: 12px; line-height: 2;
             color: #cbd5e1; background: rgba(13, 27, 42, 0.6); padding: 45px; border-radius: 12px;
@@ -323,7 +346,6 @@
             outline: none; border-left: 5px solid #ffb703; display: flex; justify-content: space-between;
             align-items: center; transition: 0.3s;
         }
-        summary:hover, summary:focus { background: rgba(255,183,3,0.05); outline: 2px solid var(--cyber-blue); outline-offset: -2px; }
         details p { font-size: 12px; padding: 25px; margin: 0; color: #cbd5e1; line-height: 1.9; background: rgba(0,0,0,0.2); }
 
         /* VIP BOOKING ADVISORY */
@@ -354,7 +376,7 @@
             content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%;
             background: inherit; z-index: -1; filter: blur(10px); opacity: 0.6; transition: 0.3s;
         }
-        .float-btn:hover, .float-btn:focus { transform: scale(1.15) translateY(-5px); outline: none; }
+        .float-btn:hover, .float-btn:focus { transform: scale(1.15) translateY(-5px); }
         .float-btn:hover::before, .float-btn:focus::before { opacity: 1; filter: blur(15px); }
 
         /* FOOTER */
@@ -368,6 +390,8 @@
     </style>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <div class="energy-line" style="left: 10vw; animation-delay: 0s;"></div>
     <div class="energy-line" style="left: 40vw; animation-delay: 3s;"></div>
     <div class="energy-line" style="left: 70vw; animation-delay: 1.5s;"></div>
@@ -384,18 +408,18 @@
     </div>
 
     <header>
-        <a href="index.html" class="logo" aria-label="KOHMZ Electrical Homepage">
-            <img src="logo.jpg" alt="KOHMZ Electrical Design and Build Official Logo" loading="lazy">
-            <h1>KOHMZ <span>Electrical</span></h1>
+        <a href="index.html" class="logo" aria-label="KOHMZ Electrical Services Homepage">
+            <img src="logo.jpg" alt="KOHMZ Electrical Services logo" loading="lazy">
+            <span class="logo-text">KOHMZ <span>Electrical</span></span>
         </a>
-        <button class="menu-toggle" id="mobile-menu" aria-label="Toggle Mobile Navigation Menu" aria-expanded="false">
+        <button class="menu-toggle" id="mobile-menu" aria-label="Open Mobile Menu" aria-expanded="false">
             <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
         <nav aria-label="Main Navigation">
             <ul class="nav-links" id="nav-list">
                 <li><a href="index.html" style="color: #ffb703;" aria-current="page">Overview</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false">Services &#9662;</a>
+                    <a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Services Menu">Services &#9662;</a>
                     <div class="dropdown-content" aria-label="Services Submenu">
                         <a href="commercial.html">Commercial</a>
                         <a href="residential.html">Residential</a>
@@ -405,7 +429,7 @@
                 <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" rel="noopener noreferrer">Request Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false">Technical Shop &#9662;</a>
+                    <a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false" aria-label="Toggle Technical Shop Menu">Technical Shop &#9662;</a>
                     <div class="dropdown-content" aria-label="Technical Shop Submenu">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
@@ -419,13 +443,13 @@
         </nav>
     </header>
 
-    <main>
+    <main id="main-content">
         <section class="hero" aria-labelledby="hero-heading">
             <div class="hero-inner" data-aos="zoom-out">
-                <h2 id="hero-heading">INTEGRATED POWER ARCHITECTURE & <br>
+                <h1 id="hero-heading">INTEGRATED POWER ARCHITECTURE & <br>
                     <span class="sr-only">TECHNICAL GOVERNANCE, SMART INTEGRATION, SOLAR SOLUTIONS</span>
                     <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["TECHNICAL GOVERNANCE", "SMART INTEGRATION", "SOLAR SOLUTIONS"]'></span>
-                </h2>
+                </h1>
                 <p>Generic electrical work is a massive liability; Technical Governance is a permanent investment. We architect high-performance, future-proof power systems that secure your property’s legacy. Whether you are building a luxury residence, outfitting a corporate workspace, scaling an industrial facility, or transitioning to hybrid solar energy, we deliver uncompromised safety, strict PEC compliance, and absolute operational efficiency.</p>
                 <div style="margin-top: 25px;">
                     <a href="book-now.html" class="cta-button btn-primary"><i class="fas fa-clipboard-check" aria-hidden="true"></i> SECURE TECHNICAL AUDIT</a>
@@ -685,8 +709,8 @@
 
     <footer aria-label="Site Footer">
         <div class="logo" style="justify-content: center; margin-bottom: 20px;">
-            <img src="logo.jpg" alt="KOHMZ Electrical Design and Build Official Logo" loading="lazy">
-            <h1>KOHMZ <span>Electrical</span></h1>
+            <img src="logo.jpg" alt="KOHMZ Electrical Services logo" loading="lazy">
+            <span class="logo-text">KOHMZ <span>Electrical</span></span>
         </div>
         <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 12px; line-height: 1.6;">Your trusted partner in structural power integrity. We specialize in bringing world-class electrical engineering standards to every Philippine home and business facility.</p>
         <p>&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
@@ -700,15 +724,12 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     <script>
-        // Wait for DOM to load before executing custom logic
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Initialize Animate On Scroll (with slightly reduced delay/duration for performance)
             if (typeof AOS !== 'undefined') {
                 AOS.init({ duration: 600, once: true, offset: 100 });
             }
 
-            // Mobile Menu Toggle & Accessibility Logic
             const mobileMenu = document.getElementById('mobile-menu');
             const navList = document.getElementById('nav-list');
             
@@ -720,14 +741,17 @@
                 });
             }
 
-            // Dropdown Click & Keyboard (Space/Enter) Logic
             const dropdowns = document.querySelectorAll('.dropdown');
             dropdowns.forEach(dropdown => {
                 const dropbtn = dropdown.querySelector('.dropbtn');
                 
                 const handleDropdownToggle = (e) => {
-                    if (window.innerWidth <= 992 || e.type === 'keydown') {
-                        e.preventDefault(); 
+                    // Mobile Touch optimization added here
+                    if (window.innerWidth <= 992 || e.type === 'keydown' || e.type === 'touchstart') {
+                        // Only prevent default if it's not a direct link
+                        if(dropbtn.getAttribute('href') === '#') {
+                            e.preventDefault(); 
+                        }
                         
                         dropdowns.forEach(d => {
                             if (d !== dropdown) {
@@ -743,15 +767,14 @@
                 };
 
                 dropbtn.addEventListener('click', handleDropdownToggle);
+                dropbtn.addEventListener('touchstart', handleDropdownToggle, {passive: true});
                 dropbtn.addEventListener('keydown', (e) => {
-                    // Trigger dropdown if Space or Enter is pressed while focused
                     if (e.key === 'Enter' || e.key === ' ') {
                         handleDropdownToggle(e);
                     }
                 });
             });
 
-            // Animated Typing Text Logic
             class TypeWriter {
                 constructor(txtElement, words, wait = 3000) {
                     this.txtElement = txtElement;
