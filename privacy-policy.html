@@ -3,115 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy & Terms of Service | KOHMZ Electrical</title>
+    <title>Privacy Policy & Terms | KOHMZ Electrical</title>
     
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
     <style>
-        /* Strict Font Scale Sync (12px Base) */
-        body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f8fafc; color: #1e293b; scroll-behavior: smooth; line-height: 1.6; overflow-x: hidden; } 
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --neon-gold: #ffb703;
+            --cyber-blue: #00e5ff;
+            --power-glow: rgba(255, 183, 3, 0.4);
+            --bg-dark: #081018;
+        }
+
+        * { box-sizing: border-box; }
+
+        body { 
+            font-size: 12px; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; padding: 0; 
+            background-color: var(--bg-dark); 
+            color: #e0faff; 
+            overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6;
+        } 
+
+        /* --- LIVE 3D CAD BACKGROUND --- */
+        .cad-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            perspective: 1000px; z-index: -1; overflow: hidden;
+            background: radial-gradient(circle at center, #0a192f 0%, #04080f 100%);
+        }
+        .cad-grid {
+            position: absolute; width: 200%; height: 200%;
+            bottom: -50%; left: -50%;
+            background-image: 
+                linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotateX(60deg);
+            animation: cadMove 8s linear infinite;
+        }
+        @keyframes cadMove {
+            0% { transform: rotateX(60deg) translateY(0); }
+            100% { transform: rotateX(60deg) translateY(50px); }
+        }
+        .cad-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(8,16,24,1) 0%, transparent 40%, rgba(8,16,24,1) 100%);
+            pointer-events: none;
+        }
+
+        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; position: relative; z-index: 1001; }
+        .moving-ads marquee { font-size: 10px; font-family: 'Share Tech Mono', monospace; text-transform: uppercase;} 
         
-        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
-        .moving-ads marquee { font-size: 10px; } 
+        /* --- HEADER (COMMERCIAL SYNC) --- */
+        header { 
+            background: rgba(8, 16, 24, 0.95); padding: 15px 30px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; z-index: 1000; 
+            border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px);
+        }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
+        .logo-text { font-size: 22px; font-weight: 900; color: #fff; font-family: 'Segoe UI', sans-serif;}
+        .logo-text span { color: #ffb703; }
 
-        /* --- MODERN RESPONSIVE HEADER --- */
-        header { background: #0d1b2a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-        .logo { display: flex; align-items: center; gap: 10px; }
-        .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(255,183,3,0.3); }
-        .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
-        .logo span { color: #ffb703; }
+        .menu-toggle { display: none; font-size: 26px; cursor: pointer; color: #00e5ff; z-index: 1001;}
 
-        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; z-index: 1001; }
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; }
+        .nav-links li a { 
+            color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; 
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; 
+            font-family: 'Share Tech Mono', monospace; transition: 0.3s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
 
-        /* NAVIGATION FONT SIZE: 11px */
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s ease; }
-        .nav-links li { margin-left: 18px; position: relative; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
-        .nav-links li a:hover { color: #ffb703; }
-        
-        /* DROPDOWNS */
-        .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 175px; box-shadow: 0px 8px 25px rgba(0,0,0,0.2); z-index: 1001; border-radius: 4px; overflow: hidden; top: 100%; left: 0; border-top: 3px solid #ffb703; }
-        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 11px !important; border-bottom: 1px solid #eee; transition: 0.2s; font-weight: 600; }
-        .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; padding-left: 25px; }
+        .dropdown-content { 
+            display: none; position: absolute; background: rgba(8,16,24,0.98); 
+            min-width: 180px; box-shadow: 0px 10px 30px rgba(0,0,0,0.6); z-index: 1001; 
+            top: 100%; left: 0; border-top: 3px solid #00e5ff; 
+        }
         .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-        /* MOBILE OVERLAY */
         @media (max-width: 992px) {
             .menu-toggle { display: block; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: #0d1b2a; padding: 20px 0; border-bottom: 4px solid #ffb703; }
+            .nav-links { 
+                display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; 
+                background: rgba(8, 16, 24, 0.98); padding: 0; border-bottom: 4px solid #00e5ff; 
+            }
             .nav-links.active { display: flex; }
-            .nav-links li { margin: 15px 0; text-align: center; width: 100%; margin-left: 0; }
-            .nav-links li a { font-size: 14px; width: 100%; display: block; }
-            .dropdown-content { position: static; box-shadow: none; background: #1a2e44; display: none; width: 100%; }
+            .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .nav-links li a { font-size: 14px; padding: 20px 25px; justify-content: space-between; }
+            .dropdown-content { position: static; display: none; background: rgba(0,0,0,0.4); width: 100%; border: none; }
             .dropdown.active .dropdown-content { display: block; }
         }
 
-        /* --- HERO SECTION --- */
+        /* --- HERO --- */
         .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
-            background-size: cover; padding: 80px 20px; text-align: center; color: white; 
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 100px 20px; text-align: center; color: white; position: relative; z-index: 2;
         }
-        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; font-weight: 900; } 
-        .hero p { font-size: 13px; max-width: 700px; margin: 0 auto; line-height: 1.6; opacity: 0.9; } 
+        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
 
-        /* FLOATING ACTION BUTTONS */
+        /* --- COLLAPSIBLES (DARK MODE) --- */
+        .policy-container { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 2; }
+        .collapsible {
+            background-color: rgba(13, 27, 42, 0.8); color: #ffb703; cursor: pointer; padding: 18px 25px; width: 100%; border: 1px solid rgba(0,229,255,0.2);
+            border-radius: 5px; text-align: left; outline: none; font-size: 14px; font-weight: 900; text-transform: uppercase;
+            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s;
+            backdrop-filter: blur(10px); font-family: 'Share Tech Mono', monospace;
+        }
+        .collapsible.active, .collapsible:hover { background-color: rgba(0, 229, 255, 0.1); border-color: var(--cyber-blue); box-shadow: 0 0 15px rgba(0,229,255,0.2); }
+        .collapsible:after { content: '\002B'; font-size: 18px; }
+        .collapsible.active:after { content: "\2212"; }
+
+        .panel { 
+            padding: 0 25px; background-color: rgba(30, 41, 59, 0.4); max-height: 0; overflow: hidden; 
+            transition: max-height 0.3s ease-out; border-radius: 0 0 5px 5px; margin-bottom: 20px; 
+            border-left: 4px solid #ffb703; backdrop-filter: blur(10px);
+        }
+        .panel-content { padding: 30px 0; color: #cbd5e1; font-size: 12px; }
+        .panel-content h3 { color: #00e5ff; margin-top: 25px; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid rgba(0,229,255,0.1); padding-bottom: 5px; }
+
+        /* --- FLOATING BUTTONS --- */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
         .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: 0.3s; }
-        .float-btn:hover { transform: scale(1.15) rotate(5deg); }
-        .fb-messenger { background: #0084ff; } 
-        .viber { background: #7360f2; } 
-        .whatsapp { background: #25d366; } 
+        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); }
+        .fb-messenger { background: #0084ff; }
+        .viber { background: #7360f2; }
+        .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
-        /* POLICY CONTAINER & COLLAPSIBLE */
-        .policy-container { max-width: 900px; margin: 40px auto; padding: 0 20px; text-align: left; }
-        
-        .collapsible {
-            background-color: #0d1b2a; color: #ffb703; cursor: pointer; padding: 18px 25px; width: 100%; border: none;
-            border-radius: 5px; text-align: left; outline: none; font-size: 14px; font-weight: 900; text-transform: uppercase;
-            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); letter-spacing: 1px;
+        /* --- CHATBOT --- */
+        .kohmz-bot-wrapper { position: fixed; bottom: 120px; right: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-end; touch-action: none; user-select: none; }
+        .bot-value-tag { background: #00e5ff; color: #000; padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); cursor: grab; text-transform: uppercase; white-space: nowrap; }
+        .kohmz-chat-window { display: none; width: 300px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
+        .kohmz-chat-header { background: #000; color: #00e5ff; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
+        .kohmz-chat-body { padding: 15px; max-height: 220px; overflow-y: auto; }
+        .chat-bubble { background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; margin-bottom: 10px; border-left: 2px solid #00e5ff; font-size: 12px; }
+        .kohmz-chat-options { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .chat-btn { background: transparent; color: #fff; border: 1px solid #00e5ff; padding: 12px; font-size: 10px; cursor: pointer; text-align: left; text-transform: uppercase; transition: 0.3s; width: 100%; font-family: 'Share Tech Mono', monospace; }
+        .chat-btn:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 10px #00e5ff; }
+        .kohmz-bot-toggle { width: 85px; height: 85px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; }
+        .bot-badge { position: absolute; top: 12px; right: 12px; background: #ff3b3b; color: #fff; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px #ff3b3b; z-index: 10; }
+
+        /* --- FOOTER (HOME SYNC) --- */
+        footer { 
+            background: #000; color: white; text-align: center; padding: 60px 20px 40px; 
+            border-top: 2px solid var(--neon-gold); position: relative; z-index: 2; margin-top: 40px;
         }
-        .active, .collapsible:hover { background-color: #1a2a3a; }
-        .collapsible:after { content: '\002B'; font-size: 18px; font-weight: bold; }
-        .active:after { content: "\2212"; }
-
-        .panel { padding: 0 25px; background-color: #fff; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-radius: 0 0 5px 5px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border-left: 4px solid #ffb703; }
-        .panel-content { padding: 30px 0; color: #444; line-height: 1.8; font-size: 12px; }
-        .panel-content h3 { margin-top: 25px; color: #0d1b2a; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; font-weight: 800; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        .panel-content p { margin-bottom: 15px; }
-        .panel-content ul { padding-left: 20px; margin-bottom: 15px; }
-        .panel-content ul li { margin-bottom: 8px; }
-
-        /* FOOTER */
-        footer { background: #0d1b2a; color: white; text-align: center; padding: 40px 20px; margin-top: 60px; border-top: 4px solid #ffb703; }
-        .footer-content { font-size: 11px; line-height: 2; max-width: 1000px; margin: 0 auto; }
-        .footer-content p strong { font-size: 13px; color: #ffb703; letter-spacing: 1px; text-transform: uppercase; }
-        .footer-links a { color: #ffb703; text-decoration: none; font-weight: bold; margin: 0 15px; text-transform: uppercase; font-size: 10px; }
-        .footer-links a:hover { color: white; }
+        footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; font-weight: bold; }
+        footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
+        .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
     </style>
 </head>
 <body>
 
+    <div class="cad-background">
+        <div class="cad-grid"></div>
+        <div class="cad-overlay"></div>
+    </div>
+
     <div class="moving-ads">
-        <marquee behavior="scroll" direction="left">
-            ⚡ KOHMZ Electrical Design and Build: Committed to Safety, Quality, and Your Privacy ⚡
-        </marquee>
+        <marquee behavior="scroll" direction="left">⚡ KOHMZ Electrical Design and Build: Safety, Quality, and Compliance ⚡</marquee>
     </div>
 
     <header>
-        <div class="logo">
+        <a href="index.html" class="logo">
             <img src="logo.jpg" alt="KOHMZ Logo">
-            <h1>KOHMZ <span>Electrical</span></h1>
-        </div>
+            <span class="logo-text">KOHMZ <span>Electrical</span></span>
+        </a>
         <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars"></i></div>
         <nav>
             <ul class="nav-links" id="nav-list">
                 <li><a href="index.html">Overview</a></li>
                 <li class="dropdown">
-                    <a href="#">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="drop-trigger">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="commercial.html">Commercial</a>
                         <a href="residential.html">Residential</a>
@@ -120,7 +193,7 @@
                 </li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#">Technical Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="drop-trigger">Technical Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
@@ -135,118 +208,148 @@
 
     <main>
         <section class="hero">
-            <div class="hero-inner">
-                <h2>Corporate Policies & Terms</h2>
-                <p>Read our commitment to your data privacy and the professional terms governing our electrical design and build services.</p>
-            </div>
+            <h2>Corporate Policies & Terms</h2>
+            <p>Our commitment to data privacy and professional operational standards.</p>
         </section>
 
         <div class="policy-container">
-            
             <button type="button" class="collapsible">Data Privacy Policy</button>
             <div class="panel">
                 <div class="panel-content">
-                    <p>At <strong>KOHMZ Electrical Design and Build</strong>, we value your privacy and are committed to protecting your personal information. By using our website and submitting inquiries, you agree to the collection and use of information in accordance with this policy.</p>
-                    
+                    <p>At <strong>KOHMZ Electrical Design and Build</strong>, we value your privacy. By using our website and submitting inquiries, you agree to the collection and use of information in accordance with this policy.</p>
                     <h3>1. Information Collection</h3>
-                    <p>We collect necessary personal information when you use our "Request a Quote" or "Book Now" forms. This includes your Full Name, Email Address, Contact Number, Property Address, and project-related photos or blueprints.</p>
-
-                    <h3>2. Use of Collected Data</h3>
-                    <p>Your information is used strictly for operational purposes: to provide accurate technical assessments, issue formal quotations, schedule site inspections, and communicate updates regarding your requested electrical or solar projects.</p>
-
-                    <h3>3. Data Protection & Security</h3>
-                    <p>We implement strict security measures to maintain the safety of your personal information. All project blueprints, layout photos, and personal details submitted are kept highly confidential and stored securely within our technical database.</p>
-
-                    <h3>4. Third-Party Disclosure</h3>
-                    <p>We absolutely do not sell, trade, or rent your personally identifiable information to outside parties. Your data is only shared with trusted internal engineers and specialists directly involved in executing your project.</p>
-
-                    <h3>5. Client Rights & Control</h3>
-                    <p>You have the right to request the deletion or modification of your personal data and project files from our system at any time after the completion of the assessment or project. Simply contact our support team to initiate the request.</p>
+                    <p>We collect personal information when you use our forms: Name, Email, Contact, Address, and project blueprints.</p>
+                    <h3>2. Use of Data</h3>
+                    <p>Information is used for technical assessments, quotations, site inspections, and project updates.</p>
+                    <h3>3. Data Security</h3>
+                    <p>We implement strict measures to protect your blueprints and personal details within our technical database.</p>
                 </div>
             </div>
 
             <button type="button" class="collapsible">Terms of Service</button>
             <div class="panel">
                 <div class="panel-content">
-                    <p>By engaging the services of <strong>KOHMZ Electrical Design and Build</strong>, you agree to be bound by the following professional terms and operational guidelines:</p>
-                    
-                    <h3>1. Quotations & Estimates</h3>
-                    <p>All initial quotes provided via email or messaging are estimates based on the information provided by the client. Final project costs are subject to change and will only be locked in following a comprehensive, on-site technical inspection by our specialists.</p>
-
-                    <h3>2. Safety & Code Compliance</h3>
-                    <p>KOHMZ Electrical refuses to compromise on structural safety. All electrical, wiring, and solar installations are executed in strict compliance with the Philippine Electrical Code (PEC) and NEMA standards. We reserve the right to refuse work that violates safety codes.</p>
-
-                    <h3>3. Project Agreements & Payment</h3>
-                    <p>For mid-to-large-scale operations (e.g., Commercial Fit-outs, Solar Integrations), payment milestones and specific deliverables will be outlined in a formal contract. This agreement must be signed and the initial mobilization fee settled before the commencement of any physical work.</p>
-
-                    <h3>4. Warranty & Workmanship</h3>
-                    <p>We stand by the quality of our execution. KOHMZ provides a formal workmanship warranty for all new installations and panel upgrades. Warranties are voided if the system is tampered with, altered, or serviced by unauthorized third-party technicians after our official turnover.</p>
-
-                    <h3>5. Liability & Project Delays</h3>
-                    <p>While we strive for strict adherence to timelines, KOHMZ Electrical is not liable for project delays caused by unforeseen circumstances such as extreme weather, severe hidden structural damages found during execution, or delays in third-party utility (e.g., Meralco) approvals.</p>
+                    <p>By engaging KOHMZ services, you agree to these professional terms:</p>
+                    <h3>1. Estimates</h3>
+                    <p>Initial quotes are estimates. Final costs are locked only after a physical site inspection.</p>
+                    <h3>2. Code Compliance</h3>
+                    <p>All work strictly follows the Philippine Electrical Code (PEC) and NEMA standards.</p>
+                    <h3>3. Warranty</h3>
+                    <p>KOHMZ provides a workmanship warranty. This is voided if the system is tampered with by unauthorized parties.</p>
                 </div>
             </div>
-
         </div>
     </main>
 
     <div class="floating-container">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email"><i class="fas fa-envelope"></i></a>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
-            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <div class="footer-links" style="margin: 20px 0;">
-                <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank">Official Facebook</a>
-                <a href="https://m.me/100093260504264" target="_blank">Messenger Support</a>
-                <a href="privacy-policy.html">Privacy Policy</a>
-                <a href="terms-of-service.html">Terms of Service</a>
+    <div class="kohmz-bot-wrapper" id="draggableBot">
+        <div class="bot-value-tag" id="dragHint">⚡ KOHMZ Expert AI</div>
+        <div class="kohmz-chat-window" id="chatWindow">
+            <div class="kohmz-chat-header">
+                <span>UNIT-01: SYSTEM ACTIVE</span>
+                <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
             </div>
-            <hr style="margin:25px auto; border:0; border-top:1px solid rgba(255,255,255,0.1); max-width: 800px;">
-            <p style="font-size: 9px; opacity: 0.6; letter-spacing: 1px;">Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
+            <div class="kohmz-chat-body">
+                <div class="chat-bubble">Initialization complete. Need help with our policies or booking a service?</div>
+            </div>
+            <div class="kohmz-chat-options">
+                <button class="chat-btn" onclick="botAction('audit')" style="border-color:#ffd700; color:#ffd700;">> [RUN_AUDIT_ROUTINE]</button>
+                <button class="chat-btn" onclick="botAction('fb')">> [FB_COMM_LINK]</button>
+                <button class="chat-btn" onclick="botAction('wa')">> [DIRECT_WHATSAPP]</button>
+            </div>
         </div>
+        <div class="kohmz-bot-toggle" id="botToggle">
+            <lottie-player src="Live chatbot.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
+            <div class="bot-badge">!</div>
+        </div>
+    </div>
+
+    <footer aria-label="Site Footer">
+        <div class="logo" style="justify-content: center; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+            <img src="logo.jpg" alt="KOHMZ Logo" width="35" height="35" style="border: 1px solid #00e5ff; border-radius: 4px;">
+            <span class="logo-text" style="font-size: 22px; font-weight: 900; color: #fff; font-family: 'Segoe UI', sans-serif;">KOHMZ <span style="color: #ffb703;">Electrical</span></span>
+        </div>
+        <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 12px; line-height: 1.6; text-align: center;">Your trusted partner in structural power integrity. We specialize in bringing world-class electrical engineering standards to every Philippine home and business facility.</p>
+        <p style="text-align: center; color: white;">&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
+        <nav class="footer-links" aria-label="Footer Navigation" style="text-align: center;">
+            <p style="margin-bottom: 5px; color: #ffb703; font-weight: 800; font-size: 12px;">Technical Governance | Asset Protection | PEC-Compliant Architecture</p>
+            <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
+            <a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
+            <a href="about-us.html">About Us</a>
+        </nav>
     </footer>
 
     <script>
-        // Collapsible Script
+        // Collapsible
         var coll = document.getElementsByClassName("collapsible");
-        var i;
-
-        for (i = 0; i < coll.length; i++) {
-          coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.maxHeight) {
-              panel.style.maxHeight = null;
-            } else {
-              panel.style.maxHeight = panel.scrollHeight + "px";
-            } 
-          });
+        for (var i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) { panel.style.maxHeight = null; } 
+                else { panel.style.maxHeight = panel.scrollHeight + "px"; } 
+            });
         }
 
-        // Mobile Menu Script
+        // Mobile Menu
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
-        const dropdowns = document.querySelectorAll('.dropdown');
-
         menuToggle.addEventListener('click', () => {
             navList.classList.toggle('active');
-            const icon = menuToggle.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-times');
+            menuToggle.querySelector('i').className = navList.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
         });
 
-        dropdowns.forEach(dropdown => {
-            dropdown.addEventListener('click', () => {
-                if (window.innerWidth <= 992) dropdown.classList.toggle('active');
-            });
-        });
+        // Chatbot Draggable Logic
+        const wrapper = document.getElementById('draggableBot');
+        const toggle = document.getElementById('botToggle');
+        const chat = document.getElementById('chatWindow');
+        const hint = document.getElementById('dragHint');
+        let isDragging = false, startX, startY, xOffset = 0, yOffset = 0, dragStartTime;
+
+        function toggleBotWindow() {
+            if (chat.style.display === 'flex') { chat.style.display = 'none'; hint.innerHTML = "⚡ KOHMZ Expert AI"; } 
+            else { chat.style.display = 'flex'; hint.innerHTML = "🖐️ Drag to Move"; }
+        }
+
+        const dragStart = (e) => {
+            isDragging = true; dragStartTime = Date.now();
+            const clientX = (e.type === "touchstart") ? e.touches[0].clientX : e.clientX;
+            const clientY = (e.type === "touchstart") ? e.touches[0].clientY : e.clientY;
+            startX = clientX - xOffset; startY = clientY - yOffset;
+        };
+
+        const dragMove = (e) => {
+            if (!isDragging) return;
+            if (e.cancelable) e.preventDefault();
+            const clientX = (e.type === "touchmove") ? e.touches[0].clientX : e.clientX;
+            const clientY = (e.type === "touchmove") ? e.touches[0].clientY : e.clientY;
+            xOffset = clientX - startX; yOffset = clientY - startY;
+            wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
+        };
+
+        const dragEnd = () => {
+            isDragging = false;
+            if (Date.now() - dragStartTime < 200) toggleBotWindow();
+        };
+
+        toggle.addEventListener('mousedown', dragStart);
+        toggle.addEventListener('touchstart', dragStart, {passive: false});
+        window.addEventListener('mousemove', dragMove);
+        window.addEventListener('touchmove', dragMove, {passive: false});
+        window.addEventListener('mouseup', dragEnd);
+        window.addEventListener('touchend', dragEnd);
+
+        function botAction(type) {
+            if(type === 'audit') window.location.href = 'book-now.html';
+            else if(type === 'fb') window.open('https://m.me/100093260504264', '_blank');
+            else if(type === 'wa') window.location.href = 'https://wa.me/639266174131';
+        }
+        setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 6000);
     </script>
-
 </body>
 </html>
