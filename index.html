@@ -840,75 +840,87 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-/* Main Wrapper - Naka-set sa initial position pero movable */
+/* Main Wrapper */
 .kohmz-bot-wrapper {
     position: fixed;
-    bottom: 120px; /* Initial height para iwas sa Messenger */
-    right: 25px;
+    bottom: 120px; /* Elevated initial position */
+    right: 20px;
     z-index: 999999;
     font-family: 'Share Tech Mono', monospace;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    touch-action: none; /* Required para sa smooth dragging sa mobile */
-}
-
-/* Tooltip - "Drag Me" hint */
-.bot-value-tag {
-    background: #00e5ff;
-    color: #000;
-    padding: 5px 10px;
-    font-size: 9px;
-    font-weight: bold;
-    border-radius: 4px;
-    margin-bottom: 5px;
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
-    cursor: grab;
-    text-transform: uppercase;
+    touch-action: none; /* Smooth drag on mobile */
     user-select: none;
 }
 
-/* Chat Window - Futuristic Hologram */
+/* Tooltip Hint */
+.bot-value-tag {
+    background: #00e5ff;
+    color: #000;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+    cursor: grab;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Chat Window - Adaptive for Mobile */
 .kohmz-chat-window {
     display: none;
     width: 300px;
-    background: rgba(10, 20, 30, 0.98);
+    max-width: 85vw; /* Mobile safety */
+    background: rgba(8, 16, 24, 0.96);
     border: 1px solid #00e5ff;
     border-top: 4px solid #00e5ff;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-    margin-bottom: 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+    margin-bottom: 12px;
     flex-direction: column;
     backdrop-filter: blur(10px);
+    border-radius: 4px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    .kohmz-chat-window { width: 260px; }
+    .kohmz-bot-toggle { width: 65px; height: 65px; } /* Slightly smaller icon on mobile */
+    .chat-bubble { font-size: 11px; }
+    .chat-btn { padding: 10px; font-size: 9px; }
 }
 
 .kohmz-chat-header {
     background: #000;
     color: #00e5ff;
-    padding: 10px;
+    padding: 12px;
     font-weight: bold;
     display: flex;
     justify-content: space-between;
     font-size: 12px;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
 }
 
 .kohmz-chat-body {
     padding: 15px;
-    max-height: 200px;
+    max-height: 220px;
     overflow-y: auto;
-    font-size: 12px;
-    color: #fff;
 }
 
 .chat-bubble {
     background: rgba(255, 255, 255, 0.05);
+    color: #e0faff;
     padding: 10px;
-    border-radius: 2px 10px 10px 10px;
+    border-radius: 0 12px 12px 12px;
     margin-bottom: 10px;
     border-left: 2px solid #00e5ff;
+    line-height: 1.4;
 }
 
 .kohmz-chat-options {
-    padding: 10px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -916,175 +928,189 @@
 
 .chat-btn {
     background: transparent;
-    color: #00e5ff;
+    color: #fff;
     border: 1px solid #00e5ff;
-    padding: 10px;
+    padding: 12px;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
     text-transform: uppercase;
     cursor: pointer;
     transition: 0.2s;
+    text-align: left;
 }
 
-.chat-btn:hover { background: rgba(0, 229, 255, 0.1); }
+.chat-btn:active, .chat-btn:hover {
+    background: rgba(0, 229, 255, 0.2);
+    box-shadow: 0 0 10px #00e5ff;
+}
 
-/* Floating Toggle Button - Draggable Icon */
+/* Waving Robot Button - Fixed Centering */
 .kohmz-bot-toggle {
-    width: 70px; height: 70px;
+    width: 75px; height: 75px; /* Adjust size if needed, breakpoint handles mobile */
     background: #0a141e;
     border: 2px solid #00e5ff;
     border-radius: 50%;
-    display: flex; justify-content: center; align-items: center;
-    cursor: grab; /* Kamay na nakabukas para sa drag */
+    /* display: flex is no longer needed here for centering */
     box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
     position: relative;
-    overflow: hidden;
-    user-select: none;
+    overflow: hidden; /* Perfect circular crop */
+    animation: floatEffect 3s ease-in-out infinite;
+    cursor: grab;
 }
 
-.kohmz-bot-toggle:active { cursor: grabbing; } /* Nakasara ang kamay pag dina-drag */
-
+/* Fixed image properties for centering and cropping */
 .bot-waving-img {
-    width: 120%; height: 120%;
-    object-fit: cover;
-    pointer-events: none; /* Para hindi ma-drag yung image mismo */
+    width: 100%; /* Image takes full container width */
+    height: 100%; /* Image takes full container height */
+    object-fit: cover; /* browser scales and centers the content to fill the area */
+    pointer-events: none;
+    display: block; /* ensure it takes full space */
+}
+
+@keyframes floatEffect {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
 .bot-badge {
-    position: absolute; top: 0; right: 2px;
-    background: #ff0000; color: #fff; font-size: 10px;
-    width: 20px; height: 20px; border-radius: 50%;
+    position: absolute; bottom: 0; right: 4px; /* Placed bottom right */
+    background: #ff3b3b; color: #fff; font-size: 10px;
+    width: 22px; height: 22px; border-radius: 50%;
     display: flex; justify-content: center; align-items: center;
+    border: 2px solid #0a141e;
 }
 </style>
 
 <div class="kohmz-bot-wrapper" id="draggableBot">
-    <div class="bot-value-tag">🖐️ Drag to Move</div>
+    <div class="bot-value-tag" id="dragHint">🖐️ Move Me</div>
 
     <div class="kohmz-chat-window" id="chatWindow">
         <div class="kohmz-chat-header">
-            <span>SYSTEM-AI: ACTIVE</span>
-            <span onclick="toggleBotWindow()" style="cursor:pointer">✕</span>
+            <span>UNIT-01: ONLINE</span>
+            <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
         </div>
         <div class="kohmz-chat-body" id="chatBody">
-            <div class="chat-bubble">Initialization successful. I am your KOHMZ Cyber-Assistant. Ready to optimize your project.</div>
+            <div class="chat-bubble">Initialization complete. KOHMZ AI is ready to optimize your project workflow.</div>
+            <div class="chat-bubble">Awaiting command...</div>
         </div>
         <div class="kohmz-chat-options">
-            <button class="chat-btn" onclick="botAction('audit')">> [RUN_AUDIT_ROUTINE]</button>
+            <button class="chat-btn" onclick="botAction('audit')" style="border-color:#ffd700; color:#ffd700;">> [RUN_AUDIT_ROUTINE]</button>
             <button class="chat-btn" onclick="botAction('fb')">> [FB_MAINFRAME]</button>
-            <button class="chat-btn" onclick="botAction('wa')">> [DIRECT_WHATSAPP]</button>
+            <button class="chat-btn" onclick="botAction('wa')">> [URGENT_WHATSAPP]</button>
         </div>
     </div>
 
     <div class="kohmz-bot-toggle" id="botToggle">
-        <img src="https://raw.githubusercontent.com/kohmzelectrical/kohmz-electrical-services/main/robot-waving.png" alt="Robot" class="bot-waving-img">
+        <img src="https://raw.githubusercontent.com/kohmzelectrical/kohmz-electrical-services/main/robot-waving.png" alt="Animated KOHMZ Robot" class="bot-waving-img">
         <div class="bot-badge" id="botBadge">!</div>
     </div>
 </div>
 
 <script>
-const draggableBot = document.getElementById('draggableBot');
-const botToggle = document.getElementById('botToggle');
-const chatWindow = document.getElementById('chatWindow');
+const wrapper = document.getElementById('draggableBot');
+const toggle = document.getElementById('botToggle');
+const chat = document.getElementById('chatWindow');
 const badge = document.getElementById('botBadge');
+const hint = document.getElementById('dragHint');
 
 let isDragging = false;
-let offset = { x: 0, y: 0 };
+let startX, startY, initialX, initialY;
+let currentX, currentY;
+let xOffset = 0, yOffset = 0;
 
-// Function para buksan/isara ang chat
+// Open/Close logic
 function toggleBotWindow() {
-    if (chatWindow.style.display === 'flex') {
-        chatWindow.style.display = 'none';
+    if (chat.style.display === 'flex') {
+        chat.style.display = 'none';
+        hint.style.display = 'block';
     } else {
-        chatWindow.style.display = 'flex';
+        chat.style.display = 'flex';
         badge.style.display = 'none';
+        hint.style.display = 'none';
     }
 }
 
-// Logic para sa DRAG
-botToggle.addEventListener('mousedown', startDragging);
-window.addEventListener('mousemove', drag);
-window.addEventListener('mouseup', stopDragging);
+// Drag Events
+toggle.addEventListener('mousedown', dragStart);
+toggle.addEventListener('touchstart', dragStart, {passive: false});
 
-// Support para sa Mobile (Touch)
-botToggle.addEventListener('touchstart', (e) => startDragging(e.touches[0]), {passive: false});
-window.addEventListener('touchmove', (e) => drag(e.touches[0]), {passive: false});
-window.addEventListener('touchend', stopDragging);
+window.addEventListener('mousemove', dragMove);
+window.addEventListener('touchmove', dragMove, {passive: false});
 
-let startX, startY;
+window.addEventListener('mouseup', dragEnd);
+window.addEventListener('touchend', dragEnd);
 
-function startDragging(e) {
-    isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
+function dragStart(e) {
+    if (e.type === "touchstart") {
+        initialX = e.touches[0].clientX - xOffset;
+        initialY = e.touches[0].clientY - yOffset;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    } else {
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+        startX = e.clientX;
+        startY = e.clientY;
+    }
     
-    const rect = draggableBot.getBoundingClientRect();
-    offset.x = e.clientX - rect.left;
-    offset.y = e.clientY - rect.top;
-    
-    // Disable transition habang dina-drag para hindi delay
-    draggableBot.style.transition = 'none';
+    if (e.target === toggle || toggle.contains(e.target)) {
+        isDragging = true;
+    }
 }
 
-function drag(e) {
-    if (!isDragging) return;
-    
-    // Iwasan ang scroll habang nag-drag sa mobile
-    if (e.preventDefault) e.preventDefault();
+function dragMove(e) {
+    if (isDragging) {
+        if (e.cancelable) e.preventDefault();
+        
+        if (e.type === "touchmove") {
+            currentX = e.touches[0].clientX - initialX;
+            currentY = e.touches[0].clientY - initialY;
+        } else {
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+        }
 
-    let newX = e.clientX - offset.x;
-    let newY = e.clientY - offset.y;
+        xOffset = currentX;
+        yOffset = currentY;
 
-    // Boundary check (hindi lalabas ng screen)
-    const maxX = window.innerWidth - draggableBot.offsetWidth;
-    const maxY = window.innerHeight - draggableBot.offsetHeight;
-
-    newX = Math.max(0, Math.min(newX, maxX));
-    newY = Math.max(0, Math.min(newY, maxY));
-
-    draggableBot.style.left = newX + 'px';
-    draggableBot.style.top = newY + 'px';
-    draggableBot.style.bottom = 'auto';
-    draggableBot.style.right = 'auto';
+        setTranslate(currentX, currentY, wrapper);
+    }
 }
 
-function stopDragging(e) {
+function setTranslate(xPos, yPos, el) {
+    el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+}
+
+function dragEnd(e) {
     if (!isDragging) return;
     
-    // Check kung "click" lang ba o "drag"
-    const endX = e.clientX || startX; 
-    const endY = e.clientY || startY;
+    let endX = (e.type === "touchend") ? e.changedTouches[0].clientX : e.clientX;
+    let endY = (e.type === "touchend") ? e.changedTouches[0].clientY : e.clientY;
+    
     const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-
+    
     isDragging = false;
 
-    // Kung hindi lumayo ang mouse (less than 5px), toggle ang window
-    if (distance < 5) {
+    // Kung "tap" lang (hindi drag), buksan ang chat
+    if (distance < 8) {
         toggleBotWindow();
     }
 }
 
 function botAction(type) {
     const chatBody = document.getElementById('chatBody');
-    chatBody.innerHTML += `<div class="chat-bubble" style="border-left-color: #ffd700;">Processing request...</div>`;
+    chatBody.innerHTML += `<div class="chat-bubble" style="border-left-color: #ffd700;">[STATUS] Redirecting to external link...</div>`;
     chatBody.scrollTop = chatBody.scrollHeight;
 
     setTimeout(() => {
-        if(type === 'audit') {
-            window.location.href = 'https://kohmzelectrical.github.io/kohmz-electrical-services/book-now.html';
-        } else if(type === 'fb') {
-            window.open('https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/', '_blank');
-        } else if(type === 'wa') {
-            window.location.href = 'https://wa.me/639266174131';
-        }
+        if(type === 'audit') window.location.href = 'book-now.html';
+        else if(type === 'fb') window.open('https://kohmzelectrical.github.io/kohmz-electrical-services/book-now.html', '_blank');
+        else if(type === 'wa') window.location.href = 'https://wa.me/639266174131';
     }, 1200);
 }
 
-// Auto-suggest after 6 seconds
+// Initial delayed pop-up
 setTimeout(() => {
-    if(chatWindow.style.display !== 'flex') {
-        toggleBotWindow();
-    }
+    if (chat.style.display !== 'flex') toggleBotWindow();
 }, 6000);
 </script>
 </body>
