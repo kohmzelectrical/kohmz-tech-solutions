@@ -3,32 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Now | KOHMZ Electrical Design and Build</title>
+    <title>Electrical Materials | KOHMZ Electrical</title>
     
     <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-        /* UNIVERSAL BOX SIZING */
+        /* STRICT PROFESSIONAL FONT SCALE SYNC (12px Base) */
+        :root {
+            --neon-gold: #ffb703;
+            --cyber-blue: #00e5ff;
+            --power-glow: rgba(255, 183, 3, 0.4);
+            --circuit-line: rgba(255, 183, 3, 0.05);
+            --bg-dark: #081018;
+        }
+
         * { box-sizing: border-box; }
 
-        /* BASE STYLES & CYBER THEME */
         body { 
             font-size: 12px; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; padding: 0; 
-            background-color: #081018; 
+            background: var(--bg-dark); 
             color: #e0faff; 
-            overflow-x: hidden; 
+            scroll-behavior: smooth; line-height: 1.6; margin: 0; padding: 0; overflow-x: hidden; 
         } 
         
-        /* --- LIVE 3D CAD BACKGROUND EFFECT (IGNORED / UNTOUCHED) --- */
+        /* --- LIVE 3D CAD BACKGROUND EFFECT --- */
         .cad-background {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             perspective: 1000px; z-index: -1; overflow: hidden;
@@ -53,52 +60,55 @@
             background: linear-gradient(to bottom, rgba(8,16,24,1) 0%, transparent 40%, rgba(8,16,24,1) 100%);
             pointer-events: none;
         }
-
-        .moving-ads { background: #ffb703; color: #000; padding: 5px; font-weight: bold; text-transform: uppercase; box-shadow: 0 2px 10px rgba(255,183,3,0.4); }
-        .moving-ads marquee { font-size: 10px; font-family: 'Share Tech Mono', monospace; } 
         
-        /* ==================================================== */
-        /* HEADER & NAVIGATION (KOHMZ STANDARD APPLIED)         */
-        /* ==================================================== */
+        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; position: relative; z-index: 1001;}
+        .moving-ads marquee { font-size: 10px; font-family: 'Share Tech Mono', monospace; text-transform: uppercase;} 
+        
+        /* HIGH-TECH TECH BAR */
+        .tech-bar { background: linear-gradient(90deg, #d49800, #ffb703, #d49800); background-size: 200% auto; color: #0d1b2a; padding: 10px; font-weight: 800; border-bottom: 2px solid #0d1b2a; text-align: center; position: relative; z-index: 1001; animation: gradientShine 3s linear infinite;}
+        @keyframes gradientShine { to { background-position: 200% center; } }
+        .tech-bar-content { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .tech-bar-content span::after { content: '\f111'; font-family: 'Font Awesome 5 Free'; font-weight: 900; color: #0d1b2a; margin-left: 15px; font-size: 7px; opacity: 0.5; }
+        .tech-bar-content span:last-child::after { content: ''; }
+
+        /* --- MODERN RESPONSIVE HEADER --- */
         header { 
-            background: rgba(8, 16, 24, 0.95); padding: 15px 30px; 
+            background: rgba(8, 16, 24, 0.95); color: white; padding: 15px 30px; 
             display: flex; justify-content: space-between; align-items: center; 
-            position: sticky; top: 0; z-index: 1000; 
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
             border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px);
         }
-
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
+        
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none;}
+        .logo img { height: 38px; width: 38px; border-radius: 4px; object-fit: cover; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5);}
         .logo-text { font-size: 22px; margin: 0; font-weight: 900; color: #fff; display: inline-block; font-family: 'Segoe UI', sans-serif;}
         .logo-text span { color: #ffb703; }
 
         .menu-toggle { display: none; font-size: 26px; cursor: pointer; color: #00e5ff; z-index: 1001;}
 
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; }
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; transition: 0.3s ease; }
+        .nav-links li { position: relative; }
         .nav-links li a { 
-            color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; 
-            text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; 
-            font-family: 'Share Tech Mono', monospace; transition: 0.3s;
-            display: flex; align-items: center; gap: 6px;
+            color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; 
+            letter-spacing: 1px; padding: 10px 5px; font-family: 'Share Tech Mono', monospace; transition: 0.3s; display: flex; align-items: center; gap: 6px;
         }
         .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
-
+        
+        /* DROPDOWNS (Desktop) */
         .nav-links li.dropdown { position: relative; }
-
         .dropdown-content { 
-            display: none; position: absolute; background: rgba(8,16,24,0.98); 
-            min-width: 180px; box-shadow: 0px 10px 30px rgba(0,0,0,0.6); z-index: 1001; 
-            top: 100%; left: 0; border-top: 3px solid #00e5ff; 
+            display: none; position: absolute; background: rgba(8,16,24,0.98); min-width: 180px; 
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.6); z-index: 1001; top: 100%; left: 0; border-top: 3px solid #00e5ff; 
         }
         .dropdown:hover .dropdown-content { display: block; }
         .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
+        /* MOBILE OVERLAY (Max-width 992px) */
         @media (max-width: 992px) {
             .menu-toggle { display: block; }
             .nav-links { 
-                display: none; flex-direction: column; position: absolute; top: 100%; left: 0; 
-                width: 100%; background: rgba(8, 16, 24, 0.98); padding: 0; margin: 0;
-                border-bottom: 4px solid #00e5ff; 
+                display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; 
+                background: rgba(8, 16, 24, 0.98); padding: 0; margin: 0; border-bottom: 4px solid #00e5ff; 
             }
             .nav-links.active { display: flex; }
             .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); margin: 0; }
@@ -108,109 +118,80 @@
             .dropdown-content a { padding: 15px 20px 15px 45px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; }
         }
 
-        /* --- HERO SECTION --- */
-        .hero { padding: 80px 20px 40px; text-align: center; position: relative; z-index: 2; }
-        .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 15px rgba(255,183,3,0.4); } 
-        .hero p { font-size: 13px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; color: #a0aec0; } 
-        
-        /* ADDED: TYPEWRITER CURSOR STYLE */
+        /* HERO SECTION */
+        .hero { 
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 100px 20px; text-align: center; color: white; position: relative; z-index: 2;
+        }
+        .hero h1 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; line-height: 1.5; min-height: 70px; text-shadow: 0 0 15px rgba(255,183,3,0.4); } 
         .txt-type > .txt { border-right: 3px solid #ffb703; padding-right: 5px; animation: blink 0.7s infinite; color: #ffffff; text-shadow: 0 0 15px var(--neon-gold); }
         @keyframes blink { from, to { opacity: 1; } 50% { opacity: 0; } }
+        .hero p { font-size: 13px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; color: #a0aec0; } 
 
-        /* URGENCY BOX - CYBER THEME */
-        .urgency-box { 
-            max-width: 800px; margin: 0 auto 40px; background: rgba(219, 68, 55, 0.1); 
-            border: 1px solid rgba(219, 68, 55, 0.4); padding: 25px; border-radius: 8px; 
-            box-shadow: 0 0 20px rgba(219, 68, 55, 0.2); position: relative; z-index: 10; 
-            border-left: 5px solid #db4437; backdrop-filter: blur(5px);
-        }
-        .urgency-box h3 { font-size: 15px; color: #ff4d4d; margin-bottom: 10px; text-transform: uppercase; font-weight: 900; text-align: center; font-family: 'Share Tech Mono', monospace; letter-spacing: 1px; }
-        
-        .urgency-reasons { background: rgba(0,0,0,0.4); padding: 15px 20px; border-radius: 6px; margin-top: 15px; }
-        .urgency-reasons ul { list-style: none; padding: 0; margin: 0; }
-        .urgency-reasons li { font-size: 11px; color: #e0faff; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
-        .urgency-reasons li i { color: #ffb703; font-size: 14px; margin-top: 2px; min-width: 15px; text-align: center; }
-        .urgency-reasons li strong { color: #00e5ff; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
-
-        /* FUTURISTIC FORM STYLING */
-        .main-container { 
-            max-width: 800px; margin: 0 auto 50px; background: rgba(13, 27, 42, 0.7); 
-            padding: 40px; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,229,255,0.1); 
-            border: 1px solid rgba(0, 229, 255, 0.3); border-top: 4px solid #00e5ff; 
-            position: relative; z-index: 2; backdrop-filter: blur(10px);
-        }
-        .section-title { 
-            background: rgba(0,0,0,0.5); padding: 12px 15px; font-size: 13px; font-weight: 900; 
-            color: #00e5ff; text-transform: uppercase; margin: 30px 0 20px 0; 
-            border-left: 4px solid #ffb703; letter-spacing: 1px; font-family: 'Share Tech Mono', monospace; 
-        }
-
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
-        .field-group { display: flex; flex-direction: column; margin-bottom: 15px; text-align: left; width: 100%; }
-        label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #a0aec0; margin-bottom: 8px; letter-spacing: 1px; }
-        
-        /* Cyber Inputs */
-        input[type="text"], input[type="email"], input[type="tel"], select, textarea { 
-            width: 100%; padding: 12px; border: 1px solid rgba(0,229,255,0.2); border-radius: 4px; 
-            font-size: 13px; font-family: inherit; background: rgba(0,0,0,0.6); color: #00e5ff; transition: 0.3s; 
-        }
-        input::placeholder, textarea::placeholder { color: rgba(0,229,255,0.3); }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #00e5ff; box-shadow: 0 0 10px rgba(0, 229, 255, 0.4); background: rgba(0,0,0,0.8); }
-        
-        .option-container { display: flex; flex-direction: column; gap: 10px; padding: 5px 0; }
-        .radio-item { display: flex; align-items: center; gap: 10px; font-size: 12px; cursor: pointer; color: #e0faff; }
-        
-        .file-upload { border: 2px dashed rgba(0,229,255,0.4); padding: 20px; text-align: center; border-radius: 6px; background: rgba(0,0,0,0.3); transition: 0.3s; width: 100%; }
-        .file-upload:hover { border-color: #ffb703; background: rgba(255,183,3,0.05); }
-
-        .submit-btn { 
-            width: 100%; background: transparent; color: #00e5ff; border: 2px solid #00e5ff; 
-            padding: 18px; border-radius: 4px; font-size: 15px; font-weight: 900; text-transform: uppercase; 
-            cursor: pointer; transition: 0.3s; margin-top: 40px; font-family: 'Share Tech Mono', monospace; letter-spacing: 2px;
-        }
-        .submit-btn:hover { background: #00e5ff; color: #000; transform: translateY(-3px); box-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
-
-        /* MOBILE FORM OVERLAP FIX */
-        @media (max-width: 768px) {
-            .form-grid { grid-template-columns: 1fr; gap: 15px; }
-            .main-container { padding: 25px 20px; margin: 0 15px 50px; }
-            .urgency-box { margin: 0 15px 30px; }
-            .option-container.horizontal-options { flex-direction: column; gap: 10px; }
-        }
-
-        /* FLOATING ACTION BUTTONS */
-        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
-        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.8); transition: 0.3s; border: 1px solid rgba(255,255,255,0.2); }
-        .float-btn:hover { transform: scale(1.15) rotate(5deg); box-shadow: 0 0 15px #00e5ff; border-color: #00e5ff; }
-        .fb-messenger { background: #0084ff; } 
-        .viber { background: #7360f2; } 
-        .whatsapp { background: #25d366; } 
+        /* FLOATING ACTION */
+        .floating-container { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
+        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: 0.3s; border: 1px solid rgba(255,255,255,0.2);}
+        .float-btn:hover { transform: scale(1.15) rotate(5deg); border-color:#00e5ff; box-shadow: 0 0 15px #00e5ff;}
+        .fb-messenger { background: #0084ff; }
+        .viber { background: #7360f2; }
+        .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
-        @media (max-width: 480px) {
-            .floating-container { transform: scale(0.85); transform-origin: bottom right; right: 15px; bottom: 15px; }
+        /* SHOP GRID STYLING - CYBER THEME */
+        .content-section { padding: 80px 10%; text-align: center; position: relative; z-index: 2;}
+        .content-section h2 { font-size: 20px; color: #00e5ff; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; position: relative; display: inline-block; text-shadow: 0 0 10px rgba(0,229,255,0.4);}
+        .content-section h2::after { content: ''; width: 60px; height: 4px; background: #ffb703; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 10px #ffb703;}
+        
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; justify-content: center; }
+        .card { 
+            background: rgba(30, 41, 59, 0.4); padding: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); 
+            border-radius: 12px; border-top: 4px solid #00e5ff; text-align: left; transition: 0.4s; 
+            display: flex; flex-direction: column; backdrop-filter: blur(10px); border-right: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05);
         }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,229,255,0.2); border-top-color: #ffb703; }
+        
+        .product-image-wrap { 
+            width: 100%; height: 200px; background: rgba(0,0,0,0.6); border-radius: 8px; 
+            margin-bottom: 20px; overflow: hidden; display: flex; align-items: center; 
+            justify-content: center; border: 1px solid rgba(0,229,255,0.2); padding: 10px;
+        }
+        .product-image-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));}
 
-        /* --- ROBOT ASSISTANT STYLES (UNTOUCHED) --- */
+        .card h3 { font-size: 14px; margin-bottom: 12px; color: #ffb703; font-weight: 900; min-height: 40px; text-transform: uppercase; } 
+        .card p { font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 15px; flex-grow: 1; } 
+        
+        .pro-note { font-size: 11px; background: rgba(0,229,255,0.1); color: #00e5ff; padding: 10px 15px; border-radius: 6px; font-weight: 800; margin-bottom: 20px; display: block; border-left: 4px solid #00e5ff; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .btn-lazada { 
+            display: block; width: 100%; text-align: center; padding: 14px 0; font-size: 12px; border-radius: 4px; 
+            text-decoration: none; font-weight: 900; background: transparent; color: #ffb703; transition: 0.3s; letter-spacing: 1px; border: 2px solid #ffb703; font-family: 'Share Tech Mono', monospace;
+        }
+        .btn-lazada:hover { background: #ffb703; color: #000; transform: translateY(-3px); box-shadow: 0 0 20px rgba(255, 183, 3, 0.4); }
+
+        /* --- BOT STYLES --- */
         .kohmz-bot-wrapper { position: fixed; bottom: 120px; right: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-end; touch-action: none; user-select: none; }
         .bot-value-tag { background: #00e5ff; color: #000; padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); cursor: grab; text-transform: uppercase; white-space: nowrap; }
-        .kohmz-chat-window { display: none; width: 280px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
+        .kohmz-chat-window { display: none; width: 300px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
         .kohmz-chat-header { background: #000; color: #00e5ff; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
         .kohmz-chat-body { padding: 15px; max-height: 220px; overflow-y: auto; }
-        .chat-bubble { background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; font-size: 12px; line-height: 1.5; }
+        .chat-bubble { background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; margin-bottom: 10px; border-left: 2px solid #00e5ff; font-size: 12px; line-height: 1.5; transition: opacity 0.4s ease-in-out;}
+        .kohmz-chat-options { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+        .chat-btn { background: transparent; color: #fff; border: 1px solid #00e5ff; padding: 12px; font-family: 'Share Tech Mono', monospace; font-size: 10px; cursor: pointer; text-align: left; text-transform: uppercase; transition: 0.3s; }
+        .chat-btn:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 10px #00e5ff; }
         .kohmz-bot-toggle { width: 85px; height: 85px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; }
         .bot-badge { position: absolute; top: 12px; right: 12px; background: #ff3b3b; color: #fff; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px #ff3b3b; z-index: 10; }
 
-        @media (max-width: 480px) {
-            .kohmz-bot-wrapper { bottom: 90px; right: 15px; }
+        @media (max-width: 768px) {
+            .floating-container { flex-direction: row !important; justify-content: center !important; bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; width: max-content !important; background: rgba(0, 0, 0, 0.8); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(0, 229, 255, 0.3); backdrop-filter: blur(10px); }
+            .float-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; margin: 0 5px !important; }
+            .kohmz-bot-wrapper { bottom: 85px !important; right: 15px !important; }
         }
 
-        /* FOOTER STYLING */
-        footer { background: #050a0f; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; border-top: 1px solid rgba(0,229,255,0.2); position: relative; z-index: 2; }
-        .footer-content { font-size: 10px; line-height: 1.8; color: #94a3b8; }
-        .footer-content p strong { font-size: 12px; color: #ffb703; }
-        .footer-content a { color: #00e5ff; text-decoration: none; transition: 0.3s; }
-        .footer-content a:hover { color: #fff; text-shadow: 0 0 8px #00e5ff; }
+        /* --- EXACT HOME PAGE FOOTER --- */
+        footer { background: #000; color: white; text-align: center; padding: 60px 20px 40px; border-top: 2px solid var(--neon-gold); position: relative; z-index: 2; margin-top: 40px;}
+        footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; }
+        footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
+        .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
     </style>
 </head>
 <body>
@@ -220,22 +201,40 @@
         <div class="cad-overlay"></div>
     </div>
 
+    <div class="floating-container">
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
+    </div>
+
     <div class="moving-ads">
-        <marquee behavior="scroll" direction="left">⚡ [SECURE DATALINK] Book Your Schedule Today | Professional Electrical & Solar Consultations | 24/7 Service Availability ⚡</marquee>
+        <marquee behavior="scroll" direction="left">
+            ⚡ KOHMZ AFFILIATE SHOP: Technical-Grade Meter Bases | NEMA 3R Enclosures | Industrial Panel Boards | Certified Fittings ⚡
+        </marquee>
+    </div>
+
+    <div class="tech-bar">
+        <div class="tech-bar-content">
+            <span>⚡ PEC-COMPLIANT HARDWARE</span>
+            <span>⚡ INDUSTRIAL METER BASES</span>
+            <span>⚡ SECURE NEMA ENCLOSURES ⚡</span>
+        </div>
     </div>
 
     <header>
-        <a href="index.html" class="logo" aria-label="KOHMZ Electrical Services Homepage">
+        <a href="index.html" class="logo" aria-label="KOHMZ Homepage">
             <img src="logo.jpg" alt="KOHMZ Logo">
             <span class="logo-text">KOHMZ <span>Electrical</span></span>
         </a>
-        <button class="menu-toggle" id="mobile-menu" aria-label="Open Mobile Menu" aria-expanded="false">
+        
+        <div class="menu-toggle" id="mobile-menu">
             <i class="fas fa-bars"></i>
-        </button>
-        <nav aria-label="Main Navigation">
+        </div>
+
+        <nav>
             <ul class="nav-links" id="nav-list">
                 <li><a href="index.html">Overview</a></li>
-                
                 <li class="dropdown">
                     <a href="#" class="dropbtn">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
@@ -244,18 +243,16 @@
                         <a href="pro-tips.html">Pro Tips</a>
                     </div>
                 </li>
-                
-                <li><a href="book-now.html" style="color: #ffb703; text-shadow: 0 0 8px #ffb703;">Book Now</a></li>
-                
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request Quote</a></li>
+                <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Affiliate Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="dropbtn" style="color: #ffb703; text-shadow: 0 0 8px #ffb703;">Technical Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
-                        <a href="electrical-materials.html">Materials</a>
+                        <a href="electrical-materials.html" style="color: #00e5ff !important;">Materials</a>
                     </div>
                 </li>
-                
                 <li><a href="about-us.html">About Us</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
                 <li><a href="faq.html">FAQ</a></li>
@@ -263,121 +260,74 @@
         </nav>
     </header>
 
-    <main id="main-content">
+    <main>
         <section class="hero" data-aos="zoom-in">
-            <h2>
-                <span id="main-typewriter-text"></span><span class="cursor" style="color: #00e5ff; animation: blink 1s step-end infinite;">_</span><br>
-                <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["SECURE YOUR SLOT", "TECHNICAL AUDIT", "EXPERT DEPLOYMENT"]'></span>
-            </h2>
-            <p>Secure your slot for certified electrical inspections and technical consultations. System ready to receive parameters.</p>
-        </section>
-
-        <section class="urgency-box" data-aos="fade-up">
-            <h3>⚠️ Act Now! Do Not Compromise Your Safety</h3>
-            <p style="font-size: 12px; color: #ffb703; text-align: center; margin-bottom: 10px;">Electrical faults are the #1 cause of structural fires. Do not wait for sparks or burning odors before consulting an expert.</p>
-            
-            <div class="urgency-reasons">
-                <ul>
-                    <li><i class="fas fa-fire-alt"></i> <div><strong>1. Fire Hazards</strong><br>Overloaded circuits and degraded wiring can overheat rapidly, putting your property at risk.</div></li>
-                    <li><i class="fas fa-bolt"></i> <div><strong>2. Appliance Damage</strong><br>Unstable voltage and power surges can permanently fry expensive appliances.</div></li>
-                    <li><i class="fas fa-file-invoice-dollar"></i> <div><strong>3. Power Leakage</strong><br>Faulty wiring and grounded lines mean you are paying for electricity you are not even using.</div></li>
-                    <li><i class="fas fa-skull-crossbones"></i> <div><strong>4. Fatal Shock Risks</strong><br>Exposed wires or improperly grounded systems pose a direct electrocution hazard.</div></li>
-                </ul>
+            <div class="hero-inner">
+                <h1 id="hero-heading">
+                    <span id="main-typewriter-text"></span><span class="cursor" style="color: #00e5ff; animation: blink 1s step-end infinite;">_</span><br>
+                    <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["PEC COMPLIANT", "HEAVY DUTY HARDWARE", "CERTIFIED SAFE"]'></span>
+                </h1>
+                <p>Contractor-vetted hardware built for safety and durability. We only recommend materials that meet the rigorous standards of the Philippine Electrical Code (PEC).</p>
             </div>
         </section>
 
-        <div class="main-container" data-aos="fade-up" data-aos-delay="200">
-            <form action="https://formspree.io/f/xjgpypdl" method="POST" enctype="multipart/form-data">
+        <section class="content-section">
+            <h2 data-aos="fade-down">Standard Quality Technical Materials</h2>
+            <div class="shop-grid">
                 
-                <input type="hidden" name="_next" value="thank-you.html">
-                
-                <div class="section-title">SECTION 1: Contact Information</div>
-                <div class="form-grid">
-                    <div class="field-group">
-                        <label>Full Name *</label>
-                        <input type="text" name="Full Name" placeholder="Juan Dela Cruz" required>
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="product-image-wrap">
+                        <img src="Square Type Electric Meter Base (5-Jaws).jpg" alt="Square Meter Base">
                     </div>
-                    <div class="field-group">
-                        <label>Email Address *</label>
-                        <input type="email" name="_replyto" placeholder="juan@example.com" required>
-                    </div>
-                    <div class="field-group">
-                        <label>Phone Number *</label>
-                        <input type="tel" name="Phone Number" placeholder="09XX XXX XXXX" required>
-                    </div>
-                    <div class="field-group">
-                        <label>Project Address *</label>
-                        <input type="text" name="Project Address" placeholder="Street, City, Postal Code" required>
-                    </div>
+                    <h3>Square Type Electric Meter Base (5-Jaws)</h3>
+                    <p>Heavy-duty Class 125 meter base. Sizes: 1-1/4", 1-1/2", 2". High-conductivity copper terminals.</p>
+                    <span class="pro-note"><i class="fas fa-bolt"></i> TECH TIP: Essential for standard Meralco or regional utility service entrances.</span>
+                    <a href="https://c.lazada.com.ph/t/c.dgC79X" target="_blank" class="btn-lazada">SHOP ON LAZADA</a>
                 </div>
 
-                <div class="section-title">SECTION 2: Project Details</div>
-                
-                <div class="field-group">
-                    <label>Location Type</label>
-                    <div class="option-container">
-                        <label class="radio-item"><input type="radio" name="Location Type" value="Residential"> Residential</label>
-                        <label class="radio-item"><input type="radio" name="Location Type" value="Commercial"> Commercial</label>
-                        <label class="radio-item"><input type="radio" name="Location Type" value="Industrial"> Industrial</label>
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="product-image-wrap">
+                        <img src="NEMA 3R Schneider Enclosure (125A-250A).jpg" alt="Schneider Enclosure">
                     </div>
+                    <h3>NEMA 3R Schneider Enclosure (125A-250A)</h3>
+                    <p>Weatherproof technical enclosure designed for industrial-grade protection of main breakers.</p>
+                    <span class="pro-note"><i class="fas fa-shield-alt"></i> TECH TIP: Best for outdoor mounting to prevent water ingress and rust.</span>
+                    <a href="https://c.lazada.com.ph/t/c.dgC7kK" target="_blank" class="btn-lazada">SHOP ON LAZADA</a>
                 </div>
 
-                <div class="field-group">
-                    <label>Primary Scope of Work</label>
-                    <div class="option-container">
-                        <label class="radio-item"><input type="checkbox" name="Scope[]" value="New Construction"> New Construction</label>
-                        <label class="radio-item"><input type="checkbox" name="Scope[]" value="Rewiring"> Full/Partial Rewiring</label>
-                        <label class="radio-item"><input type="checkbox" name="Scope[]" value="Service Upgrade"> Panel/Service Upgrade</label>
-                        <label class="radio-item"><input type="checkbox" name="Scope[]" value="Troubleshooting"> Troubleshooting / Repair</label>
-                        <label class="radio-item"><input type="checkbox" name="Scope[]" value="Solar"> Solar Installation</label>
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="product-image-wrap">
+                        <img src="Technical Watertight Conduit Hub.jpg" alt="Watertight Hub">
                     </div>
+                    <h3>Technical Watertight Conduit Hub</h3>
+                    <p>Sizes: 3/4" to 3". Precision-sealed technical fittings for moisture-free cabinet entry.</p>
+                    <span class="pro-note"><i class="fas fa-water"></i> TECH TIP: Mandatory to maintain the NEMA 3R rating of your panels.</span>
+                    <a href="https://c.lazada.com.ph/t/c.dgC7Lx" target="_blank" class="btn-lazada">SHOP ON LAZADA</a>
                 </div>
 
-                <div class="field-group">
-                    <label>Detailed Requirements</label>
-                    <textarea name="Description" rows="4" placeholder="Describe your project or the electrical issue..." required></textarea>
-                </div>
-
-                <div class="field-group">
-                    <label>Estimated Timeline</label>
-                    <select name="Timeline">
-                        <option value="Urgent">Immediately (Urgent)</option>
-                        <option value="1-4 Weeks">Within 1-4 Weeks</option>
-                        <option value="Planning">Planning Stage</option>
-                    </select>
-                </div>
-
-                <div class="section-title">SECTION 3: Site Assessment & Photos</div>
-                
-                <div class="field-group">
-                    <label>Urgency Level (1 = Routine, 5 = Safety Risk)</label>
-                    <div class="option-container horizontal-options">
-                        <label class="radio-item"><input type="radio" name="Urgency" value="1"> 1 (Routine)</label>
-                        <label class="radio-item"><input type="radio" name="Urgency" value="3"> 3 (Moderate)</label>
-                        <label class="radio-item"><input type="radio" name="Urgency" value="5"> 5 (High Risk)</label>
+                <div class="card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="product-image-wrap">
+                        <img src="Galvanized Metal Fitting Nipples.jpg" alt="Galvanized Fittings">
                     </div>
+                    <h3>Galvanized Metal Fitting Nipples</h3>
+                    <p>Sizes: 3/4" to 2". High-strength galvanized steel for secure conduit-to-box connections.</p>
+                    <span class="pro-note"><i class="fas fa-link"></i> TECH TIP: Anti-corrosion coating ensures long-term safety and grounding.</span>
+                    <a href="https://c.lazada.com.ph/t/c.dgCiGu" target="_blank" class="btn-lazada">SHOP ON LAZADA</a>
                 </div>
 
-                <div class="field-group">
-                    <label>Upload Site Photos (Max 10MB)</label>
-                    <div class="file-upload">
-                        <i class="fas fa-cloud-upload-alt" style="font-size: 24px; color: #00e5ff; margin-bottom: 10px;"></i><br>
-                        <input type="file" name="upload" accept="image/*" style="background:transparent; border:none; padding:0; color:#fff; width: 100%;">
-                        <p style="font-size: 10px; margin-top: 10px; color: #a0aec0;">Attach photos of existing panels or area of concern.</p>
+                <div class="card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="product-image-wrap">
+                        <img src="PREMIUM Koten Bolt-On Panel Board.jpg" alt="Koten Panel Board">
                     </div>
+                    <h3>PREMIUM Koten Bolt-On Panel Board</h3>
+                    <p>Capacity: 4 to 20 holes. Industrial-grade distribution board for stable circuit management.</p>
+                    <span class="pro-note"><i class="fas fa-server"></i> TECH TIP: Bolt-on breakers provide a more vibration-proof and stable connection.</span>
+                    <a href="https://c.lazada.com.ph/t/c.dgC85M" target="_blank" class="btn-lazada">SHOP ON LAZADA</a>
                 </div>
 
-                <button type="submit" class="submit-btn">[ TRANSMIT DATA TO KOHMZ ]</button>
-            </form>
-        </div>
+            </div>
+        </section>
     </main>
-
-    <div class="floating-container">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
-    </div>
 
     <div class="kohmz-bot-wrapper" id="draggableBot">
         <div class="bot-value-tag" id="dragHint">⚡ KOHMZ Expert AI</div>
@@ -386,29 +336,41 @@
                 <span>UNIT-01: SYSTEM ACTIVE</span>
                 <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
             </div>
-            <div class="kohmz-chat-body">
-                <div class="chat-bubble">Thank you for choosing KOHMZ Electrical Design and Build. Please fill out the form, and our engineering team will evaluate your request shortly.</div>
+            <div class="kohmz-chat-body" id="chatBody">
+                <div class="chat-bubble" id="botDynamicMessage">Kumusta! Ensure 100% safety with our PEC-compliant electrical materials. Equip your project with the best!</div>
+            </div>
+            <div class="kohmz-chat-options">
+                <button class="chat-btn" onclick="botAction('fb')" style="border-color:#ffd700; color:#ffd700;">
+                    <i class="fab fa-facebook-messenger"></i> > [ASK_A_SPECIALIST]
+                </button>
+                <button class="chat-btn" onclick="botAction('wa')">
+                    <i class="fab fa-whatsapp"></i> > [DIRECT_WHATSAPP]
+                </button>
             </div>
         </div>
+
         <div class="kohmz-bot-toggle" id="botToggle">
             <lottie-player src="Live chatbot.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
-            <div class="bot-badge">!</div>
+            <div class="bot-badge" id="botBadge">!</div>
         </div>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
-            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
-            <hr style="margin:15px auto; border:0; border-top:1px solid rgba(255,255,255,0.1); max-width: 800px;">
-            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
-            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+    <footer aria-label="Site Footer">
+        <div class="logo" style="justify-content: center; margin-bottom: 20px;">
+            <img src="logo.jpg" alt="KOHMZ Electrical Services logo" width="35" height="35" loading="lazy" style="border: 1px solid #00e5ff; border-radius: 4px;">
+            <span class="logo-text" style="font-size: 22px; font-weight: 900; color: #fff; font-family: 'Segoe UI', sans-serif;">KOHMZ <span style="color: #ffb703;">Electrical</span></span>
         </div>
+        <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 12px; line-height: 1.6;">Your trusted partner in structural power integrity. We specialize in bringing world-class electrical engineering standards to every Philippine home and business facility.</p>
+        <p>&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
+        <nav class="footer-links" aria-label="Footer Navigation">
+            <p style="margin-bottom: 5px; color: #ffb703; font-weight: 800; font-size: 12px;">Technical Governance | Asset Protection | PEC-Compliant Architecture</p>
+            <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
+            <a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
+            <a href="about-us.html">About Us</a>
+        </nav>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
     <script>
         // INIT ANIMATIONS
         document.addEventListener('DOMContentLoaded', () => {
@@ -418,14 +380,14 @@
         });
 
         // MOBILE MENU LOGIC
-        const mobileMenu = document.getElementById('mobile-menu');
+        const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         const dropdowns = document.querySelectorAll('.dropdown');
 
-        if (mobileMenu && navList) {
-            mobileMenu.addEventListener('click', () => {
+        if (menuToggle && navList) {
+            menuToggle.addEventListener('click', () => {
                 navList.classList.toggle('active');
-                const icon = mobileMenu.querySelector('i');
+                const icon = menuToggle.querySelector('i');
                 icon.classList.toggle('fa-bars');
                 icon.classList.toggle('fa-times');
             });
@@ -445,12 +407,14 @@
                     dropdown.classList.toggle('active');
                 }
             };
-            dropbtn.addEventListener('click', handleDropdownToggle);
-            dropbtn.addEventListener('touchstart', handleDropdownToggle, {passive: true});
+            if(dropbtn) {
+                dropbtn.addEventListener('click', handleDropdownToggle);
+                dropbtn.addEventListener('touchstart', handleDropdownToggle, {passive: true});
+            }
         });
 
-        // ADDED: TYPEWRITER LOGIC
-        const mainTypeText = "PROJECT INQUIRY & BOOKING ";
+        // TYPEWRITER LOGIC
+        const mainTypeText = "TECHNICAL SHOP: ";
         let mainTypeIndex = 0;
         const mainTypeElement = document.getElementById("main-typewriter-text");
         function startTyping() {
@@ -501,26 +465,36 @@
             if (wordsData) new TypeWriter(txtElement, JSON.parse(wordsData), wait);
         }
 
-        // UNTOUCHED: EXACT ROBOT ASSISTANT LOGIC FROM USER
+        // ========================================= //
+        // CHATBOT DRAG & DROP LOGIC                 //
+        // ========================================= //
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         const chat = document.getElementById('chatWindow');
         const hint = document.getElementById('dragHint');
-        let isDragging = false, startX, startY, xOffset = 0, yOffset = 0, dragStartTime;
+
+        let isDragging = false;
+        let startX, startY, xOffset = 0, yOffset = 0;
+        let dragStartTime; 
 
         function toggleBotWindow() {
             if (chat.style.display === 'flex') {
-                chat.style.display = 'none'; hint.innerHTML = "⚡ KOHMZ Expert AI";
+                chat.style.display = 'none';
+                hint.innerHTML = "⚡ KOHMZ Expert AI";
             } else {
-                chat.style.display = 'flex'; hint.innerHTML = "🖐️ Drag to Move";
+                chat.style.display = 'flex';
+                document.getElementById('botBadge').style.display = 'none';
+                hint.innerHTML = "🖐️ Drag to Move";
             }
         }
 
         const dragStart = (e) => {
-            isDragging = true; dragStartTime = Date.now();
+            isDragging = true;
+            dragStartTime = Date.now();
             const clientX = (e.type === "touchstart") ? e.touches[0].clientX : e.clientX;
             const clientY = (e.type === "touchstart") ? e.touches[0].clientY : e.clientY;
-            startX = clientX - xOffset; startY = clientY - yOffset;
+            startX = clientX - xOffset;
+            startY = clientY - yOffset;
         };
 
         const dragMove = (e) => {
@@ -528,13 +502,21 @@
             if (e.cancelable) e.preventDefault();
             const clientX = (e.type === "touchmove") ? e.touches[0].clientX : e.clientX;
             const clientY = (e.type === "touchmove") ? e.touches[0].clientY : e.clientY;
-            xOffset = clientX - startX; yOffset = clientY - startY;
+            
+            xOffset = clientX - startX;
+            yOffset = clientY - startY;
+
             wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
         };
 
-        const dragEnd = () => {
+        const dragEnd = (e) => {
+            if (!isDragging) return;
+            const dragDuration = Date.now() - dragStartTime;
             isDragging = false;
-            if (Date.now() - dragStartTime < 200) toggleBotWindow();
+            
+            if (dragDuration < 200) {
+                toggleBotWindow();
+            }
         };
 
         toggle.addEventListener('mousedown', dragStart);
@@ -544,8 +526,36 @@
         window.addEventListener('mouseup', dragEnd);
         window.addEventListener('touchend', dragEnd);
 
-        // Auto-show robot chat
-        setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 3000);
+        function botAction(type) {
+            if(type === 'fb') window.open('https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/', '_blank');
+            else if(type === 'wa') window.location.href = 'https://wa.me/639266174131';
+        }
+
+        // ========================================= //
+        // CHATBOT CONVINCING SALES SCRIPT (LOOPING) //
+        // ========================================= //
+        const botMessages = [
+            "Kumusta! Ensure 100% safety with our PEC-compliant electrical materials. Equip your project with the best!",
+            "Substandard materials cause fires. Protect your property with our recommended heavy-duty panels and enclosures.",
+            "Stock up on contractor-vetted hardware. Click 'SHOP ON LAZADA' to secure authentic materials directly from suppliers.",
+            "Thank you for choosing KOHMZ! Need a custom bill of materials? Click the chat buttons below to consult our engineers."
+        ];
+        
+        let msgIndex = 0;
+        const msgElement = document.getElementById('botDynamicMessage');
+
+        setInterval(() => {
+            msgIndex = (msgIndex + 1) % botMessages.length;
+            msgElement.style.opacity = 0;
+            
+            setTimeout(() => {
+                msgElement.innerHTML = botMessages[msgIndex];
+                msgElement.style.opacity = 1;
+            }, 400); // Wait for fade out to change text, then fade in
+        }, 7000); // Changes message every 7 seconds
+
+        // Auto open after 4 seconds
+        setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 4000);
     </script>
 </body>
 </html>
