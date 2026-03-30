@@ -3,47 +3,1365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Providing the best electrical services for your needs.">
-    <link rel="stylesheet" href="styles.css">
-    <title>Kohmz Electrical Services</title>
+    
+    <meta name="google-site-verification" content="x_KzHj0x9Ygn2C3ffPnJ8aQTC4EE3n4AhWGtoNODr_k" />
+    
+    <title>KOHMZ Electrical Design and Build | Technical Governance & Power Architecture</title>
+    <meta name="description" content="Leading specialist electrical contractor in the Philippines. PEC-compliant Technical Governance for residential and commercial power systems, solar solutions, and emergency electrical services.">
+    <meta name="keywords" content="electrical contractor Philippines, PEC compliant, technical governance, power architecture, residential electrical, commercial electrical, solar solutions">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="KOHMZ Electrical Design and Build | Technical Governance & Power Architecture">
+    <meta property="og:description" content="Expert electrical services delivering PEC-compliant power systems for residential and commercial properties.">
+    <meta property="og:type" content="business.business">
+    <meta property="og:url" content="https://kohmzelectrical.com">
+    <meta property="og:image" content="logo.jpg">
+    <meta property="og:image:alt" content="KOHMZ Electrical Design and Build Logo">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="KOHMZ Electrical Design and Build">
+    <meta name="twitter:description" content="Technical Governance & Power Architecture for Residential and Commercial">
+    <meta name="twitter:image" content="logo.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" as="image" href="logo.jpg" fetchpriority="high">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://unpkg.com/aos@2.3.1/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- Fallback for critical CSS -->
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    </noscript>
+
+    <style>
+        /* --- FUTURISTIC EXTREME SYSTEM --- */
+        :root {
+            --neon-gold: #ffb703;
+            --cyber-blue: #00e5ff;
+            --power-glow: rgba(255, 183, 3, 0.4);
+            --circuit-line: rgba(255, 183, 3, 0.05);
+            --bg-dark: #010409;
+            --panel-bg: rgba(13, 27, 42, 0.85);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-size: 16px; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: var(--bg-dark); 
+            color: #f8fafc; 
+            scroll-behavior: smooth; 
+            line-height: 1.6; 
+            margin: 0; 
+            padding: 0; 
+            overflow-x: hidden; 
+        }
+
+        /* ANIMATED HUD GRID BACKGROUND */
+        body::before {
+            content: ""; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background-image: 
+                radial-gradient(var(--circuit-line) 1px, transparent 0),
+                linear-gradient(90deg, var(--circuit-line) 1px, transparent 1px),
+                linear-gradient(var(--circuit-line) 1px, transparent 1px);
+            background-size: 30px 30px, 100px 100px, 100px 100px;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* RESPECT USER'S MOTION PREFERENCES */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* ENERGY BOLT ANIMATION - ENHANCED */
+        .energy-line {
+            position: fixed; 
+            top: 0; 
+            width: 2px; 
+            height: 200px;
+            background: linear-gradient(to bottom, transparent, var(--cyber-blue), var(--neon-gold), transparent);
+            opacity: 0.4; 
+            z-index: -1; 
+            animation: flowBolt 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px var(--cyber-blue));
+        }
+
+        @keyframes flowBolt {
+            0% { transform: translateY(-200px); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(110vh); opacity: 0; }
+        }
+
+        /* HIGH-TECH TECH BAR */
+        .tech-bar { 
+            background: linear-gradient(90deg, #d49800, #ffb703, #d49800);
+            background-size: 200% auto;
+            color: #0d1b2a; 
+            padding: 10px; 
+            font-weight: 800; 
+            border-bottom: 2px solid #0d1b2a; 
+            text-align: center; 
+            box-shadow: 0 0 20px var(--power-glow);
+            position: relative;
+            z-index: 1001;
+            animation: gradientShine 3s linear infinite;
+        }
+
+        @keyframes gradientShine {
+            to { background-position: 200% center; }
+        }
+
+        .tech-bar-content { 
+            font-size: 10px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+            flex-wrap: wrap; 
+        }
+
+        .tech-bar-content span::after { 
+            content: '\f111'; 
+            font-family: 'Font Awesome 5 Free'; 
+            font-weight: 900; 
+            color: #0d1b2a; 
+            margin-left: 15px; 
+            font-size: 7px; 
+            opacity: 0.5; 
+        }
+
+        .tech-bar-content span:last-child::after { content: ''; }
+
+        /* HEADER & NAVIGATION (GLASS UI) */
+        header { 
+            background: var(--panel-bg); 
+            backdrop-filter: blur(15px);
+            color: white; 
+            padding: 15px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            border-bottom: 1px solid var(--power-glow);
+            transition: all 0.3s ease;
+        }
+
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+
+        .logo img { 
+            height: 35px; 
+            width: 35px; 
+            border-radius: 4px; 
+            object-fit: cover; 
+            filter: drop-shadow(0 0 5px var(--neon-gold));
+            loading: lazy;
+        }
+
+        .logo h1 { 
+            font-size: 20px; 
+            margin: 0; 
+            letter-spacing: -1px; 
+            font-weight: 900; 
+        }
+
+        .logo span { 
+            color: #ffb703; 
+            text-shadow: 0 0 10px var(--neon-gold); 
+        }
+        
+        .menu-toggle { 
+            display: none; 
+            font-size: 24px; 
+            cursor: pointer; 
+            color: #ffb703;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+
+        .menu-toggle:focus {
+            outline: 2px solid var(--neon-gold);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        .nav-links { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            display: flex; 
+            align-items: center; 
+            transition: 0.3s; 
+        }
+
+        .nav-links li { 
+            margin-left: 18px; 
+            position: relative; 
+        }
+
+        .nav-links li a { 
+            color: white; 
+            text-decoration: none; 
+            font-size: 11px; 
+            transition: 0.3s; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            display: inline-block;
+            padding: 8px 4px;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a:focus { 
+            color: #ffb703; 
+            text-shadow: 0 0 10px rgba(255,183,3,0.8);
+        }
+
+        .nav-links li a:focus {
+            outline: 2px solid var(--neon-gold);
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+        
+        /* DROPDOWNS */
+        .dropdown-content { 
+            display: none; 
+            position: absolute; 
+            background-color: #ffffff; 
+            min-width: 180px; 
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.5); 
+            z-index: 1001; 
+            border-radius: 4px; 
+            overflow: hidden; 
+            top: 100%; 
+            left: 0; 
+            border-top: 3px solid #ffb703; 
+        }
+
+        .dropdown-content a { 
+            color: #0d1b2a !important; 
+            padding: 12px 16px; 
+            text-decoration: none; 
+            display: block; 
+            font-size: 11px !important; 
+            border-bottom: 1px solid #f1f5f9; 
+            font-weight: 600; 
+            transition: 0.2s; 
+        }
+
+        .dropdown-content a:hover,
+        .dropdown-content a:focus { 
+            background-color: #f8fafc; 
+            color: #ffb703 !important; 
+            padding-left: 20px;
+        }
+
+        .dropdown-content a:focus {
+            outline: 2px solid #ffb703;
+        }
+
+        .dropdown:hover .dropdown-content { 
+            display: block; 
+            animation: fadeInUp 0.3s ease; 
+        }
+
+        /* KEYBOARD ACCESSIBLE DROPDOWNS */
+        .dropdown > a:focus + .dropdown-content,
+        .dropdown-content:hover {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 992px) {
+            .menu-toggle { display: block; }
+            .nav-links {
+                display: none; 
+                flex-direction: column; 
+                position: absolute; 
+                top: 100%; 
+                left: 0; 
+                width: 100%; 
+                background: #0d1b2a; 
+                padding: 20px 0; 
+                border-bottom: 4px solid #ffb703;
+            }
+            .nav-links.active { display: flex; }
+            .nav-links li { 
+                margin: 15px 0; 
+                text-align: center; 
+                width: 100%; 
+                margin-left: 0; 
+            }
+            .dropdown-content { 
+                position: static; 
+                box-shadow: none; 
+                background: #1a2e44; 
+                display: none; 
+                width: 100%; 
+            }
+            .dropdown.active .dropdown-content { display: block; }
+        }
+
+        /* HERO SECTION */
+        .hero { 
+            background: linear-gradient(rgba(13, 27, 42, 0.6), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; 
+            padding: 120px 10%; 
+            text-align: center; 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            position: relative;
+            min-height: 500px;
+        }
+
+        .hero-inner { 
+            max-width: 850px; 
+            position: relative; 
+            z-index: 2; 
+        }
+
+        .hero h2 { 
+            font-size: 28px; 
+            color: #ffb703; 
+            margin-bottom: 20px; 
+            text-transform: uppercase; 
+            font-weight: 900; 
+            letter-spacing: 2px; 
+            line-height: 1.5; 
+            min-height: 70px; 
+            text-shadow: 0 0 15px rgba(255, 183, 3, 0.3); 
+        }
+
+        .txt-type > .txt { 
+            border-right: 3px solid #ffb703; 
+            padding-right: 5px; 
+            animation: blink 0.7s infinite; 
+            color: #ffffff; 
+            text-shadow: 0 0 15px var(--neon-gold); 
+        }
+
+        @keyframes blink {
+            50% { border-right-color: transparent; }
+        }
+        
+        .hero p { 
+            font-size: 16px; 
+            margin: 0 auto 30px; 
+            line-height: 1.8; 
+            font-weight: 400; 
+            opacity: 0.95; 
+            color: #cbd5e1; 
+        }
+        
+        /* BUTTONS - ENHANCED WITH LIGHT SWEEP */
+        .cta-button { 
+            position: relative;
+            padding: 12px 25px; 
+            font-size: 11px; 
+            border-radius: 4px; 
+            display: inline-block; 
+            text-decoration: none; 
+            font-weight: 800; 
+            margin: 6px; 
+            transition: 0.4s; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+            border: none; 
+            cursor: pointer; 
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0; 
+            left: -100%;
+            width: 50%; 
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.4), rgba(255,255,255,0));
+            transform: skewX(-25deg);
+            transition: all 0.6s ease;
+        }
+
+        .cta-button:hover::before { left: 200%; }
+
+        .cta-button:focus {
+            outline: 2px solid #ffb703;
+            outline-offset: 2px;
+        }
+
+        .btn-primary { 
+            background: #ffb703; 
+            color: #0d1b2a; 
+            border: 2px solid #ffb703; 
+            box-shadow: 0 0 15px var(--power-glow); 
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus { 
+            transform: translateY(-3px) scale(1.05); 
+            box-shadow: 0 0 30px #ffb703; 
+            color: #000; 
+        }
+
+        .btn-outline { 
+            background: rgba(0,0,0,0.8); 
+            color: #ffb703; 
+            border: 2px solid #ffb703; 
+            backdrop-filter: blur(5px); 
+        }
+
+        .btn-outline:hover,
+        .btn-outline:focus { 
+            background: #ffb703; 
+            color: #0d1b2a; 
+            box-shadow: 0 0 15px #ffb703; 
+        }
+
+        /* PERFORMANCE STATS */
+        .stats-bar {
+            display: flex; 
+            justify-content: space-around; 
+            background: rgba(13, 27, 42, 0.8); 
+            padding: 40px 10%; 
+            border-bottom: 1px solid var(--power-glow);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item { text-align: center; }
+
+        .stat-item h4 { 
+            font-size: 24px; 
+            color: var(--neon-gold); 
+            margin: 0; 
+            text-shadow: 0 0 10px var(--neon-gold); 
+        }
+
+        .stat-item p { 
+            font-size: 10px; 
+            text-transform: uppercase; 
+            color: #94a3b8; 
+            margin-top: 5px; 
+            font-weight: bold; 
+        }
+
+        /* TRUST BAR */
+        .trust-bar { 
+            background: rgba(255,255,255,0.02); 
+            padding: 20px; 
+            display: flex; 
+            justify-content: center; 
+            gap: 30px; 
+            flex-wrap: wrap; 
+            border-bottom: 1px solid rgba(255,183,3,0.1); 
+            position: relative; 
+            z-index: 10; 
+        }
+
+        .trust-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-weight: 800; 
+            font-size: 11px; 
+            color: #f8fafc; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+
+        .trust-item i { 
+            color: #ffb703; 
+            font-size: 16px; 
+        }
+
+        /* CONTENT SECTIONS */
+        .content-section { 
+            padding: 70px 10%; 
+            text-align: center; 
+            overflow: hidden; 
+            position: relative; 
+        }
+
+        .content-section h2 { 
+            font-size: 28px; 
+            color: #f8fafc; 
+            margin-bottom: 15px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-weight: 900; 
+            position: relative; 
+            display: inline-block; 
+        }
+
+        .content-section h2::after { 
+            content: ''; 
+            width: 50px; 
+            height: 3px; 
+            background: #ffb703; 
+            position: absolute; 
+            bottom: -10px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            box-shadow: 0 0 10px #ffb703; 
+        }
+
+        .section-subtitle { 
+            max-width: 800px; 
+            margin: 25px auto 45px; 
+            font-size: 16px; 
+            line-height: 1.8; 
+            color: #94a3b8; 
+        }
+
+        /* CARD SYSTEM (ENHANCED GLOW EFFECTS) */
+        .cards-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 20px; 
+            justify-content: center; 
+            align-items: stretch; 
+        }
+
+        .card { 
+            background: rgba(30, 41, 59, 0.4); 
+            width: 320px; 
+            padding: 35px 25px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2); 
+            border-radius: 8px; 
+            border-top: 4px solid #ffb703; 
+            text-align: left; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            position: relative; 
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card:hover,
+        .card:focus-within { 
+            transform: translateY(-15px) scale(1.03); 
+            border-top-color: var(--cyber-blue); 
+            box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2), inset 0 0 20px rgba(255, 183, 3, 0.05); 
+        }
+
+        .card i { 
+            font-size: 28px; 
+            color: #ffb703; 
+            margin-bottom: 20px; 
+            display: block; 
+            transition: 0.3s; 
+            filter: drop-shadow(0 0 5px var(--neon-gold)); 
+        }
+
+        .card h3 { 
+            font-size: 16px; 
+            margin-bottom: 12px; 
+            color: #ffb703; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+        }
+
+        .card p { 
+            font-size: 14px; 
+            color: #cbd5e1; 
+            line-height: 1.7; 
+            margin-bottom: 15px; 
+            flex-grow: 1; 
+        }
+        
+        .tech-list { 
+            padding-left: 0; 
+            list-style: none; 
+            margin-top: auto; 
+            border-top: 1px solid rgba(255,255,255,0.1); 
+            padding-top: 15px; 
+        }
+
+        .tech-list li { 
+            font-size: 12px; 
+            color: #f8fafc; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 8px; 
+            line-height: 1.4; 
+        }
+
+        .tech-list li i { 
+            font-size: 10px; 
+            color: #00e5ff; 
+            margin-top: 3px; 
+        }
+
+        /* WORKFLOW GRID */
+        .workflow-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+            margin-top: 20px; 
+        }
+
+        .workflow-step { 
+            text-align: left; 
+            padding: 25px; 
+            background: rgba(255,255,255,0.03); 
+            border-top: 3px solid #ffb703; 
+            border-radius: 6px; 
+            transition: 0.4s; 
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        .workflow-step:hover,
+        .workflow-step:focus-within { 
+            background: rgba(13, 27, 42, 0.8); 
+            border-top-color: var(--cyber-blue); 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
+        }
+
+        .step-num { 
+            font-size: 32px; 
+            font-weight: 900; 
+            color: #ffb703; 
+            opacity: 0.15; 
+            position: absolute; 
+            top: 10px; 
+            right: 15px; 
+            line-height: 1; 
+            transition: 0.3s; 
+        }
+
+        .workflow-step:hover .step-num,
+        .workflow-step:focus-within .step-num { 
+            opacity: 0.4; 
+            color: var(--cyber-blue); 
+        }
+
+        .workflow-step h3 { 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            margin-bottom: 12px; 
+            color: #ffb703; 
+            font-weight: 900; 
+        }
+
+        .workflow-step p { 
+            font-size: 12px; 
+            line-height: 1.6; 
+            color: #cbd5e1; 
+        }
+
+        .deliverable { 
+            font-size: 10px; 
+            text-transform: uppercase; 
+            font-weight: 800; 
+            color: #00e5ff; 
+            padding: 6px 10px; 
+            background: rgba(0,229,255,0.1); 
+            border-radius: 4px; 
+            display: inline-block; 
+            margin-top: 10px;
+        }
+
+        /* CORPORATE IDENTITY & EXPANDED SECTIONS */
+        .text-block { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            text-align: justify; 
+            font-size: 16px; 
+            line-height: 2; 
+            color: #cbd5e1; 
+            background: rgba(13, 27, 42, 0.6); 
+            padding: 45px; 
+            border-radius: 12px; 
+            border: 1px solid var(--power-glow); 
+            backdrop-filter: blur(10px); 
+        }
+
+        .text-block h3 { 
+            color: #ffb703; 
+            font-size: 18px; 
+            margin: 30px 0 15px 0; 
+            border-left: 4px solid #ffb703; 
+            padding-left: 15px; 
+            text-transform: uppercase; 
+            font-weight: 900; 
+        }
+        
+        .feature-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+            margin-top: 25px; 
+        }
+
+        @media (max-width: 768px) { 
+            .feature-grid { grid-template-columns: 1fr; } 
+        }
+
+        .feature-box { 
+            background: rgba(255,255,255,0.02); 
+            padding: 25px; 
+            border-radius: 8px; 
+            border-left: 4px solid #00e5ff; 
+            transition: 0.3s; 
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        .feature-box::before { 
+            content: ''; 
+            position: absolute; 
+            top:0; 
+            left:0; 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(45deg, transparent, rgba(0, 229, 255, 0.03), transparent); 
+            z-index: -1; 
+        }
+
+        .feature-box:hover,
+        .feature-box:focus-within { 
+            background: rgba(0,229,255,0.05); 
+            transform: translateX(5px); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+        }
+
+        .feature-box strong { 
+            color: #ffb703; 
+            display: block; 
+            font-size: 14px; 
+            margin-bottom: 8px; 
+            text-transform: uppercase; 
+            font-weight: 800; 
+        }
+
+        /* FAQ */
+        .faq-container { 
+            max-width: 850px; 
+            margin: 0 auto; 
+            text-align: left; 
+        }
+
+        details { 
+            background: rgba(255,255,255,0.02); 
+            margin-bottom: 10px; 
+            border-radius: 6px; 
+            border: 1px solid rgba(255,183,3,0.1); 
+            overflow: hidden; 
+            transition: 0.3s; 
+        }
+
+        details[open] { 
+            border-color: var(--cyber-blue); 
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); 
+        }
+
+        summary { 
+            font-size: 14px; 
+            font-weight: 800; 
+            color: #ffb703; 
+            padding: 20px 25px; 
+            cursor: pointer; 
+            outline: none; 
+            border-left: 5px solid #ffb703; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            transition: 0.3s; 
+        }
+
+        summary:hover { 
+            background: rgba(255,183,3,0.05); 
+        }
+
+        summary:focus {
+            outline: 2px solid var(--neon-gold);
+            outline-offset: 2px;
+        }
+
+        details p { 
+            font-size: 14px; 
+            padding: 25px; 
+            margin: 0; 
+            color: #cbd5e1; 
+            line-height: 1.9; 
+            background: rgba(0,0,0,0.2); 
+        }
+
+        /* VIP BOOKING ADVISORY */
+        .vip-advisory { 
+            background: rgba(13, 27, 42, 0.9); 
+            border-left: 6px solid #00e5ff; 
+            padding: 35px; 
+            border-radius: 8px; 
+            display: flex; 
+            gap: 25px; 
+            align-items: center; 
+            text-align: left; 
+            max-width: 850px; 
+            margin: 0 auto 50px; 
+            border: 1px solid rgba(0, 229, 255, 0.2); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            flex-wrap: wrap;
+        }
+
+        .adv-tag { 
+            background: rgba(0, 229, 255, 0.1); 
+            border: 1px solid var(--cyber-blue); 
+            color: var(--cyber-blue); 
+            font-size: 10px; 
+            padding: 6px 12px; 
+            border-radius: 4px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 5px; 
+            animation: pulse 2s infinite; 
+        }
+
+        @keyframes pulse { 
+            0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.4); } 
+            70% { box-shadow: 0 0 0 10px rgba(0, 229, 255, 0); } 
+            100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0); } 
+        }
+
+        /* FLOATING ACTION BUTTONS - ENHANCED */
+        .floating-container { 
+            position: fixed; 
+            bottom: 25px; 
+            right: 25px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            z-index: 10000; 
+        }
+
+        .float-btn { 
+            width: 48px; 
+            height: 48px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            text-decoration: none; 
+            font-size: 22px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6); 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            position: relative;
+            border: none;
+        }
+
+        .float-btn::before { 
+            content: ''; 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            border-radius: 50%; 
+            background: inherit; 
+            z-index: -1; 
+            filter: blur(10px); 
+            opacity: 0.6; 
+            transition: 0.3s; 
+        }
+
+        .float-btn:hover,
+        .float-btn:focus { 
+            transform: scale(1.15) translateY(-5px); 
+        }
+
+        .float-btn:hover::before,
+        .float-btn:focus::before { 
+            opacity: 1; 
+            filter: blur(15px); 
+        }
+
+        .float-btn:focus {
+            outline: 2px solid #fff;
+            outline-offset: 2px;
+        }
+
+        /* VIDEO CONTAINER */
+        video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* FOOTER */
+        footer { 
+            background: #000; 
+            color: white; 
+            text-align: center; 
+            padding: 60px 20px 40px; 
+            border-top: 2px solid var(--neon-gold); 
+            position: relative; 
+        }
+
+        footer a { 
+            color: #ffb703; 
+            text-decoration: none; 
+            transition: 0.3s; 
+        }
+
+        footer a:hover,
+        footer a:focus { 
+            color: var(--cyber-blue); 
+            text-shadow: 0 0 8px var(--cyber-blue); 
+        }
+
+        footer a:focus {
+            outline: 2px solid var(--cyber-blue);
+            outline-offset: 2px;
+        }
+
+        .footer-links { 
+            font-size: 11px; 
+            color: #94a3b8; 
+            margin-top: 15px; 
+            line-height: 2; 
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 5%;
+            }
+
+            .content-section {
+                padding: 50px 5%;
+            }
+
+            .tech-bar-content {
+                font-size: 9px;
+                gap: 10px;
+            }
+
+            .hero h2 {
+                font-size: 20px;
+            }
+
+            .content-section h2 {
+                font-size: 20px;
+            }
+
+            .card {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+
+            .hero h2 {
+                font-size: 18px;
+            }
+
+            .floating-container {
+                bottom: 15px;
+                right: 15px;
+                gap: 8px;
+            }
+
+            .float-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <h1>Kohmz Electrical Services</h1>
-        <nav>
-            <ul>
-                <li><a href="#services" accesskey="s">Services</a></li>
-                <li><a href="#contact" accesskey="c">Contact Us</a></li>
+<body role="document">
+
+    <!-- Energy Lines -->
+    <div class="energy-line" style="left: 10vw; animation-delay: 0s;" aria-hidden="true"></div>
+    <div class="energy-line" style="left: 40vw; animation-delay: 3s;" aria-hidden="true"></div>
+    <div class="energy-line" style="left: 70vw; animation-delay: 1.5s;" aria-hidden="true"></div>
+    <div class="energy-line" style="left: 90vw; animation-delay: 4.5s;" aria-hidden="true"></div>
+
+    <!-- Tech Bar -->
+    <div class="tech-bar" role="status" aria-live="polite">
+        <div class="tech-bar-content">
+            <span>⚡ TECHNICAL GOVERNANCE</span>
+            <span>⚡ ASSET PROTECTION</span>
+            <span>⚡ PEC-COMPLIANT ARCHITECTURE</span>
+            <span>⚡ 24/7 SPECIALIST RESPONSE</span>
+            <span>⚡ RESIDENTIAL & COMMERCIAL TECHNICAL MASTERY ⚡</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header role="banner">
+        <div class="logo">
+            <img src="logo.jpg" alt="KOHMZ Electrical Design and Build Logo" loading="lazy">
+            <h1>KOHMZ <span>Electrical</span></h1>
+        </div>
+        
+        <button class="menu-toggle" id="mobile-menu" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-list">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+
+        <nav role="navigation" aria-label="Main navigation">
+            <ul class="nav-links" id="nav-list">
+                <li><a href="index.html" style="color: #ffb703;">Overview</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Services <span aria-hidden="true">&#9662;</span></a>
+                    <div class="dropdown-content" role="menu">
+                        <a href="commercial.html" role="menuitem">Commercial</a>
+                        <a href="residential.html" role="menuitem">Residential</a>
+                        <a href="pro-tips.html" role="menuitem">Pro Tips</a>
+                    </div>
+                </li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request Quote</a></li>
+                <li><a href="book-now.html">Book Now</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Technical Shop <span aria-hidden="true">&#9662;</span></a>
+                    <div class="dropdown-content" role="menu">
+                        <a href="solar-parts.html" role="menuitem">Solar Parts</a>
+                        <a href="powertools.html" role="menuitem">Power Tools</a>
+                        <a href="electrical-materials.html" role="menuitem">Materials</a>
+                    </div>
+                </li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="faq.html">FAQ</a></li>
             </ul>
         </nav>
     </header>
-    <main>
-        <section id="services">
-            <h2>Our Services</h2>
-            <p>We offer a variety of electrical services to meet your needs. Whether you need installation, maintenance, or repairs, we've got you covered.</p>
+
+    <main role="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-inner" data-aos="zoom-out">
+                <h2>INTEGRATED POWER ARCHITECTURE &amp; <br>
+                    <span class="txt-type" data-wait="2000" data-words='["TECHNICAL GOVERNANCE", "SMART INTEGRATION", "SOLAR SOLUTIONS"]'></span>
+                </h2>
+                <p>Generic electrical work is a massive liability; Technical Governance is a permanent investment. We architect high-performance power systems that secure your property's legacy. Whether you are building a luxury residence, outfitting a corporate workspace, or upgrading an industrial facility, we deliver uncompromised safety, strict PEC compliance, and absolute operational efficiency.</p>
+                <div style="margin-top: 25px;">
+                    <a href="book-now.html" class="cta-button btn-primary"><i class="fas fa-clipboard-check" aria-hidden="true"></i> SECURE TECHNICAL AUDIT</a>
+                    <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" class="cta-button btn-fb" style="background:#0c5bb5; color:white; border: 2px solid #0c5bb5; margin-left:10px;" aria-label="Visit us on Facebook - opens in new window"><i class="fab fa-facebook" aria-hidden="true"></i> OFFICIAL UPDATES</a>
+                    <a href="portfolio.html" class="cta-button btn-outline" style="margin-left:10px;"><i class="fas fa-briefcase" aria-hidden="true"></i> VIEW CAPABILITIES</a>
+                </div>
+            </div>
         </section>
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <form>
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <input type="submit" value="Submit">
-            </form>
+
+        <!-- Stats Section -->
+        <section class="stats-bar" data-aos="fade-up">
+            <div class="stat-item">
+                <h4>500+</h4>
+                <p>Projects Delivered</p>
+            </div>
+            <div class="stat-item">
+                <h4>100%</h4>
+                <p>PEC Code Compliance</p>
+            </div>
+            <div class="stat-item">
+                <h4>24/7</h4>
+                <p>Specialist Support</p>
+            </div>
+            <div class="stat-item">
+                <h4>ZERO</h4>
+                <p>System Failures</p>
+            </div>
         </section>
+
+        <!-- Trust Bar -->
+        <div class="trust-bar" data-aos="fade-up">
+            <div class="trust-item">
+                <i class="fas fa-id-card-clip" aria-hidden="true"></i> 
+                <span>PROFESSIONAL ELECTRICIANS</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-shield-halved" aria-hidden="true"></i> 
+                <span>ELECTRICAL &amp; FIRE CODE COMPLIANT</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-truck-fast" aria-hidden="true"></i> 
+                <span>24/7 EMERGENCY DEPLOYMENT</span>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-file-signature" aria-hidden="true"></i> 
+                <span>DATA-DRIVEN LOAD PROFILING</span>
+            </div>
+        </div>
+
+        <!-- Priority Sectors Section -->
+        <section class="content-section">
+            <h2 data-aos="fade-down">Priority Sectors of Operation</h2>
+            <p class="section-subtitle">We deploy specialized professional teams tailored to the unique demands of your environment. Every conduit run and terminal connection serves a strategic purpose for your property's longevity.</p>
+            <div class="cards-container">
+                <div class="card" style="border-top-color: #1155cc;" data-aos="fade-right" tabindex="0">
+                    <i class="fas fa-building-circle-check" style="color:#1155cc;" aria-hidden="true"></i>
+                    <h3>Commercial Asset Management</h3>
+                    <p>Maximizing business uptime sa pamamagitan ng strategic wiring architecture. Tinitiyak namin ang zero interruptions at strict local government compliance para mapanatiling legally protected at profoundly safe ang iyong operasyon.</p>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check" aria-hidden="true"></i> 3-Phase Workstation Power Grids</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Architectural &amp; Retail Lighting Control</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> LGU &amp; Fire Department Permit Assistance</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-top-color: #22863a;" data-aos="fade-up" tabindex="0">
+                    <i class="fas fa-house-shield" style="color:#22863a;" aria-hidden="true"></i>
+                    <h3>Premium Residential Security</h3>
+                    <p>Securing high-end residences sa pamamagitan ng code-compliant panel upgrades at smart-infrastructure readiness. Hinahawakan namin ang iyong private estate nang may utmost respect, delivering clean, hidden wire management.</p>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Main Distribution Board (MDB) Upgrades</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> EV Charger &amp; Smart Home Provisioning</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> AFCI/GFCI Life-Safety Implementation</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-top-color: #d93025;" data-aos="fade-left" tabindex="0">
+                    <i class="fas fa-industry" style="color:#d93025;" aria-hidden="true"></i>
+                    <h3>Heavy-Duty Power Systems</h3>
+                    <p>Executing high-capacity service entrances at 3-phase distribution para sa high-stakes environments. Binuo para sa absolute endurance at minimal thermal stress sa ilalim ng continuous heavy industrial loads.</p>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check" aria-hidden="true"></i> High-Capacity Service Entrances</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> Industrial Motor Control Centers (MCC)</li>
+                        <li><i class="fas fa-check" aria-hidden="true"></i> NEMA-Compliant Outdoor Enclosures</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comprehensive Wiring Section -->
+        <section class="content-section" style="background: rgba(13, 27, 42, 0.4);">
+            <h2 data-aos="fade-down">Comprehensive Wiring Architecture</h2>
+            <p class="section-subtitle">Hindi sapat ang "umaandar lang." Ang aming engineering standards ay nakadisenyo para sa future expansions, heavy loads, at maximum efficiency.</p>
+            
+            <div class="feature-grid" style="text-align: left; max-width: 900px; margin: 0 auto;">
+                <div class="feature-box" data-aos="fade-right" tabindex="0">
+                    <h3 style="color: #00e5ff; margin-bottom: 12px; font-size: 16px; text-transform: uppercase;">
+                        <i class="fas fa-city" style="margin-right: 8px;" aria-hidden="true"></i> Commercial Wiring Dynamics
+                    </h3>
+                    <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 15px;">Modern commercial spaces demand rigorous power distribution to handle heavy HVAC networks, server rooms, and continuous high-lumen lighting outputs without dangerous voltage drops.</p>
+                    <ul class="tech-list" style="border: none; padding-top: 0;">
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>Load Balancing:</strong> Precision engineering across 3-phase panels to eliminate thermal stress and extend the lifespan of your main circuit breakers.</li>
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>Dedicated IT Circuits:</strong> Using Isolated Ground Receptacles (IGRs) to prevent electrical noise from causing data loss in critical server infrastructure.</li>
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>Redundancy Wiring:</strong> Automated Transfer Switch (ATS) installations para sa seamless transition to generator or commercial solar backup power.</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-box" style="border-left-color: #ffb703;" data-aos="fade-left" tabindex="0">
+                    <h3 style="color: #ffb703; margin-bottom: 12px; font-size: 16px; text-transform: uppercase;">
+                        <i class="fas fa-home" style="margin-right: 8px;" aria-hidden="true"></i> Residential Smart Load Systems
+                    </h3>
+                    <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 15px;">Residential demands have evolved. We future-proof homes for high-amperage smart appliances, EV charging, and automated lifestyle integrations safely.</p>
+                    <ul class="tech-list" style="border: none; padding-top: 0;">
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>High-Demand Kitchens:</strong> Independent, dedicated circuits para sa induction cooktops, heavy-duty microwaves, at sub-zero refrigerators para iwas tripping.</li>
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>EV Charging Readiness:</strong> Nag-i-install kami ng dedicated 40A to 60A lines (NEMA 14-50) directly from the Main Distribution Panel (MDP) for electric vehicles.</li>
+                        <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>Smart Home Neutral Integration:</strong> Comprehensive neutral wire inclusion sa lahat ng switch boxes para madali at ligtas ang pag-install ng mga WiFi/IoT smart switches.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Precision in Motion Section -->
+        <section class="content-section">
+            <h2 data-aos="fade-up">Precision in Motion</h2>
+            <p class="section-subtitle">Watch our technical specialists execute the <strong>KOHMZ Standard</strong> in real-time. Quality workmanship, zero compromises.</p>
+            <div style="max-width: 850px; margin: 0 auto; border: 4px solid var(--neon-gold); border-radius: 15px; overflow: hidden; box-shadow: 0 0 40px var(--power-glow);" data-aos="zoom-in">
+                <video width="100%" height="auto" controls loop muted playsinline poster="logo.jpg" title="KOHMZ Electrical Design and Build Presentation">
+                    <source src="presentation%20kohmz%20electrical%20design%20and%20build.pptx.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </section>
+
+        <!-- Implementation Lifecycle Section -->
+        <section class="content-section" style="background: linear-gradient(rgba(1, 4, 9, 1), rgba(13, 27, 42, 0.6));">
+            <h2 data-aos="fade-up">The Precision Implementation Lifecycle</h2>
+            <div class="workflow-grid">
+                <div class="workflow-step" data-aos="zoom-in" data-aos-delay="100" tabindex="0">
+                    <span class="step-num" aria-hidden="true">01</span>
+                    <h3>Diagnostics</h3>
+                    <p>Mathematical load balancing at CAD layout approvals bago bumili ng isang materyal. Proper planning prevents electrical bottlenecks.</p>
+                    <span class="deliverable"><i class="fas fa-file-pdf" aria-hidden="true"></i> CAD Layouts</span>
+                </div>
+                <div class="workflow-step" data-aos="zoom-in" data-aos-delay="200" tabindex="0">
+                    <span class="step-num" aria-hidden="true">02</span>
+                    <h3>Execution</h3>
+                    <p>Licensed technicians ay gumagamit lamang ng authentic, pure copper wires. Conduit bends executed with surgical precision.</p>
+                    <span class="deliverable"><i class="fas fa-clipboard-check" aria-hidden="true"></i> PEC Standard</span>
+                </div>
+                <div class="workflow-step" data-aos="zoom-in" data-aos-delay="300" tabindex="0">
+                    <span class="step-num" aria-hidden="true">03</span>
+                    <h3>QA Stress-Testing</h3>
+                    <p>Rigorous continuity tests at Digital Insulation Resistance checks to guarantee lifelong reliability sa ilalim ng peak demand.</p>
+                    <span class="deliverable"><i class="fas fa-search-plus" aria-hidden="true"></i> Safety Clearance</span>
+                </div>
+                <div class="workflow-step" data-aos="zoom-in" data-aos-delay="400" tabindex="0">
+                    <span class="step-num" aria-hidden="true">04</span>
+                    <h3>Official Turnover</h3>
+                    <p>You receive complete as-built technical plans, walkthroughs, at solid workmanship warranty. Absolute peace of mind.</p>
+                    <span class="deliverable"><i class="fas fa-file-signature" aria-hidden="true"></i> Warranty Plans</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="content-section">
+            <h2 data-aos="fade-up">Technical Advisory (FAQ)</h2>
+            <div class="faq-container">
+                <details>
+                    <summary>Is my property at risk? When should I upgrade my electrical panel?</summary>
+                    <p>Tripping breakers, flickering lights, a slight burning smell, o warm panel covers ay critical red flags indicating a severe amperage deficit. Modern smart appliances draw continuous loads na hindi kaya ng mga lumang panels. Nagsasagawa kami ng comprehensive load evaluations para makita ang internal faults bago sila maging fire hazards.</p>
+                </details>
+                <details>
+                    <summary>Do you handle dedicated technical wiring for new heavy AC units?</summary>
+                    <p>Yes. Ang simpleng pag-tap ng bagong high-HP air conditioner sa existing line ay lubhang mapanganib dahil sa massive compressor inrush currents. Nagbibigay kami ng certified AC load centers at dedicated home-run circuits directly mula sa main panel para mapanatiling ligtas ang iyong cooling system.</p>
+                </details>
+                <details>
+                    <summary>What should I do if an outlet stops working or emits sparks?</summary>
+                    <p>Huwag gamitin ang outlet immediately at i-turn off ang corresponding breaker. Ang sparking ay nagpapahiwatig ng loose terminal arcing, na isang immediate fire hazard na nakatago sa iyong mga pader. Ang aming koponan ay nagbibigay ng mabilis na technical diagnostics para palitan ang compromised materials safely.</p>
+                </details>
+                <details>
+                    <summary>Can you design the electrical layout for a new commercial space?</summary>
+                    <p>Absolutely. Nagpapakadalubhasa kami sa custom wiring architecture na sumusunod sa Philippine Electrical Code (PEC). Tinitiyak namin na ang iyong negosyo ay handa para sa future expansions at heavy equipment loads nang walang risk of overloading.</p>
+                </details>
+            </div>
+        </section>
+
+        <!-- VIP Booking Section -->
+        <section class="content-section">
+            <div class="vip-advisory" data-aos="fade-up">
+                <div>
+                    <span class="adv-tag">
+                        <i class="fas fa-bolt" aria-hidden="true"></i> VIP Booking
+                    </span>
+                    <h3 style="color: #00e5ff; margin: 10px 0; font-size: 16px; text-transform: uppercase;">Priority Emergency Dispatch</h3>
+                    <p style="font-size: 14px; color: #cbd5e1; margin: 0;">For commercial outages or severe residential faults, secure an immediate technical audit. Fast deployment for hazard mitigation.</p>
+                </div>
+                <a href="book-now.html" class="cta-button btn-primary" style="white-space: nowrap;">DISPATCH TEAM</a>
+            </div>
+        </section>
+
     </main>
-    <footer>
-        <p>&copy; 2026 Kohmz Electrical Services</p>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-container">
+        <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" class="float-btn" style="background: #0084ff;" aria-label="Chat with us on Facebook Messenger - opens in new window">
+            <i class="fab fa-facebook-messenger" aria-hidden="true"></i>
+        </a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn" style="background: #25d366;" aria-label="Chat with us on WhatsApp - opens in new window">
+            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+        </a>
+        <a href="viber://chat?number=%2B639266174131" target="_blank" class="float-btn" style="background: #7360f2;" aria-label="Chat with us on Viber - opens in new window">
+            <i class="fab fa-viber" aria-hidden="true"></i>
+        </a>
+        <a href="tel:09266174131" class="float-btn" style="background: #ffb703; color: #000;" aria-label="Call us at 09266174131">
+            <i class="fas fa-phone" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer role="contentinfo">
+        <div class="logo" style="justify-content: center; margin-bottom: 20px;">
+            <img src="logo.jpg" alt="KOHMZ Electrical Design and Build Logo" loading="lazy">
+            <h1>KOHMZ <span>Electrical</span></h1>
+        </div>
+        <p>&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
+        
+        <div class="footer-links">
+            <p style="margin-bottom: 5px;">Technical Governance | Asset Protection | PEC-Compliant Architecture</p>
+            <a href="privacy-policy.html" style="font-weight: bold; text-decoration: underline;">Privacy Policy</a> &nbsp;|&nbsp;
+            <a href="faq.html">FAQ</a> &nbsp;|&nbsp;
+            <a href="about-us.html">About Us</a>
+        </div>
     </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Lazy loading images and other resources
-        document.addEventListener('DOMContentLoaded', function() {
-            const images = document.querySelectorAll('img[data-src]');
-            images.forEach(img => {
-                img.src = img.dataset.src;
-            });
+        // Initialize Animate On Scroll
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100,
+            disable: () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
         });
-    </script>
-</body>
-</html>
+
+        // Mobile Menu Toggle Logic with Accessibility
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+
+        mobileMenu.addEventListener('click', () => {
+            const isActive = navList.classList.toggle('active');
+            mobileMenu.setAttribute('aria-expanded', isActive);
+        });
+
+        // Close menu when a link is clicked
+        navList.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                navList.classList.remove('active');
+                mobileMenu.setAttribute('aria-expanded', false);
+            }
+        });
+
+        // Close menu on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navList.classList.contains('active')) {
+                navList.classList.remove('active');
+                mobileMenu.setAttribute('aria-expanded', false);
+                mobileMenu.focus();
+            }
+        });
+        
+        // Animated Typing Text Logic for Hero Section
+        class TypeWriter {
+            constructor(txtElement, words, wait = 3000) {
+                this.txtElement = txtElement;
+                this.words = words;
+                this.txt = '';
+                this.wordIndex = 0;
+                this.wait = parseInt(wait, 10);
+                this.type();
+                this.isDeleting = false;
+            }
+
+            type() {
+                const current = this.wordIndex % this.words.length;
+                const fullTxt = this.words[current];
+                if(this.isDeleting) {
+                    this.txt = fullTxt.substring(0, this.txt.length - 1);
+                } else {
+                    this.txt = fullTxt.
