@@ -9,124 +9,333 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
     <style>
-        /* Strict Font Scale: 20-14-12-10 */
-        body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f4f7f6; color: #333; overflow-x: hidden; } 
-        
-        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; }
-        .moving-ads marquee { font-size: 10px; } 
-        
-        /* --- MODERN RESPONSIVE HEADER --- */
-        header { 
-            background: #0d1b2a; color: white; padding: 15px 20px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        /* --- FUTURISTIC EXTREME SYSTEM --- */
+        :root {
+            --neon-gold: #ffb703;
+            --cyber-blue: #00e5ff;
+            --power-glow: rgba(255, 183, 3, 0.4);
+            --circuit-line: rgba(255, 183, 3, 0.05);
+            --bg-dark: #081018;
         }
-        /* LOGO AREA WITH IMAGE */
-        .logo { display: flex; align-items: center; gap: 10px; }
-        .logo img { height: 35px; width: 35px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(255,183,3,0.3); }
-        .logo h1 { font-size: 20px; margin: 0; letter-spacing: -1px; font-weight: 900; } 
-        .logo span { color: #ffb703; }
 
-        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #ffb703; }
+        * { box-sizing: border-box; }
 
-        /* NAVIGATION MENU - FONT SIZE 11px (Desktop) */
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; transition: 0.3s ease; }
-        .nav-links li { margin-left: 18px; position: relative; }
-        .nav-links li a { color: white; text-decoration: none; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; }
-        .nav-links li a:hover { color: #ffb703; }
+        body { 
+            font-size: 12px; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; padding: 0; 
+            background-color: var(--bg-dark); 
+            color: #e0faff; 
+            overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6;
+        } 
+
+        /* --- LIVE 3D CAD BACKGROUND EFFECT --- */
+        .cad-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            perspective: 1000px; z-index: -1; overflow: hidden;
+            background: radial-gradient(circle at center, #0a192f 0%, #04080f 100%);
+        }
+        .cad-grid {
+            position: absolute; width: 200%; height: 200%;
+            bottom: -50%; left: -50%;
+            background-image: 
+                linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotateX(60deg);
+            animation: cadMove 8s linear infinite;
+        }
+        @keyframes cadMove {
+            0% { transform: rotateX(60deg) translateY(0); }
+            100% { transform: rotateX(60deg) translateY(50px); }
+        }
+        .cad-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(8,16,24,1) 0%, transparent 40%, rgba(8,16,24,1) 100%);
+            pointer-events: none;
+        }
+
+        .moving-ads { background: #ffb703; color: #000; padding: 5px; font-weight: bold; position: relative; z-index: 1001; }
+        .moving-ads marquee { font-size: 10px; font-family: 'Share Tech Mono', monospace; text-transform: uppercase;} 
+        
+        /* --- HEADER & NAVIGATION (KOHMZ STANDARD) --- */
+        header { 
+            background: rgba(8, 16, 24, 0.95); padding: 15px 30px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; z-index: 1000; 
+            border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px);
+        }
+        
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
+        .logo-text { font-size: 22px; margin: 0; font-weight: 900; color: #fff; display: inline-block; font-family: 'Segoe UI', sans-serif;}
+        .logo-text span { color: #ffb703; }
+
+        .menu-toggle { display: none; font-size: 26px; cursor: pointer; color: #00e5ff; z-index: 1001;}
+
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; transition: 0.3s ease; }
+        .nav-links li a { 
+            color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; 
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; 
+            font-family: 'Share Tech Mono', monospace; transition: 0.3s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
         
         /* DROPDOWNS */
+        .nav-links li.dropdown { position: relative; }
         .dropdown-content { 
-            display: none; position: absolute; background-color: #ffffff; min-width: 180px; 
-            box-shadow: 0px 8px 25px rgba(0,0,0,0.15); z-index: 1001; border-radius: 4px; 
-            overflow: hidden; top: 100%; left: 0; border-top: 3px solid #ffb703; 
+            display: none; position: absolute; background: rgba(8,16,24,0.98); 
+            min-width: 180px; box-shadow: 0px 10px 30px rgba(0,0,0,0.6); z-index: 1001; 
+            top: 100%; left: 0; border-top: 3px solid #00e5ff; 
         }
-        .dropdown-content a { color: #0d1b2a !important; padding: 12px 16px; text-decoration: none; display: block; font-size: 11px !important; border-bottom: 1px solid #f1f5f9; font-weight: 600; }
-        .dropdown-content a:hover { background-color: #f8fafc; color: #ffb703 !important; }
         .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-        /* MOBILE OVERLAY (Max-width 992px) */
+        /* MOBILE OVERLAY */
         @media (max-width: 992px) {
-            header { padding: 15px 25px; }
-            .menu-toggle { display: block; }
-            .nav-links {
-                display: none; flex-direction: column; position: absolute; 
-                top: 100%; left: 0; width: 100%; background: #0d1b2a; 
-                padding: 20px 0; border-bottom: 4px solid #ffb703;
+            .menu-toggle { display: block; font-size: 26px; color: #00e5ff; cursor: pointer; background:none; border:none; padding:5px; }
+            .nav-links { 
+                display: none; flex-direction: column; position: absolute; top: 100%; left: 0; 
+                width: 100%; background: rgba(8, 16, 24, 0.98); padding: 0; margin: 0;
+                border-bottom: 4px solid #00e5ff; 
             }
             .nav-links.active { display: flex; }
-            .nav-links li { margin: 15px 0; text-align: center; width: 100%; margin-left: 0; }
-            .nav-links li a { font-size: 14px; font-weight: 700; width: 100%; display: block; }
-            
-            .dropdown-content { position: static; box-shadow: none; background: #1a2e44; display: none; width: 100%; }
+            .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); margin: 0; }
+            .nav-links li a { font-size: 14px; width: 100%; padding: 20px 25px; display: flex; justify-content: space-between; }
+            .dropdown-content { position: static; display: none; background: rgba(0,0,0,0.4); width: 100%; border: none; padding-left: 0; }
             .dropdown.active .dropdown-content { display: block; }
+            .dropdown-content a { padding: 15px 20px 15px 45px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; }
         }
 
-        /* Hero Section */
+        /* --- HERO SECTION --- */
         .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('logo.jpg') no-repeat center center; 
-            background-size: cover; padding: 80px 20px; text-align: center; color: white; 
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; 
+            background-size: cover; padding: 100px 20px; text-align: center; color: white; position: relative; z-index: 2;
         }
-        .hero h2 { font-size: 20px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; } 
-        .hero p { font-size: 12px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; } 
+        .hero h1 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; line-height: 1.5; min-height: 70px; text-shadow: 0 0 15px rgba(255,183,3,0.4); } 
+        .txt-type > .txt { border-right: 3px solid #ffb703; padding-right: 5px; animation: blink 0.7s infinite; color: #ffffff; text-shadow: 0 0 15px var(--neon-gold); }
+        @keyframes blink { from, to { opacity: 1; } 50% { opacity: 0; } }
+        .hero p { font-size: 13px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; color: #a0aec0; } 
 
-        /* Floating Action Buttons */
-        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
-        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.3s; }
-        .float-btn:hover { transform: scale(1.1); }
+        /* --- CONTENT SECTIONS (CYBER THEME) --- */
+        .content-section { padding: 50px 10%; text-align: center; position: relative; z-index: 2;}
+        .content-section h2 { font-size: 18px; color: #00e5ff; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; font-weight: 900; text-shadow: 0 0 10px rgba(0,229,255,0.4); } 
+        
+        .tip-grid { max-width: 800px; margin: 0 auto; text-align: left; }
+        details.tip-card { 
+            background: rgba(30, 41, 59, 0.4); padding: 0; border-radius: 8px; border-left: 5px solid #ffb703; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3); margin-bottom: 15px; backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+        details.tip-card:hover { border-left-color: #00e5ff; box-shadow: 0 10px 30px rgba(0,229,255,0.1);}
+        summary { padding: 20px; font-size: 14px; font-weight: bold; color: #ffb703; cursor: pointer; outline: none; list-style: none; display: flex; justify-content: space-between; align-items: center; transition: 0.3s;}
+        summary:hover { color: #00e5ff; }
+        summary::after { content: "+"; font-size: 20px; color: #00e5ff; }
+        details[open] summary::after { content: "-"; color: #ffb703; }
+        .tip-content { padding: 0 20px 20px; font-size: 13px; color: #cbd5e1; line-height: 1.8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
+        .tip-content strong { color: #00e5ff; }
+
+        /* Calculator Styles (Cyber) */
+        .calc-section { 
+            background: rgba(13, 27, 42, 0.8); color: white; padding: 40px; border-radius: 8px; 
+            margin: 50px auto; max-width: 650px; box-shadow: 0 10px 40px rgba(0,229,255,0.1); 
+            text-align: center; border: 1px solid rgba(0,229,255,0.2); border-top: 4px solid #00e5ff;
+            backdrop-filter: blur(10px);
+        }
+        .calc-section h3 { font-size: 16px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; font-weight: 900;}
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .calc-grid div { text-align: left; }
+        .calc-grid label { display: block; font-size: 11px; color: #00e5ff; margin-bottom: 8px; text-transform: uppercase; font-weight: bold;}
+        .calc-grid input { 
+            width: 100%; padding: 12px; border-radius: 4px; border: 1px solid rgba(0,229,255,0.3); 
+            font-size: 13px; background: rgba(0,0,0,0.6); color: #00e5ff; transition: 0.3s;
+        }
+        .calc-grid input:focus { outline: none; border-color: #ffb703; box-shadow: 0 0 10px rgba(255,183,3,0.3);}
+        
+        .calc-btn { width: 100%; background: #ffb703; color: #0d1b2a; border: 2px solid #ffb703; padding: 15px; border-radius: 4px; font-weight: 900; cursor: pointer; font-size: 13px; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px;}
+        .calc-btn:hover { background: transparent; color: #ffb703; box-shadow: 0 0 15px rgba(255,183,3,0.5); }
+        
+        .calc-results-wrap { margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .res-box { background: rgba(0, 0, 0, 0.4); padding: 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); }
+        .res-label { font-size: 10px; color: #94a3b8; display: block; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;}
+        .res-value { font-size: 16px; font-weight: 900; color: #00e5ff; }
+
+        /* CTA Box */
+        .cta-box { 
+            background: rgba(13, 27, 42, 0.8); color: white; padding: 40px; border-radius: 8px; 
+            margin-top: 50px; text-align: center; border-top: 4px solid #ffb703;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-left: 1px solid rgba(255,183,3,0.2);
+            border-right: 1px solid rgba(255,183,3,0.2); border-bottom: 1px solid rgba(255,183,3,0.2);
+            backdrop-filter: blur(10px);
+        }
+        .cta-box h2 { color: #00e5ff; font-size: 18px; margin-top: 0; margin-bottom: 10px; text-transform: uppercase; font-weight: 900;}
+        .cta-buttons-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 25px; }
+        .cta-button { padding: 15px 30px; text-decoration: none; border-radius: 4px; font-weight: 900; display: inline-block; transition: 0.3s; font-size: 12px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,0,0,0.3);}
+        .btn-whatsapp { background: #25d366; color: white; border: 1px solid #25d366;}
+        .btn-whatsapp:hover { background: transparent; color: #25d366; box-shadow: 0 0 15px #25d366;}
+        .btn-messenger { background: #0084ff; color: white; border: 1px solid #0084ff;}
+        .btn-messenger:hover { background: transparent; color: #0084ff; box-shadow: 0 0 15px #0084ff;}
+
+        /* Floating Buttons */
+        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
+        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.2);}
+        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); border-color:#00e5ff; box-shadow: 0 0 15px #00e5ff;}
         .fb-messenger { background: #0084ff; }
         .viber { background: #7360f2; }
         .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
-        /* Tips Section */
-        .content-section { padding: 50px 10%; text-align: center; }
-        .content-section h2 { font-size: 14px; color: #0d1b2a; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; } 
-        
-        .tip-grid { max-width: 800px; margin: 0 auto; text-align: left; }
-        details.tip-card { background: white; padding: 0; border-radius: 8px; border-left: 5px solid #ffb703; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 15px; }
-        summary { padding: 20px; font-size: 14px; font-weight: bold; color: #0d1b2a; cursor: pointer; outline: none; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-        summary::after { content: "+"; font-size: 18px; color: #ffb703; }
-        details[open] summary::after { content: "-"; }
-        .tip-content { padding: 0 20px 20px; font-size: 12px; color: #555; line-height: 1.6; border-top: 1px solid #eee; padding-top: 15px; }
+        @media (max-width: 768px) {
+            .floating-container { flex-direction: row !important; justify-content: center !important; bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; width: max-content !important; background: rgba(0, 0, 0, 0.8); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(0, 229, 255, 0.3); backdrop-filter: blur(10px); }
+            .float-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; margin: 0 5px !important; }
+            .calc-grid { grid-template-columns: 1fr; }
+        }
 
-        /* Calculator Styles */
-        .calc-section { background: #0d1b2a; color: white; padding: 30px; border-radius: 8px; margin: 40px auto; max-width: 600px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); text-align: center; }
-        .calc-section h3 { font-size: 14px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; }
-        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .calc-grid div { text-align: left; }
-        .calc-grid label { display: block; font-size: 10px; color: #ffb703; margin-bottom: 5px; }
-        .calc-grid input { width: 90%; padding: 8px; border-radius: 4px; border: none; font-size: 12px; background: #f4f7f6; color: #333; }
-        .calc-btn { width: 100%; background: #ffb703; color: #0d1b2a; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.3s; }
-        .calc-btn:hover { background: #e6a600; }
-        .calc-results-wrap { margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .res-box { background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 4px; }
-        .res-label { font-size: 9px; color: #bbb; display: block; }
-        .res-value { font-size: 13px; font-weight: bold; color: #25d366; }
+        /* --- EXACT HOME PAGE FOOTER --- */
+        footer { background: #000; color: white; text-align: center; padding: 60px 20px 40px; border-top: 2px solid var(--neon-gold); position: relative; z-index: 2; margin-top: 40px;}
+        footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; }
+        footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); }
+        .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
 
-        /* CTA Box */
-        .cta-box { background: #0d1b2a; color: white; padding: 40px; border-radius: 8px; margin-top: 40px; text-align: center; }
-        .cta-buttons-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
-        .cta-button { padding: 12px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block; transition: 0.3s; font-size: 12px; }
-        .btn-whatsapp { background: #25d366; color: white; }
-        .btn-messenger { background: #0084ff; color: white; }
+        /* ========================================= */
+        /* --- UNTOUCHED CHATBOT STYLES FROM USER --- */
+        /* ========================================= */
+        .kohmz-bot-wrapper {
+            position: fixed;
+            bottom: 120px;
+            right: 20px;
+            z-index: 9999999;
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            touch-action: none;
+            user-select: none;
+        }
 
-        /* Footer */
-        footer { background: #0d1b2a; color: white; text-align: center; padding: 30px 20px; margin-top: 40px; }
-        .footer-content { font-size: 10px; line-height: 1.8; }
-        .footer-content p strong { font-size: 12px; color: #ffb703; }
-        .footer-content a { color: #ffb703; text-decoration: none; }
+        .bot-value-tag {
+            background: #00e5ff;
+            color: #000;
+            padding: 5px 12px;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+            cursor: grab;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .kohmz-chat-window {
+            display: none;
+            width: 300px;
+            max-width: 85vw;
+            background: rgba(8, 16, 24, 0.98);
+            border: 1px solid #00e5ff;
+            border-top: 4px solid #00e5ff;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.9);
+            margin-bottom: 12px;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+
+        .kohmz-chat-header {
+            background: #000;
+            color: #00e5ff;
+            padding: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+        }
+
+        .kohmz-chat-body {
+            padding: 15px;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0faff;
+            padding: 10px;
+            border-radius: 0 12px 12px 12px;
+            margin-bottom: 10px;
+            border-left: 2px solid #00e5ff;
+            font-size: 12px;
+        }
+
+        .kohmz-chat-options {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-btn {
+            background: transparent;
+            color: #fff;
+            border: 1px solid #00e5ff;
+            padding: 12px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            cursor: pointer;
+            text-align: left;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .chat-btn:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 10px #00e5ff; }
+
+        .kohmz-bot-toggle {
+            width: 85px; 
+            height: 85px;
+            background: transparent;
+            cursor: grab;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bot-badge {
+            position: absolute; top: 12px; right: 12px;
+            background: #ff3b3b; color: #fff; font-size: 10px;
+            width: 20px; height: 20px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 10px #ff3b3b;
+            z-index: 10;
+        }
+
+        @media (max-width: 480px) {
+            .kohmz-chat-window { width: 260px; }
+            .kohmz-bot-toggle { width: 75px; height: 75px; }
+            .kohmz-bot-wrapper { bottom: 85px; right: 15px; }
+        }
     </style>
 </head>
 <body>
 
+    <div class="cad-background">
+        <div class="cad-grid"></div>
+        <div class="cad-overlay"></div>
+    </div>
+
     <div class="floating-container">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber"><i class="fab fa-viber"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email"><i class="fas fa-envelope"></i></a>
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
     </div>
 
     <div class="moving-ads">
@@ -136,10 +345,10 @@
     </div>
 
     <header>
-        <div class="logo">
+        <a href="index.html" class="logo" aria-label="KOHMZ Homepage">
             <img src="logo.jpg" alt="KOHMZ Logo">
-            <h1>KOHMZ <span>Electrical</span></h1>
-        </div>
+            <span class="logo-text">KOHMZ <span>Electrical</span></span>
+        </a>
         
         <div class="menu-toggle" id="mobile-menu">
             <i class="fas fa-bars"></i>
@@ -149,11 +358,11 @@
             <ul class="nav-links" id="nav-list">
                 <li><a href="index.html">Overview</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn" style="color: #ffb703;">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="dropbtn" style="color: #ffb703; text-shadow: 0 0 8px #ffb703;">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <div class="dropdown-content">
                         <a href="commercial.html">Commercial</a>
                         <a href="residential.html">Residential</a>
-                        <a href="pro-tips.html">Pro Tips</a>
+                        <a href="pro-tips.html" style="color: #00e5ff !important;">Pro Tips</a>
                     </div>
                 </li>
                 <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
@@ -173,60 +382,61 @@
     </header>
 
     <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h2>Electrical Pro Tips & Safety</h2>
-                <p>Advanced engineering insights for maintaining a safe, efficient, and code-compliant electrical system at home or in the office.</p>
-            </div>
+        <section class="hero" data-aos="zoom-in">
+            <h1 id="hero-heading">
+                <span id="main-typewriter-text"></span><span class="cursor" style="color: #00e5ff; animation: blink 1s step-end infinite;">_</span><br>
+                <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["ELECTRICAL SAFETY", "EXPERT INSIGHTS", "POWER EFFICIENCY"]'></span>
+            </h1>
+            <p>Advanced engineering insights for maintaining a safe, efficient, and code-compliant electrical system at home or in the office.</p>
         </section>
 
         <section class="content-section">
-            <h2>Advice from the KOHMZ Professional Team</h2>
+            <h2 data-aos="fade-down">Advice from the KOHMZ Professional Team</h2>
             
             <div class="tip-grid">
-                <details class="tip-card">
+                <details class="tip-card" data-aos="fade-up" data-aos-delay="100">
                     <summary>1. Panel Board Load Evaluation</summary>
-                    <div class="tip-content"><p>Flickering lights kapag bumukas ang aircon? Maaaring undersized ang inyong panel. Ang professional load evaluation ay sumisiguro na ang inyong breakers ay akma sa inyong power consumption para maiwasan ang overheating.</p></div>
+                    <div class="tip-content"><p>Flickering lights kapag bumukas ang aircon? Maaaring undersized ang inyong panel. Ang <strong>professional load evaluation</strong> ay sumisiguro na ang inyong breakers ay akma sa inyong power consumption para maiwasan ang overheating.</p></div>
                 </details>
-                <details class="tip-card">
+                <details class="tip-card" data-aos="fade-up" data-aos-delay="150">
                     <summary>2. Dedicated Circuit Rule</summary>
                     <div class="tip-content"><p>Ang mga heavy appliances gaya ng AC, Water Heaters, at Pumps ay dapat may sariling "Dedicated Circuit." Ang pagsasama ng mga ito sa ordinaryong outlets ay maaaring magdulot ng wire melting at sunog sa loob ng dingding.</p></div>
                 </details>
-                <details class="tip-card">
+                <details class="tip-card" data-aos="fade-up" data-aos-delay="200">
                     <summary>3. Sparking Outlet Diagnostics</summary>
                     <div class="tip-content"><p>Ang sparking outlet ay madalas senyales ng loose connection o arc-fault. Kapag nakakita ng sparks, i-off agad ang breaker. Ang loose wiring ay lumilikha ng high resistance na nagdudulot ng matinding init.</p></div>
                 </details>
-                <details class="tip-card">
+                <details class="tip-card" data-aos="fade-up" data-aos-delay="250">
                     <summary>4. Insulation Resistance (Megger Test)</summary>
                     <div class="tip-content"><p>Hindi nakikita ang mga hidden micro-shorts. Sa KOHMZ, gumagamit kami ng Megohmmeter para i-test ang wire insulation. Sinisiguro nito na walang sira ang mga kable sa loob ng inyong conduits.</p></div>
                 </details>
-                <details class="tip-card">
+                <details class="tip-card" data-aos="fade-up" data-aos-delay="300">
                     <summary>5. GFCI in Wet Areas</summary>
                     <div class="tip-content"><p>Ang mga outlet malapit sa lababo, banyo, o labas ng bahay ay DAPAT GFCI-protected. Kusa nitong pinuputol ang kuryente sa loob ng milliseconds kapag may na-detect na ground fault para maiwasan ang fatal shock.</p></div>
                 </details>
-                <details class="tip-card">
+                <details class="tip-card" data-aos="fade-up" data-aos-delay="350">
                     <summary>6. Surge Protective Devices (SPD)</summary>
                     <div class="tip-content"><p>Ang voltage spikes mula sa kidlat o grid ay maaaring sumira sa mamahaling gamit gaya ng Inverters at Smart TVs. Ang Panel-Level SPD ay nagsisilbing safety valve na nagtataboy ng excess voltage sa ground.</p></div>
                 </details>
-                <details class="tip-card">
+                <details class="tip-card" data-aos="fade-up" data-aos-delay="400">
                     <summary>7. Proper Grounding (Earthing)</summary>
                     <div class="tip-content"><p>Ang 3rd pin sa inyong plug ay para sa inyong kaligtasan. Ang tamang grounding system ay nagbibigay ng daan para sa fault current. Kung wala ito, ang mga metal na parte ng gamit niyo ay maaaring maging "live" at makakuryente.</p></div>
                 </details>
-                <details class="tip-card">
+                <details class="tip-card" data-aos="fade-up" data-aos-delay="450">
                     <summary>8. Extension Cord Safety</summary>
                     <div class="tip-content"><p>Ang extension cords ay temporary solution lamang. Ang daisy-chaining ay malaking fire hazard. Kung kulang ang saksakan, mas mainam na magpa-install ng bagong wall receptacle.</p></div>
                 </details>
-                <details class="tip-card">
+                <details class="tip-card" data-aos="fade-up" data-aos-delay="500">
                     <summary>9. LED Retrofitting Benefits</summary>
                     <div class="tip-content"><p>Ang paglipat sa LED ay hindi lang para sa tipid sa kuryente. Mas malamig tumakbo ang LEDs. Nababawasan nito ang init sa inyong fixtures, kaya mas tumatagal ang buhay ng wire insulation.</p></div>
                 </details>
-                <details class="tip-card">
+                <details class="tip-card" data-aos="fade-up" data-aos-delay="550">
                     <summary>10. CAD Electrical Drawings</summary>
                     <div class="tip-content"><p>Huwag magsimula ng renovation nang walang Electrical Plan. Ang CAD drawings at Load Schedules ang blueprint ng inyong system, kaya mas mabilis at mas mura ang troubleshooting o expansion sa hinaharap.</p></div>
                 </details>
             </div>
 
-            <section class="calc-section">
+            <section class="calc-section" data-aos="zoom-in" data-aos-delay="200">
                 <h3>Load & Monthly Cost Calculator</h3>
                 <div class="calc-grid">
                     <div>
@@ -246,61 +456,175 @@
                         <input type="number" id="rateInput" value="12">
                     </div>
                 </div>
-                <button class="calc-btn" onclick="fullCalculation()">Compute Consumption</button>
+                <button class="calc-btn" onclick="fullCalculation()"><i class="fas fa-calculator" style="margin-right: 8px;"></i> Compute Consumption</button>
                 
                 <div class="calc-results-wrap">
                     <div class="res-box"><span class="res-label">Amperes (Load)</span><span id="resAmps" class="res-value">0.00 A</span></div>
                     <div class="res-box"><span class="res-label">Monthly kWh</span><span id="resKwh" class="res-value">0.0 kWh</span></div>
-                    <div class="res-box" style="grid-column: span 2; background: rgba(37, 211, 102, 0.1);"><span class="res-label">Est. Monthly Cost</span><span id="resCost" class="res-value" style="font-size: 18px;">₱ 0.00</span></div>
+                    <div class="res-box" style="grid-column: span 2; background: rgba(37, 211, 102, 0.1); border: 1px solid rgba(37, 211, 102, 0.3);"><span class="res-label" style="color: #25d366;">Est. Monthly Cost</span><span id="resCost" class="res-value" style="font-size: 22px; color: #25d366;">₱ 0.00</span></div>
                 </div>
             </section>
 
-            <div class="cta-box">
-                <p style="font-size: 14px;">Experiencing flickering lights or unusual burning smells?</p>
-                <p style="font-size: 12px; color: #bbb;">Don't wait for a system failure. Contact us for professional diagnostics.</p>
-                <br>
+            <div class="cta-box" data-aos="fade-up">
+                <h2>Experiencing electrical issues?</h2>
+                <p>Don't wait for a system failure. Contact our engineering team for professional diagnostics and immediate hazard mitigation.</p>
                 <div class="cta-buttons-container">
-                    <a href="https://wa.me/639266174131" target="_blank" class="cta-button btn-whatsapp">WhatsApp Us</a>
-                    <a href="https://m.me/100093260504264" target="_blank" class="cta-button btn-messenger">Messenger Us</a>
+                    <a href="https://wa.me/639266174131" target="_blank" class="cta-button btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+                    <a href="https://m.me/100093260504264" target="_blank" class="cta-button btn-messenger"><i class="fab fa-facebook-messenger"></i> Messenger Us</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="footer-content">
-            <p><strong>KOHMZ ELECTRICAL DESIGN AND BUILD</strong></p>
-            <p>Phone: (+639266174131) | Email: kohmzelectrical@gmail.com</p>
-            <p>FB Page: <a href="https://m.me/100093260504264">KOHMZ Electrical Design & Build</a> | LinkedIn Page: <a href="#">KOHMZ Electrical Design and Build</a></p>
-            <hr style="margin:15px auto; border:0; border-top:1px solid #444; max-width: 800px;">
-            <p>Copyright © 2026 KOHMZ™ Electrical Design and Build™ All Rights Reserved.</p>
-            <p><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+    <footer aria-label="Site Footer">
+        <div class="logo" style="justify-content: center; margin-bottom: 20px;">
+            <img src="logo.jpg" alt="KOHMZ Electrical Services logo" width="35" height="35" loading="lazy" style="border: 1px solid #00e5ff; border-radius: 4px;">
+            <span class="logo-text" style="font-size: 22px; font-weight: 900; color: #fff; font-family: 'Segoe UI', sans-serif;">KOHMZ <span style="color: #ffb703;">Electrical</span></span>
         </div>
+        <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 12px; line-height: 1.6;">Your trusted partner in structural power integrity. We specialize in bringing world-class electrical engineering standards to every Philippine home and business facility.</p>
+        <p>&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
+        <nav class="footer-links" aria-label="Footer Navigation">
+            <p style="margin-bottom: 5px; color: #ffb703; font-weight: 800; font-size: 12px;">Technical Governance | Asset Protection | PEC-Compliant Architecture</p>
+            <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
+            <a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
+            <a href="about-us.html">About Us</a>
+        </nav>
     </footer>
 
+    <div class="kohmz-bot-wrapper" id="draggableBot">
+        <div class="bot-value-tag" id="dragHint">⚡ KOHMZ Expert AI</div>
+
+        <div class="kohmz-chat-window" id="chatWindow">
+            <div class="kohmz-chat-header">
+                <span>UNIT-01: SYSTEM ACTIVE</span>
+                <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
+            </div>
+            <div class="kohmz-chat-body" id="chatBody">
+                <div class="chat-bubble">Initialization complete. Kumusta! Ako ang iyong Cyber-Assistant. Ready na tayo para sa iyong project optimization.</div>
+            </div>
+            <div class="kohmz-chat-options">
+                <button class="chat-btn" onclick="botAction('audit')" style="border-color:#ffd700; color:#ffd700;">
+                    <i class="fas fa-bolt"></i> > [RUN_AUDIT_ROUTINE]
+                </button>
+                <button class="chat-btn" onclick="botAction('fb')">
+                    <i class="fab fa-facebook-messenger"></i> > [FB_COMM_LINK]
+                </button>
+                <button class="chat-btn" onclick="botAction('wa')">
+                    <i class="fab fa-whatsapp"></i> > [DIRECT_WHATSAPP]
+                </button>
+            </div>
+        </div>
+
+        <div class="kohmz-bot-toggle" id="botToggle">
+            <lottie-player 
+                src="Live chatbot.json" 
+                background="transparent" 
+                speed="1" 
+                style="width: 100%; height: 100%;" 
+                loop 
+                autoplay>
+            </lottie-player>
+            <div class="bot-badge" id="botBadge">!</div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
+        // INIT ANIMATIONS
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ duration: 800, once: true, offset: 50 });
+            }
+        });
+
+        // MOBILE MENU LOGIC
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         const dropdowns = document.querySelectorAll('.dropdown');
 
-        menuToggle.addEventListener('click', () => {
-            navList.classList.toggle('active');
-            const icon = menuToggle.querySelector('i');
-            if (navList.classList.contains('active')) {
-                icon.className = 'fas fa-times';
-            } else {
-                icon.className = 'fas fa-bars';
+        if (menuToggle && navList) {
+            menuToggle.addEventListener('click', () => {
+                navList.classList.toggle('active');
+                const icon = menuToggle.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
+        }
+
+        dropdowns.forEach(dropdown => {
+            const dropbtn = dropdown.querySelector('.dropbtn');
+            const handleDropdownToggle = (e) => {
+                if (window.innerWidth <= 992 || e.type === 'keydown' || e.type === 'touchstart') {
+                    if(dropbtn.getAttribute('href') === '#') e.preventDefault(); 
+                    
+                    dropdowns.forEach(d => {
+                        if (d !== dropdown) {
+                            d.classList.remove('active');
+                        }
+                    });
+                    dropdown.classList.toggle('active');
+                }
+            };
+            if(dropbtn) {
+                dropbtn.addEventListener('click', handleDropdownToggle);
+                dropbtn.addEventListener('touchstart', handleDropdownToggle, {passive: true});
             }
         });
 
-        dropdowns.forEach(dropdown => {
-            dropdown.addEventListener('click', (e) => {
-                if (window.innerWidth <= 992) {
-                    dropdown.classList.toggle('active');
-                }
-            });
-        });
+        // TYPEWRITER LOGIC
+        const mainTypeText = "TECHNICAL INSIGHTS & ";
+        let mainTypeIndex = 0;
+        const mainTypeElement = document.getElementById("main-typewriter-text");
+        function startTyping() {
+            if (mainTypeElement && mainTypeIndex < mainTypeText.length) {
+                mainTypeElement.innerHTML += mainTypeText.charAt(mainTypeIndex++);
+                setTimeout(startTyping, 60);
+            }
+        }
+        startTyping();
 
+        class TypeWriter {
+            constructor(txtElement, words, wait = 3000) {
+                this.txtElement = txtElement;
+                this.words = words;
+                this.txt = '';
+                this.wordIndex = 0;
+                this.wait = parseInt(wait, 10);
+                this.isDeleting = false;
+                this.type();
+            }
+            type() {
+                const current = this.wordIndex % this.words.length;
+                const fullTxt = this.words[current];
+                if(this.isDeleting) {
+                    this.txt = fullTxt.substring(0, this.txt.length - 1);
+                } else {
+                    this.txt = fullTxt.substring(0, this.txt.length + 1);
+                }
+                this.txtElement.innerHTML = `<span class="txt">${this.txt}</span>`;
+                let typeSpeed = 100;
+                if(this.isDeleting) { typeSpeed /= 2; }
+                if(!this.isDeleting && this.txt === fullTxt) {
+                    typeSpeed = this.wait;
+                    this.isDeleting = true;
+                } else if(this.isDeleting && this.txt === '') {
+                    this.isDeleting = false;
+                    this.wordIndex++;
+                    typeSpeed = 500;
+                }
+                setTimeout(() => this.type(), typeSpeed);
+            }
+        }
+
+        const txtElement = document.querySelector('.txt-type');
+        if (txtElement) {
+            const wordsData = txtElement.getAttribute('data-words');
+            const wait = txtElement.getAttribute('data-wait');
+            if (wordsData) new TypeWriter(txtElement, JSON.parse(wordsData), wait);
+        }
+
+        // CALCULATOR LOGIC
         function fullCalculation() {
             const watts = document.getElementById('wattsInput').value;
             const hours = document.getElementById('hoursInput').value || 0;
@@ -318,233 +642,76 @@
                 alert("Pakisuyong ilagay ang Watts (P) para makapag-compute.");
             }
         }
+
+        // ========================================= //
+        // UNTOUCHED: EXACT CHATBOT SCRIPT FROM USER //
+        // ========================================= //
+        const wrapper = document.getElementById('draggableBot');
+        const toggle = document.getElementById('botToggle');
+        const chat = document.getElementById('chatWindow');
+        const badge = document.getElementById('botBadge');
+        const hint = document.getElementById('dragHint');
+
+        let isDragging = false;
+        let startX, startY, xOffset = 0, yOffset = 0;
+        let dragStartTime; 
+
+        function toggleBotWindow() {
+            if (chat.style.display === 'flex') {
+                chat.style.display = 'none';
+                hint.innerHTML = "⚡ KOHMZ Expert AI";
+            } else {
+                chat.style.display = 'flex';
+                badge.style.display = 'none';
+                hint.innerHTML = "🖐️ Drag to Move";
+            }
+        }
+
+        const dragStart = (e) => {
+            isDragging = true;
+            dragStartTime = Date.now();
+            const clientX = (e.type === "touchstart") ? e.touches[0].clientX : e.clientX;
+            const clientY = (e.type === "touchstart") ? e.touches[0].clientY : e.clientY;
+            startX = clientX - xOffset;
+            startY = clientY - yOffset;
+        };
+
+        const dragMove = (e) => {
+            if (!isDragging) return;
+            if (e.cancelable) e.preventDefault();
+            const clientX = (e.type === "touchmove") ? e.touches[0].clientX : e.clientX;
+            const clientY = (e.type === "touchmove") ? e.touches[0].clientY : e.clientY;
+            
+            xOffset = clientX - startX;
+            yOffset = clientY - startY;
+
+            wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
+        };
+
+        const dragEnd = (e) => {
+            if (!isDragging) return;
+            const dragDuration = Date.now() - dragStartTime;
+            isDragging = false;
+            
+            if (dragDuration < 200) {
+                toggleBotWindow();
+            }
+        };
+
+        toggle.addEventListener('mousedown', dragStart);
+        toggle.addEventListener('touchstart', dragStart, {passive: false});
+        window.addEventListener('mousemove', dragMove);
+        window.addEventListener('touchmove', dragMove, {passive: false});
+        window.addEventListener('mouseup', dragEnd);
+        window.addEventListener('touchend', dragEnd);
+
+        function botAction(type) {
+            if(type === 'audit') window.location.href = 'https://kohmzelectrical.github.io/kohmz-electrical-services/book-now.html';
+            else if(type === 'fb') window.open('https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/', '_blank');
+            else if(type === 'wa') window.location.href = 'https://wa.me/639266174131';
+        }
+
+        setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 6000);
     </script>
-<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-.kohmz-bot-wrapper {
-    position: fixed;
-    bottom: 120px;
-    right: 20px;
-    z-index: 999999;
-    font-family: 'Share Tech Mono', monospace;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    touch-action: none;
-    user-select: none;
-}
-
-.bot-value-tag {
-    background: #00e5ff;
-    color: #000;
-    padding: 5px 12px;
-    font-size: 10px;
-    font-weight: bold;
-    border-radius: 4px;
-    margin-bottom: 8px;
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
-    cursor: grab;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-.kohmz-chat-window {
-    display: none;
-    width: 300px;
-    max-width: 85vw;
-    background: rgba(8, 16, 24, 0.98);
-    border: 1px solid #00e5ff;
-    border-top: 4px solid #00e5ff;
-    box-shadow: 0 10px 50px rgba(0,0,0,0.9);
-    margin-bottom: 12px;
-    flex-direction: column;
-    backdrop-filter: blur(10px);
-}
-
-.kohmz-chat-header {
-    background: #000;
-    color: #00e5ff;
-    padding: 12px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
-}
-
-.kohmz-chat-body {
-    padding: 15px;
-    max-height: 220px;
-    overflow-y: auto;
-}
-
-.chat-bubble {
-    background: rgba(255, 255, 255, 0.05);
-    color: #e0faff;
-    padding: 10px;
-    border-radius: 0 12px 12px 12px;
-    margin-bottom: 10px;
-    border-left: 2px solid #00e5ff;
-    font-size: 12px;
-}
-
-.kohmz-chat-options {
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.chat-btn {
-    background: transparent;
-    color: #fff;
-    border: 1px solid #00e5ff;
-    padding: 12px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    cursor: pointer;
-    text-align: left;
-    text-transform: uppercase;
-    transition: 0.3s;
-}
-
-.chat-btn:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 10px #00e5ff; }
-
-.kohmz-bot-toggle {
-    width: 85px; 
-    height: 85px;
-    background: transparent;
-    cursor: grab;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.bot-badge {
-    position: absolute; top: 12px; right: 12px;
-    background: #ff3b3b; color: #fff; font-size: 10px;
-    width: 20px; height: 20px; border-radius: 50%;
-    display: flex; justify-content: center; align-items: center;
-    box-shadow: 0 0 10px #ff3b3b;
-    z-index: 10;
-}
-
-@media (max-width: 480px) {
-    .kohmz-chat-window { width: 260px; }
-    .kohmz-bot-toggle { width: 75px; height: 75px; }
-}
-</style>
-
-<div class="kohmz-bot-wrapper" id="draggableBot">
-    <div class="bot-value-tag" id="dragHint">⚡ KOHMZ Expert AI</div>
-
-    <div class="kohmz-chat-window" id="chatWindow">
-        <div class="kohmz-chat-header">
-            <span>UNIT-01: SYSTEM ACTIVE</span>
-            <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
-        </div>
-        <div class="kohmz-chat-body" id="chatBody">
-            <div class="chat-bubble">Initialization complete. Kumusta! Ako ang iyong Cyber-Assistant. Ready na tayo para sa iyong project optimization.</div>
-        </div>
-        <div class="kohmz-chat-options">
-            <button class="chat-btn" onclick="botAction('audit')" style="border-color:#ffd700; color:#ffd700;">
-                <i class="fas fa-bolt"></i> > [RUN_AUDIT_ROUTINE]
-            </button>
-            <button class="chat-btn" onclick="botAction('fb')">
-                <i class="fab fa-facebook-messenger"></i> > [FB_COMM_LINK]
-            </button>
-            <button class="chat-btn" onclick="botAction('wa')">
-                <i class="fab fa-whatsapp"></i> > [DIRECT_WHATSAPP]
-            </button>
-        </div>
-    </div>
-
-    <div class="kohmz-bot-toggle" id="botToggle">
-        <lottie-player 
-            src="Live chatbot.json" 
-            background="transparent" 
-            speed="1" 
-            style="width: 100%; height: 100%;" 
-            loop 
-            autoplay>
-        </lottie-player>
-        <div class="bot-badge" id="botBadge">!</div>
-    </div>
-</div>
-
-<script>
-const wrapper = document.getElementById('draggableBot');
-const toggle = document.getElementById('botToggle');
-const chat = document.getElementById('chatWindow');
-const badge = document.getElementById('botBadge');
-const hint = document.getElementById('dragHint');
-
-let isDragging = false;
-let startX, startY, xOffset = 0, yOffset = 0;
-let dragStartTime; 
-
-function toggleBotWindow() {
-    if (chat.style.display === 'flex') {
-        chat.style.display = 'none';
-        hint.innerHTML = "⚡ KOHMZ Expert AI";
-    } else {
-        chat.style.display = 'flex';
-        badge.style.display = 'none';
-        hint.innerHTML = "🖐️ Drag to Move";
-    }
-}
-
-const dragStart = (e) => {
-    isDragging = true;
-    dragStartTime = Date.now();
-    const clientX = (e.type === "touchstart") ? e.touches[0].clientX : e.clientX;
-    const clientY = (e.type === "touchstart") ? e.touches[0].clientY : e.clientY;
-    startX = clientX - xOffset;
-    startY = clientY - yOffset;
-};
-
-const dragMove = (e) => {
-    if (!isDragging) return;
-    if (e.cancelable) e.preventDefault();
-    const clientX = (e.type === "touchmove") ? e.touches[0].clientX : e.clientX;
-    const clientY = (e.type === "touchmove") ? e.touches[0].clientY : e.clientY;
-    
-    xOffset = clientX - startX;
-    yOffset = clientY - startY;
-
-    // GAMITIN ANG BACKTICKS ( ` ) DITO SA ILALIM:
-    wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
-};
-
-const dragEnd = (e) => {
-    if (!isDragging) return;
-    const dragDuration = Date.now() - dragStartTime;
-    isDragging = false;
-    
-    if (dragDuration < 200) {
-        toggleBotWindow();
-    }
-};
-
-toggle.addEventListener('mousedown', dragStart);
-toggle.addEventListener('touchstart', dragStart, {passive: false});
-window.addEventListener('mousemove', dragMove);
-window.addEventListener('touchmove', dragMove, {passive: false});
-window.addEventListener('mouseup', dragEnd);
-window.addEventListener('touchend', dragEnd);
-
-function botAction(type) {
-    if(type === 'audit') window.location.href = 'https://kohmzelectrical.github.io/kohmz-electrical-services/book-now.html';
-    else if(type === 'fb') window.open('https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/', '_blank');
-    else if(type === 'wa') window.location.href = 'https://wa.me/639266174131';
-}
-
-setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 6000);
-</script>
-
 </body>
 </html>
