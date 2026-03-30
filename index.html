@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="x_KzHj0x9Ygn2C3ffPnJ8aQTC4EE3n4AhWGtoNODr_k" />
     
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S79X3QL1TV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-S79X3QL1TV');
+    </script>
+    
     <title>KOHMZ Electrical Design and Build | Technical Governance & Power Architecture</title>
     <meta name="description" content="Top-tier Electrical Contractor in the Philippines providing PEC-compliant power systems and Technical Governance for Commercial and Residential properties.">
     <meta name="keywords" content="Electrical Contractor Philippines, Commercial Electrical Design, Residential Rewiring, PEC Compliant, Solar Installation, KOHMZ Electrical">
@@ -31,7 +40,7 @@
       "image": "logo.jpg",
       "description": "Top-tier Electrical Contractor in the Philippines providing PEC-compliant power systems and Technical Governance.",
       "telephone": "+639266174131",
-      "url": "https://kohmzelectrical.com", 
+      "url": "https://kohmzelectrical.github.io/kohmz-electrical-services/", 
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Philippines",
@@ -208,7 +217,7 @@
             color: #ffffff; text-shadow: 0 0 15px var(--neon-gold);
         }
         .hero p {
-            font-size: 14px; margin: 0 auto 30px; line-height: 1.8; font-weight: 400; opacity: 0.95; color: #cbd5e1;
+            font-size: 14px; margin: 0 auto 30px; line-height: 1.8; font-weight: 400; opacity: 0.95; color: #cbd5e1; min-height: 80px;
         }
 
         /* BUTTONS */
@@ -234,7 +243,7 @@
             padding: 40px 10%; border-bottom: 1px solid var(--power-glow); flex-wrap: wrap; gap: 20px;
         }
         .stat-item { text-align: center; }
-        .stat-item h4 { font-size: 24px; color: var(--neon-gold); margin: 0; text-shadow: 0 0 10px var(--neon-gold); }
+        .stat-item strong { display: block; font-size: 24px; color: var(--neon-gold); margin: 0; text-shadow: 0 0 10px var(--neon-gold); font-weight: bold; }
         .stat-item p { font-size: 10px; text-transform: uppercase; color: #94a3b8; margin-top: 5px; font-weight: bold; }
 
         /* TRUST BAR */
@@ -357,12 +366,17 @@
         .adv-tag {
             background: rgba(0, 229, 255, 0.1); border: 1px solid var(--cyber-blue); color: var(--cyber-blue);
             font-size: 10px; padding: 6px 12px; border-radius: 4px; font-weight: 800; text-transform: uppercase;
-            display: inline-flex; align-items: center; gap: 5px; animation: pulse 2s infinite;
+            display: inline-flex; align-items: center; gap: 5px; position: relative;
         }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(0, 229, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0); }
+        .adv-tag::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: inherit; border: 1px solid var(--cyber-blue);
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+            box-sizing: border-box; pointer-events: none;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
         }
 
         /* FLOATING ACTION BUTTONS */
@@ -384,7 +398,7 @@
             background: #000; color: white; text-align: center; padding: 60px 20px 40px;
             border-top: 2px solid var(--neon-gold); position: relative;
         }
-        footer a { color: #ffb703; text-decoration: none; transition: 0.3s; }
+        footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; }
         footer a:hover, footer a:focus { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
         .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
     </style>
@@ -409,7 +423,7 @@
 
     <header>
         <a href="index.html" class="logo" aria-label="KOHMZ Electrical Services Homepage">
-            <img src="logo.jpg" alt="KOHMZ Electrical Services logo" loading="lazy">
+            <img src="logo.jpg" alt="KOHMZ Electrical Services logo" width="35" height="35" fetchpriority="high">
             <span class="logo-text">KOHMZ <span>Electrical</span></span>
         </a>
         <button class="menu-toggle" id="mobile-menu" aria-label="Open Mobile Menu" aria-expanded="false">
@@ -460,10 +474,11 @@
         </section>
 
         <section class="stats-bar" data-aos="fade-up" aria-label="Company Statistics">
-            <div class="stat-item"><h4>500+</h4><p>Projects Delivered</p></div>
-            <div class="stat-item"><h4>100%</h4><p>PEC Code Compliance</p></div>
-            <div class="stat-item"><h4>24/7</h4><p>Specialist Support</p></div>
-            <div class="stat-item"><h4>ZERO</h4><p>System Failures</p></div>
+            <h2 class="sr-only">Our Track Record</h2>
+            <div class="stat-item"><strong>500+</strong><p>Projects Delivered</p></div>
+            <div class="stat-item"><strong>100%</strong><p>PEC Code Compliance</p></div>
+            <div class="stat-item"><strong>24/7</strong><p>Specialist Support</p></div>
+            <div class="stat-item"><strong>ZERO</strong><p>System Failures</p></div>
         </section>
 
         <div class="trust-bar" data-aos="fade-up" aria-label="Trust Indicators">
@@ -551,13 +566,11 @@
             <h2 id="video-heading" data-aos="fade-up">Precision in Motion</h2>
             <p class="section-subtitle">Watch our technical specialists execute the <strong>KOHMZ Standard</strong> in real-time. Quality workmanship, zero compromises.</p>
             <div style="max-width: 850px; margin: 0 auto; border: 4px solid var(--neon-gold); border-radius: 15px; overflow: hidden; box-shadow: 0 0 40px var(--power-glow);" data-aos="zoom-in">
-                
-          <video width="100%" height="auto" controls playsinline preload="metadata" poster="logo.jpg" aria-label="Video demonstrating KOHMZ Electrical installation precision">
-    <source src="presentation%20kohmz%20electrical%20design%20and%20build.pptx.webm" type="video/webm">
-    <track kind="captions" src="" srclang="en" label="English captions" default>
-    Your browser does not support the video tag.
-</video>
-
+                <video width="100%" height="auto" controls playsinline preload="metadata" poster="logo.jpg" aria-label="Video demonstrating KOHMZ Electrical installation precision">
+                    <source src="presentation%20kohmz%20electrical%20design%20and%20build.pptx.webm" type="video/webm">
+                    <track kind="captions" src="" srclang="en" label="English captions" default>
+                    Your browser does not support the video tag.
+                </video>
             </div>
             
             <div style="margin-top: 40px; text-align: left; max-width: 850px; margin-left: auto; margin-right: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;" data-aos="fade-up">
@@ -711,7 +724,7 @@
 
     <footer aria-label="Site Footer">
         <div class="logo" style="justify-content: center; margin-bottom: 20px;">
-            <img src="logo.jpg" alt="KOHMZ Electrical Services logo" loading="lazy">
+            <img src="logo.jpg" alt="KOHMZ Electrical Services logo" width="35" height="35" loading="lazy">
             <span class="logo-text">KOHMZ <span>Electrical</span></span>
         </div>
         <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 12px; line-height: 1.6;">Your trusted partner in structural power integrity. We specialize in bringing world-class electrical engineering standards to every Philippine home and business facility.</p>
