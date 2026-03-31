@@ -59,9 +59,45 @@
         }
         @keyframes flowBolt { 0% { transform: translateY(-200px); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(110vh); opacity: 0; } }
 
-        .tech-bar { background: linear-gradient(90deg, #d49800, #ffb703, #d49800); background-size: 200% auto; color: #0d1b2a; padding: 10px; font-weight: 800; border-bottom: 2px solid #0d1b2a; text-align: center; box-shadow: 0 0 20px var(--power-glow); position: relative; z-index: 1001; animation: gradientShine 3s linear infinite; }
+        /* 🔥 ALTERNATE POPPING EFFECT (TECH-BAR) 🔥 */
+        .tech-bar { 
+            background: linear-gradient(90deg, #d49800, #ffb703, #d49800); background-size: 200% auto; 
+            color: #0d1b2a; font-weight: 900; border-bottom: 2px solid #0d1b2a; 
+            text-align: center; box-shadow: 0 0 20px var(--power-glow); position: relative; 
+            z-index: 1001; animation: gradientShine 3s linear infinite; 
+            height: 38px; /* Fixed height para hindi bumababa ang page pag nawala yung text */
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
         @keyframes gradientShine { to { background-position: 200% center; } }
-        .tech-bar-content { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        
+        .tech-bar-content { 
+            position: relative; width: 100%; height: 100%; 
+            display: flex; align-items: center; justify-content: center; 
+        }
+        
+        .tech-bar-content span { 
+            position: absolute; width: 100%; text-align: center; 
+            font-size: 11px; text-transform: uppercase; letter-spacing: 2px; 
+            opacity: 0; transform: scale(0.8) translateY(15px); 
+            animation: popTicker 15s infinite ease-in-out; 
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        
+        /* Delays para salit-salitan silang lalabas */
+        .tech-bar-content span:nth-child(1) { animation-delay: 0s; }
+        .tech-bar-content span:nth-child(2) { animation-delay: 3s; }
+        .tech-bar-content span:nth-child(3) { animation-delay: 6s; }
+        .tech-bar-content span:nth-child(4) { animation-delay: 9s; }
+        .tech-bar-content span:nth-child(5) { animation-delay: 12s; }
+
+        @keyframes popTicker {
+            0% { opacity: 0; transform: scale(0.8) translateY(15px); }
+            4% { opacity: 1; transform: scale(1.1) translateY(0); } /* Pop effect */
+            8% { opacity: 1; transform: scale(1) translateY(0); }   /* Settle */
+            17% { opacity: 1; transform: scale(1) translateY(0); }  /* Hold screen */
+            20% { opacity: 0; transform: scale(0.9) translateY(-15px); } /* Fade up */
+            100% { opacity: 0; transform: scale(0.8) translateY(15px); }
+        }
 
         /* HEADER & NAVIGATION */
         header { background: rgba(8, 16, 24, 0.95); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
@@ -188,11 +224,11 @@
     
     <div class="tech-bar">
         <div class="tech-bar-content">
-            <span>⚡ TECHNICAL GOVERNANCE</span>
-            <span>⚡ ASSET PROTECTION</span>
-            <span>⚡ PEC-COMPLIANT ARCHITECTURE</span>
-            <span>⚡ 24/7 SPECIALIST RESPONSE</span>
-            <span>⚡ RESIDENTIAL & COMMERCIAL TECHNICAL MASTERY ⚡</span>
+            <span>⚡ TECHNICAL GOVERNANCE ⚡</span>
+            <span>⚡ ASSET PROTECTION ⚡</span>
+            <span>⚡ PEC-COMPLIANT ARCHITECTURE ⚡</span>
+            <span>⚡ 24/7 SPECIALIST RESPONSE ⚡</span>
+            <span>⚡ RESIDENTIAL & COMMERCIAL MASTERY ⚡</span>
         </div>
     </div>
 
