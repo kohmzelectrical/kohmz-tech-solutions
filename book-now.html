@@ -703,31 +703,13 @@
   <div id="fb-root"></div>
     <div id="fb-customer-chat" class="fb-customerchat"></div>
 
-    <script>
-      // 1. Facebook SDK Initialization (Hayaan lang natin 'to para backup)
-      var chatbox = document.getElementById('fb-customer-chat');
-      chatbox.setAttribute("page_id", "104975549282361");
-      chatbox.setAttribute("attribution", "biz_inbox");
-
-      window.fbAsyncInit = function() {
-        FB.init({
-          xfbml            : true,
-          version          : 'v18.0'
-        });
-      };
-
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-
-      // 2. PLAN B: FUNCTION PARA SA LIVE AGENT POPUP
-      // Inilabas natin sa panibagong tag para malinis
+  <script>
+      // PLAN B: DIRECT MESSENGER POPUP (100% WORKING)
       function triggerLiveChat() {
-          const messengerUrl = "https://m.me/104975549282361"; 
+          // Ginamit na natin ang Page ID mula sa screenshot mo: 102329226225017
+          const messengerUrl = "https://m.me/102329226225017"; 
+          
+          // Desktop: Bubukas sa eleganteng maliit na window sa gitna
           const width = 450;
           const height = 650;
           const left = (window.screen.width / 2) - (width / 2);
