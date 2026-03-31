@@ -89,13 +89,32 @@
         .logo-text { font-size: 22px; margin: 0; font-weight: 900; color: #fff; }
         .logo-text span { color: #ffb703; }
 
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; }
-        .nav-links li a { 
-            color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; 
-            text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; 
-            font-family: 'Share Tech Mono', monospace; transition: 0.3s;
-        }
-        .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
+        .nav-links { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+    display: flex; 
+    align-items: center; 
+    gap: 30px; 
+}
+
+/* --- ETO YUNG DINAGDAG NATIN NA WALA KA PA --- */
+.nav-links li {
+    position: relative;
+}
+
+.nav-links li a { 
+    color: #e0faff; 
+    text-decoration: none; 
+    font-size: 12px; 
+    font-weight: 600;  
+    text-transform: uppercase; 
+    letter-spacing: 1px; 
+    padding: 10px 5px;  
+    font-family: 'Share Tech Mono', monospace; 
+    transition: 0.3s;
+}
+.nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
 
       .dropdown-content { 
     display: none; 
