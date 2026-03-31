@@ -118,9 +118,71 @@ details[open] { border-color: var(--cyber-blue); box-shadow: 0 0 15px rgba(0, 22
 summary { font-size: 13px; font-weight: 800; color: #ffb703; padding: 20px 25px; cursor: pointer; outline: none; border-left: 5px solid #ffb703; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
 summary:hover, summary:focus { background: rgba(255,183,3,0.05); outline: 2px solid var(--cyber-blue); outline-offset: -2px; }
 details p { font-size: 12px; padding: 25px; margin: 0; color: #cbd5e1; line-height: 1.9; background: rgba(0,0,0,0.2); }
-.vip-advisory { background: rgba(13, 27, 42, 0.9); border-left: 6px solid #00e5ff; padding: 35px; border-radius: 8px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; max-width: 850px; margin: 0 auto 50px; border: 1px solid rgba(0, 229, 255, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.adv-tag { background: rgba(0, 229, 255, 0.1); border: 1px solid var(--cyber-blue); color: var(--cyber-blue); font-size: 10px; padding: 6px 12px; border-radius: 4px; font-weight: 800; text-transform: uppercase; display: inline-flex; align-items: center; gap: 5px; position: relative; }
-.adv-tag::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: inherit; border: 1px solid var(--cyber-blue); animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; box-sizing: border-box; pointer-events: none; }
+/* --- OPTIMIZED VIP ADVISORY --- */
+.vip-advisory { 
+    background: rgba(13, 27, 42, 0.9); 
+    border-left: 6px solid #00e5ff; 
+    padding: 30px; 
+    border-radius: 8px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start; 
+    text-align: left; 
+    max-width: 850px; 
+    margin: 0 auto 50px; 
+    border: 1px solid rgba(0, 229, 255, 0.2); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+}
+
+.adv-tag { 
+    background: rgba(0, 229, 255, 0.1); 
+    border: 1px solid var(--cyber-blue); 
+    color: var(--cyber-blue); 
+    font-size: 10px; 
+    padding: 6px 12px; 
+    border-radius: 4px; 
+    font-weight: 800; 
+    text-transform: uppercase; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 5px; 
+    position: relative; 
+}
+
+.adv-tag::after { 
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    border-radius: inherit; 
+    border: 1px solid var(--cyber-blue); 
+    animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; 
+    box-sizing: border-box; 
+    pointer-events: none; 
+}
+
+/* 🔥 MOBILE FIX: Dito natin liliitan ang space sa phone 🔥 */
+@media (max-width: 768px) {
+    .vip-advisory {
+        padding: 15px; 
+        margin: 0 10px 40px; 
+    }
+    .vip-advisory > div {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 15px !important;
+    }
+    .vip-advisory h3 {
+        font-size: 14px !important;
+    }
+    .vip-advisory .cta-button {
+        width: 100%; 
+        margin-left: 0 !important;
+        text-align: center;
+    }
+}
 @keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.4); opacity: 0; } }
 .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
 .float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
@@ -465,8 +527,8 @@ Your browser does not support the video tag.
 <p>&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
 <nav class="footer-links" aria-label="Footer Navigation">
 <p style="margin-bottom: 5px; color: #ffb703; font-weight: 800;">Technical Governance | Asset Protection | PEC-Compliant Architecture</p>
-<a href="privacy-policy.html" style="font-weight: bold; text-decoration: underline;">Privacy Policy</a> &nbsp;|&nbsp; 
-<a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
+<a href="privacy-policy.html" style="font-weight: bold; text-decoration: underline;">Privacy Policy</a> &nbsp;|&nbsp; 
+<a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
 <a href="about-us.html">About Us</a>
 </nav>
 </footer>
@@ -499,53 +561,52 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
 <script>
-    // --- 1. CONFIGURATION & MOBILE AUDIO UNLOCKER ---
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
-    
     let speechAllowed = false;
-    document.addEventListener('click', () => {
+
+    // --- 1. MOBILE AUDIO UNLOCKER (The "Key" for Mobile) ---
+    function unlockMobileAudio() {
         if (!speechAllowed && window.speechSynthesis) {
-            const utterance = new SpeechSynthesisUtterance("");
+            const utterance = new SpeechSynthesisUtterance(" "); // Silent prime
+            utterance.volume = 0;
             window.speechSynthesis.speak(utterance);
             speechAllowed = true;
-            console.log("UNIT-01: Audio Engine Unlocked");
+            console.log("UNIT-01: Audio Engine Primed for Mobile");
         }
-    }, { once: true });
+    }
+    // Unlock sa unang tap sa kahit saan sa website
+    document.addEventListener('click', unlockMobileAudio, { once: true });
 
     // --- 2. LEXIE LORE VOICE ENGINE ---
     function speakText(text) {
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel(); 
 
-        let naturalText = text
-            .replace(/\./g, '... ') 
-            .replace(/,/g, ',.. ')
-            .replace(/\?/g, '?.. ');
-
+        // Naglalagay ng pauses (...) para sa seductive effect
+        let naturalText = text.replace(/\./g, '... ').replace(/,/g, ',.. ').replace(/\?/g, '?.. ');
         const speech = new SpeechSynthesisUtterance(naturalText);
         const voices = window.speechSynthesis.getVoices();
         
         const sexyVoice = voices.find(v => 
-            v.name.includes('Samantha') || 
-            v.name.includes('Aria') || 
-            v.name.includes('Google US English') ||
-            v.name.includes('Female') ||
+            v.name.includes('Samantha') || v.name.includes('Aria') || 
+            v.name.includes('Google US English') || v.name.includes('Female') ||
             v.name.includes('Enhanced')
         ) || voices[0];
 
         if (sexyVoice) speech.voice = sexyVoice;
         speech.lang = 'en-US'; 
         
-        // 🧪 THE LEXIE FORMULA (As requested: 1.10 Pitch / 0.85 Rate)
-        speech.pitch = 1.10; 
-        speech.rate = 0.85;  
+        // 🔥 CALIBRATED VALUES:
+        speech.pitch = 1.15; 
+        speech.rate = 0.89;  
         speech.volume = 1.0;
 
-        setTimeout(() => {
-            window.speechSynthesis.speak(speech);
-        }, 50);
+        // Hack para sa iOS/Safari na madalas tumitigil ang boses
+        window.speechSynthesis.resume();
+        setTimeout(() => { window.speechSynthesis.speak(speech); }, 50);
     }
 
+    // --- 3. CHATBOT LOGIC ---
     window.toggleBotWindow = function() {
         const chat = document.getElementById('chatWindow');
         const badge = document.getElementById('botBadge');
@@ -558,24 +619,26 @@ Your browser does not support the video tag.
             chat.style.display = 'flex';
             if (badge) badge.style.display = 'none';
             if (hint) hint.innerHTML = "🖐️ Drag to Move";
+            unlockMobileAudio(); // Unlock pag bukas ng window
         }
     };
 
-    // --- 3. MAIN AI LOGIC (Gemini Call) ---
     window.askGemini = async function() {
         const inputField = document.getElementById('userQuery');
         const chatBody = document.getElementById('chatBody');
-        if (!inputField || !chatBody) return;
-
+        if (!inputField) return;
         const userMsg = inputField.value.trim();
         if (!userMsg) return;
 
-        chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px; white-space: pre-wrap;">YOU: ${userMsg}</div>`;
+        // 🔥 IMPORTANT: I-prime ang audio engine habang nag-hihintay sa AI
+        unlockMobileAudio(); 
+
+        chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
         inputField.value = ""; 
         chatBody.scrollTop = chatBody.scrollHeight;
 
         const loadingId = "loading-" + Date.now();
-        chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Analyzing...</div>`;
+        chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="border-left: 2px solid #00e5ff;">UNIT-01: Processing request...</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
 
         try {
@@ -584,47 +647,43 @@ Your browser does not support the video tag.
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: userMsg, name: "Web User" })
             });
-            
-            const rawText = await response.text();
+            const result = await response.json();
             document.getElementById(loadingId)?.remove();
+            const aiReply = result.ai_answer || "System calibration error.";
 
-            let aiReply = "";
-            try {
-                const result = JSON.parse(rawText);
-                aiReply = result.ai_answer || result.message || "System sync error.";
-            } catch(e) { aiReply = rawText; }
-
-            chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px; white-space: pre-wrap;">UNIT-01: ${aiReply}</div>`;
+            chatBody.innerHTML += `<div class="chat-bubble" style="border-left: 2px solid #00e5ff;">UNIT-01: ${aiReply}</div>`;
+            chatBody.scrollTop = chatBody.scrollHeight;
             
+            // 🔥 Magsasalita na si Lexie Lore
             speakText(aiReply);
 
         } catch (err) {
-            if(document.getElementById(loadingId)) {
-                document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: Connection failed.`;
+            if (document.getElementById(loadingId)) {
+                document.getElementById(loadingId).innerHTML = "UNIT-01: Connection lost. Re-syncing...";
             }
         }
-        chatBody.scrollTop = chatBody.scrollHeight;
     };
 
     // --- 4. SYSTEM INITIALIZATION ---
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof AOS !== 'undefined') AOS.init({ duration: 600, once: true });
 
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+        // Mobile Menu Toggle Fix
+        const menuBtn = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+        if(menuBtn && navList) {
+            menuBtn.addEventListener('click', () => {
+                navList.classList.toggle('active');
+            });
         }
-
-        document.getElementById('mobile-menu')?.addEventListener('click', () => {
-            document.getElementById('nav-list')?.classList.toggle('active');
-        });
 
         // Typewriter Effect
         const mainText = "INTEGRATED POWER ARCHITECTURE & ";
         let mainIdx = 0;
+        const typeEl = document.getElementById("main-typewriter-text");
         function typeMain() {
-            const el = document.getElementById("main-typewriter-text");
-            if (el && mainIdx < mainText.length) {
-                el.innerHTML += mainText.charAt(mainIdx++);
+            if (typeEl && mainIdx < mainText.length) {
+                typeEl.innerHTML += mainText.charAt(mainIdx++);
                 setTimeout(typeMain, 60);
             }
         }
@@ -649,43 +708,48 @@ Your browser does not support the video tag.
         const subEl = document.querySelector('.txt-type');
         if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute('data-words')), subEl.getAttribute('data-wait'));
 
-        // Draggable Logic
+        // Bot Draggable Logic
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
 
-        toggle?.addEventListener('mousedown', (e) => { isDrag = true; startTime = Date.now(); startX = e.clientX - xOff; startY = e.clientY - yOff; });
-        window.addEventListener('mousemove', (e) => { if (!isDrag) return; xOff = e.clientX - startX; yOff = e.clientY - startY; wrapper.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; });
-        window.addEventListener('mouseup', () => { if (isDrag) { isDrag = false; if (Date.now() - startTime < 200) window.toggleBotWindow(); } });
+        if (toggle && wrapper) {
+            toggle.addEventListener('mousedown', (e) => { isDrag = true; startTime = Date.now(); startX = e.clientX - xOff; startY = e.clientY - yOff; });
+            window.addEventListener('mousemove', (e) => { if (!isDrag) return; xOff = e.clientX - startX; yOff = e.clientY - startY; wrapper.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; });
+            window.addEventListener('mouseup', () => { if (isDrag) { isDrag = false; if (Date.now() - startTime < 200) window.toggleBotWindow(); } });
+        }
 
-        document.getElementById('userQuery')?.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
+        const uQuery = document.getElementById('userQuery');
+        if(uQuery) {
+            uQuery.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
+        }
 
-        // --- READ ALOUD (PAGE SCREEN READER) LOGIC (MOBILE-READY) ---
-        let isReadingPage = false;
+        // --- READ ALOUD BUTTON ---
         const readPageBtn = document.getElementById('readPageBtn');
-
+        let isReadingPage = false;
+        
         if (readPageBtn) {
             readPageBtn.addEventListener('click', function() {
-                if (!window.speechSynthesis) return;
-
-                const unlock = new SpeechSynthesisUtterance("");
-                window.speechSynthesis.speak(unlock);
-
+                unlockMobileAudio();
+                
                 if (isReadingPage || window.speechSynthesis.speaking) {
                     window.speechSynthesis.cancel();
                     isReadingPage = false;
-                    readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
+                    readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
                     return;
                 }
-
+                
                 const mainElement = document.getElementById('main-content');
                 if (!mainElement) return;
 
+                // 2. Linisin ang text mula sa main content
                 let contentToRead = mainElement.innerText
                     .replace(/\n+/g, '. ') 
                     .replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES/g, ''); 
 
-                let fullText = "Welcome to KOHMZ Electrical... " + contentToRead;
+                let fullText = "Welcome to KOHMZ Electrical. Here is our technical capability. " + contentToRead;
+
+                // 3. Hiwain nang maayos ang bawat sentence
                 let sentences = fullText.match(/[^.!?]+[.!?]+/g) || [fullText];
 
                 const voices = window.speechSynthesis.getVoices();
@@ -701,6 +765,7 @@ Your browser does not support the video tag.
 
                 let currentSentence = 0;
 
+                // 4. Chain Reaction Logic: Isa-isang i-play ang sentence
                 function playNextSentence() {
                     if (!isReadingPage || currentSentence >= sentences.length) {
                         isReadingPage = false;
@@ -711,9 +776,9 @@ Your browser does not support the video tag.
                     let chunk = new SpeechSynthesisUtterance(sentences[currentSentence].trim());
                     if (profVoice) chunk.voice = profVoice;
                     
-                    // LEXIE LORE SYNC (1.10 / 0.85)
-                    chunk.pitch = 1.10; 
-                    chunk.rate = 0.85;
+                    // 🔥 SYNC VALUES:
+                    chunk.pitch = 1.15;
+                    chunk.rate = 0.89;
 
                     chunk.onend = () => {
                         currentSentence++;
@@ -728,6 +793,7 @@ Your browser does not support the video tag.
                     window.speechSynthesis.speak(chunk);
                 }
 
+                // Simulan ang pagbasa
                 playNextSentence();
             });
         }
