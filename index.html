@@ -51,6 +51,19 @@ gtag('config', 'G-S79X3QL1TV');
 </script>
 
 <style>
+    /* I-paste ito sa dulo ng <style> block */
+.kohmz-bot-toggle {
+    width: 85px !important;
+    height: 85px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative;
+}
+lottie-player {
+    width: 85px !important;
+    height: 85px !important;
+}
 /* --- FUTURISTIC EXTREME SYSTEM --- */
 :root {
 --neon-gold: #ffb703;
@@ -749,14 +762,7 @@ style="flex: 1; background: transparent; border: 1px solid #00e5ff; color: #fff;
 </div>
 
 <div class="kohmz-bot-toggle" id="botToggle">
-<lottie-player 
-src="Live chatbot.json" 
-background="transparent" 
-speed="1" 
-style="width: 100%; height: 100%;" 
-loop 
-autoplay>
-</lottie-player>
+<lottie-player src="Live%20chatbot.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
 <div class="bot-badge" id="botBadge">!</div>
 </div>
 </div>
@@ -822,7 +828,45 @@ autoplay>
     };
 
     // --- 2. INITIALIZATION ON LOAD ---
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {// ILAGAY ITO SA LABAS NG ANY FUNCTION (GLOBAL)
+const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
+
+    if (!userMsg || !chatBody) return;
+
+    // 1. User bubble
+    chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
+    inputField.value = ""; 
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    // 2. Loading bubble
+    const loadingId = "loading-" + Date.now();
+    chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}">UNIT-01: Processing...</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    try {
+        const response = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: userMsg })
+        });
+
+        const result = await response.json();
+        const loadingEl = document.getElementById(loadingId);
+        if (loadingEl) loadingEl.remove();
+
+        // Check kung may choices (OpenAI Format)
+        if (result.choices && result.choices[0].message) {
+            const aiReply = result.choices[0].message.content;
+            chatBody.innerHTML += `<div class="chat-bubble">UNIT-01: ${aiReply}</div>`;
+        } else {
+            chatBody.innerHTML += `<div class="chat-bubble">UNIT-01: System error. Check Cloudflare Worker.</div>`;
+        }
+    } catch (error) {
+        const loadingEl = document.getElementById(loadingId);
+        if (loadingEl) loadingEl.innerHTML = "UNIT-01: Offline. Check connection.";
+    }
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
         
         // AOS Animation
         if (typeof AOS !== 'undefined') {
