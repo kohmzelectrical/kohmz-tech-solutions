@@ -134,25 +134,26 @@ footer a:hover, footer a:focus { color: var(--cyber-blue); text-shadow: 0 0 8px 
 
 /* --- BOT INTERACTIVE FIX & POSITION (LEFT-BOTTOM) --- */
 .kohmz-bot-wrapper { position: fixed; bottom: 25px; left: 20px; z-index: 999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-start; touch-action: none; }
-.kohmz-bot-toggle { width: 100px; height: 100px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s; }
+/* 🔥 IN-UPDATE ANG SIZE NG ICON DITO 🔥 */
+.kohmz-bot-toggle { width: 130px; height: 130px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s; }
 .kohmz-bot-toggle:hover { transform: scale(1.05); }
 .kohmz-bot-toggle:active { cursor: grabbing; }
 lottie-player { width: 100% !important; height: 100% !important; pointer-events: none; }
 .kohmz-chat-window { display: none; width: 320px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
 .kohmz-chat-header { background: #000; color: #00e5ff; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
 .kohmz-chat-body { padding: 15px; max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-.chat-bubble { 
-    background: rgba(255, 255, 255, 0.05); 
-    color: #e0faff; 
-    padding: 10px; 
-    border-radius: 0 12px 12px 12px; 
-    margin-bottom: 10px; 
-    border-left: 2px solid #00e5ff; 
-    font-size: 12px; 
-    word-wrap: break-word; 
-    white-space: pre-wrap; 
-    line-height: 1.5;
-    font-family: 'Share Tech Mono', monospace; 
+.chat-bubble { 
+    background: rgba(255, 255, 255, 0.05); 
+    color: #e0faff; 
+    padding: 10px; 
+    border-radius: 0 12px 12px 12px; 
+    margin-bottom: 10px; 
+    border-left: 2px solid #00e5ff; 
+    font-size: 12px; 
+    word-wrap: break-word; 
+    white-space: pre-wrap; 
+    line-height: 1.5;
+    font-family: 'Share Tech Mono', monospace; 
 }
 </style>
 </head>
@@ -468,28 +469,29 @@ Your browser does not support the video tag.
 </footer>
 
 <div class="kohmz-bot-wrapper" id="draggableBot">
-    <div class="bot-value-tag" id="dragHint">⚡ KOHMZ Expert AI</div>
-    <div class="kohmz-chat-window" id="chatWindow">
-        <div class="kohmz-chat-header">
-            <span>UNIT-01: SYSTEM ACTIVE</span>
-            <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
-        </div>
-        <div class="kohmz-chat-body" id="chatBody">
-            <div class="chat-bubble">Initialization complete. Kumusta! Ako ang iyong Cyber-Assistant. Ready na tayo para sa iyong project optimization.</div>
-        </div>
-        <div style="padding: 10px; border-top: 1px solid rgba(0, 229, 255, 0.2); display: flex; gap: 5px; background: #000;">
-            <input type="text" id="userQuery" placeholder="Ask UNIT-01 anything..." 
-                style="flex: 1; background: transparent; border: 1px solid #00e5ff; color: #fff; padding: 8px; font-family: 'Share Tech Mono'; font-size: 11px; outline: none;">
-            <button onclick="askGemini()" style="background: #00e5ff; border: none; padding: 5px 12px; cursor: pointer;">
-                <i class="fas fa-paper-plane" style="color: #000;"></i>
-            </button>
-        </div>
-    </div>
-    <div class="kohmz-bot-toggle" id="botToggle">
-        <lottie-player src="Live%20chatbot.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
-        <div class="bot-badge" id="botBadge">!</div>
-    </div>
+    <div class="bot-value-tag" id="dragHint">⚡ KOHMZ Expert AI</div>
+    <div class="kohmz-chat-window" id="chatWindow">
+        <div class="kohmz-chat-header">
+            <span>UNIT-01: SYSTEM ACTIVE</span>
+            <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
+        </div>
+        <div class="kohmz-chat-body" id="chatBody">
+            <div class="chat-bubble">Initialization complete. Kumusta! Ako ang iyong Cyber-Assistant. Ready na tayo para sa iyong project optimization.</div>
+        </div>
+        <div style="padding: 10px; border-top: 1px solid rgba(0, 229, 255, 0.2); display: flex; gap: 5px; background: #000;">
+            <input type="text" id="userQuery" placeholder="Ask UNIT-01 anything..." 
+                style="flex: 1; background: transparent; border: 1px solid #00e5ff; color: #fff; padding: 8px; font-family: 'Share Tech Mono'; font-size: 11px; outline: none;">
+            <button onclick="askGemini()" style="background: #00e5ff; border: none; padding: 5px 12px; cursor: pointer;">
+                <i class="fas fa-paper-plane" style="color: #000;"></i>
+            </button>
+        </div>
+    </div>
+    <div class="kohmz-bot-toggle" id="botToggle">
+        <lottie-player src="Live%20chatbot.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
+        <div class="bot-badge" id="botBadge">!</div>
+    </div>
 </div>
+
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
@@ -501,8 +503,7 @@ Your browser does not support the video tag.
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel(); 
 
-        // 🔥 Natural Breathing Hack:
-        // Naglalagay tayo ng maliliit na hinto (...) para magmukhang tao na humihinga si UNIT-01.
+        // 🔥 Cadence Hack: Natural pauses para magmukhlang tao na humihinga
         let naturalText = text
             .replace(/\./g, '... ') 
             .replace(/,/g, ',.. ')
@@ -511,28 +512,27 @@ Your browser does not support the video tag.
         const speech = new SpeechSynthesisUtterance(naturalText);
         const voices = window.speechSynthesis.getVoices();
         
-        // Priority Selection: 'Aria' (Edge Natural), 'Samantha' (Apple), o 'Google US English'
+        // Priority: Seductive Female Voices (Fiona/Moira/Samantha/Google UK)
         const seductiveVoice = voices.find(v => 
-            (v.name.includes('Aria') && v.name.includes('Natural')) || 
-            v.name.includes('Samantha') || 
-            v.name.includes('Google US English') ||
-            v.name.includes('Natural')
+            v.name.includes('Aria') || // Edge Natural
+            v.name.includes('Samantha') || // macOS Premium
+            v.name.includes('Google UK English Female') || // British accents often sound sophisticated/alluring
+            v.name.includes('Fiona') || // macOS Scottish (very smooth)
+            v.name.includes('Google US English')
         );
 
         if (seductiveVoice) speech.voice = seductiveVoice;
         speech.lang = 'en-US'; 
         
-        // 🔥 SEDUCTIVE CALIBRATION:
-        // Pitch 0.95: Deep, calm, and youthful tone.
-        // Rate 0.85: Dahan-dahan para sa mas 'alluring' at professional na dating.
-        speech.pitch = 0.95; 
-        speech.rate = 0.85;  
+        // 🔥 SEDUCTIVE CALIBRATION (Youthful, Confident, Alluring)
+        speech.pitch = 0.85; // Deep but youthful tone
+        speech.rate = 0.80;  // Slow, deliberate speed
         speech.volume = 1.0;
 
         window.speechSynthesis.speak(speech);
     }
 
-    // Toggle Bot Window
+    // Toggle Chat Window
     window.toggleBotWindow = function() {
         const chat = document.getElementById('chatWindow');
         const badge = document.getElementById('botBadge');
@@ -548,7 +548,7 @@ Your browser does not support the video tag.
         }
     };
 
-    // --- 3. MAIN AI LOGIC ---
+    // --- 3. MAIN AI INTERACTION ---
     window.askGemini = async function() {
         const inputField = document.getElementById('userQuery');
         const chatBody = document.getElementById('chatBody');
@@ -557,12 +557,11 @@ Your browser does not support the video tag.
         const userMsg = inputField.value.trim();
         if (!userMsg) return;
 
-        // User Display
+        // User Message Display
         chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px; white-space: pre-wrap;">YOU: ${userMsg}</div>`;
         inputField.value = ""; 
         chatBody.scrollTop = chatBody.scrollHeight;
 
-        // Loading state
         const loadingId = "loading-" + Date.now();
         chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Analyzing...</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
@@ -580,13 +579,12 @@ Your browser does not support the video tag.
             let aiReply = "";
             try {
                 const result = JSON.parse(rawText);
-                aiReply = result.ai_answer || result.message || "I apologize, system sync error.";
+                aiReply = result.ai_answer || result.message || "I apologize, system sync lost.";
             } catch(e) { aiReply = rawText; }
 
-            // Show AI Reply
             chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px; white-space: pre-wrap;">UNIT-01: ${aiReply}</div>`;
             
-            // 🔥 TRIGGER THE VOICE 🔥
+            // 🔥 TALKING AI TRIGGER 🔥
             speakText(aiReply);
 
         } catch (err) {
@@ -599,20 +597,20 @@ Your browser does not support the video tag.
 
     // --- 4. SYSTEM INITIALIZATION ---
     document.addEventListener('DOMContentLoaded', () => {
-        // Animations
+        // Init AOS Animations
         if (typeof AOS !== 'undefined') AOS.init({ duration: 600, once: true });
 
-        // Voice Syncing
+        // Ensure voices are loaded for the seductive effect
         if ('speechSynthesis' in window) {
             window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
         }
 
-        // Mobile Menu
+        // Mobile Menu toggle
         document.getElementById('mobile-menu')?.addEventListener('click', () => {
             document.getElementById('nav-list')?.classList.toggle('active');
         });
 
-        // Hero Typewriter
+        // Hero Section Typewriter
         const mainText = "INTEGRATED POWER ARCHITECTURE & ";
         let mainIdx = 0;
         function typeMain() {
@@ -624,6 +622,7 @@ Your browser does not support the video tag.
         }
         typeMain();
 
+        // Sub-heading Typewriter
         class TypeWriter {
             constructor(el, words, wait) {
                 this.el = el; this.words = words; this.txt = ''; this.wordIdx = 0;
@@ -643,7 +642,7 @@ Your browser does not support the video tag.
         const subEl = document.querySelector('.txt-type');
         if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute('data-words')), subEl.getAttribute('data-wait'));
 
-        // Draggable Bot implementation
+        // Draggable Bot Logic
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
@@ -652,6 +651,7 @@ Your browser does not support the video tag.
         window.addEventListener('mousemove', (e) => { if (!isDrag) return; xOff = e.clientX - startX; yOff = e.clientY - startY; wrapper.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; });
         window.addEventListener('mouseup', () => { if (isDrag) { isDrag = false; if (Date.now() - startTime < 200) window.toggleBotWindow(); } });
 
+        // Input field Enter listener
         document.getElementById('userQuery')?.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
     });
 </script>
