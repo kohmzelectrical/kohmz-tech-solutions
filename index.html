@@ -132,9 +132,8 @@ footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; }
 footer a:hover, footer a:focus { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
 .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
 
-/* --- BOT INTERACTIVE FIX & POSITION (LEFT-BOTTOM) --- */
+/* --- BOT INTERACTIVE FIX & POSITION --- */
 .kohmz-bot-wrapper { position: fixed; bottom: 25px; left: 20px; z-index: 999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-start; touch-action: none; }
-/* 🔥 IN-UPDATE ANG SIZE NG ICON DITO 🔥 */
 .kohmz-bot-toggle { width: 130px; height: 130px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s; }
 .kohmz-bot-toggle:hover { transform: scale(1.05); }
 .kohmz-bot-toggle:active { cursor: grabbing; }
@@ -439,6 +438,10 @@ Your browser does not support the video tag.
 </main>
 
 <aside class="floating-container" aria-label="Quick Contact Options">
+<button id="readPageBtn" class="float-btn" style="background: #e11d48; color: white; border: none; cursor: pointer;" aria-label="Read Page Aloud" title="Listen to Page Content">
+    <i class="fas fa-volume-up" aria-hidden="true"></i>
+</button>
+
 <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" rel="noopener noreferrer" class="float-btn" style="background: #0084ff;" aria-label="Message KOHMZ Electrical on Facebook Messenger">
 <i class="fab fa-facebook-messenger" aria-hidden="true"></i>
 </a>
@@ -512,12 +515,12 @@ Your browser does not support the video tag.
         const speech = new SpeechSynthesisUtterance(naturalText);
         const voices = window.speechSynthesis.getVoices();
         
-        // Priority: Seductive Female Voices (Fiona/Moira/Samantha/Google UK)
+        // Priority: Seductive Female Voices
         const seductiveVoice = voices.find(v => 
-            v.name.includes('Aria') || // Edge Natural
-            v.name.includes('Samantha') || // macOS Premium
-            v.name.includes('Google UK English Female') || // British accents often sound sophisticated/alluring
-            v.name.includes('Fiona') || // macOS Scottish (very smooth)
+            v.name.includes('Aria') || 
+            v.name.includes('Samantha') || 
+            v.name.includes('Google UK English Female') || 
+            v.name.includes('Fiona') || 
             v.name.includes('Google US English')
         );
 
@@ -653,6 +656,63 @@ Your browser does not support the video tag.
 
         // Input field Enter listener
         document.getElementById('userQuery')?.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
+
+        // 🔥 READ ALOUD (PAGE SCREEN READER) LOGIC 🔥
+        let isReadingPage = false;
+        const readPageBtn = document.getElementById('readPageBtn');
+        
+        if (readPageBtn) {
+            readPageBtn.addEventListener('click', function() {
+                if (!window.speechSynthesis) return;
+
+                // Kung nagbabasa na, itigil
+                if (isReadingPage) {
+                    window.speechSynthesis.cancel();
+                    isReadingPage = false;
+                    this.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
+                    return;
+                }
+
+                // Patigilin muna ang AI kung nagsasalita
+                window.speechSynthesis.cancel();
+
+                // Kunin ang text ng buong main content
+                const mainElement = document.getElementById('main-content');
+                if (!mainElement) return;
+
+                // Linisin ang text para hindi niya basahin nang paulit-ulit ang mga button labels
+                let contentToRead = mainElement.innerText
+                    .replace(/\n+/g, '. ') // Palitan ang mga enters ng period para huminto siya nang tama
+                    .replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES/g, ''); // Tanggalin ang call-to-action buttons sa pagbasa
+
+                const pageSpeech = new SpeechSynthesisUtterance("Welcome to KOHMZ Electrical. Here is our technical capability. . " + contentToRead);
+                
+                // Gamitin ang parehong seductive/professional na boses
+                const voices = window.speechSynthesis.getVoices();
+                const profVoice = voices.find(v => 
+                    v.name.includes('Aria') || 
+                    v.name.includes('Samantha') || 
+                    v.name.includes('Google US English')
+                );
+                
+                if (profVoice) pageSpeech.voice = profVoice;
+                pageSpeech.rate = 0.90; // Saktong bilis para sa pagbabasa ng mahabang text
+                pageSpeech.pitch = 0.95;
+
+                // Kapag natapos na siyang magbasa
+                pageSpeech.onend = () => {
+                    isReadingPage = false;
+                    readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
+                };
+
+                // I-play ang speech
+                window.speechSynthesis.speak(pageSpeech);
+                isReadingPage = true;
+                
+                // Palitan ang icon magiging Mute
+                this.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>'; 
+            });
+        }
     });
 </script>
 </body>
