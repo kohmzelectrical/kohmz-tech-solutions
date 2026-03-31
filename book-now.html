@@ -307,16 +307,86 @@
             .float-btn { width: 40px; height: 40px; font-size: 18px; margin: 0 5px; }
         }
 
-        /* SYSTEM ADVISORY BOT (NO AI) */
-        .kohmz-bot-wrapper { position: fixed; bottom: 120px; right: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-end; touch-action: none; user-select: none;}
-        .bot-value-tag { background: #00e5ff; color: #000; padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; cursor: grab; box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); text-transform: uppercase; white-space: nowrap;}
-        .kohmz-chat-window { display: none; width: 300px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #ffb703; border-top: 4px solid #ffb703; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px);}
-        .kohmz-chat-header { background: #000; color: #ffb703; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; font-size: 13px;}
+       /* --- SYSTEM ADVISORY BOT (MOVED TO LEFT) --- */
+        .kohmz-bot-wrapper { 
+            position: fixed; 
+            bottom: 120px; 
+            left: 20px; /* Naka-set sa kaliwa */
+            z-index: 9999999; 
+            font-family: 'Share Tech Mono', monospace; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: flex-start; /* Dito magsisimula ang alignment sa kaliwa */
+            touch-action: none; 
+            user-select: none;
+        }
+
+        .bot-value-tag { 
+            background: #00e5ff; 
+            color: #000; 
+            padding: 5px 12px; 
+            font-size: 10px; 
+            font-weight: bold; 
+            border-radius: 4px; 
+            margin-bottom: 8px; 
+            cursor: grab; 
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); 
+            text-transform: uppercase; 
+            white-space: nowrap;
+        }
+
+        .kohmz-chat-window { 
+            display: none; 
+            width: 300px; 
+            max-width: 85vw; 
+            background: rgba(8, 16, 24, 0.98); 
+            border: 1px solid #ffb703; 
+            border-top: 4px solid #ffb703; 
+            box-shadow: 0 10px 50px rgba(0,0,0,0.9); 
+            margin-bottom: 12px; 
+            flex-direction: column; 
+            backdrop-filter: blur(10px);
+        }
+
+        .kohmz-chat-header { 
+            background: #000; 
+            color: #ffb703; 
+            padding: 12px; 
+            font-weight: bold; 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 13px;
+        }
+
         .kohmz-chat-body { padding: 20px; text-align: left; }
-        .message-bubble { background: rgba(255, 183, 3, 0.1); padding: 15px; border-radius: 8px; border-left: 3px solid #ffb703; color: #fff; font-family: 'Segoe UI', sans-serif; font-size: 13px; line-height: 1.6;}
-        .kohmz-bot-toggle { width: 85px; height: 85px; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center;}
+
+        .message-bubble { 
+            background: rgba(255, 183, 3, 0.1); 
+            padding: 15px; 
+            border-radius: 0 12px 12px 12px; /* Pointy ang top-left para sa kaliwang side */
+            border-left: 3px solid #ffb703; 
+            color: #fff; 
+            font-family: 'Segoe UI', sans-serif; 
+            font-size: 13px; 
+            line-height: 1.6;
+        }
+
+        .kohmz-bot-toggle { 
+            width: 85px; 
+            height: 85px; 
+            cursor: grab; 
+            position: relative; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+        }
+
         @media (max-width: 768px) {
-            .kohmz-bot-wrapper { bottom: 85px; right: 15px; }
+            .kohmz-bot-wrapper { 
+                bottom: 85px; 
+                left: 15px; 
+                align-items: flex-start; /* Siguradong pantay pa rin sa mobile */
+            }
             .kohmz-bot-toggle { width: 75px; height: 75px; }
         }
 
@@ -521,7 +591,7 @@
         <a href="tel:09266174131" class="float-btn" style="background: #ffb703; color: #000;" title="Call Us"><i class="fas fa-phone"></i></a>
     </aside>
 
-    <div class="kohmz-bot-wrapper" id="draggableBot">
+  <div class="kohmz-bot-wrapper" id="draggableBot">
         <div class="bot-value-tag" id="dragHint" onclick="toggleBotWindow()">⚡ SYSTEM ADVISORY</div>
         
         <div class="kohmz-chat-window" id="chatWindow">
@@ -534,9 +604,9 @@
                     <strong style="color: #ffb703; font-size: 14px;"><i class="fas fa-headset"></i> UNIT-01: LIVE AGENT READY</strong><br><br>
                     Ang aming technical specialists ay online na. Pwede kang mag-inquire dito mismo sa website para sa mabilis na response.<br><br>
                     
-<button onclick="triggerLiveChat()" style="background: #00e5ff; color: #000; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; border-radius: 4px; font-family: 'Share Tech Mono'; letter-spacing: 1px;">
-    <i class="fab fa-facebook-messenger"></i> START LIVE CHAT
-</button>
+                    <button onclick="triggerLiveChat()" style="background: #00e5ff; color: #000; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; border-radius: 4px; font-family: 'Share Tech Mono'; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0,229,255,0.3);">
+                        <i class="fab fa-facebook-messenger"></i> START LIVE CHAT
+                    </button>
                 </div>
             </div>
         </div>
@@ -562,7 +632,7 @@
     </footer>
 
     <script>
-        // TYPEWRITER EFFECT
+        /* 1. TYPEWRITER EFFECT */
         const mainTypeText = "SECURE YOUR ";
         let mainTypeIndex = 0;
         const mainTypeElement = document.getElementById("main-typewriter-text");
@@ -613,7 +683,7 @@
             if (wordsData) new TypeWriter(txtElement, JSON.parse(wordsData), wait);
         }
 
-        // MOBILE MENU TOGGLE
+        /* 2. MOBILE MENU TOGGLE */
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         if (menuToggle && navList) {
@@ -625,7 +695,7 @@
             });
         }
         
-        // DROPDOWN FIX FOR MOBILE
+        /* 3. DROPDOWN FIX FOR MOBILE */
         document.querySelectorAll('.dropdown > a').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 if (window.innerWidth <= 992) {
@@ -637,7 +707,7 @@
             });
         });
 
-        // DRAG AND DROP BOT (NO API)
+        /* 4. DRAG AND DROP BOT CONTROL */
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         const chat = document.getElementById('chatWindow');
@@ -671,7 +741,6 @@
             if (e.cancelable) e.preventDefault();
             const clientX = (e.type === "touchmove") ? e.touches[0].clientX : e.clientX;
             const clientY = (e.type === "touchmove") ? e.touches[0].clientY : e.clientY;
-            
             xOffset = clientX - startX;
             yOffset = clientY - startY;
             wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
@@ -681,10 +750,7 @@
             if (!isDragging) return;
             const dragDuration = Date.now() - dragStartTime;
             isDragging = false;
-            
-            if (dragDuration < 200) {
-                toggleBotWindow();
-            }
+            if (dragDuration < 200) { toggleBotWindow(); }
         };
 
         toggle.addEventListener('mousedown', dragStart);
@@ -694,33 +760,19 @@
         window.addEventListener('mouseup', dragEnd);
         window.addEventListener('touchend', dragEnd);
         
-       // ... (existing code sa taas)
-        
-        // Auto open advisory bot after 4 seconds
+        // Auto open bot window after 4 seconds
         setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 4000);
-    </script>
 
-  <div id="fb-root"></div>
-    <div id="fb-customer-chat" class="fb-customerchat"></div>
-
-  <script>
-      // PLAN B: DIRECT MESSENGER POPUP (100% WORKING)
-      function triggerLiveChat() {
-          // Ginamit na natin ang Page ID mula sa screenshot mo: 102329226225017
-          const messengerUrl = "https://m.me/102329226225017"; 
-          
-          // Desktop: Bubukas sa eleganteng maliit na window sa gitna
-          const width = 450;
-          const height = 650;
-          const left = (window.screen.width / 2) - (width / 2);
-          const top = (window.screen.height / 2) - (height / 2);
-          
-          window.open(
-              messengerUrl, 
-              "KOHMZLiveChat", 
-              `width=${width},height=${height},top=${top},left=${left},status=no,menubar=no,toolbar=no,location=no`
-          );
-      }
+        /* 5. LIVE CHAT TRIGGER (POPUP PLAN B) */
+        function triggerLiveChat() {
+            // Tamang Page ID mula sa Meta screenshot mo
+            const messengerUrl = "https://m.me/102329226225017"; 
+            const width = 450;
+            const height = 650;
+            const left = (window.screen.width / 2) - (width / 2);
+            const top = (window.screen.height / 2) - (height / 2);
+            window.open(messengerUrl, "KOHMZLiveChat", `width=${width},height=${height},top=${top},left=${left},status=no,menubar=no,toolbar=no,location=no`);
+        }
     </script>
 </body>
 </html>
