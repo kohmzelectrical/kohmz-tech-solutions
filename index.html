@@ -499,14 +499,24 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
 <script>
-    // --- 2. CONFIGURATION & SEDUCTIVE VOICE ENGINE ---
+    // --- 1. CONFIGURATION & MOBILE AUDIO UNLOCKER ---
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
+    
+    let speechAllowed = false;
+    document.addEventListener('click', () => {
+        if (!speechAllowed && window.speechSynthesis) {
+            const utterance = new SpeechSynthesisUtterance("");
+            window.speechSynthesis.speak(utterance);
+            speechAllowed = true;
+            console.log("UNIT-01: Audio Engine Unlocked");
+        }
+    }, { once: true });
 
+    // --- 2. LEXIE LORE VOICE ENGINE ---
     function speakText(text) {
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel(); 
 
-        // 🔥 LEXIE HACK: Nilagyan natin ng mas maraming ellipses (...) para sa "breathless" effect
         let naturalText = text
             .replace(/\./g, '... ') 
             .replace(/,/g, ',.. ')
@@ -515,23 +525,25 @@ Your browser does not support the video tag.
         const speech = new SpeechSynthesisUtterance(naturalText);
         const voices = window.speechSynthesis.getVoices();
         
-        // Priority: Samantha (Mac) o Google US English (Chrome) - sila ang pinaka-smooth
         const sexyVoice = voices.find(v => 
             v.name.includes('Samantha') || 
             v.name.includes('Aria') || 
             v.name.includes('Google US English') ||
-            v.name.includes('Female')
-        );
+            v.name.includes('Female') ||
+            v.name.includes('Enhanced')
+        ) || voices[0];
 
         if (sexyVoice) speech.voice = sexyVoice;
         speech.lang = 'en-US'; 
         
-        // 🧪 THE LEXIE FORMULA:
-        speech.pitch = 1.15; // Lively at youthful, pero hindi chipmunk (1.1 - 1.2 is the sweet spot)
-        speech.rate = 0.88;  // Slightly slower than normal para doon sa "lingering" seductive effect
+        // 🧪 THE LEXIE FORMULA (As requested: 1.10 Pitch / 0.85 Rate)
+        speech.pitch = 1.10; 
+        speech.rate = 0.85;  
         speech.volume = 1.0;
 
-        window.speechSynthesis.speak(speech);
+        setTimeout(() => {
+            window.speechSynthesis.speak(speech);
+        }, 50);
     }
 
     window.toggleBotWindow = function() {
@@ -549,7 +561,7 @@ Your browser does not support the video tag.
         }
     };
 
-    // --- 3. MAIN AI LOGIC ---
+    // --- 3. MAIN AI LOGIC (Gemini Call) ---
     window.askGemini = async function() {
         const inputField = document.getElementById('userQuery');
         const chatBody = document.getElementById('chatBody');
@@ -579,7 +591,7 @@ Your browser does not support the video tag.
             let aiReply = "";
             try {
                 const result = JSON.parse(rawText);
-                aiReply = result.ai_answer || result.message || "I apologize, system sync error.";
+                aiReply = result.ai_answer || result.message || "System sync error.";
             } catch(e) { aiReply = rawText; }
 
             chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px; white-space: pre-wrap;">UNIT-01: ${aiReply}</div>`;
@@ -606,6 +618,7 @@ Your browser does not support the video tag.
             document.getElementById('nav-list')?.classList.toggle('active');
         });
 
+        // Typewriter Effect
         const mainText = "INTEGRATED POWER ARCHITECTURE & ";
         let mainIdx = 0;
         function typeMain() {
@@ -636,6 +649,7 @@ Your browser does not support the video tag.
         const subEl = document.querySelector('.txt-type');
         if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute('data-words')), subEl.getAttribute('data-wait'));
 
+        // Draggable Logic
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
@@ -646,15 +660,17 @@ Your browser does not support the video tag.
 
         document.getElementById('userQuery')?.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
 
-        // 🔥 READ ALOUD (PAGE SCREEN READER) LOGIC - CHAIN REACTION (ANTI-CRASH) 🔥
+        // --- READ ALOUD (PAGE SCREEN READER) LOGIC (MOBILE-READY) ---
         let isReadingPage = false;
         const readPageBtn = document.getElementById('readPageBtn');
-        
+
         if (readPageBtn) {
             readPageBtn.addEventListener('click', function() {
                 if (!window.speechSynthesis) return;
 
-                // 1. Kung nagbabasa na siya, itigil
+                const unlock = new SpeechSynthesisUtterance("");
+                window.speechSynthesis.speak(unlock);
+
                 if (isReadingPage || window.speechSynthesis.speaking) {
                     window.speechSynthesis.cancel();
                     isReadingPage = false;
@@ -665,31 +681,27 @@ Your browser does not support the video tag.
                 const mainElement = document.getElementById('main-content');
                 if (!mainElement) return;
 
-                // 2. Linisin ang text mula sa main content
                 let contentToRead = mainElement.innerText
                     .replace(/\n+/g, '. ') 
                     .replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES/g, ''); 
 
-                let fullText = "Welcome to KOHMZ Electrical. Here is our technical capability. " + contentToRead;
-
-                // 3. Hiwain nang maayos ang bawat sentence
+                let fullText = "Welcome to KOHMZ Electrical... " + contentToRead;
                 let sentences = fullText.match(/[^.!?]+[.!?]+/g) || [fullText];
 
                 const voices = window.speechSynthesis.getVoices();
                 const profVoice = voices.find(v => 
                     v.name.includes('Aria') || 
                     v.name.includes('Samantha') || 
-                    v.name.includes('Google US English')
-                );
+                    v.name.includes('Google US English') ||
+                    v.name.includes('Female')
+                ) || voices[0];
 
                 isReadingPage = true;
-                readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>'; // Mute Icon
+                readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>';
 
                 let currentSentence = 0;
 
-                // 4. Chain Reaction Logic: Isa-isang i-play ang sentence
                 function playNextSentence() {
-                    // Kung pinatigil ng user o tapos na ang text, i-reset
                     if (!isReadingPage || currentSentence >= sentences.length) {
                         isReadingPage = false;
                         readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
@@ -699,10 +711,10 @@ Your browser does not support the video tag.
                     let chunk = new SpeechSynthesisUtterance(sentences[currentSentence].trim());
                     if (profVoice) chunk.voice = profVoice;
                     
-                   chunk.pitch = 1.15; // Lexie Lore Pitch
-chunk.rate = 0.88;  // Lexie Lore Pacing
+                    // LEXIE LORE SYNC (1.10 / 0.85)
+                    chunk.pitch = 1.10; 
+                    chunk.rate = 0.85;
 
-                    // Pag tapos na ang isang sentence, i-play ang susunod
                     chunk.onend = () => {
                         currentSentence++;
                         playNextSentence();
@@ -716,7 +728,6 @@ chunk.rate = 0.88;  // Lexie Lore Pacing
                     window.speechSynthesis.speak(chunk);
                 }
 
-                // Simulan ang pagbasa
                 playNextSentence();
             });
         }
