@@ -141,9 +141,21 @@ lottie-player { width: 100% !important; height: 100% !important; pointer-events:
 .kohmz-chat-window { display: none; width: 320px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
 .kohmz-chat-header { background: #000; color: #00e5ff; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
 .kohmz-chat-body { padding: 15px; max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-.chat-bubble { background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; margin-bottom: 10px; border-left: 2px solid #00e5ff; font-size: 12px; word-wrap: break-word; }
-.bot-value-tag { background: #00e5ff; color: #000; padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); cursor: grab; text-transform: uppercase; white-space: nowrap; }
-.bot-badge { position: absolute; top: 12px; right: 12px; background: #ff3b3b; color: #fff; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px #ff3b3b; z-index: 10; }
+.chat-bubble { 
+    background: rgba(255, 255, 255, 0.05); 
+    color: #e0faff; 
+    padding: 10px; 
+    border-radius: 0 12px 12px 12px; 
+    margin-bottom: 10px; 
+    border-left: 2px solid #00e5ff; 
+    font-size: 12px; 
+    word-wrap: break-word; 
+
+    /* ITO ANG MAGIC LINES NA DAGDAG: */
+    white-space: pre-wrap; 
+    line-height: 1.5;
+    font-family: 'Share Tech Mono', monospace; 
+}
 </style>
 </head>
 <body>
@@ -504,68 +516,63 @@ Your browser does not support the video tag.
     };
 
     // 🔥 TRACKER ACTIVATED: Susundan natin bawat galaw ng code 🔥
-    window.askGemini = async function() {
-        console.log("👉 1. SEND BUTTON PININDOT!");
+   window.askGemini = async function() {
+    console.log("👉 1. SEND BUTTON PININDOT!");
 
-        const inputField = document.getElementById('userQuery');
-        const chatBody = document.getElementById('chatBody');
+    const inputField = document.getElementById('userQuery');
+    const chatBody = document.getElementById('chatBody');
 
-        if (!inputField || !chatBody) {
-            console.error("❌ ERROR: Hindi mahanap yung Chat Box sa HTML!");
-            return;
-        }
+    if (!inputField || !chatBody) {
+        console.error("❌ ERROR: Hindi mahanap yung Chat Box sa HTML!");
+        return;
+    }
 
-        const userMsg = inputField.value.trim();
-        console.log("👉 2. MENSAGE NA TINYPE MO:", userMsg);
+    const userMsg = inputField.value.trim();
+    if (!userMsg) return;
 
-        if (!userMsg) {
-            console.log("⚠️ WARNING: Walang tinype kaya walang sinend.");
-            return;
-        }
+    // 1. Ipakita ang message ng User
+    chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px; white-space: pre-wrap;">YOU: ${userMsg}</div>`;
+    inputField.value = ""; 
+    chatBody.scrollTop = chatBody.scrollHeight;
 
-        // Lalabas yung chat mo sa screen
-        chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
-        inputField.value = ""; 
-        chatBody.scrollTop = chatBody.scrollHeight;
+    // 2. Loading state
+    const loadingId = "loading-" + Date.now();
+    chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Thinking...</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
 
-        const loadingId = "loading-" + Date.now();
-        chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Contacting Cloudflare...</div>`;
-        chatBody.scrollTop = chatBody.scrollHeight;
+    try {
+        const response = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                message: userMsg,
+                name: "Web User" // Dummy name para sa database
+            })
+        });
+        
+        const rawText = await response.text();
+        console.log("👉 SERVER RESPONSE:", rawText);
+        
+        document.getElementById(loadingId)?.remove();
 
-        console.log("👉 3. KINOKONTAK ANG CLOUDFLARE WORKER...");
-
+        let aiReply = "";
         try {
-            const response = await fetch(WORKER_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userMsg })
-            });
-            
-            console.log("👉 4. SUMAGOT SI CLOUDFLARE! Status:", response.status);
-
-            const rawText = await response.text();
-            console.log("👉 5. RAW DATA GALING SERVER:", rawText);
-            
-            document.getElementById(loadingId)?.remove();
-
-            let aiReply = "";
-            try {
-                const result = JSON.parse(rawText);
-                aiReply = result.reply || result.response || result.message || 
-                         (result.choices && result.choices[0].message ? result.choices[0].message.content : JSON.stringify(result));
-            } catch(e) {
-                aiReply = rawText; // Kung hindi JSON ang binato
-            }
-
-            chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: ${aiReply}</div>`;
-            
-        } catch (err) {
-            console.error("❌ 6. CLOUDFLARE FETCH ERROR:", err);
-            document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: ${err.message}.`;
+            const result = JSON.parse(rawText);
+            // DITO ANG MAGIC FIX: Hinahanap natin ang 'ai_answer'
+            aiReply = result.ai_answer || result.message || "Pasensya na boss, nagka-error sa pag-isip.";
+        } catch(e) {
+            aiReply = rawText; 
         }
-        chatBody.scrollTop = chatBody.scrollHeight;
-    };
 
+        // 3. Ipakita ang sagot ng AI (May white-space: pre-wrap para sa malinis na spacing)
+        chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px; white-space: pre-wrap;">UNIT-01: ${aiReply}</div>`;
+        
+    } catch (err) {
+        console.error("❌ FETCH ERROR:", err);
+        document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: Hindi makakonekta sa server.`;
+    }
+    chatBody.scrollTop = chatBody.scrollHeight;
+};
     // --- 2. INITIALIZATIONS ---
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof AOS !== 'undefined') AOS.init({ duration: 600, once: true });
