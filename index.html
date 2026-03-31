@@ -728,6 +728,39 @@ Your browser does not support the video tag.
 </nav>
 </footer>
 
+<div class="kohmz-bot-wrapper" id="draggableBot">
+<div class="bot-value-tag" id="dragHint">⚡ KOHMZ Expert AI</div>
+
+<div class="kohmz-chat-window" id="chatWindow">
+<div class="kohmz-chat-header">
+<span>UNIT-01: SYSTEM ACTIVE</span>
+<span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
+</div>
+<div class="kohmz-chat-body" id="chatBody">
+<div class="chat-bubble">Initialization complete. Kumusta! Ako ang iyong Cyber-Assistant. Ready na tayo para sa iyong project optimization.</div>
+</div>
+<div style="padding: 10px; border-top: 1px solid rgba(0, 229, 255, 0.2); display: flex; gap: 5px; background: #000;">
+<input type="text" id="userQuery" placeholder="Ask UNIT-01 anything..." 
+style="flex: 1; background: transparent; border: 1px solid #00e5ff; color: #fff; padding: 8px; font-family: 'Share Tech Mono'; font-size: 11px; outline: none;">
+<button onclick="askGemini()" style="background: #00e5ff; border: none; padding: 5px 12px; cursor: pointer;">
+<i class="fas fa-paper-plane" style="color: #000;"></i>
+</button>
+</div>
+</div>
+
+<div class="kohmz-bot-toggle" id="botToggle">
+<lottie-player 
+src="Live chatbot.json" 
+background="transparent" 
+speed="1" 
+style="width: 100%; height: 100%;" 
+loop 
+autoplay>
+</lottie-player>
+<div class="bot-badge" id="botBadge">!</div>
+</div>
+</div>
+
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
@@ -735,7 +768,7 @@ Your browser does not support the video tag.
     // --- 1. GLOBAL AI FUNCTIONS (Para sa onclick) ---
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
-    function toggleBotWindow() {
+    window.toggleBotWindow = function() {
         const chat = document.getElementById('chatWindow');
         const badge = document.getElementById('botBadge');
         const hint = document.getElementById('dragHint');
@@ -749,9 +782,9 @@ Your browser does not support the video tag.
             if (badge) badge.style.display = 'none';
             if (hint) hint.innerHTML = "🖐️ Drag to Move";
         }
-    }
+    };
 
-    async function askGemini() {
+    window.askGemini = async function() {
         const inputField = document.getElementById('userQuery');
         const chatBody = document.getElementById('chatBody');
         const userMsg = inputField ? inputField.value.trim() : "";
@@ -786,7 +819,7 @@ Your browser does not support the video tag.
             if (loadingEl) loadingEl.innerHTML = "UNIT-01: System offline.";
         }
         chatBody.scrollTop = chatBody.scrollHeight;
-    }
+    };
 
     // --- 2. INITIALIZATION ON LOAD ---
     document.addEventListener('DOMContentLoaded', () => {
@@ -805,7 +838,28 @@ Your browser does not support the video tag.
             });
         }
 
-        // Original TypeWriter Class (The "Kadugtong" text)
+        // Navigation Dropdown Logic
+        const dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(dropdown => {
+            const dropbtn = dropdown.querySelector('.dropbtn');
+            const handleDropdownToggle = (e) => {
+                if (window.innerWidth <= 992 || e.type === 'keydown' || e.type === 'touchstart') {
+                    if(dropbtn.getAttribute('href') === '#') e.preventDefault(); 
+                    dropdowns.forEach(d => {
+                        if (d !== dropdown) {
+                            d.classList.remove('active');
+                            const otherBtn = d.querySelector('.dropbtn');
+                            if(otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                    const isActive = dropdown.classList.toggle('active');
+                    dropbtn.setAttribute('aria-expanded', isActive);
+                }
+            };
+            dropbtn.addEventListener('click', handleDropdownToggle);
+        });
+
+        // TypeWriter Logic
         class TypeWriter {
             constructor(txtElement, words, wait = 3000) {
                 this.txtElement = txtElement;
@@ -839,7 +893,7 @@ Your browser does not support the video tag.
             }
         }
 
-        // Init Main Hero Typewriter
+        // Init Hero Title Typewriter
         const mainTypeText = "INTEGRATED POWER ARCHITECTURE & ";
         let mainTypeIndex = 0;
         const mainTypeElement = document.getElementById("main-typewriter-text");
@@ -860,11 +914,11 @@ Your browser does not support the video tag.
         }
 
         // Draggable Bot Logic
-        const wrapper = document.getElementById('draggableBot');
-        const toggle = document.getElementById('botToggle');
+        const draggableWrapper = document.getElementById('draggableBot');
+        const botToggle = document.getElementById('botToggle');
         let isDragging = false, startX, startY, xOffset = 0, yOffset = 0, dragStartTime;
 
-        if (toggle && wrapper) {
+        if (botToggle && draggableWrapper) {
             const dragStart = (e) => {
                 isDragging = true; dragStartTime = Date.now();
                 const clientX = (e.type === "touchstart") ? e.touches[0].clientX - xOffset : e.clientX - xOffset;
@@ -876,15 +930,15 @@ Your browser does not support the video tag.
                 const clientX = (e.type === "touchmove") ? e.touches[0].clientX : e.clientX;
                 const clientY = (e.type === "touchmove") ? e.touches[0].clientY : e.clientY;
                 xOffset = clientX - startX; yOffset = clientY - startY;
-                wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
+                draggableWrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
             };
             const dragEnd = () => {
                 if (!isDragging) return;
                 if (Date.now() - dragStartTime < 200) toggleBotWindow();
                 isDragging = false;
             };
-            toggle.addEventListener('mousedown', dragStart);
-            toggle.addEventListener('touchstart', dragStart, {passive: false});
+            botToggle.addEventListener('mousedown', dragStart);
+            botToggle.addEventListener('touchstart', dragStart, {passive: false});
             window.addEventListener('mousemove', dragMove);
             window.addEventListener('touchmove', dragMove, {passive: false});
             window.addEventListener('mouseup', dragEnd);
@@ -898,3 +952,5 @@ Your browser does not support the video tag.
         setTimeout(() => { if (document.getElementById('chatWindow')?.style.display !== 'flex') toggleBotWindow(); }, 6000);
     });
 </script>
+</body>
+</html>
