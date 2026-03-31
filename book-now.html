@@ -530,10 +530,13 @@
                 <span onclick="toggleBotWindow()" style="cursor:pointer; font-size: 16px;">✕</span>
             </div>
             <div class="kohmz-chat-body">
-                <div class="message-bubble">
-                    <strong style="color: #ffb703; font-size: 14px;"><i class="fas fa-handshake"></i> Thank You for Trusting KOHMZ!</strong><br><br>
-                    Thank you for choosing KOHMZ Electrical Design and Build as your premium partner in power architecture.<br><br>
-                    Please fill out the secure form, and our specialized electrical team will coordinate with you shortly to assist with your project.
+               <div class="message-bubble">
+                    <strong style="color: #ffb703; font-size: 14px;"><i class="fas fa-headset"></i> UNIT-01: LIVE AGENT READY</strong><br><br>
+                    Ang aming technical specialists ay online na. Pwede kang mag-inquire dito mismo sa website para sa mabilis na response.<br><br>
+                    
+                    <button onclick="triggerLiveChat()" style="background: #00e5ff; color: #000; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; border-radius: 4px; font-family: 'Share Tech Mono'; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                        <i class="fab fa-facebook-messenger"></i> START LIVE CHAT
+                    </button>
                 </div>
             </div>
         </div>
@@ -691,8 +694,39 @@
         window.addEventListener('mouseup', dragEnd);
         window.addEventListener('touchend', dragEnd);
         
+       // ... (existing code sa taas)
+        
         // Auto open advisory bot after 4 seconds
         setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 4000);
     </script>
-</body>
+
+    <div id="fb-root"></div>
+    <div id="fb-customer-chat" class="fb-customerchat"></div>
+
+    <script>
+      var chatbox = document.getElementById('fb-customer-chat');
+      chatbox.setAttribute("page_id", "104975549282361"); // TAMA 'TO BOSS
+      chatbox.setAttribute("attribution", "biz_inbox");
+
+      window.fbAsyncInit = function() {
+        FB.init({
+          xfbml            : true,
+          version          : 'v18.0'
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+      // FUNCTION PARA I-TRIGGER YUNG CHAT PAG PININDOT YUNG BUTTON SA BOT
+      function triggerLiveChat() {
+          FB.CustomerChat.showDialog();
+      }
+    </script>
+    </body>
 </html>
