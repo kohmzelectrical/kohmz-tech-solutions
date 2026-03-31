@@ -118,72 +118,36 @@ details[open] { border-color: var(--cyber-blue); box-shadow: 0 0 15px rgba(0, 22
 summary { font-size: 13px; font-weight: 800; color: #ffb703; padding: 20px 25px; cursor: pointer; outline: none; border-left: 5px solid #ffb703; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
 summary:hover, summary:focus { background: rgba(255,183,3,0.05); outline: 2px solid var(--cyber-blue); outline-offset: -2px; }
 details p { font-size: 12px; padding: 25px; margin: 0; color: #cbd5e1; line-height: 1.9; background: rgba(0,0,0,0.2); }
-/* --- OPTIMIZED VIP ADVISORY --- */
+
+/* --- 🔥 VIP ADVISORY (FIXED FOR MOBILE LAYOUT OVERFLOW) --- */
 .vip-advisory { 
     background: rgba(13, 27, 42, 0.9); 
     border-left: 6px solid #00e5ff; 
-    padding: 30px; 
+    padding: 35px; 
     border-radius: 8px; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: flex-start; 
-    text-align: left; 
     max-width: 850px; 
     margin: 0 auto 50px; 
     border: 1px solid rgba(0, 229, 255, 0.2); 
     box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
 }
-
-.adv-tag { 
-    background: rgba(0, 229, 255, 0.1); 
-    border: 1px solid var(--cyber-blue); 
-    color: var(--cyber-blue); 
-    font-size: 10px; 
-    padding: 6px 12px; 
-    border-radius: 4px; 
-    font-weight: 800; 
-    text-transform: uppercase; 
-    display: inline-flex; 
-    align-items: center; 
-    gap: 5px; 
-    position: relative; 
-}
-
-.adv-tag::after { 
-    content: ''; 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    border-radius: inherit; 
-    border: 1px solid var(--cyber-blue); 
-    animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; 
-    box-sizing: border-box; 
-    pointer-events: none; 
-}
-
-/* 🔥 MOBILE FIX: Dito natin liliitan ang space sa phone 🔥 */
-@media (max-width: 768px) {
-    .vip-advisory {
-        padding: 15px; 
-        margin: 0 10px 40px; 
-    }
-    .vip-advisory > div {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 15px !important;
-    }
-    .vip-advisory h3 {
-        font-size: 14px !important;
-    }
-    .vip-advisory .cta-button {
-        width: 100%; 
-        margin-left: 0 !important;
-        text-align: center;
-    }
-}
+.adv-tag { background: rgba(0, 229, 255, 0.1); border: 1px solid var(--cyber-blue); color: var(--cyber-blue); font-size: 10px; padding: 6px 12px; border-radius: 4px; font-weight: 800; text-transform: uppercase; display: inline-flex; align-items: center; gap: 5px; position: relative; }
+.adv-tag::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: inherit; border: 1px solid var(--cyber-blue); animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; box-sizing: border-box; pointer-events: none; }
 @keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.4); opacity: 0; } }
+
+/* Use these classes instead of inline styles for the VIP Grid */
+.vip-content-wrapper { display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-between; width: 100%; align-items: center; }
+.vip-text-box { flex: 1; min-width: 250px; text-align: left; }
+.vip-button-box { text-align: center; }
+.btn-vip { font-size: 13px; padding: 15px 35px; white-space: normal; text-align: center; }
+
+@media (max-width: 768px) {
+    .vip-advisory { padding: 20px 15px; margin-left: 10px; margin-right: 10px; }
+    .vip-content-wrapper { flex-direction: column; align-items: stretch; gap: 20px; }
+    .vip-text-box { min-width: 100%; }
+    .vip-button-box { width: 100%; }
+    .btn-vip { width: 100%; box-sizing: border-box; display: block; }
+}
+
 .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
 .float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
 .float-btn::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: inherit; z-index: -1; filter: blur(10px); opacity: 0.6; transition: 0.3s; }
@@ -481,8 +445,8 @@ Your browser does not support the video tag.
 <h3 id="vip-heading" style="color: #00e5ff; margin: 0; font-size: 16px; text-transform: uppercase; font-weight: 900;">Priority Emergency & Technical Dispatch</h3>
 </div>
 
-<div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-between; width: 100%; align-items: center;">
-<div style="flex: 1; min-width: 300px;">
+<div class="vip-content-wrapper">
+<div class="vip-text-box">
 <h3 style="color: #ffb703; font-size: 13px; text-transform: uppercase; margin-top: 0; margin-bottom: 15px;"><i class="fas fa-exclamation-triangle" style="margin-right: 8px;" aria-hidden="true"></i> Bakit Kailangan Mo Nang Mag-Book Ngayon?</h3>
 <ul class="tech-list" style="border: none; padding-top: 0; margin-bottom: 0;">
 <li style="margin-bottom: 12px;"><i class="fas fa-angle-right" style="color: #00e5ff; font-size: 14px;" aria-hidden="true"></i> <strong>Prevent Irreversible Damage:</strong> Ang maliit na pag-spark o madalas na pag-trip ng breaker ngayon ay pwedeng sumunog ng mamahaling appliances at equipments bukas. Huwag hintayin ang sunog.</li>
@@ -490,9 +454,9 @@ Your browser does not support the video tag.
 <li><i class="fas fa-angle-right" style="color: #00e5ff; font-size: 14px;" aria-hidden="true"></i> <strong>Secure the Schedule:</strong> Ang aming specialized technical teams ay madalas fully booked. Ang pagkuha ng VIP slot ay nagtitiyak ng immediate hazard mitigation at diagnostic deployment para sa iyong property.</li>
 </ul>
 </div>
-<div style="text-align: center;">
+<div class="vip-button-box">
 <p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px; font-weight: bold;">Fast deployment for hazard mitigation.</p>
-<a href="book-now.html" class="cta-button btn-primary" style="white-space: nowrap; font-size: 13px; padding: 15px 35px;"><i class="fas fa-calendar-check" style="margin-right: 8px;" aria-hidden="true"></i> SECURE YOUR SLOT NOW</a>
+<a href="book-now.html" class="cta-button btn-primary btn-vip"><i class="fas fa-calendar-check" style="margin-right: 8px;" aria-hidden="true"></i> SECURE YOUR SLOT NOW</a>
 </div>
 </div>
 </div>
@@ -564,10 +528,10 @@ Your browser does not support the video tag.
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
     let speechAllowed = false;
 
-    // --- 1. MOBILE AUDIO UNLOCKER (The "Key" for Mobile) ---
+    // --- 1. MOBILE AUDIO UNLOCKER ---
     function unlockMobileAudio() {
         if (!speechAllowed && window.speechSynthesis) {
-            const utterance = new SpeechSynthesisUtterance(" "); // Silent prime
+            const utterance = new SpeechSynthesisUtterance(" ");
             utterance.volume = 0;
             window.speechSynthesis.speak(utterance);
             speechAllowed = true;
@@ -582,7 +546,6 @@ Your browser does not support the video tag.
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel(); 
 
-        // Naglalagay ng pauses (...) para sa seductive effect
         let naturalText = text.replace(/\./g, '... ').replace(/,/g, ',.. ').replace(/\?/g, '?.. ');
         const speech = new SpeechSynthesisUtterance(naturalText);
         const voices = window.speechSynthesis.getVoices();
@@ -630,8 +593,9 @@ Your browser does not support the video tag.
         const userMsg = inputField.value.trim();
         if (!userMsg) return;
 
-        // 🔥 IMPORTANT: I-prime ang audio engine habang nag-hihintay sa AI
-        unlockMobileAudio(); 
+        // 🔥 IMPORTANT: I-prime ang audio engine agad pag-click ng user!
+        // Ito ang mag-a-allow sa phone na magsalita pagkatapos ng AI fetch.
+        speakText("Processing..."); 
 
         chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
         inputField.value = ""; 
@@ -735,7 +699,7 @@ Your browser does not support the video tag.
                 if (isReadingPage || window.speechSynthesis.speaking) {
                     window.speechSynthesis.cancel();
                     isReadingPage = false;
-                    readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                    readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
                     return;
                 }
                 
