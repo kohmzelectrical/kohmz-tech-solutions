@@ -534,9 +534,9 @@
                     <strong style="color: #ffb703; font-size: 14px;"><i class="fas fa-headset"></i> UNIT-01: LIVE AGENT READY</strong><br><br>
                     Ang aming technical specialists ay online na. Pwede kang mag-inquire dito mismo sa website para sa mabilis na response.<br><br>
                     
-                    <button onclick="triggerLiveChat()" style="background: #00e5ff; color: #000; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; border-radius: 4px; font-family: 'Share Tech Mono'; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-                        <i class="fab fa-facebook-messenger"></i> START LIVE CHAT
-                    </button>
+<button onclick="triggerLiveChat()" style="background: #00e5ff; color: #000; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; border-radius: 4px; font-family: 'Share Tech Mono'; letter-spacing: 1px;">
+    <i class="fab fa-facebook-messenger"></i> START LIVE CHAT
+</button>
                 </div>
             </div>
         </div>
@@ -700,12 +700,13 @@
         setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 4000);
     </script>
 
-    <div id="fb-root"></div>
+  <div id="fb-root"></div>
     <div id="fb-customer-chat" class="fb-customerchat"></div>
 
     <script>
+      // 1. Facebook SDK Initialization (Hayaan lang natin 'to para backup)
       var chatbox = document.getElementById('fb-customer-chat');
-      chatbox.setAttribute("page_id", "104975549282361"); // TAMA 'TO BOSS
+      chatbox.setAttribute("page_id", "104975549282361");
       chatbox.setAttribute("attribution", "biz_inbox");
 
       window.fbAsyncInit = function() {
@@ -723,10 +724,21 @@
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
 
-      // FUNCTION PARA I-TRIGGER YUNG CHAT PAG PININDOT YUNG BUTTON SA BOT
+      // 2. PLAN B: FUNCTION PARA SA LIVE AGENT POPUP
+      // Inilabas natin sa panibagong tag para malinis
       function triggerLiveChat() {
-          FB.CustomerChat.showDialog();
+          const messengerUrl = "https://m.me/104975549282361"; 
+          const width = 450;
+          const height = 650;
+          const left = (window.screen.width / 2) - (width / 2);
+          const top = (window.screen.height / 2) - (height / 2);
+          
+          window.open(
+              messengerUrl, 
+              "KOHMZLiveChat", 
+              `width=${width},height=${height},top=${top},left=${left},status=no,menubar=no,toolbar=no,location=no`
+          );
       }
     </script>
-    </body>
+</body>
 </html>
