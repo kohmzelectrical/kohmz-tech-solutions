@@ -657,7 +657,7 @@ Your browser does not support the video tag.
         // Input field Enter listener
         document.getElementById('userQuery')?.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
 
-        // 🔥 READ ALOUD (PAGE SCREEN READER) LOGIC 🔥
+       // 🔥 READ ALOUD (PAGE SCREEN READER) LOGIC 🔥
         let isReadingPage = false;
         const readPageBtn = document.getElementById('readPageBtn');
         
@@ -665,7 +665,7 @@ Your browser does not support the video tag.
             readPageBtn.addEventListener('click', function() {
                 if (!window.speechSynthesis) return;
 
-                // Kung nagbabasa na, itigil agad
+                // 1. Kung nagbabasa na siya at pinindot ulit, itigil ang lahat
                 if (isReadingPage || window.speechSynthesis.speaking) {
                     window.speechSynthesis.cancel();
                     isReadingPage = false;
@@ -676,14 +676,14 @@ Your browser does not support the video tag.
                 const mainElement = document.getElementById('main-content');
                 if (!mainElement) return;
 
-                // Linisin ang text
+                // 2. Linisin ang text mula sa main content
                 let contentToRead = mainElement.innerText
                     .replace(/\n+/g, '. ') 
                     .replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES/g, ''); 
 
                 let fullText = "Welcome to KOHMZ Electrical. Here is our technical capability. " + contentToRead;
 
-                // 🔥 BROWSER BUG FIX: Hiwain ang text per sentence para hindi mag-crash ang Chrome/Safari
+                // 3. Hiwain nang maayos ang bawat sentence
                 let sentences = fullText.match(/[^.!?]+[.!?]+/g) || [fullText];
 
                 const voices = window.speechSynthesis.getVoices();
@@ -694,26 +694,43 @@ Your browser does not support the video tag.
                 );
 
                 isReadingPage = true;
-                readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>'; // Palitan icon agad
+                readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>'; // Change icon to mute
 
-                // I-pila ang bawat sentence sa AI
-                sentences.forEach((sentence, index) => {
-                    let chunk = new SpeechSynthesisUtterance(sentence.trim());
+                let currentSentence = 0;
+
+                // 4. Chain Reaction Logic: Isa-isang i-play ang sentence
+                function playNextSentence() {
+                    // Kapag natapos na o kinansela ng user, i-reset ang button
+                    if (!isReadingPage || currentSentence >= sentences.length) {
+                        isReadingPage = false;
+                        readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
+                        return;
+                    }
+
+                    let chunk = new SpeechSynthesisUtterance(sentences[currentSentence].trim());
                     if (profVoice) chunk.voice = profVoice;
                     
-                    // Seductive pacing and tone for the reader
+                    // Seductive pacing
                     chunk.rate = 0.85; 
                     chunk.pitch = 0.95;
 
-                    // I-reset ang button kapag natapos na niya yung pinakahuling sentence
-                    if (index === sentences.length - 1) {
-                        chunk.onend = () => {
-                            isReadingPage = false;
-                            readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
-                        };
-                    }
+                    // Kapag tapos na ang isang line, tawagin ang susunod
+                    chunk.onend = () => {
+                        currentSentence++;
+                        playNextSentence();
+                    };
+
+                    // Safety catch kung sakaling mag-error ang browser
+                    chunk.onerror = () => {
+                        isReadingPage = false;
+                        readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
+                    };
+
                     window.speechSynthesis.speak(chunk);
-                });
+                }
+
+                // Simulan ang pagbasa ng unang sentence
+                playNextSentence();
             });
         }
 </script>
