@@ -828,7 +828,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('mouseup', dragEnd);
     window.addEventListener('touchend', dragEnd);
 
-    // 5. UNIT-01 AI LOGIC (Cloudflare Connection)
+    // 5. UNIT-01 AI LOGIC (The Only One You Need)
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
     window.askGemini = async function() {
@@ -843,7 +843,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBody.scrollTop = chatBody.scrollHeight;
 
         const loadingId = "loading-" + Date.now();
-        chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Accessing Mainframe...</div>`;
+        chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Processing...</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
 
         try {
@@ -853,18 +853,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ message: userMsg })
             });
 
-            const data = await response.json();
+            const result = await response.json();
+            
+            const loadingEl = document.getElementById(loadingId);
+            if (loadingEl) loadingEl.remove();
 
-            if (data.choices && data.choices[0].message) {
-                const aiReply = data.choices[0].message.content;
-                document.getElementById(loadingId).remove();
+            if (result.choices && result.choices[0].message) {
+                const aiReply = result.choices[0].message.content;
                 chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: ${aiReply}</div>`;
             } else {
-                document.getElementById(loadingId).innerHTML = "UNIT-01: No response. Check API credits.";
+                chatBody.innerHTML += `<div class="chat-bubble">UNIT-01: System glitch. Check API Credits.</div>`;
             }
         } catch (error) {
-            document.getElementById(loadingId).innerHTML = "UNIT-01: System offline. Check connection.";
-            console.error("FETCH ERROR:", error);
+            const loadingEl = document.getElementById(loadingId);
+            if (loadingEl) loadingEl.innerHTML = "UNIT-01: System offline. Check connection.";
         }
         chatBody.scrollTop = chatBody.scrollHeight;
     };
