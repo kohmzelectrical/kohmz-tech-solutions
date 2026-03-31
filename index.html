@@ -485,7 +485,7 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
 <script>
-    // --- 1. GLOBAL FUNCTIONS (Dito nakatira ang utak para mahanap ng buttons) ---
+    // --- 1. GLOBAL FUNCTIONS ---
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
     window.toggleBotWindow = function() {
@@ -503,12 +503,27 @@ Your browser does not support the video tag.
         }
     };
 
+    // 🔥 TRACKER ACTIVATED: Susundan natin bawat galaw ng code 🔥
     window.askGemini = async function() {
+        console.log("👉 1. SEND BUTTON PININDOT!");
+
         const inputField = document.getElementById('userQuery');
         const chatBody = document.getElementById('chatBody');
-        const userMsg = inputField ? inputField.value.trim() : "";
-        if (!userMsg || !chatBody) return;
 
+        if (!inputField || !chatBody) {
+            console.error("❌ ERROR: Hindi mahanap yung Chat Box sa HTML!");
+            return;
+        }
+
+        const userMsg = inputField.value.trim();
+        console.log("👉 2. MENSAGE NA TINYPE MO:", userMsg);
+
+        if (!userMsg) {
+            console.log("⚠️ WARNING: Walang tinype kaya walang sinend.");
+            return;
+        }
+
+        // Lalabas yung chat mo sa screen
         chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
         inputField.value = ""; 
         chatBody.scrollTop = chatBody.scrollHeight;
@@ -517,6 +532,8 @@ Your browser does not support the video tag.
         chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Contacting Cloudflare...</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
 
+        console.log("👉 3. KINOKONTAK ANG CLOUDFLARE WORKER...");
+
         try {
             const response = await fetch(WORKER_URL, {
                 method: "POST",
@@ -524,30 +541,27 @@ Your browser does not support the video tag.
                 body: JSON.stringify({ message: userMsg })
             });
             
-            if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status}`);
-            }
+            console.log("👉 4. SUMAGOT SI CLOUDFLARE! Status:", response.status);
 
             const rawText = await response.text();
+            console.log("👉 5. RAW DATA GALING SERVER:", rawText);
+            
             document.getElementById(loadingId)?.remove();
 
             let aiReply = "";
             try {
-                // Subukan kung JSON ang ibinato ng Cloudflare
                 const result = JSON.parse(rawText);
-                // UNIVERSAL CATCHER: Sasaluin nito kahit ano pa ang format ng sagot ng Worker mo
                 aiReply = result.reply || result.response || result.message || 
                          (result.choices && result.choices[0].message ? result.choices[0].message.content : JSON.stringify(result));
             } catch(e) {
-                // Kung plain text lang ang ibinato ng Cloudflare
-                aiReply = rawText;
+                aiReply = rawText; // Kung hindi JSON ang binato
             }
 
             chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: ${aiReply}</div>`;
             
         } catch (err) {
-            console.error("CLOUDFLARE FETCH ERROR:", err);
-            document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: ${err.message}. <br><span style="color:#ff3b3b; font-size:9px;">(Pindutin ang F12 sa keyboard at check ang Console tab para sa detalye ng error)</span>`;
+            console.error("❌ 6. CLOUDFLARE FETCH ERROR:", err);
+            document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: ${err.message}.`;
         }
         chatBody.scrollTop = chatBody.scrollHeight;
     };
@@ -556,12 +570,10 @@ Your browser does not support the video tag.
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof AOS !== 'undefined') AOS.init({ duration: 600, once: true });
 
-        // Mobile Menu
         document.getElementById('mobile-menu')?.addEventListener('click', () => {
             document.getElementById('nav-list')?.classList.toggle('active');
         });
 
-        // Typewriter 1: Title
         const mainText = "INTEGRATED POWER ARCHITECTURE & ";
         let mainIdx = 0;
         function typeMain() {
@@ -573,7 +585,6 @@ Your browser does not support the video tag.
         }
         typeMain();
 
-        // Typewriter 2: Sub-words
         class TypeWriter {
             constructor(el, words, wait) {
                 this.el = el; this.words = words; this.txt = ''; this.wordIdx = 0;
@@ -593,7 +604,6 @@ Your browser does not support the video tag.
         const subEl = document.querySelector('.txt-type');
         if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute('data-words')), subEl.getAttribute('data-wait'));
 
-        // Draggable Logic
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
