@@ -490,47 +490,49 @@ Your browser does not support the video tag.
         <div class="bot-badge" id="botBadge">!</div>
     </div>
 </div>
-
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
 <script>
-    // --- 2. CONFIGURATION & VOICE ENGINE (Sultry Version) ---
+    // --- 2. CONFIGURATION & SEDUCTIVE VOICE ENGINE ---
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
     function speakText(text) {
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel(); 
 
-        const speech = new SpeechSynthesisUtterance(text);
-        
-        // Kukuha tayo ng listahan ng boses sa browser ng user
+        // 🔥 Natural Breathing Hack:
+        // Naglalagay tayo ng maliliit na hinto (...) para magmukhang tao na humihinga si UNIT-01.
+        let naturalText = text
+            .replace(/\./g, '... ') 
+            .replace(/,/g, ',.. ')
+            .replace(/\?/g, '?.. ');
+
+        const speech = new SpeechSynthesisUtterance(naturalText);
         const voices = window.speechSynthesis.getVoices();
         
-        // Hahanap tayo ng boses na babae
-        const preferredVoice = voices.find(v => 
+        // Priority Selection: 'Aria' (Edge Natural), 'Samantha' (Apple), o 'Google US English'
+        const seductiveVoice = voices.find(v => 
+            (v.name.includes('Aria') && v.name.includes('Natural')) || 
             v.name.includes('Samantha') || 
-            v.name.includes('Female') || 
             v.name.includes('Google US English') ||
-            v.name.includes('Zira') ||
-            v.name.includes('Aria')
+            v.name.includes('Natural')
         );
 
-        if (preferredVoice) {
-            speech.voice = preferredVoice;
-        }
-
+        if (seductiveVoice) speech.voice = seductiveVoice;
         speech.lang = 'en-US'; 
         
-        // 🔥 TECH-NOIR SULTRY TUNING:
-        speech.pitch = 0.85; // Mature/Sultry pitch
-        speech.rate = 0.90;  // Calm and allure rate
+        // 🔥 SEDUCTIVE CALIBRATION:
+        // Pitch 0.95: Deep, calm, and youthful tone.
+        // Rate 0.85: Dahan-dahan para sa mas 'alluring' at professional na dating.
+        speech.pitch = 0.95; 
+        speech.rate = 0.85;  
         speech.volume = 1.0;
 
         window.speechSynthesis.speak(speech);
     }
 
-    // Toggle Chat Window logic
+    // Toggle Bot Window
     window.toggleBotWindow = function() {
         const chat = document.getElementById('chatWindow');
         const badge = document.getElementById('botBadge');
@@ -546,7 +548,7 @@ Your browser does not support the video tag.
         }
     };
 
-    // --- 3. MAIN CHAT LOGIC (WITH TRACKER & TALKING AI) ---
+    // --- 3. MAIN AI LOGIC ---
     window.askGemini = async function() {
         const inputField = document.getElementById('userQuery');
         const chatBody = document.getElementById('chatBody');
@@ -555,12 +557,12 @@ Your browser does not support the video tag.
         const userMsg = inputField.value.trim();
         if (!userMsg) return;
 
-        // Display User message
+        // User Display
         chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px; white-space: pre-wrap;">YOU: ${userMsg}</div>`;
         inputField.value = ""; 
         chatBody.scrollTop = chatBody.scrollHeight;
 
-        // Show Thinking/Loading state
+        // Loading state
         const loadingId = "loading-" + Date.now();
         chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Analyzing...</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
@@ -578,13 +580,13 @@ Your browser does not support the video tag.
             let aiReply = "";
             try {
                 const result = JSON.parse(rawText);
-                aiReply = result.ai_answer || result.message || "Protocol error: No response data.";
+                aiReply = result.ai_answer || result.message || "I apologize, system sync error.";
             } catch(e) { aiReply = rawText; }
 
-            // 1. Ipakita ang text sa Chat Window
+            // Show AI Reply
             chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px; white-space: pre-wrap;">UNIT-01: ${aiReply}</div>`;
             
-            // 2. 🔥 TRIGGER SULTRY VOICE 🔥
+            // 🔥 TRIGGER THE VOICE 🔥
             speakText(aiReply);
 
         } catch (err) {
@@ -595,22 +597,22 @@ Your browser does not support the video tag.
         chatBody.scrollTop = chatBody.scrollHeight;
     };
 
-    // --- 4. INITIALIZATIONS ---
+    // --- 4. SYSTEM INITIALIZATION ---
     document.addEventListener('DOMContentLoaded', () => {
-        // Init AOS
+        // Animations
         if (typeof AOS !== 'undefined') AOS.init({ duration: 600, once: true });
 
-        // Ensure voices are loaded for the sultry effect
-        window.speechSynthesis.onvoiceschanged = () => {
-            window.speechSynthesis.getVoices();
-        };
+        // Voice Syncing
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+        }
 
-        // Mobile Menu toggle
+        // Mobile Menu
         document.getElementById('mobile-menu')?.addEventListener('click', () => {
             document.getElementById('nav-list')?.classList.toggle('active');
         });
 
-        // Main Typewriter
+        // Hero Typewriter
         const mainText = "INTEGRATED POWER ARCHITECTURE & ";
         let mainIdx = 0;
         function typeMain() {
@@ -622,7 +624,6 @@ Your browser does not support the video tag.
         }
         typeMain();
 
-        // Sub-heading Typewriter
         class TypeWriter {
             constructor(el, words, wait) {
                 this.el = el; this.words = words; this.txt = ''; this.wordIdx = 0;
@@ -642,7 +643,7 @@ Your browser does not support the video tag.
         const subEl = document.querySelector('.txt-type');
         if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute('data-words')), subEl.getAttribute('data-wait'));
 
-        // Draggable Bot Logic
+        // Draggable Bot implementation
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
