@@ -89,47 +89,84 @@
         .logo-text { font-size: 22px; margin: 0; font-weight: 900; color: #fff; }
         .logo-text span { color: #ffb703; }
 
+ /* --- NAVIGATION ALIGNMENT & EFFECTS --- */
         .nav-links { 
-    list-style: none; 
-    padding: 0; 
-    margin: 0; 
-    display: flex; 
-    align-items: center; 
-    gap: 30px; 
-}
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            display: flex; 
+            align-items: center; 
+            gap: 30px; 
+        }
 
-/* --- ETO YUNG DINAGDAG NATIN NA WALA KA PA --- */
-.nav-links li {
-    position: relative;
-}
+        /* Eto yung sikreto para mag-center ang dropdown sa ilalim ng button */
+        .nav-links li { 
+            position: relative; 
+        }
 
-.nav-links li a { 
-    color: #e0faff; 
-    text-decoration: none; 
-    font-size: 12px; 
-    font-weight: 600;  
-    text-transform: uppercase; 
-    letter-spacing: 1px; 
-    padding: 10px 5px;  
-    font-family: 'Share Tech Mono', monospace; 
-    transition: 0.3s;
-}
-.nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
+        .nav-links li a { 
+            color: #e0faff; 
+            text-decoration: none; 
+            font-size: 12px; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            padding: 10px 5px; 
+            font-family: 'Share Tech Mono', monospace; 
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-      .dropdown-content { 
-    display: none; 
-    position: absolute; 
-    background: rgba(8,16,24,0.98); 
-    min-width: 180px; /* Nilakihan ko konti para hindi siksikan ang text */
-    box-shadow: 0px 10px 30px rgba(0,0,0,0.6); 
-    z-index: 1001; 
-    top: 100%; 
-    left: 50%; /* I-center natin muna */
-    transform: translateX(-50%); /* Tapos i-offset natin pabalik para sakto sa gitna ng text sa taas */
-    border-top: 3px solid #00e5ff; 
-}
-        .nav-links li.dropdown:hover .dropdown-content { display: block; }
-        .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        /* Glowing Effect on Hover */
+        .nav-links li a:hover { 
+            color: #00e5ff; 
+            text-shadow: 0 0 8px #00e5ff, 0 0 12px rgba(0, 229, 255, 0.5); 
+        }
+
+        /* DROPDOWN BOX: Saktong-sakto na sa gitna! */
+        .dropdown-content { 
+            display: none; 
+            position: absolute; 
+            background: rgba(8, 16, 24, 0.98); 
+            min-width: 180px; 
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.6); 
+            z-index: 1001; 
+            top: 100%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            border-top: 3px solid #00e5ff; 
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links li.dropdown:hover .dropdown-content { 
+            display: block; 
+            animation: dropdownFadeIn 0.3s ease;
+        }
+
+        /* Swabe na pag-angat ng menu */
+        @keyframes dropdownFadeIn {
+            from { opacity: 0; transform: translate(-50%, 10px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .dropdown-content a { 
+            color: #fff !important; 
+            padding: 12px 20px; 
+            display: block; 
+            font-size: 11px;
+            border-bottom: 1px solid rgba(255,255,255,0.05); 
+            transition: 0.3s ease;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover { 
+            background: rgba(0, 229, 255, 0.1); 
+            color: #00e5ff !important; 
+            padding-left: 25px; /* Slide effect pakanan */
+            text-shadow: 0 0 8px #00e5ff;
+        }
 
         .menu-toggle { display: none; font-size: 26px; color: #00e5ff; cursor: pointer; }
 
