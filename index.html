@@ -119,7 +119,7 @@ summary { font-size: 13px; font-weight: 800; color: #ffb703; padding: 20px 25px;
 summary:hover, summary:focus { background: rgba(255,183,3,0.05); outline: 2px solid var(--cyber-blue); outline-offset: -2px; }
 details p { font-size: 12px; padding: 25px; margin: 0; color: #cbd5e1; line-height: 1.9; background: rgba(0,0,0,0.2); }
 
-/* --- 🔥 VIP ADVISORY (FIXED FOR MOBILE LAYOUT OVERFLOW) --- */
+/* --- VIP ADVISORY (FIXED FOR MOBILE LAYOUT OVERFLOW) --- */
 .vip-advisory { 
     background: rgba(13, 27, 42, 0.9); 
     border-left: 6px solid #00e5ff; 
@@ -134,31 +134,19 @@ details p { font-size: 12px; padding: 25px; margin: 0; color: #cbd5e1; line-heig
 .adv-tag::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: inherit; border: 1px solid var(--cyber-blue); animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; box-sizing: border-box; pointer-events: none; }
 @keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.4); opacity: 0; } }
 
-/* Use these classes instead of inline styles for the VIP Grid */
 .vip-content-wrapper { display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-between; width: 100%; align-items: center; }
 .vip-text-box { flex: 1; min-width: 250px; text-align: left; }
 .vip-button-box { text-align: center; }
 .btn-vip { font-size: 13px; padding: 15px 35px; white-space: normal; text-align: center; }
 
-@media (max-width: 768px) {
-    .vip-advisory { padding: 20px 15px; margin-left: 10px; margin-right: 10px; }
-    .vip-content-wrapper { flex-direction: column; align-items: stretch; gap: 20px; }
-    .vip-text-box { min-width: 100%; }
-    .vip-button-box { width: 100%; }
-    .btn-vip { width: 100%; box-sizing: border-box; display: block; }
-}
-
+/* --- FLOATING BUTTONS (DEFAULT DESKTOP) --- */
 .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
-.float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+.float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; border: none; cursor: pointer; }
 .float-btn::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: inherit; z-index: -1; filter: blur(10px); opacity: 0.6; transition: 0.3s; }
 .float-btn:hover, .float-btn:focus { transform: scale(1.15) translateY(-5px); outline: none; }
 .float-btn:hover::before, .float-btn:focus::before { opacity: 1; filter: blur(15px); }
-footer { background: #000; color: white; text-align: center; padding: 60px 20px 40px; border-top: 2px solid var(--neon-gold); position: relative; }
-footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; }
-footer a:hover, footer a:focus { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
-.footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
 
-/* --- BOT INTERACTIVE FIX & POSITION --- */
+/* --- BOT INTERACTIVE (DEFAULT DESKTOP) --- */
 .kohmz-bot-wrapper { position: fixed; bottom: 25px; left: 20px; z-index: 999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-start; touch-action: none; }
 .kohmz-bot-toggle { width: 130px; height: 130px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s; }
 .kohmz-bot-toggle:hover { transform: scale(1.05); }
@@ -180,6 +168,45 @@ lottie-player { width: 100% !important; height: 100% !important; pointer-events:
     line-height: 1.5;
     font-family: 'Share Tech Mono', monospace; 
 }
+
+/* 🔥 MOBILE OVERRIDES: BUTTONS HORIZONTAL BOTTOM & VIP BOX FIX 🔥 */
+@media (max-width: 768px) {
+    .vip-advisory { padding: 20px 15px; margin-left: 10px; margin-right: 10px; }
+    .vip-content-wrapper { flex-direction: column; align-items: stretch; gap: 20px; }
+    .vip-text-box { min-width: 100%; }
+    .vip-button-box { width: 100%; }
+    .btn-vip { width: 100%; box-sizing: border-box; display: block; }
+
+    /* Move Floating Buttons to Bottom Horizontal */
+    .floating-container {
+        flex-direction: row;
+        bottom: 10px;
+        right: 50%;
+        transform: translateX(50%);
+        gap: 15px;
+        width: max-content;
+    }
+    .float-btn {
+        width: 40px; /* Smaller for mobile */
+        height: 40px;
+        font-size: 18px;
+    }
+
+    /* Move Bot Up so it doesn't overlap the new bottom buttons */
+    .kohmz-bot-wrapper {
+        bottom: 60px;
+        left: 10px;
+    }
+    .kohmz-bot-toggle {
+        width: 90px; /* Make bot a bit smaller on mobile */
+        height: 90px;
+    }
+}
+
+footer { background: #000; color: white; text-align: center; padding: 60px 20px 80px; border-top: 2px solid var(--neon-gold); position: relative; } /* Added bottom padding to accommodate floating buttons */
+footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; }
+footer a:hover, footer a:focus { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
+.footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
 </style>
 </head>
 <body>
@@ -528,10 +555,10 @@ Your browser does not support the video tag.
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
     let speechAllowed = false;
 
-    // --- 1. MOBILE AUDIO UNLOCKER ---
+    // --- 1. MOBILE AUDIO UNLOCKER (The "Key" for Mobile) ---
     function unlockMobileAudio() {
         if (!speechAllowed && window.speechSynthesis) {
-            const utterance = new SpeechSynthesisUtterance(" ");
+            const utterance = new SpeechSynthesisUtterance(" "); // Silent prime
             utterance.volume = 0;
             window.speechSynthesis.speak(utterance);
             speechAllowed = true;
@@ -546,6 +573,7 @@ Your browser does not support the video tag.
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel(); 
 
+        // Naglalagay ng pauses (...) para sa seductive effect
         let naturalText = text.replace(/\./g, '... ').replace(/,/g, ',.. ').replace(/\?/g, '?.. ');
         const speech = new SpeechSynthesisUtterance(naturalText);
         const voices = window.speechSynthesis.getVoices();
@@ -595,7 +623,11 @@ Your browser does not support the video tag.
 
         // 🔥 IMPORTANT: I-prime ang audio engine agad pag-click ng user!
         // Ito ang mag-a-allow sa phone na magsalita pagkatapos ng AI fetch.
-        speakText("Processing..."); 
+        if (window.speechSynthesis) {
+            let silent = new SpeechSynthesisUtterance("");
+            silent.volume = 0;
+            window.speechSynthesis.speak(silent);
+        }
 
         chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
         inputField.value = ""; 
