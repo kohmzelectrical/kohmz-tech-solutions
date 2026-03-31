@@ -512,54 +512,44 @@ Your browser does not support the video tag.
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
 <script>
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
-    let speechAllowed = false;
+    
+    // --- 1. THE KEEPALIVE HACK (Para hindi makatulog ang iOS/Android Audio) ---
+    // Ginugulat nito ang audio engine every 1 second para ready siya palagi
+    setInterval(() => {
+        if (window.speechSynthesis) window.speechSynthesis.resume();
+    }, 1000);
 
-    // --- 1. MOBILE AUDIO UNLOCKER ---
-    function unlockMobileAudio() {
-        if (!speechAllowed && window.speechSynthesis) {
-            const utterance = new SpeechSynthesisUtterance(" ");
-            utterance.volume = 0;
-            window.speechSynthesis.speak(utterance);
-            speechAllowed = true;
-        }
-    }
-    document.addEventListener('click', unlockMobileAudio, { once: true });
-
-    // --- 2. LEXIE LORE VOICE ENGINE ---
-    function speakText(text) {
+    // --- 2. LEXIE LORE VOICE ENGINE (1.15 Pitch / 0.89 Rate) ---
+    window.speakText = function(text) {
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel(); 
 
-        let naturalText = text.replace(/\./g, '... ').replace(/,/g, ',.. ').replace(/\?/g, '?.. ');
+        let naturalText = text.replace(/\./g, '... ').replace(/,/g, ',.. ');
         const speech = new SpeechSynthesisUtterance(naturalText);
         const voices = window.speechSynthesis.getVoices();
         
-        if (voices.length > 0) {
-            const sexyVoice = voices.find(v => 
-                v.name.includes('Samantha') || v.name.includes('Aria') || 
-                v.name.includes('Google US English') || v.name.includes('Female') ||
-                v.name.includes('Enhanced')
-            ) || voices[0];
-            if (sexyVoice) speech.voice = sexyVoice;
-        }
+        const sexyVoice = voices.find(v => 
+            v.name.includes('Samantha') || v.name.includes('Aria') || 
+            v.name.includes('Google US English') || v.name.includes('Female')
+        ) || voices[0];
 
+        if (sexyVoice) speech.voice = sexyVoice;
         speech.lang = 'en-US'; 
         speech.pitch = 1.15; 
         speech.rate = 0.89;  
         speech.volume = 1.0;
 
         window.speechSynthesis.speak(speech);
-        window.speechSynthesis.resume();
-    }
+    };
 
+    // --- 3. TOGGLE BOT WINDOW ---
     window.toggleBotWindow = function() {
         const chat = document.getElementById('chatWindow');
         const badge = document.getElementById('botBadge');
         const hint = document.getElementById('dragHint');
-        if (!chat) return;
+        
         if (chat.style.display === 'flex') {
             chat.style.display = 'none';
             if (hint) hint.innerHTML = "⚡ KOHMZ Expert AI";
@@ -567,10 +557,13 @@ Your browser does not support the video tag.
             chat.style.display = 'flex';
             if (badge) badge.style.display = 'none';
             if (hint) hint.innerHTML = "🖐️ Drag to Move";
-            unlockMobileAudio();
+            
+            // Prime audio on open
+            if(window.speechSynthesis) window.speechSynthesis.resume();
         }
     };
 
+    // --- 4. MAIN AI LOGIC (WITH PLAY BUTTON FALLBACK) ---
     window.askGemini = async function() {
         const inputField = document.getElementById('userQuery');
         const chatBody = document.getElementById('chatBody');
@@ -578,21 +571,15 @@ Your browser does not support the video tag.
         const userMsg = inputField.value.trim();
         if (!userMsg) return;
 
-        // 🔥 THE ULTIMATE MOBILE AUDIO HACK 🔥
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.resume();
-            let wakeUp = new SpeechSynthesisUtterance(" ");
-            wakeUp.volume = 0; 
-            wakeUp.rate = 2; 
-            window.speechSynthesis.speak(wakeUp);
-        }
+        // Force resume the engine immediately on click
+        if (window.speechSynthesis) window.speechSynthesis.resume();
 
-        chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
+        chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; border-left: none; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
         inputField.value = ""; 
         chatBody.scrollTop = chatBody.scrollHeight;
 
         const loadingId = "loading-" + Date.now();
-        chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="border-left: 2px solid #00e5ff;">UNIT-01: Processing request...</div>`;
+        chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="border-left: 2px solid #00e5ff;">UNIT-01: Processing...</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
 
         try {
@@ -605,10 +592,24 @@ Your browser does not support the video tag.
             document.getElementById(loadingId)?.remove();
             const aiReply = result.ai_answer || "System calibration error.";
 
-            chatBody.innerHTML += `<div class="chat-bubble" style="border-left: 2px solid #00e5ff;">UNIT-01: ${aiReply}</div>`;
+            // Nilinis ang single quotes para hindi masira ang HTML code
+            const cleanReplyForButton = aiReply.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+
+            // 🔥 DITO NATIN NILAGAY ANG PLAY BUTTON FALLBACK 🔥
+            chatBody.innerHTML += `
+            <div class="chat-bubble" style="border-left: 2px solid #00e5ff;">
+                UNIT-01: ${aiReply}
+                <div style="margin-top: 8px; border-top: 1px solid rgba(0, 229, 255, 0.2); padding-top: 5px;">
+                    <button onclick="speakText('${cleanReplyForButton}')" style="background: none; border: none; color: #ffb703; cursor: pointer; font-family: 'Share Tech Mono'; font-size: 11px; padding: 0;">
+                        <i class="fas fa-volume-up"></i> Play Audio
+                    </button>
+                </div>
+            </div>`;
+            
             chatBody.scrollTop = chatBody.scrollHeight;
             
-            setTimeout(() => { speakText(aiReply); }, 50);
+            // Susubukan pa rin natin i-autoplay. Kung i-block ng phone, nandoon ang button sa taas!
+            speakText(aiReply);
 
         } catch (err) {
             if (document.getElementById(loadingId)) {
@@ -617,17 +618,17 @@ Your browser does not support the video tag.
         }
     };
 
+    // --- 5. INITIALIZATION & READ PAGE LOGIC ---
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof AOS !== 'undefined') AOS.init({ duration: 600, once: true });
 
         const menuBtn = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         if(menuBtn && navList) {
-            menuBtn.addEventListener('click', () => {
-                navList.classList.toggle('active');
-            });
+            menuBtn.addEventListener('click', () => { navList.classList.toggle('active'); });
         }
 
+        // Typewriter Effect
         const mainText = "INTEGRATED POWER ARCHITECTURE & ";
         let mainIdx = 0;
         const typeEl = document.getElementById("main-typewriter-text");
@@ -658,6 +659,7 @@ Your browser does not support the video tag.
         const subEl = document.querySelector('.txt-type');
         if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute('data-words')), subEl.getAttribute('data-wait'));
 
+        // Draggable Logic
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
@@ -673,69 +675,43 @@ Your browser does not support the video tag.
             uQuery.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
         }
 
+        // Read Page Button Logic
         const readPageBtn = document.getElementById('readPageBtn');
         let isReadingPage = false;
-        
         if (readPageBtn) {
             readPageBtn.addEventListener('click', function() {
-                unlockMobileAudio();
-                
                 if (isReadingPage || window.speechSynthesis.speaking) {
                     window.speechSynthesis.cancel();
                     isReadingPage = false;
                     readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
                     return;
                 }
-                
                 const mainElement = document.getElementById('main-content');
                 if (!mainElement) return;
-
-                let contentToRead = mainElement.innerText
-                    .replace(/\n+/g, '. ') 
-                    .replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES/g, ''); 
-
-                let fullText = "Welcome to KOHMZ Electrical. Here is our technical capability. " + contentToRead;
+                
+                let contentToRead = mainElement.innerText.replace(/\n+/g, '. ').replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES/g, ''); 
+                let fullText = "Welcome to KOHMZ Electrical. " + contentToRead;
                 let sentences = fullText.match(/[^.!?]+[.!?]+/g) || [fullText];
-
-                const voices = window.speechSynthesis.getVoices();
-                const profVoice = voices.find(v => 
-                    v.name.includes('Aria') || 
-                    v.name.includes('Samantha') || 
-                    v.name.includes('Google US English') ||
-                    v.name.includes('Female')
-                ) || voices[0];
 
                 isReadingPage = true;
                 readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>';
 
                 let currentSentence = 0;
-
                 function playNextSentence() {
                     if (!isReadingPage || currentSentence >= sentences.length) {
                         isReadingPage = false;
                         readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
                         return;
                     }
-
                     let chunk = new SpeechSynthesisUtterance(sentences[currentSentence].trim());
+                    const voices = window.speechSynthesis.getVoices();
+                    const profVoice = voices.find(v => v.name.includes('Aria') || v.name.includes('Samantha') || v.name.includes('Female')) || voices[0];
                     if (profVoice) chunk.voice = profVoice;
-                    
-                    chunk.pitch = 1.15;
-                    chunk.rate = 0.89;
-
-                    chunk.onend = () => {
-                        currentSentence++;
-                        playNextSentence();
-                    };
-
-                    chunk.onerror = () => {
-                        isReadingPage = false;
-                        readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
-                    };
-
+                    chunk.pitch = 1.15; chunk.rate = 0.89;
+                    chunk.onend = () => { currentSentence++; playNextSentence(); };
+                    chunk.onerror = () => { isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>'; };
                     window.speechSynthesis.speak(chunk);
                 }
-
                 playNextSentence();
             });
         }
