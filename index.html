@@ -732,11 +732,26 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
 <script>
-    // 1. UNIT-01 AI LOGIC (Middleman Connection)
+    // --- 1. GLOBAL AI FUNCTIONS (Para sa onclick) ---
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
-    // Ginawa nating 'window.' para sigurado na mahanap ng HTML buttons (onclick)
-    window.askGemini = async function() {
+    function toggleBotWindow() {
+        const chat = document.getElementById('chatWindow');
+        const badge = document.getElementById('botBadge');
+        const hint = document.getElementById('dragHint');
+        if (!chat) return;
+
+        if (chat.style.display === 'flex') {
+            chat.style.display = 'none';
+            if (hint) hint.innerHTML = "⚡ KOHMZ Expert AI";
+        } else {
+            chat.style.display = 'flex';
+            if (badge) badge.style.display = 'none';
+            if (hint) hint.innerHTML = "🖐️ Drag to Move";
+        }
+    }
+
+    async function askGemini() {
         const inputField = document.getElementById('userQuery');
         const chatBody = document.getElementById('chatBody');
         const userMsg = inputField ? inputField.value.trim() : "";
@@ -768,35 +783,20 @@ Your browser does not support the video tag.
             }
         } catch (error) {
             const loadingEl = document.getElementById(loadingId);
-            if (loadingEl) loadingEl.innerHTML = "UNIT-01: Offline. Check connection.";
+            if (loadingEl) loadingEl.innerHTML = "UNIT-01: System offline.";
         }
         chatBody.scrollTop = chatBody.scrollHeight;
-    };
+    }
 
-    window.toggleBotWindow = function() {
-        const chat = document.getElementById('chatWindow');
-        const badge = document.getElementById('botBadge');
-        const hint = document.getElementById('dragHint');
-        if (!chat) return;
-
-        if (chat.style.display === 'flex') {
-            chat.style.display = 'none';
-            if (hint) hint.innerHTML = "⚡ KOHMZ Expert AI";
-        } else {
-            chat.style.display = 'flex';
-            if (badge) badge.style.display = 'none';
-            if (hint) hint.innerHTML = "🖐️ Drag to Move";
-        }
-    };
-
-    // 2. PAGE LOAD LOGIC (AOS, Typewriter, Nav, Draggable)
+    // --- 2. INITIALIZATION ON LOAD ---
     document.addEventListener('DOMContentLoaded', () => {
-        // Init AOS (Animations)
+        
+        // AOS Animation
         if (typeof AOS !== 'undefined') {
             AOS.init({ duration: 600, once: true, offset: 100 });
         }
 
-        // Mobile Nav Logic
+        // Mobile Menu
         const mobileMenu = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         if (mobileMenu && navList) {
@@ -805,19 +805,61 @@ Your browser does not support the video tag.
             });
         }
 
-        // Typewriter (Hero Title)
+        // Original TypeWriter Class (The "Kadugtong" text)
+        class TypeWriter {
+            constructor(txtElement, words, wait = 3000) {
+                this.txtElement = txtElement;
+                this.words = words;
+                this.txt = '';
+                this.wordIndex = 0;
+                this.wait = parseInt(wait, 10);
+                this.type();
+                this.isDeleting = false;
+            }
+            type() {
+                const current = this.wordIndex % this.words.length;
+                const fullTxt = this.words[current];
+                if(this.isDeleting) {
+                    this.txt = fullTxt.substring(0, this.txt.length - 1);
+                } else {
+                    this.txt = fullTxt.substring(0, this.txt.length + 1);
+                }
+                this.txtElement.innerHTML = `<span class="txt">${this.txt}</span>`;
+                let typeSpeed = 100;
+                if(this.isDeleting) typeSpeed /= 2;
+                if(!this.isDeleting && this.txt === fullTxt) {
+                    typeSpeed = this.wait;
+                    this.isDeleting = true;
+                } else if(this.isDeleting && this.txt === '') {
+                    this.isDeleting = false;
+                    this.wordIndex++;
+                    typeSpeed = 500;
+                }
+                setTimeout(() => this.type(), typeSpeed);
+            }
+        }
+
+        // Init Main Hero Typewriter
         const mainTypeText = "INTEGRATED POWER ARCHITECTURE & ";
         let mainTypeIndex = 0;
         const mainTypeElement = document.getElementById("main-typewriter-text");
-        function startTyping() {
+        function startMainTyping() {
             if (mainTypeElement && mainTypeIndex < mainTypeText.length) {
                 mainTypeElement.innerHTML += mainTypeText.charAt(mainTypeIndex++);
-                setTimeout(startTyping, 60);
+                setTimeout(startMainTyping, 60);
             }
         }
-        startTyping();
+        startMainTyping();
 
-        // Draggable Logic (Para gumalaw yung robot)
+        // Init Sub-Words Typewriter
+        const txtElement = document.querySelector('.txt-type');
+        if (txtElement) {
+            const words = JSON.parse(txtElement.getAttribute('data-words'));
+            const wait = txtElement.getAttribute('data-wait');
+            new TypeWriter(txtElement, words, wait);
+        }
+
+        // Draggable Bot Logic
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         let isDragging = false, startX, startY, xOffset = 0, yOffset = 0, dragStartTime;
@@ -849,9 +891,10 @@ Your browser does not support the video tag.
             window.addEventListener('touchend', dragEnd);
         }
 
-        // Enter Key Support
         document.getElementById('userQuery')?.addEventListener("keypress", (e) => {
             if (e.key === "Enter") askGemini();
         });
+
+        setTimeout(() => { if (document.getElementById('chatWindow')?.style.display !== 'flex') toggleBotWindow(); }, 6000);
     });
 </script>
