@@ -506,6 +506,7 @@ Your browser does not support the video tag.
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel(); 
 
+        // 🔥 LEXIE HACK: Nilagyan natin ng mas maraming ellipses (...) para sa "breathless" effect
         let naturalText = text
             .replace(/\./g, '... ') 
             .replace(/,/g, ',.. ')
@@ -514,18 +515,20 @@ Your browser does not support the video tag.
         const speech = new SpeechSynthesisUtterance(naturalText);
         const voices = window.speechSynthesis.getVoices();
         
-        const seductiveVoice = voices.find(v => 
-            (v.name.includes('Aria') && v.name.includes('Natural')) || 
+        // Priority: Samantha (Mac) o Google US English (Chrome) - sila ang pinaka-smooth
+        const sexyVoice = voices.find(v => 
             v.name.includes('Samantha') || 
+            v.name.includes('Aria') || 
             v.name.includes('Google US English') ||
-            v.name.includes('Natural')
+            v.name.includes('Female')
         );
 
-        if (seductiveVoice) speech.voice = seductiveVoice;
+        if (sexyVoice) speech.voice = sexyVoice;
         speech.lang = 'en-US'; 
         
-        speech.pitch = 0.95; 
-        speech.rate = 0.85;  
+        // 🧪 THE LEXIE FORMULA:
+        speech.pitch = 1.15; // Lively at youthful, pero hindi chipmunk (1.1 - 1.2 is the sweet spot)
+        speech.rate = 0.88;  // Slightly slower than normal para doon sa "lingering" seductive effect
         speech.volume = 1.0;
 
         window.speechSynthesis.speak(speech);
@@ -696,8 +699,8 @@ Your browser does not support the video tag.
                     let chunk = new SpeechSynthesisUtterance(sentences[currentSentence].trim());
                     if (profVoice) chunk.voice = profVoice;
                     
-                    chunk.rate = 0.85; 
-                    chunk.pitch = 0.95;
+                   chunk.pitch = 1.15; // Lexie Lore Pitch
+chunk.rate = 0.88;  // Lexie Lore Pacing
 
                     // Pag tapos na ang isang sentence, i-play ang susunod
                     chunk.onend = () => {
