@@ -506,7 +506,6 @@ Your browser does not support the video tag.
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel(); 
 
-        // 🔥 Cadence Hack: Natural pauses para magmukhlang tao na humihinga
         let naturalText = text
             .replace(/\./g, '... ') 
             .replace(/,/g, ',.. ')
@@ -515,27 +514,23 @@ Your browser does not support the video tag.
         const speech = new SpeechSynthesisUtterance(naturalText);
         const voices = window.speechSynthesis.getVoices();
         
-        // Priority: Seductive Female Voices
         const seductiveVoice = voices.find(v => 
-            v.name.includes('Aria') || 
+            (v.name.includes('Aria') && v.name.includes('Natural')) || 
             v.name.includes('Samantha') || 
-            v.name.includes('Google UK English Female') || 
-            v.name.includes('Fiona') || 
-            v.name.includes('Google US English')
+            v.name.includes('Google US English') ||
+            v.name.includes('Natural')
         );
 
         if (seductiveVoice) speech.voice = seductiveVoice;
         speech.lang = 'en-US'; 
         
-        // 🔥 SEDUCTIVE CALIBRATION (Youthful, Confident, Alluring)
-        speech.pitch = 0.85; // Deep but youthful tone
-        speech.rate = 0.80;  // Slow, deliberate speed
+        speech.pitch = 0.95; 
+        speech.rate = 0.85;  
         speech.volume = 1.0;
 
         window.speechSynthesis.speak(speech);
     }
 
-    // Toggle Chat Window
     window.toggleBotWindow = function() {
         const chat = document.getElementById('chatWindow');
         const badge = document.getElementById('botBadge');
@@ -551,7 +546,7 @@ Your browser does not support the video tag.
         }
     };
 
-    // --- 3. MAIN AI INTERACTION ---
+    // --- 3. MAIN AI LOGIC ---
     window.askGemini = async function() {
         const inputField = document.getElementById('userQuery');
         const chatBody = document.getElementById('chatBody');
@@ -560,7 +555,6 @@ Your browser does not support the video tag.
         const userMsg = inputField.value.trim();
         if (!userMsg) return;
 
-        // User Message Display
         chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px; white-space: pre-wrap;">YOU: ${userMsg}</div>`;
         inputField.value = ""; 
         chatBody.scrollTop = chatBody.scrollHeight;
@@ -582,12 +576,11 @@ Your browser does not support the video tag.
             let aiReply = "";
             try {
                 const result = JSON.parse(rawText);
-                aiReply = result.ai_answer || result.message || "I apologize, system sync lost.";
+                aiReply = result.ai_answer || result.message || "I apologize, system sync error.";
             } catch(e) { aiReply = rawText; }
 
             chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px; white-space: pre-wrap;">UNIT-01: ${aiReply}</div>`;
             
-            // 🔥 TALKING AI TRIGGER 🔥
             speakText(aiReply);
 
         } catch (err) {
@@ -600,20 +593,16 @@ Your browser does not support the video tag.
 
     // --- 4. SYSTEM INITIALIZATION ---
     document.addEventListener('DOMContentLoaded', () => {
-        // Init AOS Animations
         if (typeof AOS !== 'undefined') AOS.init({ duration: 600, once: true });
 
-        // Ensure voices are loaded for the seductive effect
         if ('speechSynthesis' in window) {
             window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
         }
 
-        // Mobile Menu toggle
         document.getElementById('mobile-menu')?.addEventListener('click', () => {
             document.getElementById('nav-list')?.classList.toggle('active');
         });
 
-        // Hero Section Typewriter
         const mainText = "INTEGRATED POWER ARCHITECTURE & ";
         let mainIdx = 0;
         function typeMain() {
@@ -625,7 +614,6 @@ Your browser does not support the video tag.
         }
         typeMain();
 
-        // Sub-heading Typewriter
         class TypeWriter {
             constructor(el, words, wait) {
                 this.el = el; this.words = words; this.txt = ''; this.wordIdx = 0;
@@ -645,7 +633,6 @@ Your browser does not support the video tag.
         const subEl = document.querySelector('.txt-type');
         if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute('data-words')), subEl.getAttribute('data-wait'));
 
-        // Draggable Bot Logic
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
@@ -654,10 +641,9 @@ Your browser does not support the video tag.
         window.addEventListener('mousemove', (e) => { if (!isDrag) return; xOff = e.clientX - startX; yOff = e.clientY - startY; wrapper.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; });
         window.addEventListener('mouseup', () => { if (isDrag) { isDrag = false; if (Date.now() - startTime < 200) window.toggleBotWindow(); } });
 
-        // Input field Enter listener
         document.getElementById('userQuery')?.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
 
-       // 🔥 READ ALOUD (PAGE SCREEN READER) LOGIC 🔥
+        // 🔥 READ ALOUD (PAGE SCREEN READER) LOGIC - CHAIN REACTION (ANTI-CRASH) 🔥
         let isReadingPage = false;
         const readPageBtn = document.getElementById('readPageBtn');
         
@@ -665,7 +651,7 @@ Your browser does not support the video tag.
             readPageBtn.addEventListener('click', function() {
                 if (!window.speechSynthesis) return;
 
-                // 1. Kung nagbabasa na siya at pinindot ulit, itigil ang lahat
+                // 1. Kung nagbabasa na siya, itigil
                 if (isReadingPage || window.speechSynthesis.speaking) {
                     window.speechSynthesis.cancel();
                     isReadingPage = false;
@@ -694,13 +680,13 @@ Your browser does not support the video tag.
                 );
 
                 isReadingPage = true;
-                readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>'; // Change icon to mute
+                readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>'; // Mute Icon
 
                 let currentSentence = 0;
 
                 // 4. Chain Reaction Logic: Isa-isang i-play ang sentence
                 function playNextSentence() {
-                    // Kapag natapos na o kinansela ng user, i-reset ang button
+                    // Kung pinatigil ng user o tapos na ang text, i-reset
                     if (!isReadingPage || currentSentence >= sentences.length) {
                         isReadingPage = false;
                         readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
@@ -710,17 +696,15 @@ Your browser does not support the video tag.
                     let chunk = new SpeechSynthesisUtterance(sentences[currentSentence].trim());
                     if (profVoice) chunk.voice = profVoice;
                     
-                    // Seductive pacing
                     chunk.rate = 0.85; 
                     chunk.pitch = 0.95;
 
-                    // Kapag tapos na ang isang line, tawagin ang susunod
+                    // Pag tapos na ang isang sentence, i-play ang susunod
                     chunk.onend = () => {
                         currentSentence++;
                         playNextSentence();
                     };
 
-                    // Safety catch kung sakaling mag-error ang browser
                     chunk.onerror = () => {
                         isReadingPage = false;
                         readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
@@ -729,10 +713,11 @@ Your browser does not support the video tag.
                     window.speechSynthesis.speak(chunk);
                 }
 
-                // Simulan ang pagbasa ng unang sentence
+                // Simulan ang pagbasa
                 playNextSentence();
             });
         }
+    });
 </script>
 </body>
 </html>
