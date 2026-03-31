@@ -514,7 +514,7 @@ Your browser does not support the video tag.
         chatBody.scrollTop = chatBody.scrollHeight;
 
         const loadingId = "loading-" + Date.now();
-        chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}">UNIT-01: Processing...</div>`;
+        chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Contacting Cloudflare...</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
 
         try {
@@ -523,14 +523,31 @@ Your browser does not support the video tag.
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: userMsg })
             });
-            const result = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+
+            const rawText = await response.text();
             document.getElementById(loadingId)?.remove();
 
-            if (result.choices && result.choices[0].message) {
-                chatBody.innerHTML += `<div class="chat-bubble">UNIT-01: ${result.choices[0].message.content}</div>`;
+            let aiReply = "";
+            try {
+                // Subukan kung JSON ang ibinato ng Cloudflare
+                const result = JSON.parse(rawText);
+                // UNIVERSAL CATCHER: Sasaluin nito kahit ano pa ang format ng sagot ng Worker mo
+                aiReply = result.reply || result.response || result.message || 
+                         (result.choices && result.choices[0].message ? result.choices[0].message.content : JSON.stringify(result));
+            } catch(e) {
+                // Kung plain text lang ang ibinato ng Cloudflare
+                aiReply = rawText;
             }
+
+            chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: ${aiReply}</div>`;
+            
         } catch (err) {
-            document.getElementById(loadingId).innerText = "UNIT-01: System Offline.";
+            console.error("CLOUDFLARE FETCH ERROR:", err);
+            document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: ${err.message}. <br><span style="color:#ff3b3b; font-size:9px;">(Pindutin ang F12 sa keyboard at check ang Console tab para sa detalye ng error)</span>`;
         }
         chatBody.scrollTop = chatBody.scrollHeight;
     };
