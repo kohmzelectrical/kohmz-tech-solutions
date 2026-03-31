@@ -493,13 +493,25 @@ Your browser does not support the video tag.
     </div>
 </div>
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
 <script>
-    // --- 1. GLOBAL FUNCTIONS ---
+    // --- 2. CONFIGURATION & VOICE ENGINE ---
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
+    // Ito ang engine na nagpapatunog kay UNIT-01
+    function speakText(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel(); // Stop current speech if new one comes in
+        const speech = new SpeechSynthesisUtterance(text);
+        speech.lang = 'en-US'; 
+        speech.pitch = 1.1; // Slightly higher pitch para sa "cyber" vibe
+        speech.rate = 1.0;
+        window.speechSynthesis.speak(speech);
+    }
+
+    // Toggle Chat Window logic
     window.toggleBotWindow = function() {
         const chat = document.getElementById('chatWindow');
         const badge = document.getElementById('botBadge');
@@ -515,72 +527,70 @@ Your browser does not support the video tag.
         }
     };
 
-    // 🔥 TRACKER ACTIVATED: Susundan natin bawat galaw ng code 🔥
-   window.askGemini = async function() {
-    console.log("👉 1. SEND BUTTON PININDOT!");
+    // --- 3. MAIN CHAT LOGIC (WITH TRACKER & TALKING AI) ---
+    window.askGemini = async function() {
+        console.log("👉 1. UNIT-01 ACTIVATED: Send button triggered.");
 
-    const inputField = document.getElementById('userQuery');
-    const chatBody = document.getElementById('chatBody');
+        const inputField = document.getElementById('userQuery');
+        const chatBody = document.getElementById('chatBody');
+        if (!inputField || !chatBody) return;
 
-    if (!inputField || !chatBody) {
-        console.error("❌ ERROR: Hindi mahanap yung Chat Box sa HTML!");
-        return;
-    }
+        const userMsg = inputField.value.trim();
+        if (!userMsg) return;
 
-    const userMsg = inputField.value.trim();
-    if (!userMsg) return;
+        // Display User message
+        chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px; white-space: pre-wrap;">YOU: ${userMsg}</div>`;
+        inputField.value = ""; 
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-    // 1. Ipakita ang message ng User
-    chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px; white-space: pre-wrap;">YOU: ${userMsg}</div>`;
-    inputField.value = ""; 
-    chatBody.scrollTop = chatBody.scrollHeight;
+        // Show Thinking/Loading state
+        const loadingId = "loading-" + Date.now();
+        chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Analyzing...</div>`;
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-    // 2. Loading state
-    const loadingId = "loading-" + Date.now();
-    chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Thinking...</div>`;
-    chatBody.scrollTop = chatBody.scrollHeight;
-
-    try {
-        const response = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
-                message: userMsg,
-                name: "Web User" // Dummy name para sa database
-            })
-        });
-        
-        const rawText = await response.text();
-        console.log("👉 SERVER RESPONSE:", rawText);
-        
-        document.getElementById(loadingId)?.remove();
-
-        let aiReply = "";
         try {
-            const result = JSON.parse(rawText);
-            // DITO ANG MAGIC FIX: Hinahanap natin ang 'ai_answer'
-            aiReply = result.ai_answer || result.message || "Pasensya na boss, nagka-error sa pag-isip.";
-        } catch(e) {
-            aiReply = rawText; 
-        }
+            const response = await fetch(WORKER_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMsg, name: "Web User" })
+            });
+            
+            const rawText = await response.text();
+            console.log("👉 SERVER RESPONSE:", rawText);
+            document.getElementById(loadingId)?.remove();
 
-        // 3. Ipakita ang sagot ng AI (May white-space: pre-wrap para sa malinis na spacing)
-        chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px; white-space: pre-wrap;">UNIT-01: ${aiReply}</div>`;
-        
-    } catch (err) {
-        console.error("❌ FETCH ERROR:", err);
-        document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: Hindi makakonekta sa server.`;
-    }
-    chatBody.scrollTop = chatBody.scrollHeight;
-};
-    // --- 2. INITIALIZATIONS ---
+            let aiReply = "";
+            try {
+                const result = JSON.parse(rawText);
+                aiReply = result.ai_answer || result.message || "Protocol error: No response data.";
+            } catch(e) { aiReply = rawText; }
+
+            // 1. Ipakita ang text sa Chat Window
+            chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px; white-space: pre-wrap;">UNIT-01: ${aiReply}</div>`;
+            
+            // 2. 🔥 ITO ANG DAGDAG: Magsasalita na si UNIT-01 🔥
+            speakText(aiReply);
+
+        } catch (err) {
+            console.error("❌ FETCH ERROR:", err);
+            if(document.getElementById(loadingId)) {
+                document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: Connection failed.`;
+            }
+        }
+        chatBody.scrollTop = chatBody.scrollHeight;
+    };
+
+    // --- 4. INITIALIZATIONS (Runs once on load) ---
     document.addEventListener('DOMContentLoaded', () => {
+        // Init AOS
         if (typeof AOS !== 'undefined') AOS.init({ duration: 600, once: true });
 
+        // Mobile Menu toggle
         document.getElementById('mobile-menu')?.addEventListener('click', () => {
             document.getElementById('nav-list')?.classList.toggle('active');
         });
 
+        // Main Typewriter logic
         const mainText = "INTEGRATED POWER ARCHITECTURE & ";
         let mainIdx = 0;
         function typeMain() {
@@ -592,6 +602,7 @@ Your browser does not support the video tag.
         }
         typeMain();
 
+        // Sub-heading Typewriter
         class TypeWriter {
             constructor(el, words, wait) {
                 this.el = el; this.words = words; this.txt = ''; this.wordIdx = 0;
@@ -611,6 +622,7 @@ Your browser does not support the video tag.
         const subEl = document.querySelector('.txt-type');
         if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute('data-words')), subEl.getAttribute('data-wait'));
 
+        // Draggable Bot implementation
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
@@ -619,6 +631,7 @@ Your browser does not support the video tag.
         window.addEventListener('mousemove', (e) => { if (!isDrag) return; xOff = e.clientX - startX; yOff = e.clientY - startY; wrapper.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; });
         window.addEventListener('mouseup', () => { if (isDrag) { isDrag = false; if (Date.now() - startTime < 200) window.toggleBotWindow(); } });
 
+        // Enter key support for input
         document.getElementById('userQuery')?.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
     });
 </script>
