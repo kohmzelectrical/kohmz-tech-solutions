@@ -665,55 +665,57 @@ Your browser does not support the video tag.
             readPageBtn.addEventListener('click', function() {
                 if (!window.speechSynthesis) return;
 
-                // Kung nagbabasa na, itigil
-                if (isReadingPage) {
+                // Kung nagbabasa na, itigil agad
+                if (isReadingPage || window.speechSynthesis.speaking) {
                     window.speechSynthesis.cancel();
                     isReadingPage = false;
-                    this.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
+                    readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
                     return;
                 }
 
-                // Patigilin muna ang AI kung nagsasalita
-                window.speechSynthesis.cancel();
-
-                // Kunin ang text ng buong main content
                 const mainElement = document.getElementById('main-content');
                 if (!mainElement) return;
 
-                // Linisin ang text para hindi niya basahin nang paulit-ulit ang mga button labels
+                // Linisin ang text
                 let contentToRead = mainElement.innerText
-                    .replace(/\n+/g, '. ') // Palitan ang mga enters ng period para huminto siya nang tama
-                    .replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES/g, ''); // Tanggalin ang call-to-action buttons sa pagbasa
+                    .replace(/\n+/g, '. ') 
+                    .replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES/g, ''); 
 
-                const pageSpeech = new SpeechSynthesisUtterance("Welcome to KOHMZ Electrical. Here is our technical capability. . " + contentToRead);
-                
-                // Gamitin ang parehong seductive/professional na boses
+                let fullText = "Welcome to KOHMZ Electrical. Here is our technical capability. " + contentToRead;
+
+                // 🔥 BROWSER BUG FIX: Hiwain ang text per sentence para hindi mag-crash ang Chrome/Safari
+                let sentences = fullText.match(/[^.!?]+[.!?]+/g) || [fullText];
+
                 const voices = window.speechSynthesis.getVoices();
                 const profVoice = voices.find(v => 
                     v.name.includes('Aria') || 
                     v.name.includes('Samantha') || 
                     v.name.includes('Google US English')
                 );
-                
-                if (profVoice) pageSpeech.voice = profVoice;
-                pageSpeech.rate = 0.90; // Saktong bilis para sa pagbabasa ng mahabang text
-                pageSpeech.pitch = 0.95;
 
-                // Kapag natapos na siyang magbasa
-                pageSpeech.onend = () => {
-                    isReadingPage = false;
-                    readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
-                };
-
-                // I-play ang speech
-                window.speechSynthesis.speak(pageSpeech);
                 isReadingPage = true;
-                
-                // Palitan ang icon magiging Mute
-                this.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>'; 
+                readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>'; // Palitan icon agad
+
+                // I-pila ang bawat sentence sa AI
+                sentences.forEach((sentence, index) => {
+                    let chunk = new SpeechSynthesisUtterance(sentence.trim());
+                    if (profVoice) chunk.voice = profVoice;
+                    
+                    // Seductive pacing and tone for the reader
+                    chunk.rate = 0.85; 
+                    chunk.pitch = 0.95;
+
+                    // I-reset ang button kapag natapos na niya yung pinakahuling sentence
+                    if (index === sentences.length - 1) {
+                        chunk.onend = () => {
+                            isReadingPage = false;
+                            readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
+                        };
+                    }
+                    window.speechSynthesis.speak(chunk);
+                });
             });
         }
-    });
 </script>
 </body>
 </html>
