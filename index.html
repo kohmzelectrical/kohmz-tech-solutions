@@ -1069,64 +1069,52 @@ const GEMINI_API_KEY = "AIzaSyDmujr3VDO1RWCqoVhnBkP98WyQqOTF4TU"; // FRESH KEY G
 const GEMINI_MODEL = "gemini-2.0-flash";
 
 async function askGemini() {
-    const inputField = document.getElementById('userQuery');
-    const chatBody = document.getElementById('chatBody');
-    const userMsg = inputField.value.trim();
+    const inputField = document.getElementById('userQuery');
+    const chatBody = document.getElementById('chatBody');
+    const userMsg = inputField.value.trim();
 
-    if (!userMsg) return;
+    if (!userMsg) return;
 
-    // 1. User Bubble
-    chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
-    inputField.value = ""; 
-    chatBody.scrollTop = chatBody.scrollHeight;
+    // 1. User Bubble
+    chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
+    inputField.value = ""; 
+    chatBody.scrollTop = chatBody.scrollHeight;
 
-    // 2. Loading State
-    const loadingId = "loading-" + Date.now();
-    chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Accessing Mainframe...</div>`;
-    chatBody.scrollTop = chatBody.scrollHeight;
+    // 2. Loading State
+    const loadingId = "loading-" + Date.now();
+    chatBody.innerHTML += `<div class="chat-bubble" id="${loadingId}" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: Accessing Mainframe...</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
 
-    try {
-        // UNIT-01 CONNECTION (Secure Version)
-const response = await fetch("https://kohmz-ai-vault.kohmzelectrical.workers.dev/", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ 
-        message: userMsg // Siguraduhin na 'userMsg' ang tawag sa variable ng input mo
-    })
-});
+    try {
+        // 3. UNIT-01 CONNECTION (Cloudflare Worker)
+        const response = await fetch("https://kohmz-ai-vault.kohmzelectrical.workers.dev/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: userMsg })
+        });
 
-const data = await response.json();
-// Kunin ang sagot mula sa OpenAI format na dumaan sa Worker
-const aiReply = data.choices[0].message.content;
+        // BASAHIN ANG DATA (Isang beses lang!)
+        const result = await response.json();
 
-// DITO MO NA ILALAGAY YUNG CODE PARA IPAKITA YUNG aiReply SA CHAT BOX MO
-// Halimbawa: appendMessage("UNIT-01", aiReply);
+        // BURAHIN ANG LOADING TEXT
+        const loadingEl = document.getElementById(loadingId);
+        if (loadingEl) loadingEl.remove();
 
-        const data = await response.json();
+        // 4. IPAKITA ANG SAGOT (OpenAI Format na binubuga ng Worker mo)
+        if (result.choices && result.choices[0].message) {
+            const aiReply = result.choices[0].message.content;
+            chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: ${aiReply}</div>`;
+        } else {
+            chatBody.innerHTML += `<div class="chat-bubble">UNIT-01: Data unreadable. Please check system logs.</div>`;
+        }
 
-        // 🔍 Error Catcher
-        if (data.error) {
-            console.error("GOOGLE API ERROR:", data.error);
-            document.getElementById(loadingId).innerHTML = `UNIT-01 ERROR: ${data.error.message}`;
-            return;
-        }
-
-        // 3. Ipakita ang sagot
-        if (data.candidates && data.candidates[0].content) {
-            const botReply = data.candidates[0].content.parts[0].text;
-            document.getElementById(loadingId).remove();
-            chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; border-left: 2px solid #00e5ff; margin-bottom: 10px;">UNIT-01: ${botReply}</div>`;
-        } else {
-            document.getElementById(loadingId).innerHTML = "UNIT-01: Data unreadable. Please try again.";
-        }
-
-    } catch (error) {
-        document.getElementById(loadingId).innerHTML = "UNIT-01: System offline. Check connection.";
-        console.error("FETCH ERROR:", error);
-    }
-    chatBody.scrollTop = chatBody.scrollHeight;
+    } catch (error) {
+        const loadingEl = document.getElementById(loadingId);
+        if (loadingEl) loadingEl.innerHTML = "UNIT-01: System offline. Check connection.";
+        console.error("FETCH ERROR:", error);
+    }
+    chatBody.scrollTop = chatBody.scrollHeight;
 }
-
 // 4. Enter Key Support
 document.getElementById('userQuery')?.addEventListener("keypress", (e) => {
     if (e.key === "Enter") askGemini();
@@ -1158,4 +1146,3 @@ document.querySelectorAll('.dropdown > a').forEach(btn => {
     });
 });
 </script>
-DOUBLE CHECK MO IF OK NA 
