@@ -455,7 +455,7 @@
         </nav>
     </footer>
 
-    <script>
+ <script>
         const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
         
         // --- 1. THE KEEPALIVE HACK ---
@@ -463,24 +463,27 @@
             if (window.speechSynthesis) window.speechSynthesis.resume();
         }, 1000);
 
-        // --- 2. LEXIE LORE VOICE ENGINE (1.15 Pitch / 0.89 Rate) ---
+        // --- 2. LEXIE LORE VOICE ENGINE (1.15 Pitch / 0.90 Rate) FOR BOT ---
         window.speakText = function(text) {
             if (!window.speechSynthesis) return;
             window.speechSynthesis.cancel(); 
 
+            // Naglalagay ng natural pause para makahinga ang AI
             let naturalText = text.replace(/\./g, '... ').replace(/,/g, ',.. ');
             const speech = new SpeechSynthesisUtterance(naturalText);
             const voices = window.speechSynthesis.getVoices();
             
+            // Priority: Human-like female voices
             const sexyVoice = voices.find(v => 
                 v.name.includes('Samantha') || v.name.includes('Aria') || 
-                v.name.includes('Google US English') || v.name.includes('Female')
+                v.name.includes('Google US English') || v.name.includes('Female') ||
+                v.name.includes('Enhanced')
             ) || voices[0];
 
             if (sexyVoice) speech.voice = sexyVoice;
             speech.lang = 'en-US'; 
             speech.pitch = 1.15; 
-            speech.rate = 0.89;  
+            speech.rate = 0.90;  
             speech.volume = 1.0;
 
             window.speechSynthesis.speak(speech);
@@ -680,8 +683,8 @@
             uQuery.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
         }
 
-        /* PAGE READER LOGIC */
-        window.isReadingPage = false; // Exposed to global so bot can cancel it
+        /* --- 🔥 FLUENT PAGE READER LOGIC (1.15 / 0.90) 🔥 --- */
+        window.isReadingPage = false; 
         const readPageBtn = document.getElementById('readPageBtn');
         
         if (readPageBtn) {
@@ -692,37 +695,72 @@
                     readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
                     return;
                 }
-                const formSection = document.querySelector('.form-container');
-                if (!formSection) return;
+
+                // 1. Kukunin lang natin yung magandang basahin sa page (Intro + VIP Section)
+                // Iniiwasan natin yung Form fields kasi ang pangit basahin ng AI ang "Input text here"
+                const heroSection = document.querySelector('.hero p');
+                const introSection = document.querySelector('.form-intro p');
+                const vipSection = document.querySelector('.vip-advisory');
                 
-                // Simplified text for reading
-                let contentToRead = formSection.innerText
-                    .replace(/\*/g, '')
-                    .replace(/Upload relevant site photos or plans \(Max 10MB\)/g, '')
-                    .replace(/Transmit Technical Request/g, '');
-                    
-                let fullText = "Welcome to the KOHMZ Booking Form. " + contentToRead;
-                let sentences = fullText.match(/[^.!?]+[.!?]+/g) || [fullText];
+                if (!heroSection && !vipSection) return;
+                
+                let textToRead = "Welcome to the KOHMZ Booking Form. ";
+                if(heroSection) textToRead += heroSection.innerText + " ";
+                if(introSection) textToRead += introSection.innerText + " ";
+                
+                if (vipSection) {
+                    textToRead += "Priority Emergency and Technical Dispatch. Here are 4 reasons why you need to book now. ";
+                    textToRead += "Number 1. Prevent Irreversible Damage. Ang maliit na pag-spark o madalas na pag-trip ng breaker ngayon ay pwedeng sumunog ng mamahaling appliances at equipments bukas. Huwag hintayin ang sunog. ";
+                    textToRead += "Number 2. Stop Revenue Leaks. Para sa mga negosyo, ang commercial power interruptions at system failures ay direktang pagkalugi at nagpapatigil ng inyong operasyon. ";
+                    textToRead += "Number 3. Secure the Schedule. Ang aming specialized technical teams ay madalas fully booked. Ang pagkuha ng VIP slot ay nagtitiyak ng immediate hazard mitigation. ";
+                    textToRead += "Number 4. Legal and Safety Compliance. Iwasan ang abala at penalty mula sa LGU at Fire Department. Sisiguruhin namin na 100 percent PEC-compliant ang iyong property. ";
+                }
+                
+                // 2. Hihiwain natin ang text para makahinga yung AI
+                let sentences = textToRead.match(/[^.!?]+[.!?]+/g) || [textToRead];
 
                 window.isReadingPage = true;
                 readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>';
 
                 let currentSentence = 0;
+
                 function playNextSentence() {
                     if (!window.isReadingPage || currentSentence >= sentences.length) {
                         window.isReadingPage = false;
                         readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
                         return;
                     }
-                    let chunk = new SpeechSynthesisUtterance(sentences[currentSentence].trim());
+
+                    // Dinagdagan ng tuldok sa dulo para huminto saglit
+                    let chunkText = sentences[currentSentence].trim() + "...";
+                    let chunk = new SpeechSynthesisUtterance(chunkText);
+                    
+                    // Voice Target
                     const voices = window.speechSynthesis.getVoices();
-                    const profVoice = voices.find(v => v.name.includes('Aria') || v.name.includes('Samantha') || v.name.includes('Female')) || voices[0];
+                    const profVoice = voices.find(v => 
+                        v.name.includes('Aria') || v.name.includes('Samantha') || 
+                        v.name.includes('Enhanced') || v.name.includes('Female')
+                    ) || voices[0];
                     if (profVoice) chunk.voice = profVoice;
-                    chunk.pitch = 1.15; chunk.rate = 0.89;
-                    chunk.onend = () => { currentSentence++; playNextSentence(); };
-                    chunk.onerror = () => { window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>'; };
+                    
+                    // The Requested Config
+                    chunk.pitch = 1.15; 
+                    chunk.rate = 0.90;
+
+                    chunk.onend = () => { 
+                        currentSentence++; 
+                        // Maliit na delay bago bumasa ulit para natural pakinggan
+                        setTimeout(playNextSentence, 300); 
+                    };
+                    
+                    chunk.onerror = () => { 
+                        window.isReadingPage = false; 
+                        readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>'; 
+                    };
+                    
                     window.speechSynthesis.speak(chunk);
                 }
+                
                 playNextSentence();
             });
         }
