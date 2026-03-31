@@ -515,8 +515,7 @@ Your browser does not support the video tag.
 <script>
     const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
     
-    // --- 1. THE KEEPALIVE HACK (Para hindi makatulog ang iOS/Android Audio) ---
-    // Ginugulat nito ang audio engine every 1 second para ready siya palagi
+    // --- 1. THE KEEPALIVE HACK ---
     setInterval(() => {
         if (window.speechSynthesis) window.speechSynthesis.resume();
     }, 1000);
@@ -557,13 +556,11 @@ Your browser does not support the video tag.
             chat.style.display = 'flex';
             if (badge) badge.style.display = 'none';
             if (hint) hint.innerHTML = "🖐️ Drag to Move";
-            
-            // Prime audio on open
             if(window.speechSynthesis) window.speechSynthesis.resume();
         }
     };
 
-    // --- 4. MAIN AI LOGIC (WITH PLAY BUTTON FALLBACK) ---
+    // --- 4. MAIN AI LOGIC (BULLETPROOF BUTTON FIX) ---
     window.askGemini = async function() {
         const inputField = document.getElementById('userQuery');
         const chatBody = document.getElementById('chatBody');
@@ -571,7 +568,6 @@ Your browser does not support the video tag.
         const userMsg = inputField.value.trim();
         if (!userMsg) return;
 
-        // Force resume the engine immediately on click
         if (window.speechSynthesis) window.speechSynthesis.resume();
 
         chatBody.innerHTML += `<div class="chat-bubble" style="background: rgba(0,229,255,0.1); align-self: flex-end; border-right: 2px solid #ffb703; border-left: none; color: #fff; padding: 10px; border-radius: 12px 0 12px 12px; margin-bottom: 10px;">YOU: ${userMsg}</div>`;
@@ -592,10 +588,12 @@ Your browser does not support the video tag.
             document.getElementById(loadingId)?.remove();
             const aiReply = result.ai_answer || "System calibration error.";
 
-            // Nilinis ang single quotes para hindi masira ang HTML code
-            const cleanReplyForButton = aiReply.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+            // 🔥 FIX: Tinatanggal natin pati ang mga "Enters" at "New Lines" para hindi sumabog ang button code sa background
+            const cleanReplyForButton = aiReply
+                .replace(/'/g, "\\'")
+                .replace(/"/g, "&quot;")
+                .replace(/(?:\r\n|\r|\n)/g, ' ');
 
-            // 🔥 DITO NATIN NILAGAY ANG PLAY BUTTON FALLBACK 🔥
             chatBody.innerHTML += `
             <div class="chat-bubble" style="border-left: 2px solid #00e5ff;">
                 UNIT-01: ${aiReply}
@@ -607,8 +605,6 @@ Your browser does not support the video tag.
             </div>`;
             
             chatBody.scrollTop = chatBody.scrollHeight;
-            
-            // Susubukan pa rin natin i-autoplay. Kung i-block ng phone, nandoon ang button sa taas!
             speakText(aiReply);
 
         } catch (err) {
@@ -628,7 +624,6 @@ Your browser does not support the video tag.
             menuBtn.addEventListener('click', () => { navList.classList.toggle('active'); });
         }
 
-        // Typewriter Effect
         const mainText = "INTEGRATED POWER ARCHITECTURE & ";
         let mainIdx = 0;
         const typeEl = document.getElementById("main-typewriter-text");
@@ -659,7 +654,6 @@ Your browser does not support the video tag.
         const subEl = document.querySelector('.txt-type');
         if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute('data-words')), subEl.getAttribute('data-wait'));
 
-        // Draggable Logic
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
@@ -675,7 +669,6 @@ Your browser does not support the video tag.
             uQuery.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
         }
 
-        // Read Page Button Logic
         const readPageBtn = document.getElementById('readPageBtn');
         let isReadingPage = false;
         if (readPageBtn) {
