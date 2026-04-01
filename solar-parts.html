@@ -171,7 +171,7 @@
 
         .btn-lazada { 
             display: block; width: 100%; text-align: center; padding: 14px 0; font-size: 12px; border-radius: 4px; 
-            text-decoration: none; font-weight: 900; background: transparent; color: #ffb703; transition: 0.3s; letter-spacing: 1px; border: 2px solid #ffb703; font-family: 'Share Tech Mono', monospace;
+            text-decoration: none; font-weight: 900; background: transparent; color: #ffb703; transition: 0.3s; letter-spacing: 1px; border: 2px solid #ffb703; font-family: 'Share Tech Mono', monospace; white-space: normal; word-wrap: break-word;
         }
         .btn-lazada:hover { background: #ffb703; color: #000; transform: translateY(-3px); box-shadow: 0 0 20px rgba(255, 183, 3, 0.4); }
 
@@ -572,12 +572,28 @@
             chatBody.innerHTML += `<div class="chat-bubble" id="${loadId}" style="border-left:2px solid #00e5ff;">Lexie: Processing request...</div>`; 
             chatBody.scrollTop = chatBody.scrollHeight;
 
+            // --- AUTO-AWARE SCRAPER SCRIPT ---
+            let extractedProducts = "";
+            const productCards = document.querySelectorAll('.card');
+            if(productCards.length > 0) {
+                extractedProducts = Array.from(productCards).map((card, index) => {
+                    let title = card.querySelector('h3') ? card.querySelector('h3').innerText : '';
+                    let desc = card.querySelector('p') ? card.querySelector('p').innerText : '';
+                    return `${index + 1}. ${title} - ${desc}`;
+                }).join('\n');
+            }
+
             try {
-                // SIKRETO NG SALES LADY: Nagpadala tayo ng 'context: "solar"'
+                // IPAPADALA NATIN YUNG BINASANG LISTAHAN KAY LEXIE
                 const response = await fetch(WORKER_URL, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({message: message, name: "Web Client", context: "solar"})
+                    body: JSON.stringify({
+                        message: message, 
+                        name: "Web Client", 
+                        context: "shop", 
+                        pageData: extractedProducts // BINABATO YUNG NA-EXTRACT NA LISTAHAN
+                    })
                 });
                 
                 const result = await response.json(); 
