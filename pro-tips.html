@@ -23,52 +23,81 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
+        /* --- FUTURISTIC EXTREME SYSTEM --- */
         :root { --neon-gold: #ffb703; --cyber-blue: #00e5ff; --power-glow: rgba(255, 183, 3, 0.4); --circuit-line: rgba(255, 183, 3, 0.05); --bg-dark: #081018; }
         * { box-sizing: border-box; }
         body { font-size: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: var(--bg-dark); color: #e0faff; overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; } 
 
-        .cad-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; perspective: 1000px; z-index: -1; overflow: hidden; background: radial-gradient(circle at center, #0a192f 0%, #04080f 100%); }
+        /* --- LIVE 3D CAD BACKGROUND EFFECT --- */
+        .cad-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; perspective: 1000px; z-index: -2; overflow: hidden; background: radial-gradient(circle at center, #0a192f 0%, #04080f 100%); }
         .cad-grid { position: absolute; width: 200%; height: 200%; bottom: -50%; left: -50%; background-image: linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px); background-size: 50px 50px; transform: rotateX(60deg); animation: cadMove 8s linear infinite; }
         @keyframes cadMove { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(50px); } }
         .cad-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(8,16,24,1) 0%, transparent 40%, rgba(8,16,24,1) 100%); pointer-events: none; }
-
-        .moving-ads { background: #ffb703; color: #000; padding: 5px; font-weight: bold; position: relative; z-index: 1001; }
-        .moving-ads marquee { font-size: 10px; font-family: 'Share Tech Mono', monospace; text-transform: uppercase;} 
         
-        header { background: rgba(8, 16, 24, 0.95); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px); }
+        /* --- FLOATING DATA PARTICLES (SYNCED) --- */
+        .particle-container { position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1; pointer-events: none; }
+        .particle { position: absolute; background: #00e5ff; border-radius: 50%; box-shadow: 0 0 10px #00e5ff; opacity: 0; animation: floatUp 10s infinite linear; }
+        .p1 { left: 10%; width: 4px; height: 4px; animation-duration: 8s; animation-delay: 0s; }
+        .p2 { left: 30%; width: 3px; height: 3px; animation-duration: 12s; animation-delay: 2s; background: #ffb703; box-shadow: 0 0 10px #ffb703;}
+        .p3 { left: 60%; width: 5px; height: 5px; animation-duration: 9s; animation-delay: 4s; }
+        .p4 { left: 85%; width: 2px; height: 2px; animation-duration: 15s; animation-delay: 1s; }
+        .p5 { left: 50%; width: 4px; height: 4px; animation-duration: 11s; animation-delay: 5s; }
+        @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 20% { opacity: 0.6; } 80% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+
+        /* --- ELECTRIC TYPEWRITER TECH BAR (SYNCED) --- */
+        .tech-bar{height:35px;background:#010409;border-bottom:1px solid rgba(0,229,255,0.4);position:relative;z-index:1001;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 15px rgba(0,229,255,0.2)}
+        .tech-bar-content{display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;}
+        .electric-text{color:#00e5ff;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 8px #00e5ff;}
+        .electric-icon{color:#00e5ff;margin-right:8px;font-size:14px;animation:pulseBolt 1s infinite;}
+        @keyframes pulseBolt { 0%, 100% { text-shadow: 0 0 5px #00e5ff; opacity: 1; } 50% { text-shadow: 0 0 20px #fff; opacity: 0.5; } }
+        .tech-cursor{color:#00e5ff;font-weight:bold;animation:blink .8s step-end infinite;}
+
+        /* --- HEADER & NAVIGATION (SYNCED) --- */
+        header { background: rgba(8, 16, 24, 0.95); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
         .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
         .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
         .logo-text { font-size: 22px; margin: 0; font-weight: 900; color: #fff; display: inline-block; font-family: 'Segoe UI', sans-serif;}
         .logo-text span { color: #ffb703; }
 
-        .menu-toggle { display: none; font-size: 26px; cursor: pointer; color: #00e5ff; z-index: 1001; background: none; border: none; padding: 5px; }
+        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: #00e5ff; z-index: 1001; background: none; border: none; padding: 5px; }
 
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 25px; transition: 0.3s ease; }
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; transition: 0.3s ease; }
+        .nav-links li.dropdown { position: relative; }
         .nav-links li a { color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; font-family: 'Share Tech Mono', monospace; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
         .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
         
-        .nav-links li.dropdown { position: relative; }
-        .dropdown-content { display: none; position: absolute; background: rgba(8,16,24,0.98); min-width: 180px; box-shadow: 0px 10px 30px rgba(0,0,0,0.6); z-index: 1001; top: 100%; left: 0; border-top: 3px solid #00e5ff; }
-        .dropdown:hover .dropdown-content { display: block; }
-        .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .dropdown-content { display: none; position: absolute; background: rgba(8,16,24,0.98); min-width: 180px; box-shadow: 0px 10px 30px rgba(0,0,0,0.6); z-index: 1001; top: 100%; left: 50%; transform: translateX(-50%); border-top: 3px solid #00e5ff; backdrop-filter: blur(10px); }
+        .nav-links li.dropdown:hover .dropdown-content { display: block; animation: dropIn .3s ease; }
+        @keyframes dropIn { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+        .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: left; }
+        .dropdown-content a:hover { background: rgba(0,229,255,0.1); color: #00e5ff !important; padding-left: 20px; }
+        .caret { transition: transform 0.3s ease; }
 
-        /* OPTIMIZED MOBILE NAVIGATION */
+        /* --- MOBILE NAVIGATION (50% Width / 30VH / Centered / Synced) --- */
         @media (max-width: 992px) {
             .menu-toggle { display: block; }
             .nav-links { 
-                display: none; flex-direction: column; position: absolute; top: 100%; left: 0; 
-                width: 100%; background: rgba(8, 16, 24, 0.98); padding: 0; margin: 0; 
-                border-bottom: 4px solid #00e5ff; 
-                max-height: 80vh; overflow-y: auto;
+                display: none; flex-direction: column; position: absolute; top: calc(100% + 10px); 
+                left: 25%; width: 50%; 
+                background: rgba(8, 16, 24, 0.95); padding: 5px 0; margin: 0; border: 1px solid #00e5ff; border-top: 3px solid #ffb703; 
+                border-radius: 8px; max-height: 30vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 9999;
             }
-            .nav-links.active { display: flex; }
-            .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); margin: 0; }
-            .nav-links li a { font-size: 14px; width: 100%; padding: 20px 25px; display: flex; justify-content: space-between; }
-            .dropdown-content { position: static; display: none; background: rgba(0,0,0,0.4); width: 100%; border: none; padding-left: 0; }
-            .dropdown.active .dropdown-content { display: block; }
-            .dropdown-content a { padding: 15px 20px 15px 45px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; white-space: normal; line-height: 1.4; }
+            .nav-links.active { display: flex; animation: menuFadeIn 0.3s ease forwards; }
+            @keyframes menuFadeIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+            .nav-links li { width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); margin: 0; }
+            .nav-links li:last-child { border-bottom: none; }
+            .nav-links li a { font-size: 12px; width: 100%; padding: 10px 15px; justify-content: center; text-align: center; }
+            
+            .nav-links li.dropdown:hover .dropdown-content { display: none; }
+            .nav-links li.dropdown.open .dropdown-content { display: block; animation: dropInMobile 0.3s ease; }
+            .nav-links li.dropdown.open .caret { transform: rotate(180deg); color:#ffb703; }
+
+            .dropdown-content { position: static !important; display: none; background: rgba(0,0,0,0.3) !important; width: 100% !important; border: none !important; transform: none !important; left: 0 !important; box-shadow: inset 0 0 10px rgba(0,0,0,0.6); }
+            @keyframes dropInMobile { from { opacity:0; max-height:0; } to { opacity:1; max-height:400px; } }
+            .dropdown-content a { padding: 8px 10px !important; border-left: none !important; color: #cbd5e1 !important; font-size: 11px !important; border-bottom: 1px solid rgba(255,255,255,0.02); justify-content: center; text-align: center!important;}
         }
 
+        /* --- HERO --- */
         .hero { background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; background-size: cover; padding: 100px 20px; text-align: center; color: white; position: relative; z-index: 2; }
         .hero h1 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; line-height: 1.5; min-height: 70px; text-shadow: 0 0 15px rgba(255,183,3,0.4); } 
         .txt-type > .txt { border-right: 3px solid #ffb703; padding-right: 5px; animation: blink 0.7s infinite; color: #ffffff; text-shadow: 0 0 15px var(--neon-gold); }
@@ -78,76 +107,112 @@
         .content-section { padding: 50px 10%; text-align: center; position: relative; z-index: 2;}
         .content-section h2 { font-size: 18px; color: #00e5ff; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; font-weight: 900; text-shadow: 0 0 10px rgba(0,229,255,0.4); } 
         
+        /* --- ENHANCED ACCORDION TIPS --- */
         .tip-grid { max-width: 800px; margin: 0 auto; text-align: left; }
-        details.tip-card { background: rgba(30, 41, 59, 0.4); padding: 0; border-radius: 8px; border-left: 5px solid #ffb703; box-shadow: 0 8px 25px rgba(0,0,0,0.3); margin-bottom: 15px; backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
-        details.tip-card:hover { border-left-color: #00e5ff; box-shadow: 0 10px 30px rgba(0,229,255,0.1);}
+        details.tip-card { 
+            background: rgba(13, 27, 42, 0.6); padding: 0; border-radius: 8px; border-left: 5px solid #ffb703; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3); margin-bottom: 15px; backdrop-filter: blur(10px); 
+            border-top: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05); 
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        details.tip-card::before { content:''; position:absolute; left:0; top:0; height:100%; width:0%; background:linear-gradient(90deg, rgba(0,229,255,0.1), transparent); transition:width 0.4s ease; z-index:-1; }
+        details.tip-card:hover::before, details.tip-card[open]::before { width: 100%; }
+        details.tip-card:hover { border-left-color: #00e5ff; box-shadow: 0 10px 30px rgba(0,229,255,0.2); transform: translateX(5px);}
+        
         summary { padding: 20px; font-size: 14px; font-weight: bold; color: #ffb703; cursor: pointer; outline: none; list-style: none; display: flex; justify-content: space-between; align-items: center; transition: 0.3s;}
         summary:hover { color: #00e5ff; }
-        summary::after { content: "+"; font-size: 20px; color: #00e5ff; }
-        details[open] summary::after { content: "-"; color: #ffb703; }
-        .tip-content { padding: 0 20px 20px; font-size: 13px; color: #cbd5e1; line-height: 1.8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
+        summary::after { content: "+"; font-size: 20px; color: #00e5ff; transition: transform 0.3s ease;}
+        details[open] summary::after { content: "−"; color: #ffb703; transform: rotate(180deg);}
+        
+        /* Smooth Dropdown Content */
+        .tip-content { 
+            padding: 0 20px 20px; font-size: 13px; color: #cbd5e1; line-height: 1.8; 
+            border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; 
+            animation: fadeSlideDown 0.4s ease-out forwards; transform-origin: top;
+        }
+        @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-10px) scaleY(0.9); } to { opacity: 1; transform: translateY(0) scaleY(1); } }
         .tip-content strong { color: #00e5ff; }
 
+        /* --- ENHANCED CALCULATOR SECTION --- */
         .calc-section { background: rgba(13, 27, 42, 0.8); color: white; padding: 40px; border-radius: 8px; margin: 50px auto; max-width: 650px; box-shadow: 0 10px 40px rgba(0,229,255,0.1); text-align: center; border: 1px solid rgba(0,229,255,0.2); border-top: 4px solid #00e5ff; backdrop-filter: blur(10px); }
         .calc-section h3 { font-size: 16px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; font-weight: 900;}
         .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .calc-grid div { text-align: left; }
         .calc-grid label { display: block; font-size: 11px; color: #00e5ff; margin-bottom: 8px; text-transform: uppercase; font-weight: bold;}
-        .calc-grid input { width: 100%; padding: 12px; border-radius: 4px; border: 1px solid rgba(0,229,255,0.3); font-size: 13px; background: rgba(0,0,0,0.6); color: #00e5ff; transition: 0.3s; }
+        .calc-grid input { width: 100%; padding: 12px; border-radius: 4px; border: 1px solid rgba(0,229,255,0.3); font-size: 13px; background: rgba(0,0,0,0.6); color: #fff; transition: 0.3s; font-family: 'Share Tech Mono', monospace;}
         .calc-grid input:focus { outline: none; border-color: #ffb703; box-shadow: 0 0 10px rgba(255,183,3,0.3);}
         
-        .calc-btn { width: 100%; background: #ffb703; color: #0d1b2a; border: 2px solid #ffb703; padding: 15px; border-radius: 4px; font-weight: 900; cursor: pointer; font-size: 13px; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px;}
-        .calc-btn:hover { background: transparent; color: #ffb703; box-shadow: 0 0 15px rgba(255,183,3,0.5); }
+        .calc-btn { width: 100%; background: #ffb703; color: #0d1b2a; border: 2px solid #ffb703; padding: 15px; border-radius: 4px; font-weight: 900; cursor: pointer; font-size: 13px; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px; box-shadow: 0 0 15px var(--power-glow);}
+        .calc-btn:hover { background: transparent; color: #ffb703; box-shadow: 0 0 25px rgba(255,183,3,0.5); transform: translateY(-2px);}
         
         .calc-results-wrap { margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .res-box { background: rgba(0, 0, 0, 0.4); padding: 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); }
         .res-label { font-size: 10px; color: #94a3b8; display: block; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;}
-        .res-value { font-size: 16px; font-weight: 900; color: #00e5ff; }
+        .res-value { font-size: 18px; font-weight: 900; color: #00e5ff; font-family: 'Share Tech Mono', monospace;}
 
-        .cta-box { background: rgba(13, 27, 42, 0.8); color: white; padding: 40px; border-radius: 8px; margin-top: 50px; text-align: center; border-top: 4px solid #ffb703; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-left: 1px solid rgba(255,183,3,0.2); border-right: 1px solid rgba(255,183,3,0.2); border-bottom: 1px solid rgba(255,183,3,0.2); backdrop-filter: blur(10px); }
-        .cta-box h2 { color: #00e5ff; font-size: 18px; margin-top: 0; margin-bottom: 10px; text-transform: uppercase; font-weight: 900;}
-        .cta-buttons-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 25px; }
+        /* --- CTA BOX ENHANCED --- */
+        .cta-box { background: rgba(13, 27, 42, 0.8); color: white; padding: 40px; border-radius: 8px; margin-top: 50px; text-align: center; border-top: 4px solid #ffb703; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-left: 1px solid rgba(255,183,3,0.2); border-right: 1px solid rgba(255,183,3,0.2); border-bottom: 1px solid rgba(255,183,3,0.2); backdrop-filter: blur(10px); position: relative; overflow: hidden; }
+        .cta-box::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle at top right, rgba(0,229,255,0.1), transparent 50%); pointer-events: none;}
+        .cta-box h2 { color: #00e5ff; font-size: 18px; margin-top: 0; margin-bottom: 10px; text-transform: uppercase; font-weight: 900; position: relative; z-index: 2;}
+        .cta-box p { font-size: 13px; color: #cbd5e1; line-height: 1.8; margin-bottom: 25px; position: relative; z-index: 2;}
+        .cta-buttons-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 25px; position: relative; z-index: 2;}
         .cta-button { padding: 15px 30px; text-decoration: none; border-radius: 4px; font-weight: 900; display: inline-block; transition: 0.3s; font-size: 12px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,0,0,0.3);}
         .btn-whatsapp { background: #25d366; color: white; border: 1px solid #25d366;}
-        .btn-whatsapp:hover { background: transparent; color: #25d366; box-shadow: 0 0 15px #25d366;}
+        .btn-whatsapp:hover { background: transparent; color: #25d366; box-shadow: 0 0 15px #25d366; transform: translateY(-3px);}
         .btn-messenger { background: #0084ff; color: white; border: 1px solid #0084ff;}
-        .btn-messenger:hover { background: transparent; color: #0084ff; box-shadow: 0 0 15px #0084ff;}
+        .btn-messenger:hover { background: transparent; color: #0084ff; box-shadow: 0 0 15px #0084ff; transform: translateY(-3px);}
 
+        /* --- FLOATING CONTACTS & BOT (SYNCED) --- */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
-        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.2);}
-        .float-btn:hover { transform: scale(1.15); filter: brightness(1.1); border-color: #00e5ff; box-shadow: 0 0 15px #00e5ff;}
+        .float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all .3s cubic-bezier(.175,.885,.32,1.275); position: relative; border: none; cursor: pointer; }
+        .float-btn::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: inherit; z-index: -1; filter: blur(10px); opacity: 0.6; transition: 0.3s; }
+        .float-btn:hover { transform: scale(1.15) translateY(-5px); outline: none; }
+        .float-btn:hover::before { opacity: 1; filter: blur(15px); }
+
         .fb-messenger { background: #0084ff; }
         .viber { background: #7360f2; }
         .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
+        .kohmz-bot-wrapper { position: fixed; bottom: 25px; left: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-start; touch-action: none; user-select: none; }
+        .bot-value-tag { background: rgba(0,229,255,0.1); border: 1px solid var(--cyber-blue); color: var(--cyber-blue); padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); cursor: grab; text-transform: uppercase; white-space: nowrap; }
+        .kohmz-chat-window { display: none; width: 320px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
+        .kohmz-chat-header { background: #000; color: #00e5ff; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
+        .kohmz-chat-body { padding: 15px; max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;}
+        .chat-bubble { background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; margin-bottom: 10px; border-left: 2px solid #00e5ff; font-size: 12px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; font-family: 'Share Tech Mono', monospace;}
+        .kohmz-bot-toggle { width: 130px; height: 130px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s;}
+        .kohmz-bot-toggle:hover { transform: scale(1.05); }
+        .bot-badge { position: absolute; top: 12px; right: 12px; background: #ff3b3b; color: #fff; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px #ff3b3b; z-index: 10; }
+
+        /* --- MOBILE OPTIMIZATION FIXES --- */
         @media (max-width: 768px) {
-            .floating-container { flex-direction: row !important; justify-content: center !important; bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; width: max-content !important; background: rgba(0, 0, 0, 0.8); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(0, 229, 255, 0.3); backdrop-filter: blur(10px); }
-            .float-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; margin: 0 5px !important; }
-            .calc-grid { grid-template-columns: 1fr; }
-            .kohmz-bot-wrapper { bottom: 85px !important; right: 15px !important; }
+            .hero { background-size: 100% auto; background-position: center top; padding: 100px 5%; }
+            
+            /* Calculator Mobile Fix - Make inputs wider and single column */
+            .calc-grid { grid-template-columns: 1fr; gap: 10px; }
+            .calc-section { padding: 25px; margin: 30px 10px; }
+            .calc-results-wrap { grid-template-columns: 1fr; }
+            .res-box[style*="grid-column"] { grid-column: span 1 !important; }
+
+            /* HORIZONTAL FLOATING DOCK NA NASA BABA (SYNCED) */
+            .floating-container{
+                flex-direction: row !important; flex-wrap: nowrap !important;
+                bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; 
+                gap: 12px !important; width: auto !important; justify-content: center !important;
+                background: rgba(8,16,24,0.85); padding: 8px 15px; border-radius: 30px;
+                border: 1px solid rgba(0,229,255,0.4); box-shadow: 0 10px 25px rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            }
+            .float-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; }
+            .kohmz-bot-wrapper { bottom: 85px !important; left: 10px !important; }
+            .kohmz-bot-toggle { width: 75px !important; height: 75px !important; }
+            .kohmz-chat-window { width: 280px; }
         }
 
+        /* --- FOOTER SYNC --- */
         footer { background: #000; color: white; text-align: center; padding: 60px 20px 40px; border-top: 2px solid var(--neon-gold); position: relative; z-index: 2; margin-top: 40px;}
         footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; font-weight: bold;}
         footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none;}
         .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
-
-        /* LEXIE AI CHATBOT STYLES */
-        .kohmz-bot-wrapper { position: fixed; bottom: 120px; right: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-end; touch-action: none; user-select: none; }
-        .bot-value-tag { background: #00e5ff; color: #000; padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); cursor: grab; text-transform: uppercase; white-space: nowrap; }
-        .kohmz-chat-window { display: none; width: 320px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
-        .kohmz-chat-header { background: #000; color: #00e5ff; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
-        .kohmz-chat-body { padding: 15px; max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;}
-        .chat-bubble { background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; margin-bottom: 10px; border-left: 2px solid #00e5ff; font-size: 12px; word-wrap: break-word; white-space: pre-wrap; line-height: 1.5; font-family: 'Share Tech Mono', monospace; transition: opacity 0.4s ease-in-out;}
-        .kohmz-bot-toggle { width: 85px; height: 85px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s;}
-        .kohmz-bot-toggle:hover { transform: scale(1.05); }
-        .bot-badge { position: absolute; top: 12px; right: 12px; background: #ff3b3b; color: #fff; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px #ff3b3b; z-index: 10; }
-
-        @media (max-width: 480px) {
-            .kohmz-chat-window { width: 280px; }
-            .kohmz-bot-toggle { width: 75px; height: 75px; }
-        }
     </style>
 </head>
 <body>
@@ -157,17 +222,20 @@
         <div class="cad-overlay"></div>
     </div>
 
-    <div class="floating-container">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
+    <div class="particle-container">
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+        <div class="particle p5"></div>
     </div>
 
-    <div class="moving-ads">
-        <marquee behavior="scroll" direction="left">
-            ⚡ KOHMZ PRO TIPS: Empowering homeowners with professional electrical safety advice and technical knowledge ⚡
-        </marquee>
+    <div class="tech-bar">
+        <div class="tech-bar-content">
+            <i class="fas fa-bolt electric-icon"></i>
+            <span id="electric-typewriter" class="electric-text"></span>
+            <span class="tech-cursor">_</span>
+        </div>
     </div>
 
     <header>
@@ -180,41 +248,44 @@
             <i class="fas fa-bars"></i>
         </button>
 
-        <nav>
+        <nav aria-label="Main Navigation">
             <ul class="nav-links" id="nav-list">
                 <li><a href="index.html">Overview</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn" style="color: #ffb703; text-shadow: 0 0 8px #ffb703;">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="dropbtn" style="color: #ffb703; text-shadow: 0 0 8px #ffb703;">Services <i class="fas fa-chevron-down caret"></i></a>
                     <div class="dropdown-content">
                         <a href="commercial.html">Commercial</a>
                         <a href="residential.html">Residential</a>
                         <a href="pro-tips.html" style="color: #00e5ff !important;">Pro Tips</a>
                     </div>
                 </li>
-                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request a Quote</a></li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Technical Shop <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <a href="#" class="dropbtn">Technical Shop <i class="fas fa-chevron-down caret"></i></a>
                     <div class="dropdown-content">
                         <a href="solar-parts.html">Solar Parts</a>
                         <a href="powertools.html">Power Tools</a>
                         <a href="electrical-materials.html">Materials</a>
                     </div>
                 </li>
-                <li><a href="faq.html">FAQ</a></li>
                 <li><a href="about-us.html">About Us</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
         <section class="hero" data-aos="zoom-in">
-            <h1 id="hero-heading">
-                <span id="main-typewriter-text"></span><span class="cursor" style="color: #00e5ff; animation: blink 1s step-end infinite;">_</span><br>
-                <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["ELECTRICAL SAFETY", "EXPERT INSIGHTS", "POWER EFFICIENCY"]'></span>
-            </h1>
-            <p>Advanced engineering insights for maintaining a safe, efficient, and code-compliant electrical system at home or in the office.</p>
+            <div class="hero-inner">
+                <h1 id="hero-heading">
+                    <span id="main-typewriter-text"></span><span class="cursor" style="color: #00e5ff; animation: blink 1s step-end infinite;">_</span><br>
+                    <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["ELECTRICAL SAFETY", "EXPERT INSIGHTS", "POWER EFFICIENCY"]'></span>
+                </h1>
+                <p>Advanced engineering insights for maintaining a safe, efficient, and code-compliant electrical system at home or in the office.</p>
+            </div>
         </section>
 
         <section class="content-section">
@@ -289,12 +360,20 @@
         </section>
     </main>
 
+    <aside class="floating-container" aria-label="Quick Contact Options">
+        <button id="readPageBtn" class="float-btn" style="background:#e11d48; color:white; cursor:pointer;" aria-label="Read Page Aloud" title="Listen to Page Content"><i class="fas fa-volume-up"></i></button>
+        <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" rel="noopener noreferrer" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" rel="noopener noreferrer" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
+    </aside>
+
     <div class="kohmz-bot-wrapper" id="draggableBot">
         <div class="bot-value-tag" id="dragHint" onclick="toggleBotWindow()">⚡ KOHMZ Lexie</div>
         <div class="kohmz-chat-window" id="chatWindow">
             <div class="kohmz-chat-header"><span>LEXIE AI: SYSTEM ACTIVE</span><span onclick="toggleBotWindow()" style="cursor:pointer;padding:0 5px;">✕</span></div>
             <div class="kohmz-chat-body" id="chatBody">
-                <div class="chat-bubble">Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! I'm here to provide you with top-notch technical support and guidance on PEC compliance and safety. How can I assist you today?</div>
+                <div class="chat-bubble">Good day! I'm Lexie. The Pro Tips listed here are meant to keep you safe. If you need me to calculate a specific load for your appliance, just tell me the Watts and Hours used! How can I assist?</div>
             </div>
             <div style="padding:10px;border-top:1px solid rgba(0,229,255,0.2);display:flex;gap:5px;background:#000;">
                 <input type="text" id="userQuery" placeholder="Ask Lexie anything..." style="flex:1;background:transparent;border:1px solid #00e5ff;color:#fff;padding:8px;font-family:'Share Tech Mono';font-size:11px;outline:none;">
@@ -303,12 +382,12 @@
         </div>
         <div class="kohmz-bot-toggle" id="botToggle">
             <lottie-player src="Live%20chatbot.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
-            <div class="bot-badge" id="botBadge">!</div>
+            <div class="bot-badge" id="botBadge" style="display:none;">!</div>
         </div>
     </div>
 
     <footer aria-label="Site Footer">
-        <div class="logo" style="justify-content: center; margin-bottom: 20px;">
+        <div class="logo" style="justify-content: center; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
             <img src="logo.jpg" alt="KOHMZ Electrical Services logo" width="35" height="35" loading="lazy" style="border: 1px solid #00e5ff; border-radius: 4px;">
             <span class="logo-text" style="font-size: 22px; font-weight: 900; color: #fff; font-family: 'Segoe UI', sans-serif;">KOHMZ <span style="color: #ffb703;">Electrical</span></span>
         </div>
@@ -316,9 +395,9 @@
         <p style="text-align: center;">&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
         <nav class="footer-links" aria-label="Footer Navigation" style="text-align: center;">
             <p style="margin-bottom: 5px; color: #ffb703; font-weight: 800; font-size: 12px;">Technical Governance | Asset Protection | PEC-Compliant Architecture</p>
-            <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
-            <a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
-            <a href="about-us.html">About Us</a>
+            <a href="privacy-policy.html" style="color: #ffb703; text-decoration: underline; font-weight: bold;">Privacy Policy</a> &nbsp;|&nbsp; 
+            <a href="faq.html" style="color: #ffb703; text-decoration: underline; font-weight: bold;">FAQ</a> &nbsp;|&nbsp; 
+            <a href="about-us.html" style="color: #ffb703; text-decoration: underline; font-weight: bold;">About Us</a>
         </nav>
     </footer>
 
@@ -328,22 +407,67 @@
         const WORKER_URL="https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
         document.addEventListener('DOMContentLoaded',()=>{if(typeof AOS!=='undefined')AOS.init({duration:800,once:true,offset:50})});
         
+        // --- ELECTRIC TYPEWRITER LOGIC FOR TECH BAR (SYNCED) ---
+        const techBarWords = ["ELECTRICAL SAFETY", "EXPERT INSIGHTS", "POWER EFFICIENCY", "DIY HAZARD PREVENTION", "PROFESSIONAL AUDITS"];
+        let tbIdx = 0; let charIdx = 0; let isTbDeleting = false;
+        const electricEl = document.getElementById("electric-typewriter");
+        function typeElectricBar() {
+            if(!electricEl) return;
+            const currentWord = techBarWords[tbIdx];
+            if(isTbDeleting) {
+                electricEl.innerText = currentWord.substring(0, charIdx - 1);
+                charIdx--;
+            } else {
+                electricEl.innerText = currentWord.substring(0, charIdx + 1);
+                charIdx++;
+            }
+            let typeSpeed = 50; 
+            if(isTbDeleting) typeSpeed /= 2;
+            if(!isTbDeleting && charIdx === currentWord.length) {
+                typeSpeed = 2000;
+                isTbDeleting = true;
+            } else if(isTbDeleting && charIdx === 0) {
+                isTbDeleting = false;
+                tbIdx = (tbIdx + 1) % techBarWords.length;
+                typeSpeed = 500;
+            }
+            setTimeout(typeElectricBar, typeSpeed);
+        }
+        typeElectricBar();
+
+        // MOBILE MENU LOGIC & DROPDOWN FIX (SYNCED)
         const menuToggle=document.getElementById('mobile-menu'),navList=document.getElementById('nav-list'),dropdowns=document.querySelectorAll('.dropdown');
         if(menuToggle&&navList){menuToggle.addEventListener('click',()=>{navList.classList.toggle('active');const i=menuToggle.querySelector('i');i.classList.toggle('fa-bars');i.classList.toggle('fa-times')})}
         dropdowns.forEach(d=>{const b=d.querySelector('.dropbtn');const h=e=>{if(window.innerWidth<=992||e.type==='keydown'||e.type==='touchstart'){if(b&&b.getAttribute('href')==='#')e.preventDefault();dropdowns.forEach(o=>{if(o!==d)o.classList.remove('active')});d.classList.toggle('active')}};if(b)b.addEventListener('click',h);});
         
+        // HERO TYPEWRITER
         const mainTypeText="TECHNICAL INSIGHTS & ";let mainTypeIndex=0;const mainTypeElement=document.getElementById("main-typewriter-text");
         function startTyping(){if(mainTypeElement&&mainTypeIndex<mainTypeText.length){mainTypeElement.innerHTML+=mainTypeText.charAt(mainTypeIndex++);setTimeout(startTyping,60)}}startTyping();
         class TypeWriter{constructor(e,t,n){this.el=e;this.words=t;this.txt="";this.wordIdx=0;this.wait=parseInt(n,10);this.isDel=false;this.type()}type(){const e=this.wordIdx%this.words.length,t=this.words[e];this.txt=this.isDel?t.substring(0,this.txt.length-1):t.substring(0,this.txt.length+1);this.el.innerHTML=`<span class="txt">${this.txt}</span>`;let n=100;if(this.isDel)n/=2;if(!this.isDel&&this.txt===t){n=this.wait;this.isDel=true}else if(this.isDel&&this.txt===""){this.isDel=false;this.wordIdx++;n=500}setTimeout(()=>this.type(),n)}}
         const subEl=document.querySelector('.txt-type');if(subEl){const w=subEl.getAttribute('data-words'),t=subEl.getAttribute('data-wait');if(w)new TypeWriter(subEl,JSON.parse(w),t)}
         
-        function fullCalculation(){const w=document.getElementById('wattsInput').value,h=document.getElementById('hoursInput').value||0,v=document.getElementById('voltsInput').value||230,r=document.getElementById('rateInput').value||12;if(w>0){const a=(w/v).toFixed(2);document.getElementById('resAmps').innerText=a+" A";const m=(w*h*30)/1000;document.getElementById('resKwh').innerText=m.toFixed(1)+" kWh";const c=(m*r).toLocaleString(undefined,{minimumFractionDigits:2});document.getElementById('resCost').innerText="₱ "+c}else{alert("Pakisuyong ilagay ang Watts (P) para makapag-compute.")}}
+        // LOAD CALCULATOR LOGIC
+        function fullCalculation(){
+            const w=document.getElementById('wattsInput').value,
+                  h=document.getElementById('hoursInput').value||0,
+                  v=document.getElementById('voltsInput').value||230,
+                  r=document.getElementById('rateInput').value||12;
+            if(w>0){
+                const a=(w/v).toFixed(2);document.getElementById('resAmps').innerText=a+" A";
+                const m=(w*h*30)/1000;document.getElementById('resKwh').innerText=m.toFixed(1)+" kWh";
+                const c=(m*r).toLocaleString(undefined,{minimumFractionDigits:2});document.getElementById('resCost').innerText="₱ "+c;
+            }else{
+                alert("Pakisuyong ilagay ang Watts (P) para makapag-compute.")
+            }
+        }
         
+        // --- LEXIE AI & DRAGGABLE BOT (SYNCED) ---
         setInterval(()=>{if(window.speechSynthesis)window.speechSynthesis.resume()},1000);
         window.speakText=function(e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();let t=e.replace(/\./g,"... ").replace(/,/g,",.. ");const n=new SpeechSynthesisUtterance(t),s=window.speechSynthesis.getVoices(),i=s.find(e=>e.name.includes("Samantha")||e.name.includes("Aria")||e.name.includes("Google US English")||e.name.includes("Female")||e.name.includes("Enhanced"))||s[0];if(i)n.voice=i;n.lang="en-US";n.pitch=1.15;n.rate=0.85;n.volume=1;window.speechSynthesis.speak(n)};
         
         const wrapper=document.getElementById('draggableBot'),toggle=document.getElementById('botToggle'),chat=document.getElementById('chatWindow'),hint=document.getElementById('dragHint'),badge=document.getElementById('botBadge');
         let isDragging=false,startX,startY,xOffset=0,yOffset=0,dragStartTime;
+        
         window.toggleBotWindow=function(){if(window.speechSynthesis.speaking)window.speechSynthesis.cancel();if(chat.style.display==='flex'){chat.style.display='none';if(hint)hint.innerHTML="⚡ KOHMZ Lexie"}else{chat.style.display='flex';if(badge)badge.style.display='none';if(hint)hint.innerHTML="🖐️ Drag to Move";if(window.speechSynthesis)window.speechSynthesis.resume()}}
         
         const dragStart=e=>{isDragging=true;dragStartTime=Date.now();const cx=(e.type==="touchstart")?e.touches[0].clientX:e.clientX,cy=(e.type==="touchstart")?e.touches[0].clientY:e.clientY;startX=cx-xOffset;startY=cy-yOffset};
@@ -360,12 +484,10 @@
             b.innerHTML+=`<div class="chat-bubble user-bubble" style="background:rgba(0,229,255,0.1);align-self:flex-end;border-left:none;border-right:2px solid #ffb703;color:#fff;padding:10px;border-radius:12px 0 12px 12px;margin-bottom:10px;white-space:pre-wrap;text-align:right;">YOU: ${m}</div>`;
             i.value="";b.scrollTop=b.scrollHeight;
             const lId="loading-"+Date.now();
-            b.innerHTML+=`<div class="chat-bubble" id="${lId}" style="border-left:2px solid #00e5ff;">Lexie: Processing request...</div>`;b.scrollTop=b.scrollHeight;
+            b.innerHTML+=`<div class="chat-bubble" id="${lId}" style="border-left:2px solid #00e5ff;">Lexie: Computing/Processing...</div>`;b.scrollTop=b.scrollHeight;
             
             let sc="";
-            const cs=document.querySelectorAll('.card');if(cs.length>0)sc+=Array.from(cs).map(c=>c.innerText.replace(/\n/g,' ')).join(' | ');
-            const ds=document.querySelectorAll('details');if(ds.length>0)sc+=" "+Array.from(ds).map(d=>d.innerText.replace(/\n/g,' ')).join(' | ');
-            if(sc===""){const ps=document.querySelectorAll('main p, .content-section p');sc+=Array.from(ps).map(p=>p.innerText).join(' ')}
+            const ts=document.querySelectorAll('.tip-content');if(ts.length>0)sc+=Array.from(ts).map(c=>c.innerText.replace(/\n/g,' ')).join(' | ');
             sc=sc.substring(0,1500);
             
             try{
@@ -378,7 +500,9 @@
             }catch(e){if(document.getElementById(lId))document.getElementById(lId).innerHTML="Lexie: Connection lost. Re-syncing..."}
         };
         const uq=document.getElementById("userQuery");if(uq)uq.addEventListener("keypress",e=>{if(e.key==="Enter")window.askGemini()});
-        setTimeout(()=>{if(chat&&chat.style.display!=='flex')toggleBotWindow()},6000);
+        
+        // --- READ PAGE ALOUD (SYNCED) ---
+        window.isReadingPage=false;const readPageBtn=document.getElementById("readPageBtn");if(readPageBtn){readPageBtn.addEventListener("click",function(){if(window.isReadingPage||window.speechSynthesis.speaking){window.speechSynthesis.cancel();window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}const mainElement=document.querySelector("main");if(!mainElement)return;let contentToRead=mainElement.innerText.replace(/\n+/g,". "),fullText="Welcome to KOHMZ Pro Tips. "+contentToRead,sentences=fullText.match(/[^.!?]+[.!?]+/g)||[fullText];window.isReadingPage=true;readPageBtn.innerHTML='<i class="fas fa-volume-mute" aria-hidden="true"></i>';let currentSentence=0;function playNextSentence(){if(!window.isReadingPage||currentSentence>=sentences.length){window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}let chunk=new SpeechSynthesisUtterance(sentences[currentSentence].trim()),voices=window.speechSynthesis.getVoices(),profVoice=voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Google US English")||v.name.includes("Female"))||voices[0];if(profVoice)chunk.voice=profVoice;chunk.pitch=1.15;chunk.rate=0.80;chunk.onend=()=>{currentSentence++;playNextSentence()};chunk.onerror=()=>{window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>'};window.speechSynthesis.speak(chunk)}playNextSentence()})}
     </script>
 </body>
 </html>
