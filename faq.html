@@ -23,174 +23,88 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-        /* --- FUTURISTIC EXTREME SYSTEM --- */
-        :root {
-            --neon-gold: #ffb703;
-            --cyber-blue: #00e5ff;
-            --power-glow: rgba(255, 183, 3, 0.4);
-            --circuit-line: rgba(255, 183, 3, 0.05);
-            --bg-dark: #010409;
+        :root{--neon-gold:#ffb703;--cyber-blue:#00e5ff;--power-glow:rgba(255,183,3,0.4);--circuit-line:rgba(255,183,3,0.05);--bg-dark:#010409;}
+        *{box-sizing:border-box;}
+        body{font-size:12px;font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg-dark);color:#f8fafc;margin:0;overflow-x:hidden;scroll-behavior:smooth;line-height:1.6;}
+        body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(var(--circuit-line) 1px,transparent 0),linear-gradient(90deg,var(--circuit-line) 1px,transparent 1px),linear-gradient(var(--circuit-line) 1px,transparent 1px);background-size:30px 30px,100px 100px,100px 100px;z-index:-2;pointer-events:none;}
+        .energy-line{position:fixed;top:0;width:2px;height:200px;background:linear-gradient(to bottom,transparent,var(--cyber-blue),var(--neon-gold),transparent);opacity:0.4;z-index:-1;animation:flowBolt 6s ease-in-out infinite;filter:drop-shadow(0 0 8px var(--cyber-blue));}
+        @keyframes flowBolt{0%{transform:translateY(-200px);opacity:0;}50%{opacity:0.8;}100%{transform:translateY(110vh);opacity:0;}}
+        .tech-bar{background:linear-gradient(90deg,#d49800,#ffb703,#d49800);background-size:200% auto;color:#0d1b2a;padding:10px;font-weight:800;border-bottom:2px solid #0d1b2a;text-align:center;box-shadow:0 0 20px var(--power-glow);position:relative;z-index:1001;animation:gradientShine 3s linear infinite;}
+        @keyframes gradientShine{to{background-position:200% center;}}
+        .tech-bar-content{font-size:10px;text-transform:uppercase;letter-spacing:2px;display:flex;justify-content:center;gap:20px;flex-wrap:wrap;}
+        .tech-bar-content span::after{content:'\f111';font-family:'Font Awesome 5 Free';font-weight:900;color:#0d1b2a;margin-left:15px;font-size:7px;opacity:0.5;}
+        .tech-bar-content span:last-child::after{content:'';}
+        header{background:rgba(8,16,24,0.95);padding:15px 30px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1000;border-bottom:1px solid #00e5ff;backdrop-filter:blur(10px);}
+        .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+        .logo img{height:38px;width:38px;border-radius:4px;border:1px solid #00e5ff;}
+        .logo-text{font-size:22px;margin:0;font-weight:900;color:#fff;display:inline-block;font-family:'Segoe UI',sans-serif;}
+        .logo-text span{color:#ffb703;}
+        .nav-links{list-style:none;padding:0;margin:0;display:flex;align-items:center;gap:30px;}
+        .nav-links li a{color:#e0faff;text-decoration:none;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;padding:10px 5px;font-family:'Share Tech Mono',monospace;transition:0.3s;display:flex;align-items:center;gap:6px;}
+        .nav-links li a:hover{color:#00e5ff;text-shadow:0 0 8px #00e5ff;}
+        .nav-links li.dropdown{position:relative;}
+        .dropdown-content{display:none;position:absolute;background:rgba(8,16,24,0.98);min-width:180px;box-shadow:0px 10px 30px rgba(0,0,0,0.6);z-index:1001;top:100%;left:0;border-top:3px solid #00e5ff;}
+        .dropdown:hover .dropdown-content{display:block;}
+        .dropdown-content a{color:#fff!important;padding:12px 15px;display:block;border-bottom:1px solid rgba(255,255,255,0.05);}
+        @media(max-width:992px){
+            .menu-toggle{display:block;font-size:26px;color:#00e5ff;cursor:pointer;background:none;border:none;padding:5px;}
+            .nav-links{display:none;flex-direction:column;position:absolute;top:100%;left:0;width:100%;background:rgba(8,16,24,0.98);padding:0;margin:0;border-bottom:4px solid #00e5ff;max-height:85vh;overflow-y:auto;}
+            .nav-links.active{display:flex;}
+            .nav-links li{width:100%;text-align:left;border-bottom:1px solid rgba(255,255,255,0.05);margin:0;}
+            .nav-links li a{font-size:14px;width:100%;padding:20px 25px;display:flex;justify-content:space-between;}
+            .dropdown-content{position:static;display:none;background:rgba(0,0,0,0.4);width:100%;border:none;padding-left:0;}
+            .dropdown.active .dropdown-content{display:block;}
+            .dropdown-content a{padding:15px 20px 15px 45px!important;font-size:13px!important;border-left:3px solid #ffb703;color:#e0faff!important;}
         }
-
-        * { box-sizing: border-box; }
-
-        body {
-            font-size: 12px; font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: var(--bg-dark); color: #f8fafc; margin: 0; overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6;
+        .hero{background:linear-gradient(rgba(13,27,42,0.85),rgba(1,4,9,0.95)),url('logo.jpg') no-repeat center center;background-size:cover;padding:120px 10%;text-align:center;color:white;display:flex;align-items:center;justify-content:center;position:relative;}
+        .hero-inner{max-width:950px;position:relative;z-index:2;}
+        .hero h1{font-size:24px;color:#ffb703;margin-bottom:20px;text-transform:uppercase;font-weight:900;letter-spacing:2px;line-height:1.5;min-height:70px;text-shadow:0 0 15px rgba(255,183,3,0.3);}
+        .txt-type>.txt{border-right:3px solid #ffb703;padding-right:5px;animation:blink 0.7s infinite;color:#ffffff;text-shadow:0 0 15px var(--neon-gold);}
+        @keyframes blink{from,to{opacity:1;}50%{opacity:0;}}
+        .hero p{font-size:14px;margin:0 auto 30px;line-height:1.8;font-weight:400;opacity:0.95;color:#cbd5e1;}
+        .faq-container{max-width:850px;margin:60px auto;padding:0 20px;}
+        .faq-intro{text-align:center;margin-bottom:40px;}
+        .faq-intro h3{font-size:20px;color:#ffb703;text-transform:uppercase;font-weight:900;border-bottom:2px solid var(--cyber-blue);display:inline-block;padding-bottom:10px;}
+        .faq-intro p{font-size:13px;color:#cbd5e1;margin-top:15px;}
+        .collapsible{background:rgba(30,41,59,0.4);color:#f8fafc;cursor:pointer;padding:20px 25px;width:100%;border:1px solid rgba(255,183,3,0.1);border-radius:6px;text-align:left;outline:none;font-size:14px;font-weight:800;font-family:'Segoe UI',sans-serif;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;transition:0.3s;backdrop-filter:blur(10px);}
+        .active,.collapsible:hover{background:rgba(13,27,42,0.9);border-color:var(--cyber-blue);box-shadow:0 0 15px rgba(0,229,255,0.1);color:#ffb703;}
+        .collapsible:after{content:'\002B';font-size:20px;font-weight:bold;color:#00e5ff;transition:0.3s;}
+        .active:after{content:"\2212";color:#ffb703;transform:rotate(180deg);}
+        .panel{padding:0 25px;background-color:rgba(0,0,0,0.4);max-height:0;overflow:hidden;transition:max-height 0.4s ease-out;border-radius:0 0 6px 6px;margin-bottom:15px;border-left:4px solid #ffb703;}
+        .panel-content{padding:20px 0;color:#cbd5e1;line-height:1.8;font-size:13px;}
+        .panel-content strong{color:#00e5ff;}
+        .faq-cta{text-align:center;background:rgba(13,27,42,0.9);border-top:4px solid var(--neon-gold);color:white;padding:40px;border-radius:8px;margin-top:50px;box-shadow:0 10px 30px rgba(0,0,0,0.5);border:1px solid rgba(255,183,3,0.2);}
+        .faq-cta h4{font-size:18px;color:#00e5ff;margin-top:0;margin-bottom:10px;text-transform:uppercase;font-weight:900;}
+        .faq-cta a{display:inline-block;background:#ffb703;color:#0d1b2a;padding:15px 30px;text-decoration:none;font-weight:900;border-radius:4px;margin-top:20px;text-transform:uppercase;transition:0.4s;box-shadow:0 0 15px var(--power-glow);}
+        .faq-cta a:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 0 30px #ffb703;color:#000;}
+        .kohmz-bot-wrapper{position:fixed;bottom:120px;right:20px;z-index:999999;font-family:'Share Tech Mono',monospace;display:flex;flex-direction:column;align-items:flex-end;touch-action:none;user-select:none;}
+        .bot-value-tag{background:#00e5ff;color:#000;padding:5px 12px;font-size:10px;font-weight:bold;border-radius:4px;margin-bottom:8px;box-shadow:0 0 15px rgba(0,229,255,0.6);cursor:grab;text-transform:uppercase;white-space:nowrap;}
+        .kohmz-chat-window{display:none;width:320px;max-width:85vw;background:rgba(8,16,24,0.98);border:1px solid #00e5ff;border-top:4px solid #00e5ff;box-shadow:0 10px 50px rgba(0,0,0,0.9);margin-bottom:12px;flex-direction:column;backdrop-filter:blur(10px);}
+        .kohmz-chat-header{background:#000;color:#00e5ff;padding:12px;font-weight:bold;display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(0,229,255,0.2);}
+        .kohmz-chat-body{padding:15px;max-height:250px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;}
+        .chat-bubble{background:rgba(255,255,255,0.05);color:#e0faff;padding:10px;border-radius:0 12px 12px 12px;margin-bottom:10px;border-left:2px solid #00e5ff;font-size:12px;word-wrap:break-word;white-space:pre-wrap;line-height:1.5;font-family:'Share Tech Mono',monospace;transition:opacity 0.4s ease-in-out;}
+        .kohmz-bot-toggle{width:85px;height:85px;background:transparent;cursor:grab;position:relative;display:flex;justify-content:center;align-items:center;transition:transform 0.2s;}
+        .kohmz-bot-toggle:hover{transform:scale(1.05);}
+        .bot-badge{position:absolute;top:12px;right:12px;background:#ff3b3b;color:#fff;font-size:10px;width:20px;height:20px;border-radius:50%;display:flex;justify-content:center;align-items:center;box-shadow:0 0 10px #ff3b3b;z-index:10;}
+        .floating-container{position:fixed;bottom:25px;right:25px;display:flex;flex-direction:column;gap:12px;z-index:10000;}
+        .float-btn{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;font-size:22px;box-shadow:0 4px 15px rgba(0,0,0,0.6);transition:all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);position:relative;background:#ffb703;color:#000;}
+        .float-btn.fb-messenger{background:#0084ff;color:white;}
+        .float-btn.viber{background:#7360f2;color:white;}
+        .float-btn.whatsapp{background:#25d366;color:white;}
+        .float-btn:hover{transform:scale(1.15) translateY(-5px);}
+        .moving-ads { background: #ffb703; color: #000; padding: 5px; font-weight: bold; position: relative; z-index: 1001; }
+        .moving-ads marquee { font-size: 10px; font-family: 'Share Tech Mono', monospace; text-transform: uppercase;} 
+        @media(max-width:768px){
+            .floating-container{flex-direction:row!important;justify-content:center!important;bottom:15px!important;right:50%!important;transform:translateX(50%)!important;width:max-content!important;background:rgba(0,0,0,0.8);padding:10px 20px;border-radius:50px;border:1px solid rgba(0,229,255,0.3);backdrop-filter:blur(10px);}
+            .float-btn{width:40px!important;height:40px!important;font-size:18px!important;margin:0 5px!important;}
+            .kohmz-bot-wrapper{bottom:85px!important;right:15px!important;}
+            .kohmz-chat-window{width:280px;}
+            .kohmz-bot-toggle{width:75px;height:75px;}
         }
-
-        /* ANIMATED HUD GRID BACKGROUND */
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                radial-gradient(var(--circuit-line) 1px, transparent 0),
-                linear-gradient(90deg, var(--circuit-line) 1px, transparent 1px),
-                linear-gradient(var(--circuit-line) 1px, transparent 1px);
-            background-size: 30px 30px, 100px 100px, 100px 100px;
-            z-index: -2; pointer-events: none;
-        }
-
-        /* ENERGY BOLT ANIMATION */
-        .energy-line {
-            position: fixed; top: 0; width: 2px; height: 200px;
-            background: linear-gradient(to bottom, transparent, var(--cyber-blue), var(--neon-gold), transparent);
-            opacity: 0.4; z-index: -1; animation: flowBolt 6s ease-in-out infinite;
-            filter: drop-shadow(0 0 8px var(--cyber-blue));
-        }
-
-        @keyframes flowBolt {
-            0% { transform: translateY(-200px); opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { transform: translateY(110vh); opacity: 0; }
-        }
-
-        /* HIGH-TECH TECH BAR */
-        .tech-bar {
-            background: linear-gradient(90deg, #d49800, #ffb703, #d49800); background-size: 200% auto;
-            color: #0d1b2a; padding: 10px; font-weight: 800; border-bottom: 2px solid #0d1b2a;
-            text-align: center; box-shadow: 0 0 20px var(--power-glow); position: relative; z-index: 1001;
-            animation: gradientShine 3s linear infinite;
-        }
-        @keyframes gradientShine { to { background-position: 200% center; } }
-        .tech-bar-content { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .tech-bar-content span::after { content: '\f111'; font-family: 'Font Awesome 5 Free'; font-weight: 900; color: #0d1b2a; margin-left: 15px; font-size: 7px; opacity: 0.5; }
-        .tech-bar-content span:last-child::after { content: ''; }
-
-        /* --- SYNCED NAVIGATION (HOME/ABOUT-US STYLE) --- */
-        header { 
-            background: rgba(8, 16, 24, 0.95); padding: 15px 30px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            position: sticky; top: 0; z-index: 1000; 
-            border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px);
-        }
-
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid #00e5ff; }
-        .logo-text { font-size: 22px; margin: 0; font-weight: 900; color: #fff; display: inline-block; font-family: 'Segoe UI', sans-serif;}
-        .logo-text span { color: #ffb703; }
-
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; }
-        .nav-links li a { 
-            color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; 
-            text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; 
-            font-family: 'Share Tech Mono', monospace; transition: 0.3s;
-            display: flex; align-items: center; gap: 6px;
-        }
-        .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
-
-        /* DESKTOP DROPDOWN FIX */
-        .nav-links li.dropdown { position: relative; }
-
-        .dropdown-content { 
-            display: none; position: absolute; background: rgba(8,16,24,0.98); 
-            min-width: 180px; box-shadow: 0px 10px 30px rgba(0,0,0,0.6); z-index: 1001; 
-            top: 100%; left: 0; border-top: 3px solid #00e5ff; 
-        }
-        .dropdown:hover .dropdown-content { display: block; }
-        .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-        @media (max-width: 992px) {
-            .menu-toggle { display: block; font-size: 26px; color: #00e5ff; cursor: pointer; background:none; border:none; padding:5px; }
-            .nav-links { 
-                display: none; flex-direction: column; position: absolute; top: 100%; left: 0; 
-                width: 100%; background: rgba(8, 16, 24, 0.98); padding: 0; margin: 0;
-                border-bottom: 4px solid #00e5ff; 
-            }
-            .nav-links.active { display: flex; }
-            .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); margin: 0; }
-            .nav-links li a { font-size: 14px; width: 100%; padding: 20px 25px; display: flex; justify-content: space-between; }
-            .dropdown-content { position: static; display: none; background: rgba(0,0,0,0.4); width: 100%; border: none; padding-left: 0; }
-            .dropdown.active .dropdown-content { display: block; }
-            .dropdown-content a { padding: 15px 20px 15px 45px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; }
-        }
-
-        /* --- HERO & TYPEWRITER --- */
-        .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; 
-            background-size: cover; padding: 120px 10%; text-align: center; color: white; display: flex; align-items: center; justify-content: center; position: relative;
-        }
-        .hero-inner { max-width: 950px; position: relative; z-index: 2; }
-        .hero h1 { font-size: 24px; color: #ffb703; margin-bottom: 20px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; line-height: 1.5; min-height: 70px; text-shadow: 0 0 15px rgba(255, 183, 3, 0.3); }
-        .txt-type > .txt { border-right: 3px solid #ffb703; padding-right: 5px; animation: blink 0.7s infinite; color: #ffffff; text-shadow: 0 0 15px var(--neon-gold); }
-        @keyframes blink { from, to { opacity: 1; } 50% { opacity: 0; } }
-        .hero p { font-size: 14px; margin: 0 auto 30px; line-height: 1.8; font-weight: 400; opacity: 0.95; color: #cbd5e1; }
-
-        /* --- FAQ ACCORDION --- */
-        .faq-container { max-width: 850px; margin: 60px auto; padding: 0 20px; }
-        .faq-intro { text-align: center; margin-bottom: 40px; }
-        .faq-intro h3 { font-size: 20px; color: #ffb703; text-transform: uppercase; font-weight: 900; border-bottom: 2px solid var(--cyber-blue); display: inline-block; padding-bottom: 10px;}
-        .faq-intro p { font-size: 13px; color: #cbd5e1; margin-top: 15px;}
-
-        .collapsible {
-            background: rgba(30, 41, 59, 0.4); color: #f8fafc; cursor: pointer; padding: 20px 25px; width: 100%; border: 1px solid rgba(255,183,3,0.1);
-            border-radius: 6px; text-align: left; outline: none; font-size: 14px; font-weight: 800; font-family: 'Segoe UI', sans-serif;
-            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; backdrop-filter: blur(10px);
-        }
-        .active, .collapsible:hover { background: rgba(13, 27, 42, 0.9); border-color: var(--cyber-blue); box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); color: #ffb703; }
-        .collapsible:after { content: '\002B'; font-size: 20px; font-weight: bold; color: #00e5ff; transition: 0.3s; }
-        .active:after { content: "\2212"; color: #ffb703; transform: rotate(180deg); }
-
-        .panel { padding: 0 25px; background-color: rgba(0,0,0,0.4); max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; border-radius: 0 0 6px 6px; margin-bottom: 15px; border-left: 4px solid #ffb703; }
-        .panel-content { padding: 20px 0; color: #cbd5e1; line-height: 1.8; font-size: 13px; }
-        .panel-content strong { color: #00e5ff; }
-
-        /* CTA BOX IN FAQ */
-        .faq-cta { text-align: center; background: rgba(13, 27, 42, 0.9); border-top: 4px solid var(--neon-gold); color: white; padding: 40px; border-radius: 8px; margin-top: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,183,3,0.2); }
-        .faq-cta h4 { font-size: 18px; color: #00e5ff; margin-top: 0; margin-bottom: 10px; text-transform: uppercase; font-weight: 900;}
-        .faq-cta a { display: inline-block; background: #ffb703; color: #0d1b2a; padding: 15px 30px; text-decoration: none; font-weight: 900; border-radius: 4px; margin-top: 20px; text-transform: uppercase; transition: 0.4s; box-shadow: 0 0 15px var(--power-glow); }
-        .faq-cta a:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 30px #ffb703; color: #000; }
-
-        /* --- BOT & FLOATING STYLES --- */
-        .kohmz-bot-wrapper { position: fixed; bottom: 120px; right: 20px; z-index: 999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-end; touch-action: none; user-select: none; }
-        .bot-value-tag { background: #00e5ff; color: #000; padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); cursor: grab; text-transform: uppercase; white-space: nowrap; }
-        .kohmz-chat-window { display: none; width: 320px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
-        .kohmz-chat-header { background: #000; color: #00e5ff; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
-        .kohmz-chat-body { padding: 15px; max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;}
-        .chat-bubble { background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; margin-bottom: 10px; border-left: 2px solid #00e5ff; font-size: 12px; word-wrap: break-word; white-space: pre-wrap; line-height: 1.5; font-family: 'Share Tech Mono', monospace; transition: opacity 0.4s ease-in-out;}
-        .kohmz-bot-toggle { width: 85px; height: 85px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s;}
-        .kohmz-bot-toggle:hover { transform: scale(1.05); }
-        .bot-badge { position: absolute; top: 12px; right: 12px; background: #ff3b3b; color: #fff; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px #ff3b3b; z-index: 10; }
-
-        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
-        .float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; background: #ffb703; color: #000; }
-        .float-btn.fb-messenger { background: #0084ff; color: white; } 
-        .float-btn.viber { background: #7360f2; color: white; } 
-        .float-btn.whatsapp { background: #25d366; color: white; } 
-        .float-btn:hover { transform: scale(1.15) translateY(-5px); }
-
-        @media (max-width: 768px) {
-            .floating-container { flex-direction: row !important; justify-content: center !important; bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; width: max-content !important; background: rgba(0, 0, 0, 0.8); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(0, 229, 255, 0.3); backdrop-filter: blur(10px); }
-            .float-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; margin: 0 5px !important; }
-            .kohmz-bot-wrapper { bottom: 85px !important; right: 15px !important; }
-            .kohmz-chat-window { width: 280px; }
-            .kohmz-bot-toggle { width: 75px; height: 75px; }
-        }
-
-        footer { background: #000; color: white; text-align: center; padding: 60px 20px 40px; border-top: 2px solid var(--neon-gold); position: relative; margin-top: 40px;}
-        footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; font-weight: bold;}
-        footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
-        .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
+        footer{background:#000;color:white;text-align:center;padding:60px 20px 40px;border-top:2px solid var(--neon-gold);position:relative;margin-top:40px;}
+        footer a{color:#ffb703;text-decoration:underline;transition:0.3s;font-weight:bold;}
+        footer a:hover{color:var(--cyber-blue);text-shadow:0 0 8px var(--cyber-blue);outline:none;}
+        .footer-links{font-size:11px;color:#94a3b8;margin-top:15px;line-height:2;}
     </style>
 </head>
 <body>
@@ -199,13 +113,15 @@
     <div class="energy-line" style="left: 50vw; animation-delay: 2.5s;"></div>
     <div class="energy-line" style="left: 85vw; animation-delay: 1s;"></div>
 
-    <div class="tech-bar">
-        <div class="tech-bar-content">
-            <span class="tooltip-container" tabindex="0" data-tooltip="Ensuring 100% PEC Engineering Standards">⚡ TECHNICAL GOVERNANCE</span>
-            <span>⚡ ASSET PROTECTION</span>
-            <span>⚡ PEC-COMPLIANT ARCHITECTURE</span>
-            <span>⚡ 24/7 SPECIALIST RESPONSE</span>
-        </div>
+    <div class="floating-container">
+        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger"><i class="fab fa-facebook-messenger"></i></a>
+        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber"><i class="fab fa-viber"></i></a>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email"><i class="fas fa-envelope"></i></a>
+    </div>
+
+    <div class="moving-ads">
+        <marquee behavior="scroll" direction="left">⚡ [SYSTEM ONLINE] KOHMZ ELECTRICAL: Precision Engineering | 24/7 Technical Support | Next-Gen Solar & Power Infrastructures ⚡</marquee>
     </div>
 
     <header>
@@ -251,7 +167,7 @@
                     <span id="main-typewriter-text"></span><span class="cursor" style="color: #00e5ff;">_</span><br>
                     <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["TECHNICAL CLARITY", "EXPERT ANSWERS", "TRANSPARENT PROCESS"]'></span>
                 </h1>
-                <p style="font-size: 15px; border-left: 3px solid #ffb703; border-right: 3px solid #ffb703; padding: 0 20px;">
+                <p style="font-size: 15px; border-left: 3px solid #ffb703; border-right: 3px solid #ffb703; padding: 0 20px; text-align: justify; text-align-last: center;">
                     We transform complex power requirements into streamlined, high-performance systems through a rigorous project lifecycle. Hindi lang kami nagkakabit ng kuryente—nag-e-engineer kami ng absolute peace of mind. Mula sa in-depth mathematical load balancing, strict adherence sa Philippine Electrical Code (PEC), hanggang sa final QA stress-testing, bawat hakbang ay kalkulado para maiwasan ang future hazards. Dito, sinasagot namin ang mga pinakamahalagang tanong para magkaroon ka ng kumpyansa bago natin simulan ang iyong project.
                 </p>
             </div>
@@ -263,75 +179,95 @@
                 <p>Click on a question below to reveal the answers from our technical specialists.</p>
             </div>
 
-            <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="100">Nag-o-offer ba kayo ng FREE estimate?</button>
-            <div class="panel">
-                <div class="panel-content">
-                    Yes, nagbibigay kami ng <strong>FREE initial online estimate</strong> base sa detalye at pictures na isusubmit niyo sa aming <a href="book-now.html" style="color:#ffb703; font-weight:bold;">Booking Form</a>. Gayunpaman, ang pinal at eksaktong quotation ay mangangailangan ng pormal na "On-Site Technical Inspection" upang makita ang totoong kondisyon ng inyong wiring.
+            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="100">
+                <summary class="collapsible">Nag-o-offer ba kayo ng FREE estimate?</summary>
+                <div class="panel">
+                    <div class="panel-content">
+                        Yes, nagbibigay kami ng <strong>FREE initial online estimate</strong> base sa detalye at pictures na isusubmit niyo sa aming <a href="book-now.html" style="color:#ffb703; font-weight:bold;">Booking Form</a>. Gayunpaman, ang pinal at eksaktong quotation ay mangangailangan ng pormal na "On-Site Technical Inspection" upang makita ang totoong kondisyon ng inyong wiring.
+                    </div>
                 </div>
-            </div>
+            </details>
 
-            <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="150">Magkano ang pa-check ng wiring o troubleshooting?</button>
-            <div class="panel">
-                <div class="panel-content">
-                    Ang halaga ng troubleshooting ay nakadepende sa laki ng inyong property at sa layo ng lokasyon. Meron kaming standard diagnostic fee para sa pagbisita ng aming mga technician. Kapag nag-decide kayong ituloy ang project sa amin, kadalasan ay inaawas (deducted) na namin ang diagnostic fee sa total project cost.
+            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="150">
+                <summary class="collapsible">Magkano ang pa-check ng wiring o troubleshooting?</summary>
+                <div class="panel">
+                    <div class="panel-content">
+                        Ang halaga ng troubleshooting ay nakadepende sa laki ng inyong property at sa layo ng lokasyon. Meron kaming standard diagnostic fee para sa pagbisita ng aming mga technician. Kapag nag-decide kayong ituloy ang project sa amin, kadalasan ay inaawas (deducted) na namin ang diagnostic fee sa total project cost.
+                    </div>
                 </div>
-            </div>
+            </details>
 
-            <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="200">Covered ba ng warranty ang mga gawa ninyo?</button>
-            <div class="panel">
-                <div class="panel-content">
-                    <strong>Absolutely.</strong> Ipinagmamalaki namin ang <em>KOHMZ Standard</em>. Lahat ng aming new electrical installations, panel board upgrades, at full rewiring projects ay may kasamang pormal na workmanship warranty. (Note: Maa-void ang warranty kung ang system ay ginagalaw ng ibang unauthorized technicians pagkatapos ng aming turnover).
+            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="200">
+                <summary class="collapsible">Covered ba ng warranty ang mga gawa ninyo?</summary>
+                <div class="panel">
+                    <div class="panel-content">
+                        <strong>Absolutely.</strong> Ipinagmamalaki namin ang <em>KOHMZ Standard</em>. Lahat ng aming new electrical installations, panel board upgrades, at full rewiring projects ay may kasamang pormal na workmanship warranty. (Note: Maa-void ang warranty kung ang system ay ginagalaw ng ibang unauthorized technicians pagkatapos ng aming turnover).
+                    </div>
                 </div>
-            </div>
+            </details>
 
-            <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="250">Bakit KOHMZ Specialists ang dapat kong i-book para sa project ko?</button>
-            <div class="panel">
-                <div class="panel-content">
-                    Dahil hindi kami naghuhula (<strong>No Guesswork!</strong>). Bago kami mag-install, gumagawa kami ng proper Load Profiling at CAD-based design. Binibigyan ka namin ng solusyon na future-proof, PEC-compliant, at idinisenyo para mapababa ang chance ng sunog o pagkasira ng appliances mo. Pag KOHMZ ang gumawa, sigurado kang premium at safe ang investment mo!
+            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="250">
+                <summary class="collapsible">Bakit KOHMZ Specialists ang dapat kong i-book para sa project ko?</summary>
+                <div class="panel">
+                    <div class="panel-content">
+                        Dahil hindi kami naghuhula (<strong>No Guesswork!</strong>). Bago kami mag-install, gumagawa kami ng proper Load Profiling at CAD-based design. Binibigyan ka namin ng solusyon na future-proof, PEC-compliant, at idinisenyo para mapababa ang chance ng sunog o pagkasira ng appliances mo. Pag KOHMZ ang gumawa, sigurado kang premium at safe ang investment mo!
+                    </div>
                 </div>
-            </div>
+            </details>
 
-            <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="300">Gumagawa ba kayo ng Solar Panel Installation?</button>
-            <div class="panel">
-                <div class="panel-content">
-                    Yes! Ang KOHMZ ay hindi lang pang-traditional electrical. Nagde-design at nag-i-install din kami ng complete Solar Power Systems (On-Grid, Off-Grid, at Hybrid) para sa mga residential at commercial na gusali para makatipid kayo sa kuryente.
+            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="300">
+                <summary class="collapsible">Gumagawa ba kayo ng Solar Panel Installation?</summary>
+                <div class="panel">
+                    <div class="panel-content">
+                        Yes! Ang KOHMZ ay hindi lang pang-traditional electrical. Nagde-design at nag-i-install din kami ng complete Solar Power Systems (On-Grid, Off-Grid, at Hybrid) para sa mga residential at commercial na gusali para makatipid kayo sa kuryente.
+                    </div>
                 </div>
-            </div>
+            </details>
 
-            <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="350">Kasama na ba ang mga materyales sa inyong quotation?</button>
-            <div class="panel">
-                <div class="panel-content">
-                    Oo. Ang aming quotation ay karaniwang <strong>"Turnkey" o All-In</strong> (Labor & Materials). Gumagamit lamang kami ng authentic, Tier-1, at UL-listed materials (tulad ng pure copper THHN/THWN-2 wires) para matiyak ang inyong kaligtasan. Wala kaming hidden charges.
+            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="350">
+                <summary class="collapsible">Kasama na ba ang mga materyales sa inyong quotation?</summary>
+                <div class="panel">
+                    <div class="panel-content">
+                        Oo. Ang aming quotation ay karaniwang <strong>"Turnkey" o All-In</strong> (Labor & Materials). Gumagamit lamang kami ng authentic, Tier-1, at UL-listed materials (tulad ng pure copper THHN/THWN-2 wires) para matiyak ang inyong kaligtasan. Wala kaming hidden charges.
+                    </div>
                 </div>
-            </div>
+            </details>
 
-            <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="400">Anong mga lokasyon o lugar ang siniserbisyuhan ng KOHMZ?</button>
-            <div class="panel">
-                <div class="panel-content">
-                    Kasalukuyan kaming nag-o-operate at nagse-serve sa buong <strong>Metro Manila, CALABARZON, at mga karatig-probinsya</strong>. Para sa mga malalaking Commercial projects sa labas ng aming primary area, maaari kayong magpadala ng mensahe para makapag-arrange kami ng special deployment.
+            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="400">
+                <summary class="collapsible">Anong mga lokasyon o lugar ang siniserbisyuhan ng KOHMZ?</summary>
+                <div class="panel">
+                    <div class="panel-content">
+                        Kasalukuyan kaming nag-o-operate at nagse-serve sa buong <strong>Metro Manila, CALABARZON, at mga karatig-probinsya</strong>. Para sa mga malalaking Commercial projects sa labas ng aming primary area, maaari kayong magpadala ng mensahe para makapag-arrange kami ng special deployment.
+                    </div>
                 </div>
-            </div>
+            </details>
 
-            <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="450">Gaano katagal bago masimulan ang project pagkatapos mag-book?</button>
-            <div class="panel">
-                <div class="panel-content">
-                    Pagka-submit ninyo ng booking form, asahan na tatawagan kayo ng aming team within <strong>24 hours</strong> para sa initial consultation. Kapag naaprubahan na ang layout at budget, maaari na naming i-schedule ang deployment nang mabilis at maayos.
+            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="450">
+                <summary class="collapsible">Gaano katagal bago masimulan ang project pagkatapos mag-book?</summary>
+                <div class="panel">
+                    <div class="panel-content">
+                        Pagka-submit ninyo ng booking form, asahan na tatawagan kayo ng aming team within <strong>24 hours</strong> para sa initial consultation. Kapag naaprubahan na ang layout at budget, maaari na naming i-schedule ang deployment nang mabilis at maayos.
+                    </div>
                 </div>
-            </div>
+            </details>
 
-            <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="500">Tumatanggap ba kayo ng malalaking Commercial at High-End Residential projects?</button>
-            <div class="panel">
-                <div class="panel-content">
-                    <strong>Yes, 100%.</strong> Isa sa aming core specialties ang mga Commercial Office Fit-outs, Retail Spaces, at malalaking Residential Estates. Mula sa strict load balancing para sa mga workstation networks, custom architectural lighting, hanggang sa dedicated smart-home panel upgrades, kaya naming i-execute ang mga malalaking operations nang may absolute precision at zero downtime.
+            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="500">
+                <summary class="collapsible">Tumatanggap ba kayo ng malalaking Commercial at High-End Residential projects?</summary>
+                <div class="panel">
+                    <div class="panel-content">
+                        <strong>Yes, 100%.</strong> Isa sa aming core specialties ang mga Commercial Office Fit-outs, Retail Spaces, at malalaking Residential Estates. Mula sa strict load balancing para sa mga workstation networks, custom architectural lighting, hanggang sa dedicated smart-home panel upgrades, kaya naming i-execute ang mga malalaking operations nang may absolute precision at zero downtime.
+                    </div>
                 </div>
-            </div>
+            </details>
 
-            <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="550">Mayroon ba kayong Emergency Technical Support?</button>
-            <div class="panel">
-                <div class="panel-content">
-                    Definitely. Mayroon kaming <strong>24/7 Specialist Response Team</strong> para sa aming mga existing clients at emergency diagnostic troubleshooting. Maaari ninyong i-click ang WhatsApp o Viber buttons sa ibaba ng aming website upang makausap agad ang electrician na on-duty.
+            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="550">
+                <summary class="collapsible">Mayroon ba kayong Emergency Technical Support?</summary>
+                <div class="panel">
+                    <div class="panel-content">
+                        Definitely. Mayroon kaming <strong>24/7 Specialist Response Team</strong> para sa aming mga existing clients at emergency diagnostic troubleshooting. Maaari ninyong i-click ang WhatsApp o Viber buttons sa ibaba ng aming website upang makausap agad ang electrician na on-duty.
+                    </div>
                 </div>
-            </div>
+            </details>
 
             <div class="faq-cta" data-aos="zoom-in">
                 <h4>READY nang simulan ang inyong project?</h4>
@@ -364,13 +300,6 @@
         </div>
     </div>
 
-    <aside class="floating-container" aria-label="Quick Contact Options">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://connect.viber.com/business/52083f08-2483-11f1-9ce9-3202630d40b4" target="_blank" class="float-btn viber" title="Viber"><i class="fab fa-viber"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
-    </aside>
-
     <footer aria-label="Site Footer">
         <div class="logo" style="justify-content: center; margin-bottom: 20px;">
             <img src="logo.jpg" alt="KOHMZ Electrical Services logo" width="35" height="35" loading="lazy">
@@ -395,15 +324,23 @@
         });
 
         // FAQ ACCORDION LOGIC
-        var coll = document.getElementsByClassName("collapsible");
-        for (var i = 0; i < coll.length; i++) {
-          coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.maxHeight) { panel.style.maxHeight = null; } 
-            else { panel.style.maxHeight = panel.scrollHeight + "px"; } 
-          });
-        }
+        var colls = document.querySelectorAll("details.collapsible-wrapper summary.collapsible");
+        colls.forEach(coll => {
+            coll.addEventListener("click", function(e) {
+                e.preventDefault(); 
+                const details = this.parentElement;
+                const panel = this.nextElementSibling;
+                
+                if (details.hasAttribute('open')) {
+                    panel.style.maxHeight = null;
+                    setTimeout(() => { details.removeAttribute('open'); this.classList.remove('active'); }, 300);
+                } else {
+                    details.setAttribute('open', '');
+                    this.classList.add('active');
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        });
 
         // MOBILE MENU LOGIC
         const mobileMenu = document.getElementById('mobile-menu');
