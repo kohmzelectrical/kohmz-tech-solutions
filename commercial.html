@@ -24,10 +24,12 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
+        /* --- FUTURISTIC EXTREME SYSTEM --- */
         :root {
             --neon-gold: #ffb703;
             --cyber-blue: #00e5ff;
             --power-glow: rgba(255, 183, 3, 0.4);
+            --circuit-line: rgba(255, 183, 3, 0.05);
             --bg-dark: #081018;
         }
 
@@ -160,12 +162,24 @@
         .card h3 { font-size: 14px; margin-bottom: 10px; color: #ffb703; font-weight: 700; text-transform: uppercase;} 
         .card p { font-size: 12px; color: #cbd5e1; line-height: 1.6; } 
 
-        /* Improved Advantages List */
-        .adv-list { max-width: 800px; margin: auto; text-align: left; background: rgba(13, 27, 42, 0.8); padding: 30px; border-radius: 8px; border-left: 4px solid #ffb703; list-style: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px);}
-        .adv-list li { margin-bottom: 15px; color: #e0faff; font-size: 13px; display: flex; align-items: flex-start; gap: 12px; line-height: 1.6;}
+        /* --- ENHANCED ADVANTAGES LIST (FIXED ICONS & LAYOUT) --- */
+        .adv-list { max-width: 800px; margin: auto; text-align: left; background: rgba(13, 27, 42, 0.8); padding: 35px; border-radius: 8px; border-left: 4px solid #ffb703; list-style: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px);}
+        .adv-list li { margin-bottom: 25px; color: #e0faff; font-size: 13px; display: flex; align-items: flex-start; gap: 15px; line-height: 1.6;}
         .adv-list li:last-child { margin-bottom: 0; }
-        .adv-list li i { font-size: 16px; margin-top: 3px; }
-        .adv-list li strong { color: #00e5ff; display: block; margin-bottom: 3px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;}
+        
+        /* Updated Icon Container */
+        .icon-container {
+            background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3); 
+            border-radius: 8px; width: 45px; height: 45px; display: flex; 
+            justify-content: center; align-items: center; flex-shrink: 0;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+            transition: 0.3s;
+        }
+        .adv-list li:hover .icon-container { background: #00e5ff; box-shadow: 0 0 15px #00e5ff;}
+        .adv-list li:hover .icon-container i { color: #000 !important; }
+        .adv-list li i { font-size: 20px; transition: 0.3s; }
+        
+        .adv-list li strong { color: #ffb703; display: block; margin-bottom: 4px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;}
 
         /* Standard CTA Button Upgrade */
         .cta-button { position:relative; padding:15px 30px; font-size:12px; border-radius:4px; display:inline-block; text-decoration:none; font-weight:900; margin:6px; transition:0.4s; text-transform:uppercase; letter-spacing:1px; box-shadow:0 4px 10px rgba(0,0,0,0.2); border:none; cursor:pointer; overflow:hidden; }
@@ -311,9 +325,33 @@
         <section class="content-section">
             <h2 data-aos="fade-down">The KOHMZ Commercial Advantage</h2>
             <ul class="adv-list" data-aos="fade-up">
-                <li><i class="fas fa-bolt" style="color:#00e5ff;"></i> <div><strong>24/7 Emergency Maintenance:</strong> We are on standby around the clock to resolve critical electrical failures and restore your business operations immediately.</div></li>
-                <li><i class="fas fa-file-invoice-dollar" style="color:#00e5ff;"></i> <div><strong>Design-First Approach:</strong> We eliminate guesswork by providing highly detailed material and labor cost estimates before any wire is pulled.</div></li>
-                <li><i class="fas fa-shield-alt" style="color:#00e5ff;"></i> <div><strong>Rigorous Safety Testing:</strong> We verify the integrity of every installation with thorough single-phase insulation resistance testing.</div></li>
+                <li>
+                    <div class="icon-container">
+                        <i class="fas fa-bolt" style="color:#00e5ff;"></i>
+                    </div>
+                    <div>
+                        <strong>24/7 Emergency Maintenance</strong>
+                        We are on standby around the clock to resolve critical electrical failures and restore your business operations immediately.
+                    </div>
+                </li>
+                <li>
+                    <div class="icon-container">
+                        <i class="fas fa-file-invoice-dollar" style="color:#00e5ff;"></i>
+                    </div>
+                    <div>
+                        <strong>Design-First Approach</strong>
+                        We eliminate guesswork by providing highly detailed material and labor cost estimates before any wire is pulled.
+                    </div>
+                </li>
+                <li>
+                    <div class="icon-container">
+                        <i class="fas fa-shield-alt" style="color:#00e5ff;"></i>
+                    </div>
+                    <div>
+                        <strong>Rigorous Safety Testing</strong>
+                        We verify the integrity of every installation with thorough single-phase insulation resistance testing.
+                    </div>
+                </li>
             </ul>
             
             <div style="text-align:center; margin-top:45px;" data-aos="zoom-in">
