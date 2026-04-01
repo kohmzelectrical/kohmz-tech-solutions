@@ -41,7 +41,11 @@
         .skip-link:focus{top:0;outline:3px solid var(--cyber-blue)}
         
         /* --- CAD BACKGROUND & PARTICLES --- */
-        body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(var(--circuit-line) 1px,transparent 0),linear-gradient(90deg,var(--circuit-line) 1px,transparent 1px),linear-gradient(var(--circuit-line) 1px,transparent 1px);background-size:30px 30px,100px 100px,100px 100px;z-index:-2;pointer-events:none}
+        .cad-background { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:-2; background:var(--bg-dark); overflow:hidden; }
+        .cad-grid { position:absolute; top:-50%; left:-50%; width:200%; height:200%; background-image: radial-gradient(var(--circuit-line) 1px, transparent 0), linear-gradient(90deg, var(--circuit-line) 1px, transparent 1px), linear-gradient(var(--circuit-line) 1px, transparent 1px); background-size: 30px 30px, 100px 100px, 100px 100px; transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px); animation: gridMove 20s linear infinite; }
+        .cad-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background: radial-gradient(circle at center, transparent 0%, var(--bg-dark) 80%); }
+        @keyframes gridMove { 0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); } 100% { transform: perspective(500px) rotateX(60deg) translateY(100px) translateZ(-200px); } }
+
         .energy-line{position:fixed;top:0;width:2px;height:200px;background:linear-gradient(to bottom,transparent,var(--cyber-blue),var(--neon-gold),transparent);opacity:0.4;z-index:-1;animation:flowBolt 6s ease-in-out infinite;filter:drop-shadow(0 0 8px var(--cyber-blue))}
         @keyframes flowBolt{0%{transform:translateY(-200px);opacity:0}50%{opacity:0.8}100%{transform:translateY(110vh);opacity:0}}
         .particle-container{position:fixed;width:100vw;height:100vh;top:0;left:0;z-index:-1;pointer-events:none}
@@ -50,6 +54,7 @@
         .p2{left:30%;width:3px;height:3px;animation-duration:12s;animation-delay:2s;background:#ffb703;box-shadow:0 0 10px #ffb703}
         .p3{left:60%;width:5px;height:5px;animation-duration:9s;animation-delay:4s}
         .p4{left:85%;width:2px;height:2px;animation-duration:15s;animation-delay:1s}
+        .p5{left:50%;width:6px;height:6px;animation-duration:11s;animation-delay:3s}
         @keyframes floatUp{0%{transform:translateY(100vh) scale(0.5);opacity:0}20%{opacity:0.6}80%{opacity:0.6}100%{transform:translateY(-10vh) scale(1.5);opacity:0}}
 
         /* --- ELECTRIC TECH BAR --- */
@@ -185,9 +190,9 @@
         .kohmz-chat-body{padding:15px;height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;flex:1;box-sizing:border-box;}
         .chat-bubble{background:rgba(255,255,255,0.05);color:#e0faff;padding:10px;border-radius:0 12px 12px 12px;margin-bottom:10px;border-left:2px solid #00e5ff;font-size:12px;word-wrap:break-word;white-space:pre-wrap;line-height:1.5;font-family:'Share Tech Mono',monospace}
 
-        .quick-replies{display:flex;gap:8px;padding:10px;overflow-x:auto;background:rgba(8,16,24,0.98);border-top:1px solid rgba(0,229,255,0.1);scrollbar-width:none;-webkit-overflow-scrolling:touch;width:100%;box-sizing:border-box;}
-        .quick-replies::-webkit-scrollbar{display:none;}
-        .quick-replies button{white-space:nowrap;background:rgba(0,229,255,0.1);border:1px solid var(--cyber-blue);color:var(--cyber-blue);border-radius:15px;padding:8px 12px;font-size:11px;cursor:pointer;transition:0.3s;font-family:'Share Tech Mono',monospace;font-weight:800;flex-shrink:0;}
+        /* FIXED QUICK REPLIES WRAP */
+        .quick-replies{display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:rgba(8,16,24,0.98);border-top:1px solid rgba(0,229,255,0.1);width:100%;box-sizing:border-box;justify-content:center;}
+        .quick-replies button{white-space:nowrap;background:rgba(0,229,255,0.1);border:1px solid var(--cyber-blue);color:var(--cyber-blue);border-radius:15px;padding:8px 12px;font-size:11px;cursor:pointer;transition:0.3s;font-family:'Share Tech Mono',monospace;font-weight:800;flex:1 1 auto;}
         .quick-replies button:hover,.quick-replies button:active{background:var(--cyber-blue);color:#000;}
 
         /* TURNSTILE WIDGET CONTAINER */
@@ -234,6 +239,10 @@
         footer a{color:#ffb703;text-decoration:underline;transition:0.3s}
         footer a:hover{color:var(--cyber-blue);text-shadow:0 0 8px var(--cyber-blue);outline:none}
         .footer-links{font-size:11px;color:#94a3b8;margin-top:15px;line-height:2}
+        
+        details { background: rgba(255,255,255,0.02); margin-bottom: 10px; border: 1px solid rgba(255,183,3,0.1); }
+        summary { padding: 20px; color: var(--neon-gold); font-weight: 800; cursor: pointer; outline: none; border-left: 5px solid var(--neon-gold); text-align: left; }
+        .faq-container { max-width: 850px; margin: 0 auto; text-align: left; }
     </style>
 </head>
 <body data-aos-easing="ease" data-aos-duration="600" data-aos-delay="0">
@@ -460,6 +469,17 @@ Your browser does not support the video tag.
 </div>
 </section>
 
+<section class="content-section">
+<h2>Technical Advisory FAQ</h2>
+<div class="faq-container">
+<details><summary>1. Is my property at risk of an electrical fire?</summary><p>If you experience warm switch plates or flickering lights, an immediate audit is required.</p></details>
+<details><summary>2. Do you handle AC installation wiring?</summary><p>Yes, we install dedicated load centers specifically for high-amperage HVAC networks.</p></details>
+<details><summary>3. What is PEC Compliance?</summary><p>It is the strict adherence to the Philippine Electrical Code to ensure life and property safety.</p></details>
+<details><summary>4. What to do if outlet sparks?</summary><p>Stop using it immediately and turn off the corresponding breaker.</p></details>
+<details><summary>5. Solar Integration process?</summary><p>Starts with a Load Audit to determine the right capacity for your grid.</p></details>
+</div>
+</section>
+
 <section class="content-section" aria-labelledby="vip-heading">
 <div class="vip-advisory" data-aos="fade-up">
 <div class="vip-header-row">
@@ -550,6 +570,9 @@ Your browser does not support the video tag.
 // --- CORE SETUP ---
 const WORKER_URL="https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
+// GOD-MODE VIP BYPASS LIST (GLOBAL)
+const VIP_FAMILY = { "/pepot": true, "/joy": true, "/samsam": true, "/mara": true, "/mantha": true };
+
 // CLOUDFLARE TURNSTILE
 let currentTurnstileToken = "";
 window.onTurnstileSuccess = function(token) { currentTurnstileToken = token; };
@@ -568,6 +591,8 @@ let isGodMode = sessionStorage.getItem('isGod') === 'true';
 if(isGodMode) {
     document.getElementById("dragHint").innerText = "👑 IMMORTAL MODE";
     document.getElementById("dragHint").classList.add('god-mode-tag');
+    const tsContainer = document.getElementById("cf-turnstile-container");
+    if(tsContainer) tsContainer.style.display = "none";
 }
 
 // RESTORE MEMORY ON LOAD
@@ -579,7 +604,6 @@ window.addEventListener('load', () => {
                 const b = document.createElement("div");
                 b.className = "chat-bubble" + (isUser ? " user-bubble" : "");
                 
-                // Hide Base64 image strings from visual history
                 let displayContent = m.content;
                 if(displayContent.includes("[SYSTEM NOTE")) displayContent = "[Image Uploaded]";
 
@@ -646,8 +670,9 @@ window.askGemini = async function() {
     const n = e.value.trim();
     if (!n && !currentImageData) return;
     
-    // REQUIRE TURNSTILE UNLESS GOD MODE
-    if (!isGodMode && !currentTurnstileToken && !VIP_FAMILY[n.toLowerCase().trim()]) {
+    // REQUIRE TURNSTILE UNLESS GOD MODE OR TYPING VIP CHEAT CODE
+    const isVIPAttempt = VIP_FAMILY[n.toLowerCase().trim()];
+    if (!isGodMode && !currentTurnstileToken && !isVIPAttempt) {
         t.innerHTML += `<div class="chat-bubble" style="border-left:2px solid #e11d48; color:#e11d48;">Lexie: ⚠️ Please wait for Cloudflare Security check to verify your connection before sending.</div>`;
         t.scrollTop = t.scrollHeight;
         return;
@@ -660,7 +685,7 @@ window.askGemini = async function() {
     t.scrollTop = t.scrollHeight;
 
     lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
-    if(lexieMemory.length > 8) lexieMemory = lexieMemory.slice(-8); // Limit memory array size
+    if(lexieMemory.length > 8) lexieMemory = lexieMemory.slice(-8);
 
     const s = "loading-" + Date.now();
     t.innerHTML += `<div class="chat-bubble" id="${s}" style="border-left:2px solid #00e5ff;">Lexie is analyzing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span></div>`;
@@ -696,7 +721,8 @@ window.askGemini = async function() {
             sessionStorage.setItem('isGod', 'true');
             document.getElementById("dragHint").innerText = "👑 IMMORTAL MODE";
             document.getElementById("dragHint").classList.add('god-mode-tag');
-            document.getElementById("cf-turnstile-container").style.display = "none"; // Hide widget
+            const tsCont = document.getElementById("cf-turnstile-container");
+            if(tsCont) tsCont.style.display = "none";
         }
 
         // PARSE GOD-MODE TRIGGERS
@@ -713,17 +739,22 @@ window.askGemini = async function() {
 
         aiReply = aiReply.replace(/\[CALENDAR: (.*?)\]/g, '<br><a href="$1" target="_blank" class="btn-pdf" style="background:#00e5ff;color:#000;"><i class="fas fa-calendar-alt"></i> Save to Calendar</a>');
 
+        // FORMAL PDF TRIGGER LOGIC
         if(result.has_estimate && !result.code_red) {
-            const rawEst = aiReply.replace(/<[^>]*>?/gm, '').replace(/'/g, "\\'");
-            aiReply += `<br><br><button onclick="downloadPDF('${encodeURIComponent(rawEst)}')" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Estimate Summary</button>`;
+            const rawEst = aiReply.replace(/<[^>]*>?/gm, '').replace(/'/g, "\\'"); 
+            sessionStorage.setItem('lastEst', rawEst);
+            aiReply += `<br><br><button onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Formal Estimate</button>`;
         }
 
         lexieMemory.push({ role: "assistant", content: result.ai_answer });
         sessionStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
         clearImage();
         
-        // Refresh turnstile after sending message so user can send again
-        if(typeof turnstile !== 'undefined' && !isGodMode) { turnstile.reset(); currentTurnstileToken = ""; }
+        // Refresh turnstile safely
+        if(typeof turnstile !== 'undefined' && !isGodMode && currentTurnstileToken) { 
+            turnstile.reset(); 
+            currentTurnstileToken = ""; 
+        }
 
         const cleanReplyForButton = result.ai_answer.replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/(?:\r\n|\r|\n)/g, " ");
         t.innerHTML += `<div class="chat-bubble" style="border-left:2px solid #00e5ff;">Lexie: ${aiReply}<div style="margin-top:8px;border-top:1px solid rgba(0,229,255,0.2);padding-top:5px;"><button onclick="window.speakText('${cleanReplyForButton}')" style="background:none;border:none;color:#ffb703;cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;"><i class="fas fa-volume-up"></i> Play Audio</button></div></div>`;
@@ -734,11 +765,51 @@ window.askGemini = async function() {
     }
 };
 
-window.downloadPDF = function(encodedText) {
-    const text = decodeURIComponent(encodedText);
+// --- FORMAL PDF GENERATOR ---
+window.downloadPDF = function() {
+    const data = sessionStorage.getItem('lastEst');
+    if (!data) {
+        alert("System Error: No estimate data found.");
+        return;
+    }
     const el = document.createElement('div');
-    el.innerHTML = `<div style="padding:40px;font-family:sans-serif;"><h2 style="color:#ffb703;border-bottom:2px solid #00e5ff;">KOHMZ Electrical - AI Estimate Summary</h2><p>Ref: ${userId} | Date: ${new Date().toLocaleDateString()}</p><div style="font-size:14px;white-space:pre-wrap;margin-top:20px;">${text}</div><p style="margin-top:40px;font-size:10px;color:#666;">Note: This is a rough AI estimate. Subject to actual technical audit.</p></div>`;
-    html2pdf().set({filename: 'KOHMZ_Estimate.pdf', margin: 1}).from(el).save();
+    el.style.cssText = "position:absolute;left:-9999px;top:0;width:800px;background:#fff;color:#000;padding:50px;font-family:Arial,sans-serif;box-sizing:border-box;min-height:1050px;";
+    el.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ffb703;padding-bottom:20px;margin-bottom:30px;">
+            <div>
+                <h1 style="color:#0d1b2a;margin:0;font-size:32px;font-weight:900;text-transform:uppercase;">KOHMZ <span style="color:#ffb703;">Electrical</span></h1>
+                <p style="margin:5px 0 0;font-size:12px;color:#666;font-weight:bold;">Technical Governance & Power Architecture</p>
+            </div>
+            <div style="text-align:right;font-size:12px;color:#444;line-height:1.6;">
+                <strong>Laguna, Philippines</strong><br>
+                📞 0926-617-4131<br>
+                ✉️ kohmzelectrical@gmail.com
+            </div>
+        </div>
+        
+        <h2 style="text-align:center;color:#0d1b2a;text-transform:uppercase;letter-spacing:2px;margin-bottom:25px;">AI Estimate Summary</h2>
+        
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:30px;background:#f8fafc;padding:15px;border-left:5px solid #00e5ff;">
+            <span><strong>Tracking Ref ID:</strong> ${userId}</span>
+            <span><strong>Date Prepared:</strong> ${new Date().toLocaleDateString()}</span>
+        </div>
+        
+        <div style="font-size:14px;line-height:1.8;white-space:pre-wrap;color:#222;margin-bottom:50px;">${data}</div>
+        
+        <div style="position:absolute;bottom:50px;left:50px;right:50px;border-top:1px solid #ccc;padding-top:20px;font-size:11px;color:#666;text-align:center;line-height:1.5;">
+            <strong style="color:#000;">Prepared by: Lexie (KOHMZ AI Assistant)</strong><br><br>
+            <em>DISCLAIMER: This document is a rough, unverified AI estimate generated for reference purposes only. This does not serve as an official contract, quotation, or legal agreement. Final and accurate pricing is strictly subject to an actual on-site Technical Audit conducted by KOHMZ Electrical professionals.</em>
+        </div>
+    `;
+    
+    document.body.appendChild(el);
+    html2pdf().set({
+        filename: 'KOHMZ_Estimate_Summary.pdf', 
+        margin: 0,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    }).from(el).save().then(() => document.body.removeChild(el));
 };
 
 setInterval(()=>{if(window.speechSynthesis)window.speechSynthesis.resume()},1000);
@@ -751,8 +822,9 @@ const uQuery=document.getElementById("userQuery");if(uQuery){uQuery.addEventList
 
 window.toggleBotWindow=function(){const chat=document.getElementById("chatWindow"),hint=document.getElementById("dragHint"),btn=document.getElementById("readPageBtn");if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();if(btn)btn.innerHTML='<i class="fas fa-volume-up"></i>';window.isReadingPage=false}if(chat.style.display==="flex"){chat.style.display="none";if(hint)hint.innerHTML= isGodMode ? "👑 IMMORTAL MODE" : "⚡ KOHMZ Lexie Pro";}else{chat.style.display="flex";if(hint)hint.innerHTML="🖐️ Drag to Move";if(window.speechSynthesis)window.speechSynthesis.resume()}};
 
-// EXIT INTENT
+// EXIT INTENT SPAM FIX
 document.addEventListener("mouseleave", (e) => {
+    if (isGodMode) return; // NO EXIT POPUP FOR GOD MODE
     if (e.clientY < 0 && !sessionStorage.getItem('exit_offered')) {
         document.getElementById("chatWindow").style.display = "flex";
         const t = document.getElementById("chatBody");
@@ -767,9 +839,6 @@ document.addEventListener("DOMContentLoaded",()=>{
     if(typeof AOS!=="undefined")AOS.init({duration:600,once:true});
     const menuBtn=document.getElementById("mobile-menu"),navList=document.getElementById("nav-list");
     if(menuBtn&&navList){menuBtn.addEventListener("click",()=>{navList.classList.toggle("active")})}
-    
-    // GOD-MODE VIP BYPASS LIST FOR FRONTEND CHECK
-    const VIP_FAMILY = { "/pepot": true, "/joy": true, "/samsam": true, "/mara": true, "/mantha": true };
     
     const mainText="INTEGRATED POWER ARCHITECTURE & ";let mainIdx=0;const typeEl=document.getElementById("main-typewriter-text");
     function typeMain(){if(typeEl&&mainIdx<mainText.length){typeEl.innerHTML+=mainText.charAt(mainIdx++);setTimeout(typeMain,60)}}typeMain();
