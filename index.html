@@ -152,8 +152,6 @@ details[open]{border-color:var(--cyber-blue);box-shadow:0 0 15px rgba(0,229,255,
 summary{font-size:13px;font-weight:800;color:#ffb703;padding:20px 25px;cursor:pointer;outline:none;border-left:5px solid #ffb703;display:flex;justify-content:space-between;align-items:center;transition:0.3s}
 summary:hover{background:rgba(255,183,3,0.05);outline:2px solid var(--cyber-blue);outline-offset:-2px}
 details p{font-size:12px;padding:25px;margin:0;color:#cbd5e1;line-height:1.9;background:rgba(0,0,0,0.2)}
-
-/* --- 🔥 VIP ADVISORY FIXED FOR MOBILE --- */
 .vip-advisory{background:rgba(13,27,42,0.9);border-left:6px solid #00e5ff;padding:35px;border-radius:8px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;max-width:850px;margin:0 auto 50px;border:1px solid rgba(0,229,255,0.2);box-shadow:0 10px 30px rgba(0,0,0,0.5);box-sizing:border-box;overflow:hidden}
 .adv-tag{background:rgba(0,229,255,0.1);border:1px solid var(--cyber-blue);color:var(--cyber-blue);font-size:10px;padding:6px 12px;border-radius:4px;font-weight:800;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px;position:relative}
 .adv-tag::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;border-radius:inherit;border:1px solid var(--cyber-blue);animation:pulse-ring 2s cubic-bezier(0.215,0.61,0.355,1) infinite;box-sizing:border-box;pointer-events:none}
@@ -164,15 +162,6 @@ details p{font-size:12px;padding:25px;margin:0;color:#cbd5e1;line-height:1.9;bac
 .vip-btn-col{text-align:center;box-sizing:border-box}
 .btn-vip{white-space:normal;font-size:13px;padding:15px;width:100%;box-sizing:border-box;display:inline-block;text-align:center}
 
-@media(max-width:768px){
-.vip-advisory{margin:0 15px 50px;padding:20px 15px;width:auto;box-sizing:border-box}
-.vip-header-row{flex-direction:column;align-items:flex-start;gap:10px}
-.vip-content-grid{flex-direction:column;align-items:stretch}
-.vip-text-col{width:100%}
-.vip-btn-col{width:100%}
-}
-
-/* --- FLOATING BUTTONS & BOT --- */
 .floating-container{position:fixed;bottom:25px;right:25px;display:flex;flex-direction:column;gap:12px;z-index:10000}
 .float-btn{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;font-size:22px;box-shadow:0 4px 15px rgba(0,0,0,0.6);transition:all .3s cubic-bezier(.175,.885,.32,1.275);position:relative;border:none;cursor:pointer}
 .float-btn::before{content:'';position:absolute;width:100%;height:100%;border-radius:50%;background:inherit;z-index:-1;filter:blur(10px);opacity:0.6;transition:0.3s}
@@ -223,7 +212,7 @@ lottie-player{width:100%!important;height:100%!important;pointer-events:none}
 .kohmz-chat-body{padding:15px;max-height:250px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
 .chat-bubble{background:rgba(255,255,255,0.05);color:#e0faff;padding:10px;border-radius:0 12px 12px 12px;margin-bottom:10px;border-left:2px solid #00e5ff;font-size:12px;word-wrap:break-word;white-space:pre-wrap;line-height:1.5;font-family:'Share Tech Mono',monospace}
 
-/* LEXIE GOD MODE CSS UPGRADES */
+/* --- LEXIE GOD-MODE UPGRADES CSS --- */
 .quick-replies { display: flex; gap: 8px; padding: 8px 15px; overflow-x: auto; background: rgba(8,16,24,0.98); border-top: 1px solid rgba(0,229,255,0.1); scrollbar-width: none; }
 .quick-replies::-webkit-scrollbar { display: none; }
 .quick-replies button { white-space: nowrap; background: rgba(0,229,255,0.1); border: 1px solid var(--cyber-blue); color: var(--cyber-blue); border-radius: 15px; padding: 5px 12px; font-size: 10px; cursor: pointer; transition: 0.3s; font-family: 'Share Tech Mono', monospace; font-weight: 800; }
@@ -560,8 +549,8 @@ Your browser does not support the video tag.
 </div>
 <div style="padding:10px;border-top:1px solid rgba(0,229,255,0.2);display:flex;gap:5px;background:#000;">
 <button id="micBtn" onclick="startDictation()" style="background:transparent;border:1px solid #00e5ff;color:#00e5ff;padding:8px 10px;cursor:pointer;border-radius:4px;" title="Voice Input"><i class="fas fa-microphone"></i></button>
-<input type="text" id="userQuery" placeholder="Ask Lexie or speak..." style="flex:1;background:transparent;border:1px solid #00e5ff;color:#fff;padding:8px;font-family:'Share Tech Mono';font-size:11px;outline:none;" />
-<button onclick="window.askGemini()" style="background:#00e5ff;border:none;padding:5px 12px;cursor:pointer;border-radius:4px;"><i class="fas fa-paper-plane" style="color:#000;"></i></button>
+<input type="text" id="userQuery" placeholder="Ask Lexie or speak..." style="flex:1;background:transparent;border:1px solid #00e5ff;color:#fff;padding:8px;font-family:'Share Tech Mono';font-size:11px;outline:none;">
+<button onclick="askGemini()" style="background:#00e5ff;border:none;padding:5px 12px;cursor:pointer;border-radius:4px;"><i class="fas fa-paper-plane" style="color:#000;"></i></button>
 </div>
 </div>
 <div class="kohmz-bot-toggle" id="botToggle">
@@ -574,7 +563,7 @@ Your browser does not support the video tag.
 <script>
 const WORKER_URL="https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
-// LEXIE GOD MODE - MEMORY
+// --- LEXIE GOD-MODE UPGRADES (Memory, Mic, Lead Capture) ---
 let lexieMemory = [];
 
 window.startDictation = function() {
@@ -585,7 +574,7 @@ window.startDictation = function() {
         
         recognition.continuous = false;
         recognition.interimResults = false;
-        recognition.lang = 'en-PH';
+        recognition.lang = 'en-PH'; 
         
         recognition.onstart = function() { micBtn.classList.add('mic-active'); };
         
@@ -595,12 +584,12 @@ window.startDictation = function() {
             window.askGemini(); 
         };
         
-        recognition.onerror = function() { recognition.stop(); micBtn.classList.remove('mic-active'); };
+        recognition.onerror = function(e) { recognition.stop(); micBtn.classList.remove('mic-active'); };
         recognition.onend = function() { micBtn.classList.remove('mic-active'); };
         
         recognition.start();
     } else {
-        alert("Sorry boss, Voice Input is not supported in this browser.");
+        alert("Sorry boss, Voice Input is not supported in this browser. Try Chrome or Edge.");
     }
 }
 
@@ -635,11 +624,11 @@ window.askGemini = async function() {
     t.innerHTML += `<div class="chat-bubble" id="${s}" style="border-left:2px solid #00e5ff;">Lexie is typing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span></div>`;
     t.scrollTop = t.scrollHeight;
 
-    let sd = "";
-    const cs = document.querySelectorAll('.card'); if(cs.length>0) sd += Array.from(cs).map(c=>c.innerText.replace(/\n/g,' ')).join(' | ');
-    const ds = document.querySelectorAll('details'); if(ds.length>0) sd += " " + Array.from(ds).map(d=>d.innerText.replace(/\n/g,' ')).join(' | ');
-    if(sd === ""){ const ps = document.querySelectorAll('main p,.content-section p'); sd += Array.from(ps).map(p=>p.innerText).join(' '); }
-    sd = sd.substring(0, 1500);
+    let sd="";
+    const cs=document.querySelectorAll('.card');if(cs.length>0)sd+=Array.from(cs).map(c=>c.innerText.replace(/\n/g,' ')).join(' | ');
+    const ds=document.querySelectorAll('details');if(ds.length>0)sd+=" "+Array.from(ds).map(d=>d.innerText.replace(/\n/g,' ')).join(' | ');
+    if(sd===""){const ps=document.querySelectorAll('main p,.content-section p');sd+=Array.from(ps).map(p=>p.innerText).join(' ');}
+    sd=sd.substring(0,1500);
 
     try {
         const response = await fetch(WORKER_URL, {
@@ -675,7 +664,24 @@ window.toggleBotWindow=function(){const chat=document.getElementById("chatWindow
 
 document.addEventListener("DOMContentLoaded",()=>{
     if(typeof AOS!=="undefined")AOS.init({duration:600,once:true});
+    const menuBtn=document.getElementById("mobile-menu"),navList=document.getElementById("nav-list");
+    if(menuBtn&&navList){menuBtn.addEventListener("click",()=>{navList.classList.toggle("active")})}
     
+    const mainText="INTEGRATED POWER ARCHITECTURE & ";let mainIdx=0;const typeEl=document.getElementById("main-typewriter-text");
+    function typeMain(){if(typeEl&&mainIdx<mainText.length){typeEl.innerHTML+=mainText.charAt(mainIdx++);setTimeout(typeMain,60)}}typeMain();
+    
+    class TypeWriter{constructor(e,t,n){this.el=e;this.words=t;this.txt="";this.wordIdx=0;this.wait=parseInt(n,10);this.isDel=false;this.type()}type(){const e=this.wordIdx%this.words.length,t=this.words[e];this.txt=this.isDel?t.substring(0,this.txt.length-1):t.substring(0,this.txt.length+1);this.el.innerHTML=`<span class="txt">${this.txt}</span>`;let n=100;if(this.isDel)n/=2;if(!this.isDel&&this.txt===t){n=this.wait;this.isDel=true}else if(this.isDel&&this.txt===""){this.isDel=false;this.wordIdx++;n=500}setTimeout(()=>this.type(),n)}}
+    const subEl=document.querySelector(".txt-type");if(subEl)new TypeWriter(subEl,JSON.parse(subEl.getAttribute("data-words")),subEl.getAttribute("data-wait"));
+    
+    const wrapper=document.getElementById("draggableBot"),toggle=document.getElementById("botToggle");let isDrag=false,startX,startY,xOff=0,yOff=0,startTime;
+    if(toggle&&wrapper){toggle.addEventListener("mousedown",e=>{isDrag=true;startTime=Date.now();startX=e.clientX-xOff;startY=e.clientY-yOff});window.addEventListener("mousemove",e=>{if(!isDrag)return;xOff=e.clientX-startX;yOff=e.clientY-startY;wrapper.style.transform=`translate3d(${xOff}px, ${yOff}px, 0)`});window.addEventListener("mouseup",()=>{if(isDrag){isDrag=false;if(Date.now()-startTime<200)window.toggleBotWindow()}})}
+    
+    const uQuery=document.getElementById("userQuery");if(uQuery){uQuery.addEventListener("keypress",e=>{if(e.key==="Enter")window.askGemini()})}
+    
+    window.isReadingPage=false;const readPageBtn=document.getElementById("readPageBtn");
+    if(readPageBtn){readPageBtn.addEventListener("click",function(){if(window.isReadingPage||window.speechSynthesis.speaking){window.speechSynthesis.cancel();window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}const mainElement=document.getElementById("main-content");if(!mainElement)return;let contentToRead=mainElement.innerText.replace(/\n+/g,". ").replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES|SECURE YOUR SLOT NOW/g,""),fullText="Welcome to KOHMZ Electrical... "+contentToRead,sentences=fullText.match(/[^.!?]+[.!?]+/g)||[fullText];window.isReadingPage=true;readPageBtn.innerHTML='<i class="fas fa-volume-mute" aria-hidden="true"></i>';let currentSentence=0;function playNextSentence(){if(!window.isReadingPage||currentSentence>=sentences.length){window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}let chunk=new SpeechSynthesisUtterance(sentences[currentSentence].trim()),voices=window.speechSynthesis.getVoices(),profVoice=voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Google US English")||v.name.includes("Female"))||voices[0];if(profVoice)chunk.voice=profVoice;chunk.pitch=1.15;chunk.rate=0.80;chunk.onend=()=>{currentSentence++;playNextSentence()};chunk.onerror=()=>{window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>'};window.speechSynthesis.speak(chunk)}playNextSentence()})}
+    
+    // --- TECH BAR LOGIC ---
     const techBarWords = ["TECHNICAL GOVERNANCE", "ASSET PROTECTION", "PEC-COMPLIANT ARCHITECTURE", "24/7 SPECIALIST RESPONSE", "RESIDENTIAL & COMMERCIAL MASTERY"];
     let tbIdx = 0; let charIdx = 0; let isTbDeleting = false;
     const electricEl = document.getElementById("electric-typewriter");
@@ -691,10 +697,8 @@ document.addEventListener("DOMContentLoaded",()=>{
         setTimeout(typeElectricBar, typeSpeed);
     }
     typeElectricBar();
-    
-    const menuBtn=document.getElementById("mobile-menu"),navList=document.getElementById("nav-list");
-    if(menuBtn&&navList){ menuBtn.addEventListener("click",()=>{ navList.classList.toggle("active"); }); }
 
+    // --- ACCORDION / RETRACTABLE DROPDOWN LOGIC FOR MOBILE ---
     const dropdownBtns = document.querySelectorAll('.nav-links li.dropdown .dropbtn');
     dropdownBtns.forEach(btn => {
         btn.addEventListener('click', function(e) {
@@ -706,16 +710,6 @@ document.addEventListener("DOMContentLoaded",()=>{
             }
         });
     });
-
-    const mainText="INTEGRATED POWER ARCHITECTURE & ";let mainIdx=0;const typeEl=document.getElementById("main-typewriter-text");function typeMain(){if(typeEl&&mainIdx<mainText.length){typeEl.innerHTML+=mainText.charAt(mainIdx++);setTimeout(typeMain,60)}}typeMain();
-    class TypeWriter{constructor(e,t,n){this.el=e;this.words=t;this.txt="";this.wordIdx=0;this.wait=parseInt(n,10);this.isDel=false;this.type()}type(){const e=this.wordIdx%this.words.length,t=this.words[e];this.txt=this.isDel?t.substring(0,this.txt.length-1):t.substring(0,this.txt.length+1);this.el.innerHTML=`<span class="txt">${this.txt}</span>`;let n=100;if(this.isDel)n/=2;if(!this.isDel&&this.txt===t){n=this.wait;this.isDel=true}else if(this.isDel&&this.txt===""){this.isDel=false;this.wordIdx++;n=500}setTimeout(()=>this.type(),n)}}const subEl=document.querySelector(".txt-type");if(subEl)new TypeWriter(subEl,JSON.parse(subEl.getAttribute("data-words")),subEl.getAttribute("data-wait"));
-    
-    const wrapper=document.getElementById("draggableBot"),toggle=document.getElementById("botToggle");let isDrag=false,startX,startY,xOff=0,yOff=0,startTime;
-    if(toggle&&wrapper){toggle.addEventListener("mousedown",e=>{isDrag=true;startTime=Date.now();startX=e.clientX-xOff;startY=e.clientY-yOff});window.addEventListener("mousemove",e=>{if(!isDrag)return;xOff=e.clientX-startX;yOff=e.clientY-startY;wrapper.style.transform=`translate3d(${xOff}px, ${yOff}px, 0)`});window.addEventListener("mouseup",()=>{if(isDrag){isDrag=false;if(Date.now()-startTime<200)window.toggleBotWindow()}})}
-    const uQuery=document.getElementById("userQuery");if(uQuery){uQuery.addEventListener("keypress",e=>{if(e.key==="Enter")window.askGemini()})}
-    
-    window.isReadingPage=false;const readPageBtn=document.getElementById("readPageBtn");
-    if(readPageBtn){readPageBtn.addEventListener("click",function(){if(window.isReadingPage||window.speechSynthesis.speaking){window.speechSynthesis.cancel();window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}const mainElement=document.getElementById("main-content");if(!mainElement)return;let contentToRead=mainElement.innerText.replace(/\n+/g,". ").replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES|SECURE YOUR SLOT NOW/g,""),fullText="Welcome to KOHMZ Electrical... "+contentToRead,sentences=fullText.match(/[^.!?]+[.!?]+/g)||[fullText];window.isReadingPage=true;readPageBtn.innerHTML='<i class="fas fa-volume-mute" aria-hidden="true"></i>';let currentSentence=0;function playNextSentence(){if(!window.isReadingPage||currentSentence>=sentences.length){window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}let chunk=new SpeechSynthesisUtterance(sentences[currentSentence].trim()),voices=window.speechSynthesis.getVoices(),profVoice=voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Google US English")||v.name.includes("Female"))||voices[0];if(profVoice)chunk.voice=profVoice;chunk.pitch=1.15;chunk.rate=0.80;chunk.onend=()=>{currentSentence++;playNextSentence()};chunk.onerror=()=>{window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>'};window.speechSynthesis.speak(chunk)}playNextSentence()})}
 });
 </script>
 </body>
