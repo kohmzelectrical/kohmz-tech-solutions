@@ -189,9 +189,10 @@
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
         .float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
         
+        /* BOT CSS MODIFIED TO STAY ON THE LEFT */
         .kohmz-bot-wrapper { position: fixed; bottom: 120px; left: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-start; }
         .bot-value-tag { background: #00e5ff; color: #000; padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; cursor: pointer; box-shadow: 0 0 15px rgba(0, 229, 255, 0.6); text-transform: uppercase; }
-        .kohmz-chat-window { display: none; width: 300px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #ffb703; border-top: 4px solid #ffb703; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; }
+        .kohmz-chat-window { display: none; width: 320px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #ffb703; border-top: 4px solid #ffb703; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; }
         .kohmz-chat-header { background: #000; color: #ffb703; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; font-size: 13px; }
         .kohmz-chat-body { padding: 20px; text-align: left; max-height: 300px; overflow-y: auto; }
         .message-bubble { background: rgba(255, 183, 3, 0.1); padding: 15px; border-radius: 0 12px 12px 12px; border-left: 3px solid #ffb703; color: #fff; font-family: 'Segoe UI', sans-serif; font-size: 13px; line-height: 1.6; margin-bottom: 10px; }
@@ -411,26 +412,26 @@
         <a href="tel:09266174131" class="float-btn" style="background: #ffb703; color: #000;" title="Call Us"><i class="fas fa-phone"></i></a>
     </aside>
 
-  <div class="kohmz-bot-wrapper" id="draggableBot">
-        <div class="bot-value-tag" id="dragHint" onclick="toggleBotWindow()">⚡ SYSTEM ADVISORY</div>
+    <div class="kohmz-bot-wrapper" id="draggableBot">
+        <div class="bot-value-tag" id="dragHint" onclick="toggleBotWindow()">⚡ KOHMZ Lexie</div>
         
         <div class="kohmz-chat-window" id="chatWindow">
             <div class="kohmz-chat-header">
-                <span>UNIT-01: SYSTEM ACTIVE</span>
+                <span>LEXIE AI: SYSTEM ACTIVE</span>
                 <span onclick="toggleBotWindow()" style="cursor:pointer; font-size: 16px;">✕</span>
             </div>
             <div class="kohmz-chat-body" id="chatBody">
-               <div class="message-bubble">
-                    <strong style="color: #ffb703; font-size: 14px;"><i class="fas fa-headset"></i> UNIT-01: LIVE AGENT READY</strong><br><br>
-                    Ang aming technical specialists ay online na. Pwede kang mag-inquire dito mismo sa website para sa mabilis na response.<br><br>
+               <div class="message-bubble" style="border-left: 3px solid #ffb703;">
+                    <strong style="color: #ffb703; font-size: 14px;"><i class="fas fa-headset"></i> LEXIE: YOUR BOOKING ASSISTANT</strong><br><br>
+                    Good day! I'm Lexie. Need help filling out the KOHMZ Project Inquiry Form? Just ask me anything about the required details!<br><br>
                     
                     <button onclick="triggerLiveChat()" style="background: #00e5ff; color: #000; border: none; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; border-radius: 4px; font-family: 'Share Tech Mono'; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0,229,255,0.3);">
-                        <i class="fab fa-facebook-messenger"></i> START LIVE CHAT
+                        <i class="fab fa-facebook-messenger"></i> OR START LIVE CHAT
                     </button>
                 </div>
             </div>
             <div style="padding: 10px; background: #000; display: flex; gap: 5px; border-top: 1px solid rgba(255,183,3,0.3);">
-                <input type="text" id="userQuery" placeholder="Ask UNIT-01..." style="flex: 1; background: transparent; border: 1px solid #ffb703; color: #fff; padding: 8px; font-size: 11px; outline: none; border-radius: 4px;">
+                <input type="text" id="userQuery" placeholder="Ask Lexie for help..." style="flex: 1; background: transparent; border: 1px solid #ffb703; color: #fff; padding: 8px; font-size: 11px; outline: none; border-radius: 4px;">
                 <button onclick="askGemini()" style="background: #ffb703; border: none; padding: 8px 12px; cursor: pointer; border-radius: 4px;"><i class="fas fa-paper-plane" style="color: #000;"></i></button>
             </div>
         </div>
@@ -458,329 +459,95 @@
  <script>
         const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
         
-        // --- 1. THE KEEPALIVE HACK ---
-        setInterval(() => {
-            if (window.speechSynthesis) window.speechSynthesis.resume();
-        }, 1000);
+        setInterval(() => { if (window.speechSynthesis) window.speechSynthesis.resume(); }, 1000);
 
-        // --- 2. LEXIE LORE VOICE ENGINE (1.15 Pitch / 0.90 Rate) FOR BOT ---
         window.speakText = function(text) {
             if (!window.speechSynthesis) return;
             window.speechSynthesis.cancel(); 
-
-            // Naglalagay ng natural pause para makahinga ang AI
             let naturalText = text.replace(/\./g, '... ').replace(/,/g, ',.. ');
             const speech = new SpeechSynthesisUtterance(naturalText);
             const voices = window.speechSynthesis.getVoices();
-            
-            // Priority: Human-like female voices
-            const sexyVoice = voices.find(v => 
-                v.name.includes('Samantha') || v.name.includes('Aria') || 
-                v.name.includes('Google US English') || v.name.includes('Female') ||
-                v.name.includes('Enhanced')
-            ) || voices[0];
-
+            const sexyVoice = voices.find(v => v.name.includes('Samantha') || v.name.includes('Aria') || v.name.includes('Google US English') || v.name.includes('Female') || v.name.includes('Enhanced')) || voices[0];
             if (sexyVoice) speech.voice = sexyVoice;
             speech.lang = 'en-US'; 
             speech.pitch = 1.15; 
-            speech.rate = 0.90;  
+            speech.rate = 0.85;  
             speech.volume = 1.0;
-
             window.speechSynthesis.speak(speech);
         };
 
-        /* TYPEWRITER EFFECT */
-        const mainTypeText = "SECURE YOUR ";
-        let mainTypeIndex = 0;
-        const mainTypeElement = document.getElementById("main-typewriter-text");
-        function startTyping() {
-            if (mainTypeElement && mainTypeIndex < mainTypeText.length) {
-                mainTypeElement.innerHTML += mainTypeText.charAt(mainTypeIndex++);
-                setTimeout(startTyping, 60);
-            }
-        }
+        const mainTypeText = "SECURE YOUR "; let mainTypeIndex = 0; const mainTypeElement = document.getElementById("main-typewriter-text");
+        function startTyping() { if (mainTypeElement && mainTypeIndex < mainTypeText.length) { mainTypeElement.innerHTML += mainTypeText.charAt(mainTypeIndex++); setTimeout(startTyping, 60); } }
         startTyping();
 
         class TypeWriter {
-            constructor(txtElement, words, wait = 3000) {
-                this.txtElement = txtElement;
-                this.words = words;
-                this.txt = '';
-                this.wordIndex = 0;
-                this.wait = parseInt(wait, 10);
-                this.isDeleting = false;
-                this.type();
-            }
-            type() {
-                const current = this.wordIndex % this.words.length;
-                const fullTxt = this.words[current];
-                if(this.isDeleting) {
-                    this.txt = fullTxt.substring(0, this.txt.length - 1);
-                } else {
-                    this.txt = fullTxt.substring(0, this.txt.length + 1);
-                }
-                this.txtElement.innerHTML = `<span class="txt">${this.txt}</span>`;
-                let typeSpeed = 100;
-                if(this.isDeleting) { typeSpeed /= 2; }
-                if(!this.isDeleting && this.txt === fullTxt) {
-                    typeSpeed = this.wait;
-                    this.isDeleting = true;
-                } else if(this.isDeleting && this.txt === '') {
-                    this.isDeleting = false;
-                    this.wordIndex++;
-                    typeSpeed = 500;
-                }
-                setTimeout(() => this.type(), typeSpeed);
-            }
+            constructor(e, t, i = 3000) { this.txtElement = e; this.words = t; this.txt = ''; this.wordIndex = 0; this.wait = parseInt(i, 10); this.isDeleting = !1; this.type(); }
+            type() { const e = this.wordIndex % this.words.length, t = this.words[e]; this.isDeleting ? this.txt = t.substring(0, this.txt.length - 1) : this.txt = t.substring(0, this.txt.length + 1), this.txtElement.innerHTML = `<span class="txt">${this.txt}</span>`; let i = 100; this.isDeleting && (i /= 2), !this.isDeleting && this.txt === t ? (i = this.wait, this.isDeleting = !0) : this.isDeleting && '' === this.txt && (this.isDeleting = !1, this.wordIndex++, i = 500), setTimeout(() => this.type(), i); }
         }
-        const txtElement = document.querySelector('.txt-type');
-        if (txtElement) {
-            const wordsData = txtElement.getAttribute('data-words');
-            const wait = txtElement.getAttribute('data-wait');
-            if (wordsData) new TypeWriter(txtElement, JSON.parse(wordsData), wait);
-        }
+        const txtElement = document.querySelector('.txt-type'); if (txtElement) { const wordsData = txtElement.getAttribute('data-words'), wait = txtElement.getAttribute('data-wait'); if (wordsData) new TypeWriter(txtElement, JSON.parse(wordsData), wait); }
 
-        /* MOBILE MENU TOGGLE */
-        const menuToggle = document.getElementById('mobile-menu');
-        const navList = document.getElementById('nav-list');
-        if (menuToggle && navList) {
-            menuToggle.addEventListener('click', () => {
-                navList.classList.toggle('active');
-                const icon = menuToggle.querySelector('i');
-                icon.classList.toggle('fa-bars');
-                icon.classList.toggle('fa-times');
-            });
-        }
+        const menuToggle = document.getElementById('mobile-menu'); const navList = document.getElementById('nav-list');
+        if (menuToggle && navList) { menuToggle.addEventListener('click', () => { navList.classList.toggle('active'); const e = menuToggle.querySelector('i'); e.classList.toggle('fa-bars'), e.classList.toggle('fa-times'); }); }
         
-        /* DROPDOWN FIX FOR MOBILE */
-        document.querySelectorAll('.dropdown > a').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                if (window.innerWidth <= 992) {
-                    e.preventDefault();
-                    const parent = this.parentElement;
-                    document.querySelectorAll('.dropdown').forEach(d => { if (d !== parent) d.classList.remove('active'); });
-                    parent.classList.toggle('active');
-                }
-            });
-        });
+        document.querySelectorAll('.dropdown > a').forEach(e => { e.addEventListener('click', function(t) { if (window.innerWidth <= 992) { t.preventDefault(); const n = this.parentElement; document.querySelectorAll('.dropdown').forEach(e => { e !== n && e.classList.remove('active'); }), n.classList.toggle('active'); } }); });
 
-        /* DRAG AND DROP BOT CONTROL */
-        const wrapper = document.getElementById('draggableBot');
-        const toggle = document.getElementById('botToggle');
-        const chat = document.getElementById('chatWindow');
-        const hint = document.getElementById('dragHint');
-
-        let isDragging = false;
-        let startX, startY, xOffset = 0, yOffset = 0;
-        let dragStartTime; 
+        const wrapper = document.getElementById('draggableBot'), toggle = document.getElementById('botToggle'), chat = document.getElementById('chatWindow'), hint = document.getElementById('dragHint');
+        let isDragging = !1, startX, startY, xOffset = 0, yOffset = 0, dragStartTime; 
 
         window.toggleBotWindow = function() {
-            // STOP PAGE READER IF OPENING BOT
             if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
             if (document.getElementById('readPageBtn')) document.getElementById('readPageBtn').innerHTML = '<i class="fas fa-volume-up"></i>';
             window.isReadingPage = false;
-
-            if (chat.style.display === 'flex') {
-                chat.style.display = 'none';
-                hint.innerHTML = "⚡ SYSTEM ADVISORY";
-            } else {
-                chat.style.display = 'flex';
-                hint.innerHTML = "🖐️ Drag to Move";
-                if(window.speechSynthesis) window.speechSynthesis.resume();
-            }
-        }
-
-        const dragStart = (e) => {
-            isDragging = true;
-            dragStartTime = Date.now();
-            const clientX = (e.type === "touchstart") ? e.touches[0].clientX - xOffset : e.clientX - xOffset;
-            const clientY = (e.type === "touchstart") ? e.touches[0].clientY - yOffset : e.clientY - yOffset;
-            startX = clientX;
-            startY = clientY;
+            if ('flex' === chat.style.display) { chat.style.display = 'none', hint.innerHTML = "⚡ KOHMZ Lexie"; } 
+            else { chat.style.display = 'flex', hint.innerHTML = "🖐️ Drag to Move"; if(window.speechSynthesis) window.speechSynthesis.resume(); }
         };
 
-        const dragMove = (e) => {
-            if (!isDragging) return;
-            if (e.cancelable) e.preventDefault();
-            const clientX = (e.type === "touchmove") ? e.touches[0].clientX : e.clientX;
-            const clientY = (e.type === "touchmove") ? e.touches[0].clientY : e.clientY;
-            xOffset = clientX - startX;
-            yOffset = clientY - startY;
-            wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
-        };
+        const dragStart = e => { isDragging = !0, dragStartTime = Date.now(); const t = "touchstart" === e.type ? e.touches[0].clientX - xOffset : e.clientX - xOffset, n = "touchstart" === e.type ? e.touches[0].clientY - yOffset : e.clientY - yOffset; startX = t, startY = n; };
+        const dragMove = e => { if (!isDragging) return; e.cancelable && e.preventDefault(); const t = "touchmove" === e.type ? e.touches[0].clientX : e.clientX, n = "touchmove" === e.type ? e.touches[0].clientY : e.clientY; xOffset = t - startX, yOffset = n - startY, wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`; };
+        const dragEnd = e => { isDragging = !1, Date.now() - dragStartTime < 200 && toggleBotWindow(); };
 
-        const dragEnd = (e) => {
-            if (!isDragging) return;
-            const dragDuration = Date.now() - dragStartTime;
-            isDragging = false;
-            if (dragDuration < 200) { toggleBotWindow(); }
-        };
+        toggle.addEventListener('mousedown', dragStart), toggle.addEventListener('touchstart', dragStart, { passive: !1 }), window.addEventListener('mousemove', dragMove), window.addEventListener('touchmove', dragMove, { passive: !1 }), window.addEventListener('mouseup', dragEnd), window.addEventListener('touchend', dragEnd);
+        setTimeout(() => { 'flex' !== chat.style.display && toggleBotWindow(); }, 4000);
 
-        toggle.addEventListener('mousedown', dragStart);
-        toggle.addEventListener('touchstart', dragStart, {passive: false});
-        window.addEventListener('mousemove', dragMove);
-        window.addEventListener('touchmove', dragMove, {passive: false});
-        window.addEventListener('mouseup', dragEnd);
-        window.addEventListener('touchend', dragEnd);
-        
-        setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 4000);
-
-        /* MAIN AI LOGIC (BULLETPROOF BUTTON FIX) */
         window.askGemini = async function() {
-            const inputField = document.getElementById('userQuery');
-            const chatBody = document.getElementById('chatBody');
-            if (!inputField) return;
-            const userMsg = inputField.value.trim();
-            if (!userMsg) return;
-
+            const e = document.getElementById('userQuery'), t = document.getElementById('chatBody');
+            if (!e) return; const n = e.value.trim(); if (!n) return;
             if (window.speechSynthesis) window.speechSynthesis.resume();
-
-            chatBody.innerHTML += `<div class="message-bubble" style="background: rgba(0,229,255,0.1); border-left: none; border-right: 3px solid #00e5ff; text-align: right; border-radius: 12px 0 12px 12px;">YOU: ${userMsg}</div>`;
-            inputField.value = ""; 
-            chatBody.scrollTop = chatBody.scrollHeight;
-
-            const loadingId = "loading-" + Date.now();
-            chatBody.innerHTML += `<div class="message-bubble" id="${loadingId}">UNIT-01: Processing...</div>`;
-            chatBody.scrollTop = chatBody.scrollHeight;
+            t.innerHTML += `<div class="message-bubble" style="background:rgba(0,229,255,0.1);border-left:none;border-right:3px solid #00e5ff;text-align:right;border-radius:12px 0 12px 12px;margin-left:auto;width:fit-content;">YOU: ${n}</div>`;
+            e.value = "", t.scrollTop = t.scrollHeight;
+            const s = "loading-" + Date.now();
+            t.innerHTML += `<div class="message-bubble" id="${s}" style="border-left:3px solid #ffb703;background:rgba(255,183,3,0.1);">Lexie: Processing request...</div>`, t.scrollTop = t.scrollHeight;
+            
+            // UNIVERSAL SCRAPER FOR FORM FIELDS
+            let sc = "Form Needs Help With: "; const ls = document.querySelectorAll('label, .section-title');
+            if(ls.length > 0) sc += Array.from(ls).map(l => l.innerText).join(' | ');
+            sc = sc.substring(0, 1500);
 
             try {
-                const response = await fetch(WORKER_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: userMsg, name: "Web User" })
-                });
-                const result = await response.json();
-                document.getElementById(loadingId)?.remove();
-                const aiReply = result.ai_answer || "System calibration error.";
-
-                const cleanReplyForButton = aiReply
-                    .replace(/'/g, "\\'")
-                    .replace(/"/g, "&quot;")
-                    .replace(/(?:\r\n|\r|\n)/g, ' ');
-
-                chatBody.innerHTML += `
-                <div class="message-bubble">
-                    UNIT-01: ${aiReply}
-                    <div style="margin-top: 10px; border-top: 1px solid rgba(255, 183, 3, 0.3); padding-top: 8px;">
-                        <button onclick="speakText('${cleanReplyForButton}')" style="background: #ffb703; color: #000; border: none; padding: 5px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; font-family: 'Share Tech Mono';">
-                            <i class="fas fa-volume-up"></i> Play Audio
-                        </button>
-                    </div>
-                </div>`;
-                
-                chatBody.scrollTop = chatBody.scrollHeight;
-                speakText(aiReply);
-
-            } catch (err) {
-                if (document.getElementById(loadingId)) {
-                    document.getElementById(loadingId).innerHTML = "UNIT-01: Connection lost. Re-syncing...";
-                }
-            }
+                const i = await fetch(WORKER_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: n, name: "Web User", pageName: document.title, pageData: sc }) }), r = await i.json();
+                document.getElementById(s)?.remove();
+                const a = r.ai_answer || "System calibration error.", o = a.replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/(?:\r\n|\r|\n)/g, ' ');
+                t.innerHTML += `<div class="message-bubble" style="border-left:3px solid #ffb703;background:rgba(255,183,3,0.1);">Lexie: ${a}<div style="margin-top:10px;border-top:1px solid rgba(255,183,3,0.3);padding-top:8px;"><button onclick="speakText('${o}')" style="background:#ffb703;color:#000;border:none;padding:5px 10px;border-radius:4px;font-weight:bold;cursor:pointer;font-family:'Share Tech Mono';"><i class="fas fa-volume-up"></i> Play Audio</button></div></div>`, t.scrollTop = t.scrollHeight, speakText(a);
+            } catch (c) { document.getElementById(s) && (document.getElementById(s).innerHTML = "Lexie: Connection lost. Re-syncing..."); }
         };
+        const uQuery = document.getElementById('userQuery'); uQuery && uQuery.addEventListener("keypress", e => { "Enter" === e.key && window.askGemini(); });
 
-        const uQuery = document.getElementById('userQuery');
-        if(uQuery) {
-            uQuery.addEventListener("keypress", (e) => { if (e.key === "Enter") window.askGemini(); });
-        }
-
-        /* --- 🔥 FLUENT PAGE READER LOGIC (1.15 / 0.90) 🔥 --- */
-        window.isReadingPage = false; 
-        const readPageBtn = document.getElementById('readPageBtn');
-        
+        window.isReadingPage = !1; const readPageBtn = document.getElementById('readPageBtn');
         if (readPageBtn) {
             readPageBtn.addEventListener('click', function() {
-                if (window.isReadingPage || window.speechSynthesis.speaking) {
-                    window.speechSynthesis.cancel();
-                    window.isReadingPage = false;
-                    readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
-                    return;
-                }
-
-                // 1. Kukunin lang natin yung magandang basahin sa page (Intro + VIP Section)
-                // Iniiwasan natin yung Form fields kasi ang pangit basahin ng AI ang "Input text here"
-                const heroSection = document.querySelector('.hero p');
-                const introSection = document.querySelector('.form-intro p');
-                const vipSection = document.querySelector('.vip-advisory');
-                
-                if (!heroSection && !vipSection) return;
-                
-                let textToRead = "Welcome to the KOHMZ Booking Form. ";
-                if(heroSection) textToRead += heroSection.innerText + " ";
-                if(introSection) textToRead += introSection.innerText + " ";
-                
-                if (vipSection) {
-                    textToRead += "Priority Emergency and Technical Dispatch. Here are 4 reasons why you need to book now. ";
-                    textToRead += "Number 1. Prevent Irreversible Damage. Ang maliit na pag-spark o madalas na pag-trip ng breaker ngayon ay pwedeng sumunog ng mamahaling appliances at equipments bukas. Huwag hintayin ang sunog. ";
-                    textToRead += "Number 2. Stop Revenue Leaks. Para sa mga negosyo, ang commercial power interruptions at system failures ay direktang pagkalugi at nagpapatigil ng inyong operasyon. ";
-                    textToRead += "Number 3. Secure the Schedule. Ang aming specialized technical teams ay madalas fully booked. Ang pagkuha ng VIP slot ay nagtitiyak ng immediate hazard mitigation. ";
-                    textToRead += "Number 4. Legal and Safety Compliance. Iwasan ang abala at penalty mula sa LGU at Fire Department. Sisiguruhin namin na 100 percent PEC-compliant ang iyong property. ";
-                }
-                
-                // 2. Hihiwain natin ang text para makahinga yung AI
-                let sentences = textToRead.match(/[^.!?]+[.!?]+/g) || [textToRead];
-
-                window.isReadingPage = true;
-                readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>';
-
-                let currentSentence = 0;
-
-                function playNextSentence() {
-                    if (!window.isReadingPage || currentSentence >= sentences.length) {
-                        window.isReadingPage = false;
-                        readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
-                        return;
-                    }
-
-                    // Dinagdagan ng tuldok sa dulo para huminto saglit
-                    let chunkText = sentences[currentSentence].trim() + "...";
-                    let chunk = new SpeechSynthesisUtterance(chunkText);
-                    
-                    // Voice Target
-                    const voices = window.speechSynthesis.getVoices();
-                    const profVoice = voices.find(v => 
-                        v.name.includes('Aria') || v.name.includes('Samantha') || 
-                        v.name.includes('Enhanced') || v.name.includes('Female')
-                    ) || voices[0];
-                    if (profVoice) chunk.voice = profVoice;
-                    
-                    // The Requested Config
-                    chunk.pitch = 1.15; 
-                    chunk.rate = 0.90;
-
-                    chunk.onend = () => { 
-                        currentSentence++; 
-                        // Maliit na delay bago bumasa ulit para natural pakinggan
-                        setTimeout(playNextSentence, 300); 
-                    };
-                    
-                    chunk.onerror = () => { 
-                        window.isReadingPage = false; 
-                        readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>'; 
-                    };
-                    
-                    window.speechSynthesis.speak(chunk);
-                }
-                
-                playNextSentence();
+                if (window.isReadingPage || window.speechSynthesis.speaking) { window.speechSynthesis.cancel(), window.isReadingPage = !1, readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>'; return; }
+                const e = document.querySelector('.hero p'), t = document.querySelector('.form-intro p'), n = document.querySelector('.vip-advisory');
+                if (!e && !n) return;
+                let s = "Welcome to the KOHMZ Booking Form. "; e && (s += e.innerText + " "), t && (s += t.innerText + " "), n && (s += "Priority Emergency and Technical Dispatch. Here are 4 reasons why you need to book now. Number 1. Prevent Irreversible Damage. Ang maliit na pag-spark o madalas na pag-trip ng breaker ngayon ay pwedeng sumunog ng mamahaling appliances at equipments bukas. Huwag hintayin ang sunog. Number 2. Stop Revenue Leaks. Para sa mga negosyo, ang commercial power interruptions at system failures ay direktang pagkalugi at nagpapatigil ng inyong operasyon. Number 3. Secure the Schedule. Ang aming specialized technical teams ay madalas fully booked. Ang pagkuha ng VIP slot ay nagtitiyak ng immediate hazard mitigation. Number 4. Legal and Safety Compliance. Iwasan ang abala at penalty mula sa LGU at Fire Department. Sisiguruhin namin na 100 percent PEC-compliant ang iyong property. ");
+                let i = s.match(/[^.!?]+[.!?]+/g) || [s]; window.isReadingPage = !0, readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>'; let r = 0;
+                !function a() {
+                    if (!window.isReadingPage || r >= i.length) { window.isReadingPage = !1, readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>'; return; }
+                    let e = new SpeechSynthesisUtterance(i[r].trim() + "..."), t = window.speechSynthesis.getVoices(), n = t.find(e => e.name.includes('Aria') || e.name.includes('Samantha') || e.name.includes('Enhanced') || e.name.includes('Female')) || t[0];
+                    n && (e.voice = n), e.pitch = 1.15, e.rate = 0.85, e.onend = () => { r++, setTimeout(a, 300); }, e.onerror = () => { window.isReadingPage = !1, readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>'; }, window.speechSynthesis.speak(e);
+                }();
             });
         }
-
-       /* LIVE CHAT TRIGGER */
-        function triggerLiveChat() {
-            const loader = document.getElementById('cyber-loader');
-            loader.style.display = 'flex'; 
-
-            setTimeout(() => {
-                loader.style.display = 'none'; 
-                
-                const messengerUrl = "https://m.me/102329226225017"; 
-                const width = 450;
-                const height = 650;
-                const left = (window.screen.width / 2) - (width / 2);
-                const top = (window.screen.height / 2) - (height / 2);
-                window.open(messengerUrl, "KOHMZLiveChat", `width=${width},height=${height},top=${top},left=${left},status=no,menubar=no,toolbar=no,location=no`);
-            }, 1500); 
-        }
+        function triggerLiveChat() { const e = document.getElementById('cyber-loader'); e.style.display = 'flex', setTimeout(() => { e.style.display = 'none'; const t = 450, n = 650, i = window.screen.width / 2 - t / 2, r = window.screen.height / 2 - n / 2; window.open("https://m.me/102329226225017", "KOHMZLiveChat", `width=${t},height=${n},top=${r},left=${i},status=no,menubar=no,toolbar=no,location=no`); }, 1500); }
     </script>
 </body>
 </html>
