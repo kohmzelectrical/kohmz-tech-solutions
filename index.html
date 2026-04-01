@@ -55,16 +55,31 @@ header{background:rgba(8,16,24,0.95);padding:15px 30px;display:flex;justify-cont
 @keyframes dropIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
 .dropdown-content a{color:#fff!important;padding:12px 15px;display:block;border-bottom:1px solid rgba(255,255,255,0.05);text-align:left}
 .dropdown-content a:hover{background:rgba(0,229,255,0.1);color:#00e5ff!important;padding-left:20px}
+.caret { transition: transform 0.3s ease; }
+
+/* --- UPDATED MOBILE NAVIGATION --- */
 @media(max-width:992px){
-.menu-toggle{display:block;font-size:26px;color:#00e5ff;cursor:pointer;background:none;border:none;padding:5px}
-.nav-links{display:none;flex-direction:column;position:absolute;top:100%;left:0;width:100%;background:rgba(8,16,24,0.98);padding:0;margin:0;border-bottom:4px solid #00e5ff;max-height:75vh;overflow-y:auto}
-.nav-links.active{display:flex}
+.menu-toggle{display:block;font-size:24px;color:#00e5ff;cursor:pointer;background:none;border:none;padding:5px}
+/* Floating, compact, hindi sakop buong screen */
+.nav-links{display:none;flex-direction:column;position:absolute;top:calc(100% + 15px);left:5%;width:90%;background:rgba(8,16,24,0.98);padding:10px 0;margin:0;border:1px solid #00e5ff;border-top:4px solid #ffb703;border-radius:10px;max-height:65vh;overflow-y:auto;box-shadow:0 15px 40px rgba(0,0,0,0.9);backdrop-filter:blur(15px);z-index: 9999;}
+.nav-links.active{display:flex;animation:menuFadeIn 0.3s ease forwards}
+@keyframes menuFadeIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
 .nav-links li{width:100%;text-align:left;border-bottom:1px solid rgba(255,255,255,0.05)}
-.nav-links li a{font-size:14px;width:100%;padding:15px 20px;justify-content:space-between}
-.dropdown-content{position:static!important;display:none;background:rgba(0,0,0,0.4)!important;width:100%!important;border:none!important;transform:none!important;left:0!important}
-.nav-links li.dropdown.active .dropdown-content{display:block}
-.dropdown-content a{padding:15px 20px 15px 40px!important;border-left:3px solid #ffb703;color:#e0faff!important}
+.nav-links li:last-child{border-bottom:none}
+/* Smaller text and tighter padding for mobile */
+.nav-links li a{font-size:13px;width:100%;padding:12px 20px;justify-content:space-between}
+
+/* Disable hover on mobile, rely on JS class */
+.nav-links li.dropdown:hover .dropdown-content{display:none;}
+.nav-links li.dropdown.open .dropdown-content{display:block;animation:dropInMobile 0.3s ease}
+.nav-links li.dropdown.open .caret { transform: rotate(180deg); color:#ffb703; }
+
+/* Retractable Dropdown Styling for Mobile */
+.dropdown-content{position:static!important;display:none;background:rgba(0,0,0,0.5)!important;width:100%!important;border:none!important;transform:none!important;left:0!important;box-shadow:inset 0 0 15px rgba(0,0,0,0.6);}
+@keyframes dropInMobile { from { opacity:0; max-height:0; } to { opacity:1; max-height:500px; } }
+.dropdown-content a{padding:12px 20px 12px 40px!important;border-left:3px solid #ffb703;color:#cbd5e1!important;font-size:12px!important;border-bottom:1px solid rgba(255,255,255,0.02)}
 }
+
 .hero{background:linear-gradient(rgba(13,27,42,0.6),rgba(1,4,9,0.95)),url('logo.jpg') no-repeat center center;background-size:cover;padding:120px 10%;text-align:center;color:#fff;display:flex;align-items:center;justify-content:center;position:relative}
 .hero-inner{max-width:850px;position:relative;z-index:2}
 .hero h1{font-size:24px;color:#ffb703;margin-bottom:20px;text-transform:uppercase;font-weight:900;letter-spacing:2px;line-height:1.5;min-height:70px;text-shadow:0 0 15px rgba(255,183,3,0.3)}
@@ -121,8 +136,6 @@ details[open]{border-color:var(--cyber-blue);box-shadow:0 0 15px rgba(0,229,255,
 summary{font-size:13px;font-weight:800;color:#ffb703;padding:20px 25px;cursor:pointer;outline:none;border-left:5px solid #ffb703;display:flex;justify-content:space-between;align-items:center;transition:0.3s}
 summary:hover{background:rgba(255,183,3,0.05);outline:2px solid var(--cyber-blue);outline-offset:-2px}
 details p{font-size:12px;padding:25px;margin:0;color:#cbd5e1;line-height:1.9;background:rgba(0,0,0,0.2)}
-
-/* --- 🔥 VIP ADVISORY FIXED FOR MOBILE --- */
 .vip-advisory{background:rgba(13,27,42,0.9);border-left:6px solid #00e5ff;padding:35px;border-radius:8px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;max-width:850px;margin:0 auto 50px;border:1px solid rgba(0,229,255,0.2);box-shadow:0 10px 30px rgba(0,0,0,0.5);box-sizing:border-box;overflow:hidden}
 .adv-tag{background:rgba(0,229,255,0.1);border:1px solid var(--cyber-blue);color:var(--cyber-blue);font-size:10px;padding:6px 12px;border-radius:4px;font-weight:800;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px;position:relative}
 .adv-tag::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;border-radius:inherit;border:1px solid var(--cyber-blue);animation:pulse-ring 2s cubic-bezier(0.215,0.61,0.355,1) infinite;box-sizing:border-box;pointer-events:none}
@@ -141,7 +154,6 @@ details p{font-size:12px;padding:25px;margin:0;color:#cbd5e1;line-height:1.9;bac
 .vip-btn-col{width:100%}
 }
 
-/* --- FLOATING BUTTONS & BOT --- */
 .floating-container{position:fixed;bottom:25px;right:25px;display:flex;flex-direction:column;gap:12px;z-index:10000}
 .float-btn{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;font-size:22px;box-shadow:0 4px 15px rgba(0,0,0,0.6);transition:all .3s cubic-bezier(.175,.885,.32,1.275);position:relative;border:none;cursor:pointer}
 .float-btn::before{content:'';position:absolute;width:100%;height:100%;border-radius:50%;background:inherit;z-index:-1;filter:blur(10px);opacity:0.6;transition:0.3s}
@@ -196,10 +208,10 @@ footer a:hover{color:var(--cyber-blue);text-shadow:0 0 8px var(--cyber-blue);out
 <nav aria-label="Main Navigation">
 <ul class="nav-links" id="nav-list">
 <li><a href="index.html" style="color:#ffb703;" aria-current="page">Overview</a></li>
-<li class="dropdown"><a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false">Services &#9662;</a><div class="dropdown-content"><a href="commercial.html">Commercial</a><a href="residential.html">Residential</a><a href="pro-tips.html">Pro Tips</a></div></li>
+<li class="dropdown"><a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false">Services <i class="fas fa-chevron-down caret"></i></a><div class="dropdown-content"><a href="commercial.html">Commercial</a><a href="residential.html">Residential</a><a href="pro-tips.html">Pro Tips</a></div></li>
 <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" rel="noopener noreferrer">Request Quote</a></li>
 <li><a href="book-now.html">Book Now</a></li>
-<li class="dropdown"><a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false">Technical Shop &#9662;</a><div class="dropdown-content"><a href="solar-parts.html">Solar Parts</a><a href="powertools.html">Power Tools</a><a href="electrical-materials.html">Materials</a></div></li>
+<li class="dropdown"><a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false">Technical Shop <i class="fas fa-chevron-down caret"></i></a><div class="dropdown-content"><a href="solar-parts.html">Solar Parts</a><a href="powertools.html">Power Tools</a><a href="electrical-materials.html">Materials</a></div></li>
 <li><a href="about-us.html">About Us</a></li>
 <li><a href="portfolio.html">Portfolio</a></li>
 <li><a href="faq.html">FAQ</a></li>
@@ -469,8 +481,8 @@ Your browser does not support the video tag.
 <p>&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
 <nav class="footer-links" aria-label="Footer Navigation">
 <p style="margin-bottom:5px;color:#ffb703;font-weight:800;">Technical Governance | Asset Protection | Electrical-Compliant Architecture</p>
-<a href="privacy-policy.html" style="font-weight:bold;text-decoration:underline;">Privacy Policy</a> &nbsp;|&nbsp; 
-<a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
+<a href="privacy-policy.html" style="font-weight:bold;text-decoration:underline;">Privacy Policy</a> &nbsp;|&nbsp; 
+<a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
 <a href="about-us.html">About Us</a>
 </nav>
 </footer>
@@ -500,7 +512,41 @@ setInterval(()=>{if(window.speechSynthesis)window.speechSynthesis.resume()},1000
 window.speakText=function(e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();let t=e.replace(/\./g,"... ").replace(/,/g,",.. ");const n=new SpeechSynthesisUtterance(t),s=window.speechSynthesis.getVoices(),i=s.find(e=>e.name.includes("Samantha")||e.name.includes("Aria")||e.name.includes("Google US English")||e.name.includes("Female")||e.name.includes("Enhanced"))||s[0];if(i)n.voice=i;n.lang="en-US";n.pitch=1.15;n.rate=0.80;n.volume=1;window.speechSynthesis.speak(n)};
 window.toggleBotWindow=function(){const chat=document.getElementById("chatWindow"),hint=document.getElementById("dragHint"),btn=document.getElementById("readPageBtn");if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();if(btn)btn.innerHTML='<i class="fas fa-volume-up"></i>';window.isReadingPage=false}if(chat.style.display==="flex"){chat.style.display="none";if(hint)hint.innerHTML="⚡ KOHMZ Expert AI"}else{chat.style.display="flex";if(hint)hint.innerHTML="🖐️ Drag to Move";if(window.speechSynthesis)window.speechSynthesis.resume()}};
 window.askGemini=async function(){const e=document.getElementById("userQuery"),t=document.getElementById("chatBody");if(!e)return;const n=e.value.trim();if(!n)return;if(window.speechSynthesis)window.speechSynthesis.resume();t.innerHTML+=`<div class="chat-bubble user-bubble" style="background:rgba(0,229,255,0.1);align-self:flex-end;border-right:2px solid #ffb703;color:#fff;padding:10px;border-radius:12px 0 12px 12px;margin-bottom:10px;white-space:pre-wrap;">YOU: ${n}</div>`;e.value="";t.scrollTop=t.scrollHeight;const s="loading-"+Date.now();t.innerHTML+=`<div class="chat-bubble" id="${s}" style="border-left:2px solid #00e5ff;">Lexie: Processing request...</div>`;t.scrollTop=t.scrollHeight;let sd="";const cs=document.querySelectorAll('.card');if(cs.length>0)sd+=Array.from(cs).map(c=>c.innerText.replace(/\n/g,' ')).join(' | ');const ds=document.querySelectorAll('details');if(ds.length>0)sd+=" "+Array.from(ds).map(d=>d.innerText.replace(/\n/g,' ')).join(' | ');if(sd===""){const ps=document.querySelectorAll('main p,.content-section p');sd+=Array.from(ps).map(p=>p.innerText).join(' ');}sd=sd.substring(0,1500);try{const response=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:n,name:"Web Client",pageName:document.title,pageData:sd})}),result=await response.json();document.getElementById(s)?.remove();const aiReply=result.ai_answer||"System calibration error.",cleanReplyForButton=aiReply.replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/(?:\r\n|\r|\n)/g," ");t.innerHTML+=`<div class="chat-bubble" style="border-left:2px solid #00e5ff;">Lexie: ${aiReply}<div style="margin-top:8px;border-top:1px solid rgba(0,229,255,0.2);padding-top:5px;"><button onclick="speakText('${cleanReplyForButton}')" style="background:none;border:none;color:#ffb703;cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;"><i class="fas fa-volume-up"></i> Play Audio</button></div></div>`;t.scrollTop=t.scrollHeight;speakText(aiReply)}catch(e){if(document.getElementById(s)){document.getElementById(s).innerHTML="Lexie: Connection lost. Re-syncing..."}}};
-document.addEventListener("DOMContentLoaded",()=>{if(typeof AOS!=="undefined")AOS.init({duration:600,once:true});const menuBtn=document.getElementById("mobile-menu"),navList=document.getElementById("nav-list");if(menuBtn&&navList){menuBtn.addEventListener("click",()=>{navList.classList.toggle("active")})}const mainText="INTEGRATED POWER ARCHITECTURE & ";let mainIdx=0;const typeEl=document.getElementById("main-typewriter-text");function typeMain(){if(typeEl&&mainIdx<mainText.length){typeEl.innerHTML+=mainText.charAt(mainIdx++);setTimeout(typeMain,60)}}typeMain();class TypeWriter{constructor(e,t,n){this.el=e;this.words=t;this.txt="";this.wordIdx=0;this.wait=parseInt(n,10);this.isDel=false;this.type()}type(){const e=this.wordIdx%this.words.length,t=this.words[e];this.txt=this.isDel?t.substring(0,this.txt.length-1):t.substring(0,this.txt.length+1);this.el.innerHTML=`<span class="txt">${this.txt}</span>`;let n=100;if(this.isDel)n/=2;if(!this.isDel&&this.txt===t){n=this.wait;this.isDel=true}else if(this.isDel&&this.txt===""){this.isDel=false;this.wordIdx++;n=500}setTimeout(()=>this.type(),n)}}const subEl=document.querySelector(".txt-type");if(subEl)new TypeWriter(subEl,JSON.parse(subEl.getAttribute("data-words")),subEl.getAttribute("data-wait"));const wrapper=document.getElementById("draggableBot"),toggle=document.getElementById("botToggle");let isDrag=false,startX,startY,xOff=0,yOff=0,startTime;if(toggle&&wrapper){toggle.addEventListener("mousedown",e=>{isDrag=true;startTime=Date.now();startX=e.clientX-xOff;startY=e.clientY-yOff});window.addEventListener("mousemove",e=>{if(!isDrag)return;xOff=e.clientX-startX;yOff=e.clientY-startY;wrapper.style.transform=`translate3d(${xOff}px, ${yOff}px, 0)`});window.addEventListener("mouseup",()=>{if(isDrag){isDrag=false;if(Date.now()-startTime<200)window.toggleBotWindow()}})}const uQuery=document.getElementById("userQuery");if(uQuery){uQuery.addEventListener("keypress",e=>{if(e.key==="Enter")window.askGemini()})}window.isReadingPage=false;const readPageBtn=document.getElementById("readPageBtn");if(readPageBtn){readPageBtn.addEventListener("click",function(){if(window.isReadingPage||window.speechSynthesis.speaking){window.speechSynthesis.cancel();window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}const mainElement=document.getElementById("main-content");if(!mainElement)return;let contentToRead=mainElement.innerText.replace(/\n+/g,". ").replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES|SECURE YOUR SLOT NOW/g,""),fullText="Welcome to KOHMZ Electrical... "+contentToRead,sentences=fullText.match(/[^.!?]+[.!?]+/g)||[fullText];window.isReadingPage=true;readPageBtn.innerHTML='<i class="fas fa-volume-mute" aria-hidden="true"></i>';let currentSentence=0;function playNextSentence(){if(!window.isReadingPage||currentSentence>=sentences.length){window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}let chunk=new SpeechSynthesisUtterance(sentences[currentSentence].trim()),voices=window.speechSynthesis.getVoices(),profVoice=voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Google US English")||v.name.includes("Female"))||voices[0];if(profVoice)chunk.voice=profVoice;chunk.pitch=1.15;chunk.rate=0.80;chunk.onend=()=>{currentSentence++;playNextSentence()};chunk.onerror=()=>{window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>'};window.speechSynthesis.speak(chunk)}playNextSentence()})}});
+
+document.addEventListener("DOMContentLoaded",()=>{
+    if(typeof AOS!=="undefined")AOS.init({duration:600,once:true});
+    
+    // --- MAIN MOBILE MENU TOGGLE ---
+    const menuBtn=document.getElementById("mobile-menu"),navList=document.getElementById("nav-list");
+    if(menuBtn&&navList){
+        menuBtn.addEventListener("click",()=>{
+            navList.classList.toggle("active");
+        });
+    }
+
+    // --- ACCORDION / RETRACTABLE DROPDOWN LOGIC FOR MOBILE ---
+    const dropdownBtns = document.querySelectorAll('.nav-links li.dropdown .dropbtn');
+    dropdownBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            if(window.innerWidth <= 992) {
+                e.preventDefault(); // Pipigilan mag-scroll sa taas
+                const parentLi = this.parentElement;
+                
+                // Isasara ang ibang open na dropdown bago buksan ang bago
+                dropdownBtns.forEach(otherBtn => {
+                    if(otherBtn !== this) {
+                        otherBtn.parentElement.classList.remove('open');
+                    }
+                });
+                
+                // Bubuksan o isasara (toggle) ang kinlik
+                parentLi.classList.toggle('open');
+            }
+        });
+    });
+
+    const mainText="INTEGRATED POWER ARCHITECTURE & ";let mainIdx=0;const typeEl=document.getElementById("main-typewriter-text");function typeMain(){if(typeEl&&mainIdx<mainText.length){typeEl.innerHTML+=mainText.charAt(mainIdx++);setTimeout(typeMain,60)}}typeMain();class TypeWriter{constructor(e,t,n){this.el=e;this.words=t;this.txt="";this.wordIdx=0;this.wait=parseInt(n,10);this.isDel=false;this.type()}type(){const e=this.wordIdx%this.words.length,t=this.words[e];this.txt=this.isDel?t.substring(0,this.txt.length-1):t.substring(0,this.txt.length+1);this.el.innerHTML=`<span class="txt">${this.txt}</span>`;let n=100;if(this.isDel)n/=2;if(!this.isDel&&this.txt===t){n=this.wait;this.isDel=true}else if(this.isDel&&this.txt===""){this.isDel=false;this.wordIdx++;n=500}setTimeout(()=>this.type(),n)}}const subEl=document.querySelector(".txt-type");if(subEl)new TypeWriter(subEl,JSON.parse(subEl.getAttribute("data-words")),subEl.getAttribute("data-wait"));const wrapper=document.getElementById("draggableBot"),toggle=document.getElementById("botToggle");let isDrag=false,startX,startY,xOff=0,yOff=0,startTime;if(toggle&&wrapper){toggle.addEventListener("mousedown",e=>{isDrag=true;startTime=Date.now();startX=e.clientX-xOff;startY=e.clientY-yOff});window.addEventListener("mousemove",e=>{if(!isDrag)return;xOff=e.clientX-startX;yOff=e.clientY-startY;wrapper.style.transform=`translate3d(${xOff}px, ${yOff}px, 0)`});window.addEventListener("mouseup",()=>{if(isDrag){isDrag=false;if(Date.now()-startTime<200)window.toggleBotWindow()}})}const uQuery=document.getElementById("userQuery");if(uQuery){uQuery.addEventListener("keypress",e=>{if(e.key==="Enter")window.askGemini()})}window.isReadingPage=false;const readPageBtn=document.getElementById("readPageBtn");if(readPageBtn){readPageBtn.addEventListener("click",function(){if(window.isReadingPage||window.speechSynthesis.speaking){window.speechSynthesis.cancel();window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}const mainElement=document.getElementById("main-content");if(!mainElement)return;let contentToRead=mainElement.innerText.replace(/\n+/g,". ").replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES|SECURE YOUR SLOT NOW/g,""),fullText="Welcome to KOHMZ Electrical... "+contentToRead,sentences=fullText.match(/[^.!?]+[.!?]+/g)||[fullText];window.isReadingPage=true;readPageBtn.innerHTML='<i class="fas fa-volume-mute" aria-hidden="true"></i>';let currentSentence=0;function playNextSentence(){if(!window.isReadingPage||currentSentence>=sentences.length){window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}let chunk=new SpeechSynthesisUtterance(sentences[currentSentence].trim()),voices=window.speechSynthesis.getVoices(),profVoice=voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Google US English")||v.name.includes("Female"))||voices[0];if(profVoice)chunk.voice=profVoice;chunk.pitch=1.15;chunk.rate=0.80;chunk.onend=()=>{currentSentence++;playNextSentence()};chunk.onerror=()=>{window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>'};window.speechSynthesis.speak(chunk)}playNextSentence()})}
+});
 </script>
 </body>
 </html>
