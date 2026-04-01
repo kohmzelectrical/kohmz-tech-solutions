@@ -109,7 +109,7 @@
         .dropdown:hover .dropdown-content { display: block; }
         .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-        /* MOBILE OVERLAY */
+        /* MOBILE OVERLAY & DROPDOWN FIX */
         @media (max-width: 992px) {
             .menu-toggle { display: block; font-size: 26px; color: #00e5ff; cursor: pointer; background:none; border:none; padding:5px; }
             .nav-links { 
@@ -122,7 +122,8 @@
             .nav-links li a { font-size: 14px; width: 100%; padding: 20px 25px; display: flex; justify-content: space-between; }
             .dropdown-content { position: static; display: none; background: rgba(0,0,0,0.4); width: 100%; border: none; padding-left: 0; }
             .dropdown.active .dropdown-content { display: block; }
-            .dropdown-content a { padding: 15px 20px 15px 45px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; }
+            /* Fixed padding and text wrapping para hindi sabog ang dropdown sa mobile */
+            .dropdown-content a { padding: 12px 20px 12px 40px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; white-space: normal; line-height: 1.4; }
         }
 
         /* --- HERO SECTION --- */
@@ -165,9 +166,23 @@
         .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
+        /* FIXED FLOATING BUTTONS PARA SA LOWER PART NG MOBILE */
         @media (max-width: 768px) {
-            .floating-container { flex-direction: row !important; justify-content: center !important; bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; width: max-content !important; background: rgba(0, 0, 0, 0.8); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(0, 229, 255, 0.3); backdrop-filter: blur(10px); }
-            .float-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; margin: 0 5px !important; }
+            .floating-container { 
+                flex-direction: row !important; 
+                justify-content: space-evenly !important; 
+                bottom: 15px !important; 
+                right: 50% !important; 
+                transform: translateX(50%) !important; 
+                width: 95% !important; 
+                max-width: 350px !important; 
+                background: rgba(0, 0, 0, 0.85); 
+                padding: 8px 10px; 
+                border-radius: 50px; 
+                border: 1px solid rgba(0, 229, 255, 0.3); 
+                backdrop-filter: blur(10px); 
+            }
+            .float-btn { width: 42px !important; height: 42px !important; font-size: 18px !important; margin: 0 !important; }
             .kohmz-bot-wrapper { bottom: 85px !important; right: 15px !important; }
         }
 
@@ -293,10 +308,11 @@
                 <li><i class="fas fa-check-circle" style="color:#00e5ff; margin-right: 10px;"></i><strong>Rigorous Safety Testing:</strong> We verify the integrity of every installation with thorough single-phase insulation resistance testing.</li>
             </ul>
             <div style="text-align:center; margin-top:40px;" data-aos="zoom-in">
-                <a href="book-now.html" style="background:#ffb703; color:#0d1b2a; padding: 15px 30px; font-weight:900; border-radius:5px; text-decoration:none; text-transform:uppercase; box-shadow: 0 0 15px var(--power-glow); display: inline-block;">Schedule a Site Inspection Today</a>
+                <a href="book-now.html" style="background:#ffb703; color:#0d1b2a; padding: 15px 30px; font-weight:900; border-radius:5px; text-decoration:none; text-transform:uppercase; box-shadow: 0 0 15px var(--power-glow); display: inline-block; max-width: 100%; white-space: normal; word-wrap: break-word;">Schedule a Site Inspection Today</a>
             </div>
-        </section>
-        <div class="kohmz-bot-wrapper" id="draggableBot">
+        </section></main>
+
+    <div class="kohmz-bot-wrapper" id="draggableBot">
         <div class="bot-value-tag" id="dragHint">⚡ KOHMZ Empress AI</div>
 
         <div class="kohmz-chat-window" id="chatWindow">
@@ -346,15 +362,13 @@
             }
         });
 
-       // --- 2. STRICTLY FEMALE VOICE ENGINE (DELAY-FIXED) ---
+        // --- STRICTLY FEMALE VOICE ENGINE (Pitch 1.18, Rate 1.0) ---
         let empressVoice = null;
 
-        // Function para hanapin at i-lock ang boses-babae
         function loadFemaleVoice() {
             const voices = window.speechSynthesis.getVoices();
-            if (voices.length === 0) return; // Wag pilitin kung di pa ready ang browser
+            if (voices.length === 0) return; 
 
-            // 1st Priority: Hanapin ang selyadong boses babae
             empressVoice = voices.find(v => 
                 v.name.includes("Google US English Female") || 
                 v.name.includes("Google UK English Female") || 
@@ -364,15 +378,13 @@
                 v.name.toLowerCase().includes("female")
             );
 
-            // 2nd Priority: Kung wala talaga, kumuha ng kahit anong boses na HINDI lalaki
             if (!empressVoice) {
                 empressVoice = voices.find(v => !v.name.includes("David") && !v.name.includes("Mark") && !v.name.includes("Male"));
             }
         }
 
-        // Pilitin ang browser na i-load ang boses pagkabukas ng site
         window.speechSynthesis.onvoiceschanged = loadFemaleVoice;
-        loadFemaleVoice(); // Subukan agad
+        loadFemaleVoice(); 
 
         window.speakText = function(text) {
             if (!window.speechSynthesis) return;
@@ -380,18 +392,18 @@
             
             let utterance = new SpeechSynthesisUtterance(text);
             
-            // Double check kung na-load na ba si Empress
             if (!empressVoice) loadFemaleVoice();
             
             if (empressVoice) {
                 utterance.voice = empressVoice;
             }
             
-            utterance.pitch = 1.1;  // Clear female pitch
-            utterance.rate = 0.85;  // Empress pacing (Boa Hancock style)
+            utterance.pitch = 1.18;  // Request mo para di boses bading
+            utterance.rate = 1.0;    // Fluent magbasa, hindi mabagal
             
             window.speechSynthesis.speak(utterance);
         };
+
         // --- AI API CALL ---
         window.askGemini = async function() {
             const input = document.getElementById("userQuery");
@@ -416,7 +428,7 @@
             }
         };
 
-        // MOBILE MENU LOGIC
+        // ORIGINAL MOBILE MENU LOGIC
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         const dropdowns = document.querySelectorAll('.dropdown');
@@ -450,7 +462,7 @@
             }
         });
 
-        // TYPEWRITER LOGIC
+        // ORIGINAL TYPEWRITER LOGIC
         const mainTypeText = "COMMERCIAL ENGINEERING & ";
         let mainTypeIndex = 0;
         const mainTypeElement = document.getElementById("main-typewriter-text");
@@ -502,7 +514,7 @@
             if (wordsData) new TypeWriter(txtElement, JSON.parse(wordsData), wait);
         }
 
-        // UNTOUCHED: EXACT CHATBOT SCRIPT FROM USER
+        // ORIGINAL CHATBOT DRAG SCRIPT
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         const chat = document.getElementById('chatWindow');
@@ -566,4 +578,3 @@
     </script>
 </body>
 </html>
-    </main>
