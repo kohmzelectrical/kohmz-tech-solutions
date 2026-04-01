@@ -50,6 +50,7 @@
         .p2{left:30%;width:3px;height:3px;animation-duration:12s;animation-delay:2s;background:#ffb703;box-shadow:0 0 10px #ffb703}
         .p3{left:60%;width:5px;height:5px;animation-duration:9s;animation-delay:4s}
         .p4{left:85%;width:2px;height:2px;animation-duration:15s;animation-delay:1s}
+        .p5{left:50%;width:6px;height:6px;animation-duration:11s;animation-delay:3s}
         @keyframes floatUp{0%{transform:translateY(100vh) scale(0.5);opacity:0}20%{opacity:0.6}80%{opacity:0.6}100%{transform:translateY(-10vh) scale(1.5);opacity:0}}
 
         /* --- ELECTRIC TECH BAR --- */
@@ -180,11 +181,11 @@
         .kohmz-bot-toggle:active{cursor:grabbing}
         lottie-player{width:100%!important;height:100%!important;pointer-events:none}
         
-        .kohmz-chat-window{display:none;width:300px;max-width:calc(100vw - 30px);background:rgba(8,16,24,0.98);border:1px solid #00e5ff;border-top:4px solid #00e5ff;box-shadow:0 10px 50px rgba(0,0,0,0.9);margin-bottom:12px;flex-direction:column;backdrop-filter:blur(10px);box-sizing:border-box;}
+        .kohmz-chat-window{display:none;width:300px;height:400px;max-height:75vh;max-width:calc(100vw - 30px);background:rgba(8,16,24,0.98);border:1px solid #00e5ff;border-top:4px solid #00e5ff;box-shadow:0 10px 50px rgba(0,0,0,0.9);margin-bottom:12px;flex-direction:column;backdrop-filter:blur(10px);box-sizing:border-box;}
         .kohmz-chat-header{background:#000;color:#00e5ff;padding:12px;font-weight:bold;display:flex;justify-content:space-between;font-size:12px;border-bottom:1px solid rgba(0,229,255,0.2);box-sizing:border-box;}
         
         /* UPDATED: SCROLLABLE CHAT BODY */
-        .kohmz-chat-body{padding:15px;height:250px;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:10px;flex:1;box-sizing:border-box;}
+        .kohmz-chat-body{padding:15px;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:10px;box-sizing:border-box;}
         .kohmz-chat-body::-webkit-scrollbar { width: 4px; }
         .kohmz-chat-body::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
         .kohmz-chat-body::-webkit-scrollbar-thumb { background: var(--cyber-blue); border-radius: 4px; }
@@ -620,18 +621,39 @@ window.addEventListener('load', () => {
     }
 });
 
-// --- VISION IMAGE HANDLER ---
+// --- COMPRESS IMAGE BEFORE SENDING TO AVOID CLOUDFLARE CRASH ---
 function handleImage(input) {
     if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = (e) => {
-            currentImageData = e.target.result.split(',')[1];
-            document.getElementById("prev-img").src = e.target.result;
-            document.getElementById("vision-preview").style.display = "flex";
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 800;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > MAX_WIDTH) {
+                    height = Math.round((height * MAX_WIDTH) / width);
+                    width = MAX_WIDTH;
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                currentImageData = compressedDataUrl.split(',')[1];
+                document.getElementById("prev-img").src = compressedDataUrl;
+                document.getElementById("vision-preview").style.display = "flex";
+            };
+            img.src = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
     }
 }
+
 function clearImage() {
     currentImageData = null;
     document.getElementById("vision-preview").style.display = "none";
@@ -770,16 +792,19 @@ window.askGemini = async function() {
     }
 };
 
-// --- FORMAL PDF GENERATOR ---
+// --- FORMAL PDF GENERATOR (FIXED BLANK RENDER) ---
 window.downloadPDF = function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) {
         alert("System Error: No estimate data found.");
         return;
     }
-    const el = document.createElement('div');
-    el.style.cssText = "position:absolute;left:-9999px;top:0;width:800px;background:#fff;color:#000;padding:50px;font-family:Arial,sans-serif;box-sizing:border-box;min-height:1050px;";
-    el.innerHTML = `
+    
+    // Create a temporary container for html2pdf to read from safely
+    const container = document.createElement('div');
+    container.style.cssText = "position: fixed; top: -9999px; left: -9999px; z-index: -9999; width: 800px; background: #fff; padding: 50px; font-family: Arial, sans-serif; color: #000;";
+    
+    container.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ffb703;padding-bottom:20px;margin-bottom:30px;">
             <div>
                 <h1 style="color:#0d1b2a;margin:0;font-size:32px;font-weight:900;text-transform:uppercase;">KOHMZ <span style="color:#ffb703;">Electrical</span></h1>
@@ -801,20 +826,23 @@ window.downloadPDF = function() {
         
         <div style="font-size:14px;line-height:1.8;white-space:pre-wrap;color:#222;margin-bottom:50px;">${data}</div>
         
-        <div style="position:absolute;bottom:50px;left:50px;right:50px;border-top:1px solid #ccc;padding-top:20px;font-size:11px;color:#666;text-align:center;line-height:1.5;">
+        <div style="margin-top:50px;border-top:1px solid #ccc;padding-top:20px;font-size:11px;color:#666;text-align:center;line-height:1.5;">
             <strong style="color:#000;">Prepared by: Lexie (KOHMZ AI Assistant)</strong><br><br>
             <em>DISCLAIMER: This document is a rough, unverified AI estimate generated for reference purposes only. This does not serve as an official contract, quotation, or legal agreement. Final and accurate pricing is strictly subject to an actual on-site Technical Audit conducted by KOHMZ Electrical professionals.</em>
         </div>
     `;
     
-    document.body.appendChild(el);
+    document.body.appendChild(container);
+    
     html2pdf().set({
         filename: 'KOHMZ_Estimate_Summary.pdf', 
-        margin: 0,
+        margin: [0.5, 0.5, 0.5, 0.5],
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: { scale: 2, useCORS: true, windowWidth: 800 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    }).from(el).save().then(() => document.body.removeChild(el));
+    }).from(container).save().then(() => {
+        document.body.removeChild(container);
+    });
 };
 
 setInterval(()=>{if(window.speechSynthesis)window.speechSynthesis.resume()},1000);
