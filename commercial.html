@@ -5,112 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="x_KzHj0x9Ygn2C3ffPnJ8aQTC4EE3n4AhWGtoNODr_k" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-S79X3QL1TV"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-S79X3QL1TV');
-    </script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-S79X3QL1TV');</script>
     <title>Commercial Electrical Services | KOHMZ Electrical</title>
-    <meta name="description" content="Top-tier Commercial Electrical Services in the Philippines providing PEC-compliant power systems and Technical Governance.">
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-        :root { --neon-gold: #ffb703; --cyber-blue: #00e5ff; --power-glow: rgba(255, 183, 3, 0.4); --bg-dark: #081018; }
+        :root { --neon-gold: #ffb703; --cyber-blue: #00e5ff; --bg-dark: #081018; }
         * { box-sizing: border-box; }
-        body { font-size: 12px; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: var(--bg-dark); color: #e0faff; overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
+        body { font-size: 12px; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background: var(--bg-dark); color: #e0faff; overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
+        
+        /* CAD BACKGROUND */
         .cad-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; perspective: 1000px; z-index: -1; background: radial-gradient(circle at center, #0a192f 0%, #04080f 100%); }
         .cad-grid { position: absolute; width: 200%; height: 200%; bottom: -50%; left: -50%; background-image: linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px); background-size: 50px 50px; transform: rotateX(60deg); animation: cadMove 8s linear infinite; }
         @keyframes cadMove { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(50px); } }
         .cad-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(8,16,24,1) 0%, transparent 40%, rgba(8,16,24,1) 100%); pointer-events: none; }
-        .moving-ads { background: #ffb703; color: #0d1b2a; padding: 5px; font-weight: bold; position: relative; z-index: 1001; }
-        .moving-ads marquee { font-size: 10px; font-family: 'Share Tech Mono', monospace; text-transform: uppercase;} 
-        header { background: rgba(8, 16, 24, 0.95); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px); }
+
+        /* HEADER & NAV */
+        header { background: rgba(8, 16, 24, 0.95); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--cyber-blue); backdrop-filter: blur(10px); }
         .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid #00e5ff; }
-        .logo-text { font-size: 22px; font-weight: 900; color: #fff; font-family: 'Segoe UI', sans-serif;}
-        .logo-text span { color: #ffb703; }
-        .menu-toggle { display: none; font-size: 26px; cursor: pointer; color: #00e5ff; }
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; }
-        .nav-links li a { color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; font-family: 'Share Tech Mono', monospace; transition: 0.3s; }
-        .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
-        .nav-links li.dropdown { position: relative; }
-        .dropdown-content { display: none; position: absolute; background: rgba(8,16,24,0.98); min-width: 180px; z-index: 1001; top: 100%; left: 0; border-top: 3px solid #00e5ff; }
+        .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid var(--cyber-blue); }
+        .logo-text { font-size: 22px; font-weight: 900; color: #fff; }
+        .logo-text span { color: var(--neon-gold); }
+        .menu-toggle { display: none; font-size: 26px; color: var(--cyber-blue); cursor: pointer; }
+        .nav-links { list-style: none; display: flex; gap: 25px; margin: 0; }
+        .nav-links li a { color: #e0faff; text-decoration: none; font-size: 11px; font-weight: 600; text-transform: uppercase; font-family: 'Share Tech Mono'; transition: 0.3s; }
+        .nav-links li a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); }
+        .dropdown { position: relative; }
+        .dropdown-content { display: none; position: absolute; background: rgba(8,16,24,0.98); min-width: 180px; border-top: 3px solid var(--cyber-blue); top: 100%; left: 0; }
         .dropdown:hover .dropdown-content { display: block; }
         .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        /* MOBILE OVERLAY */
         @media (max-width: 992px) {
             .menu-toggle { display: block; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(8, 16, 24, 0.98); border-bottom: 4px solid #00e5ff; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: #081018; border-bottom: 4px solid var(--cyber-blue); }
             .nav-links.active { display: flex; }
-            .nav-links li a { padding: 20px 25px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-            .dropdown-content { position: static; display: none; background: rgba(0,0,0,0.4); }
-            .dropdown.active .dropdown-content { display: block; }
+            .nav-links li a { padding: 15px 25px; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
         }
-        .hero { background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; background-size: cover; padding: 100px 20px; text-align: center; color: white; position: relative; z-index: 2; }
-        .hero h1 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; min-height: 70px; text-shadow: 0 0 15px rgba(255,183,3,0.4); } 
-        .hero p { font-size: 13px; max-width: 700px; margin: 0 auto 20px; color: #a0aec0; } 
-        .content-section { padding: 50px 10%; text-align: center; position: relative; z-index: 2;}
-        .content-section h2 { font-size: 18px; color: #00e5ff; margin-bottom: 30px; text-transform: uppercase; font-weight: 800; } 
+
+        /* HERO & CONTENT */
+        .hero { padding: 100px 20px; text-align: center; position: relative; z-index: 2; background: linear-gradient(rgba(13,27,42,0.8), rgba(1,4,9,0.9)), url('logo.jpg') center/cover; }
+        .hero h1 { font-size: 24px; color: var(--neon-gold); text-transform: uppercase; font-weight: 900; min-height: 80px; }
+        .content-section { padding: 60px 10%; text-align: center; position: relative; z-index: 2; }
         .cards-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .card { background: rgba(30, 41, 59, 0.4); width: 280px; padding: 25px; border-radius: 8px; text-align: left; transition: 0.3s; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,229,255,0.2); }
-        .card h3 { font-size: 14px; margin-bottom: 10px; color: #ffb703; font-weight: 700; text-transform: uppercase;} 
-        .card p { font-size: 12px; color: #cbd5e1; }
-        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
-        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .fb-messenger { background: #0084ff; } .whatsapp { background: #25d366; } .email { background: #db4437; }
-        /* Bot Wrapper logic is in Part 2 */
-    </style>
-</head>
-<body>
-    <div class="cad-background"><div class="cad-grid"></div><div class="cad-overlay"></div></div>
-    <div class="moving-ads"><marquee>⚡ COMMERCIAL SERVICES: Power Distribution | Custom Office Fit-outs | Load Evaluation | Preventive Maintenance ⚡</marquee></div>
+        .card { background: rgba(30, 41, 59, 0.4); width: 280px; padding: 25px; border-radius: 8px; border-top: 4px solid var(--neon-gold); text-align: left; backdrop-filter: blur(10px); transition: 0.3s; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 10px 30px rgba(0,229,255,0.2); }
+        .adv-list { max-width: 800px; margin: auto; text-align: left; background: rgba(0,0,0,0.5); padding: 30px; border-radius: 8px; border-left: 4px solid var(--neon-gold); list-style: none; }
+        
+        /* UNIT-01 BOT UI (LOWER LEFT) */
+        .kohmz-bot-wrapper { position: fixed; bottom: 100px; left: 20px; z-index: 999999; font-family: 'Share Tech Mono'; display: flex; flex-direction: column; align-items: flex-start; }
+        .bot-value-tag { background: var(--cyber-blue); color: #000; padding: 4px 10px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 5px; box-shadow: 0 0 10px var(--cyber-blue); }
+        .kohmz-chat-window { display: none; width: 280px; background: rgba(8,16,24,0.98); border: 1px solid var(--cyber-blue); border-top: 4px solid var(--cyber-blue); flex-direction: column; backdrop-filter: blur(10px); }
+        .kohmz-chat-header { background: #000; color: var(--cyber-blue); padding: 10px; font-size: 12px; font-weight: bold; display: flex; justify-content: space-between; }
+        .kohmz-chat-body { padding: 15px; max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .chat-bubble { background: rgba(255,255,255,0.05); color: #e0faff; padding: 8px; border-radius: 0 10px 10px 10px; border-left: 2px solid var(--cyber-blue); font-size: 11px; }
+        .chat-input-area { padding: 10px; background: #000; display: flex; gap: 5px; }
+        .chat-input-area input { flex: 1; background: transparent; border: 1px solid var(--cyber-blue); color: #fff; padding: 5px; font-size: 11px; outline: none; }
+        .chat-input-area button { background: var(--cyber-blue); border: none; padding: 5px 10px; cursor: pointer; color: #000; }
+        .kohmz-bot-toggle { width: 80px; height: 80px; cursor: pointer; position: relative; }
+        
+        footer { background: #000; padding: 50px 20px; text-align: center; border-top: 2px solid var(--neon-gold); position: relative; z-index: 2; }
+    </style><body>
+    <div class="cad-background">
+        <div class="cad-grid"></div>
+        <div class="cad-overlay"></div>
+    </div>
+
+    <div class="moving-ads">
+        <marquee behavior="scroll" direction="left">
+            ⚡ COMMERCIAL SERVICES: Power Distribution | Custom Office Fit-outs | Load Evaluation | Preventive Maintenance | Technical Governance ⚡
+        </marquee>
+    </div>
+
     <header>
-        <a href="index.html" class="logo"><img src="logo.jpg" alt="Logo"><span class="logo-text">KOHMZ <span>Electrical</span></span></a>
-        <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars"></i></div>
-        <nav><ul class="nav-links" id="nav-list">
-            <li><a href="index.html">Overview</a></li>
-            <li class="dropdown"><a href="#" class="dropbtn" style="color: #ffb703;">Services <i class="fas fa-chevron-down"></i></a>
-                <div class="dropdown-content"><a href="commercial.html">Commercial</a><a href="residential.html">Residential</a><a href="pro-tips.html">Pro Tips</a></div>
-            </li>
-            <li><a href="book-now.html">Book Now</a></li>
-            <li><a href="portfolio.html">Portfolio</a></li>
-        </ul></nav>
+        <a href="index.html" class="logo" aria-label="KOHMZ Homepage">
+            <img src="logo.jpg" alt="KOHMZ Logo">
+            <span class="logo-text">KOHMZ <span>Electrical</span></span>
+        </a>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <nav>
+            <ul class="nav-links" id="nav-list">
+                <li><a href="index.html">Overview</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn" style="color: var(--neon-gold); text-shadow: 0 0 8px var(--neon-gold);">Services <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <div class="dropdown-content">
+                        <a href="commercial.html" style="color: var(--cyber-blue) !important;">Commercial</a>
+                        <a href="residential.html">Residential</a>
+                        <a href="pro-tips.html">Pro Tips</a>
+                    </div>
+                </li>
+                <li><a href="book-now.html">Book Now</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+            </ul>
+        </nav>
     </header>
+
     <main>
-        <section class="hero" data-aos="zoom-in"><h1><span id="main-typewriter-text"></span><br><span class="txt-type" data-wait="2000" data-words='["COMMERCIAL SOLUTIONS", "ASSET PROTECTION", "MAXIMUM UPTIME"]'></span></h1><p>We keep your business powered and compliant. Minimizing downtime through precision engineering.</p></section>
+        <section class="hero" data-aos="zoom-in">
+            <h1>
+                <span id="main-typewriter-text"></span><br>
+                <span class="txt-type" data-wait="2000" data-words='["COMMERCIAL SOLUTIONS", "ASSET PROTECTION", "MAXIMUM UPTIME"]'></span>
+            </h1>
+            <p>We keep your business powered and compliant. Minimizing downtime through precision engineering and rapid response.</p>
+        </section>
+
         <section class="content-section">
             <h2 data-aos="fade-down">Comprehensive Commercial Services</h2>
             <div class="cards-container">
-                <div class="card" style="border-top: 4px solid #ffb703;" data-aos="fade-up"><h3>Office Fit-outs</h3><p>Complete layout design using CAD for lighting and server rooms.</p></div>
-                <div class="card" style="border-top: 4px solid #00e5ff;" data-aos="fade-up" data-aos-delay="100"><h3>Load Evaluation</h3><p>PEC-compliant calculations to prevent system overloads.</p></div>
-                <div class="card" style="border-top: 4px solid #ffb703;" data-aos="fade-up" data-aos-delay="200"><h3>Panel Upgrades</h3><p>3-phase system integration and NEMA-compliant enclosures.</p></div>
+                <div class="card" data-aos="fade-up">
+                    <h3><i class="fas fa-drafting-compass"></i> Office Fit-outs</h3>
+                    <p>Complete electrical layout design using CAD. We handle workstation power distribution and server room dedicated circuits to ensure business continuity.</p>
+                </div>
+                <div class="card" style="border-top-color: var(--cyber-blue);" data-aos="fade-up" data-aos-delay="100">
+                    <h3><i class="fas fa-balance-scale"></i> Load Evaluation</h3>
+                    <p>Prevent system overloads with meticulous calculations. Ensuring absolute compliance with the Philippine Electrical Code (PEC) for your safety.</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <h3><i class="fas fa-server"></i> Panel Upgrades</h3>
+                    <p>Modernize your building's core. Installation of NEMA-compliant enclosures, 3-phase systems, and smart sub-panel integrations.</p>
+                </div>
             </div>
         </section>
+
         <section class="content-section">
-            <h2 data-aos="fade-down">The KOHMZ Commercial Advantage</h2>
+            <h2 data-aos="fade-down">The KOHMZ Advantage</h2>
             <ul class="adv-list" data-aos="fade-up">
-                <li><i class="fas fa-check-circle" style="color:var(--cyber-blue); margin-right: 10px;"></i><strong>24/7 Priority Maintenance:</strong> We are on standby around the clock to resolve critical electrical failures and restore business operations immediately.</li>
-                <li><i class="fas fa-check-circle" style="color:var(--cyber-blue); margin-right: 10px;"></i><strong>Design-First Approach:</strong> Precision is key. We provide highly detailed material and labor cost estimates using CAD before any wire is pulled.</li>
-                <li><i class="fas fa-check-circle" style="color:var(--cyber-blue); margin-right: 10px;"></i><strong>Certified Safety Compliance:</strong> Every installation undergoes rigorous insulation resistance testing to ensure 100% PEC compliance.</li>
+                <li><i class="fas fa-check-circle" style="color:var(--cyber-blue); margin-right: 10px;"></i><strong>24/7 Priority Maintenance:</strong> Around the clock response for critical electrical failures.</li>
+                <li><i class="fas fa-check-circle" style="color:var(--cyber-blue); margin-right: 10px;"></i><strong>Design-First:</strong> Detailed material and labor cost estimates via CAD before execution.</li>
+                <li><i class="fas fa-check-circle" style="color:var(--cyber-blue); margin-right: 10px;"></i><strong>Safety Testing:</strong> Rigorous single-phase insulation resistance testing on all installations.</li>
             </ul>
-            <div style="text-align:center; margin-top:40px;" data-aos="zoom-in">
-                <a href="book-now.html" style="background:var(--neon-gold); color:#0d1b2a; padding: 15px 30px; font-weight:900; border-radius:5px; text-decoration:none; text-transform:uppercase; box-shadow: 0 0 15px var(--power-glow); display: inline-block;">Schedule a Site Inspection Today</a>
+            <div style="margin-top:40px;" data-aos="zoom-in">
+                <a href="book-now.html" style="background:var(--neon-gold); color:#0d1b2a; padding: 15px 30px; font-weight:900; border-radius:5px; text-decoration:none; text-transform:uppercase;">Inspect Site Now</a>
             </div>
         </section>
     </main>
 
     <div class="floating-container">
-        <a href="https://m.me/100093260504264" target="_blank" class="float-btn fb-messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" class="float-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn email" title="Email Us"><i class="fas fa-envelope"></i></a>
-    </div>
-
-    <div class="kohmz-bot-wrapper" id="draggableBot" style="bottom: 120px; left: 20px; right: auto; align-items: flex-start;">
-        <div class="bot-value-tag" id="dragHint" style="cursor: grab;">⚡ UNIT-01 EMPRESS AI</div>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn" style="background:#25d366;"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:kohmzelectrical@gmail.com" class="float-btn" style="background:#db4437;"><i class="fas fa-envelope"></i></a>
+    </div><div class="kohmz-bot-wrapper" id="draggableBot">
+        <div class="bot-value-tag" id="dragHint">⚡ UNIT-01 EMPRESS AI</div>
 
         <div class="kohmz-chat-window" id="chatWindow">
             <div class="kohmz-chat-header">
@@ -118,17 +160,17 @@
                 <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
             </div>
             <div class="kohmz-chat-body" id="chatBody" style="display: flex; flex-direction: column;">
-                <div class="chat-bubble">I am UNIT-01. State your business clearly, for I do not tolerate incompetence. Do not keep me waiting.</div>
+                <div class="chat-bubble">Initialization complete. I am UNIT-01. How can I optimize your commercial electrical project today?</div>
             </div>
-            <div class="kohmz-chat-input-area" style="padding: 10px; background: #000; display: flex; gap: 5px; border-top: 1px solid rgba(0, 229, 255, 0.2);">
-                <input type="text" id="userQuery" placeholder="Address the Empress..." style="flex: 1; background: transparent; border: 1px solid var(--cyber-blue); color: #fff; padding: 8px; font-size: 11px; outline: none; font-family: 'Share Tech Mono';">
-                <button onclick="askGemini()" style="background: var(--cyber-blue); border: none; padding: 5px 15px; cursor: pointer; color: #000;"><i class="fas fa-paper-plane"></i></button>
+            <div class="chat-input-area">
+                <input type="text" id="userQuery" placeholder="Speak to the Empress...">
+                <button onclick="askGemini()"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
 
-        <div class="kohmz-bot-toggle" id="botToggle" style="width: 85px; height: 85px; cursor: pointer;">
+        <div class="kohmz-bot-toggle" id="botToggle">
             <lottie-player src="Live chatbot.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player>
-            <div class="bot-badge" id="botBadge" style="position: absolute; top: 12px; right: 12px; background: #ff3b3b; color: #fff; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px #ff3b3b;">!</div>
+            <div class="bot-badge" id="botBadge">!</div>
         </div>
     </div>
 
@@ -137,12 +179,11 @@
             <img src="logo.jpg" alt="KOHMZ Logo" width="35" height="35" style="border: 1px solid var(--cyber-blue); border-radius: 4px;">
             <span class="logo-text" style="font-size: 22px; font-weight: 900; color: #fff;">KOHMZ <span>Electrical</span></span>
         </div>
-        <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 12px; text-align: center;">Your trusted partner in structural power integrity. Bringing world-class electrical engineering standards to every Philippine facility.</p>
-        <p style="text-align: center; font-size: 11px;">&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
-        <nav class="footer-links" style="text-align: center; margin-top: 15px;">
-            <a href="privacy-policy.html" style="color: var(--neon-gold); text-decoration: underline; font-weight: bold; font-size: 11px;">Privacy Policy</a> &nbsp;|&nbsp; 
-            <a href="faq.html" style="color: var(--neon-gold); text-decoration: underline; font-weight: bold; font-size: 11px;">FAQ</a> &nbsp;|&nbsp; 
-            <a href="about-us.html" style="color: var(--neon-gold); text-decoration: underline; font-weight: bold; font-size: 11px;">About Us</a>
+        <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 11px;">Your trusted partner in structural power integrity. 2026 KOHMZ Electrical Design and Build.</p>
+        <nav style="text-align: center; font-size: 11px;">
+            <a href="privacy-policy.html" style="color: var(--neon-gold); text-decoration: underline;">Privacy Policy</a> &nbsp;|&nbsp; 
+            <a href="faq.html" style="color: var(--neon-gold); text-decoration: underline;">FAQ</a> &nbsp;|&nbsp; 
+            <a href="about-us.html" style="color: var(--neon-gold); text-decoration: underline;">About Us</a>
         </nav>
     </footer>
 
@@ -150,36 +191,42 @@
     <script>
         const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
-        // --- 1. INITIALIZATION ---
+        // 1. ANIMATION & TYPING INIT
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof AOS !== 'undefined') { AOS.init({ duration: 800, once: true }); }
             startTyping();
-            // Auto-open bot after 6s
+            // Auto-open bot after 6 seconds
             setTimeout(() => { if (document.getElementById('chatWindow').style.display !== 'flex') toggleBotWindow(); }, 6000);
         });
 
-        // --- 2. BOA HANCOCK VOICE ENGINE ---
+        // 2. NATURAL FEMALE VOICE (ANTI-BAKLA FIX)
         window.speakText = function(text) {
             if (!window.speechSynthesis) return;
             window.speechSynthesis.cancel();
             let utterance = new SpeechSynthesisUtterance(text);
             const voices = window.speechSynthesis.getVoices();
-            let selectedVoice = voices.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Female")) || voices[0];
+            
+            // Hanapin ang pinaka-feminine at natural na boses
+            let selectedVoice = voices.find(v => 
+                v.name.includes("Google US English Female") || 
+                v.name.includes("Aria") || 
+                v.name.includes("Samantha") ||
+                v.name.includes("Zira")
+            ) || voices.find(v => v.name.includes("Female")) || voices[0];
             
             utterance.voice = selectedVoice;
-            utterance.pitch = 0.95; // Mature tone
-            utterance.rate = 0.85;  // Commanding pace
+            utterance.pitch = 1.1;  // Slightly higher for a clear female tone
+            utterance.rate = 0.95;  // Professional pace
             window.speechSynthesis.speak(utterance);
         };
 
-        // --- 3. AI INTERACTION LOGIC ---
+        // 3. AI INTERACTION (GEMINI LINK)
         window.askGemini = async function() {
             const input = document.getElementById("userQuery");
             const body = document.getElementById("chatBody");
             const message = input.value.trim();
             if (!message) return;
 
-            // User Bubble
             body.innerHTML += `<div class="chat-bubble" style="border-left-color:var(--neon-gold); align-self:flex-end; border-radius:12px 0 12px 12px; background: rgba(255,183,3,0.1);">YOU: ${message}</div>`;
             input.value = "";
             body.scrollTop = body.scrollHeight;
@@ -187,17 +234,17 @@
             try {
                 const response = await fetch(WORKER_URL, { method: "POST", body: JSON.stringify({ message: message }) });
                 const data = await response.json();
-                const aiMsg = data.ai_answer || "I have no time for silence. Speak up.";
+                const aiMsg = data.ai_answer || "I require a valid query to proceed.";
                 
                 body.innerHTML += `<div class="chat-bubble">UNIT-01: ${aiMsg}</div>`;
                 body.scrollTop = body.scrollHeight;
                 speakText(aiMsg);
             } catch (err) {
-                body.innerHTML += `<div class="chat-bubble">System interference detected. Try again, if you dare.</div>`;
+                body.innerHTML += `<div class="chat-bubble">System interference. Attempt reconnection.</div>`;
             }
         };
 
-        // --- 4. NAVIGATION & UI LOGIC ---
+        // 4. NAVIGATION & BOT TOGGLE
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         if(menuToggle) { menuToggle.addEventListener('click', () => { navList.classList.toggle('active'); }); }
@@ -205,15 +252,11 @@
         function toggleBotWindow() {
             const chat = document.getElementById('chatWindow');
             const badge = document.getElementById('botBadge');
-            if (chat.style.display === 'flex') {
-                chat.style.display = 'none';
-            } else {
-                chat.style.display = 'flex';
-                badge.style.display = 'none';
-            }
+            chat.style.display = (chat.style.display === 'flex') ? 'none' : 'flex';
+            if (chat.style.display === 'flex') badge.style.display = 'none';
         }
 
-        // --- 5. TYPEWRITER EFFECT ---
+        // 5. HERO TYPEWRITER
         const mainTypeText = "COMMERCIAL ENGINEERING & ";
         let mainIdx = 0;
         function startTyping() {
@@ -224,6 +267,7 @@
             }
         }
 
+        // Dynamic Words Typewriter
         class TypeWriter {
             constructor(el, words, wait) {
                 this.el = el; this.words = words; this.txt = ''; this.wordIdx = 0; this.wait = wait; this.isDel = false; this.type();
@@ -242,15 +286,12 @@
         const txtEl = document.querySelector('.txt-type');
         if(txtEl) new TypeWriter(txtEl, JSON.parse(txtEl.getAttribute('data-words')), 2000);
 
-        // --- 6. DRAGGABLE BOT LOGIC ---
+        // 6. DRAGGABLE BOT LOGIC
         const botWrap = document.getElementById('draggableBot');
         const botToggle = document.getElementById('botToggle');
         let isDrag = false, startX, startY, xOff = 0, yOff = 0, dragStartTime;
 
-        botToggle.addEventListener('mousedown', (e) => {
-            isDrag = true; dragStartTime = Date.now();
-            startX = e.clientX - xOff; startY = e.clientY - yOff;
-        });
+        botToggle.addEventListener('mousedown', (e) => { isDrag = true; dragStartTime = Date.now(); startX = e.clientX - xOff; startY = e.clientY - yOff; });
         window.addEventListener('mousemove', (e) => {
             if(isDrag) {
                 xOff = e.clientX - startX; yOff = e.clientY - startY;
@@ -258,11 +299,10 @@
             }
         });
         window.addEventListener('mouseup', () => {
-            if(isDrag) {
-                isDrag = false;
-                if(Date.now() - dragStartTime < 200) toggleBotWindow();
-            }
+            if(isDrag) { isDrag = false; if(Date.now() - dragStartTime < 200) toggleBotWindow(); }
         });
     </script>
 </body>
 </html>
+    
+</head>
