@@ -161,7 +161,7 @@
         .cta-box p { font-size: 13px; color: #cbd5e1; line-height: 1.8; margin-bottom: 25px;}
         .cta-button { 
             display: inline-block; background: #ffb703; color: #0d1b2a; padding: 15px 30px; text-decoration: none; 
-            font-weight: 900; border-radius: 4px; margin-top: 10px; text-transform: uppercase; transition: 0.4s; box-shadow: 0 0 15px var(--power-glow); 
+            font-weight: 900; border-radius: 4px; margin-top: 10px; text-transform: uppercase; transition: 0.4s; box-shadow: 0 0 15px var(--power-glow); max-width: 100%; white-space: normal; word-wrap: break-word;
         }
         .cta-button:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 30px #ffb703; color: #000; }
 
@@ -181,13 +181,13 @@
         }
 
         /* ========================================= */
-        /* --- UNTOUCHED CHATBOT STYLES FROM USER --- */
+        /* --- LEXIE AI CHATBOT STYLES --- */
         /* ========================================= */
         .kohmz-bot-wrapper {
             position: fixed;
             bottom: 120px;
             right: 20px;
-            z-index: 9999999; /* Tinitiyak na nasa ibabaw ng lahat */
+            z-index: 9999999; 
             font-family: 'Share Tech Mono', monospace;
             display: flex;
             flex-direction: column;
@@ -212,7 +212,7 @@
 
         .kohmz-chat-window {
             display: none;
-            width: 300px;
+            width: 320px;
             max-width: 85vw;
             background: rgba(8, 16, 24, 0.98);
             border: 1px solid #00e5ff;
@@ -236,8 +236,11 @@
 
         .kohmz-chat-body {
             padding: 15px;
-            max-height: 220px;
+            max-height: 250px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .chat-bubble {
@@ -248,29 +251,19 @@
             margin-bottom: 10px;
             border-left: 2px solid #00e5ff;
             font-size: 12px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            font-family: 'Share Tech Mono', monospace;
         }
 
         .kohmz-chat-options {
-            padding: 12px;
+            padding: 10px;
+            border-top: 1px solid rgba(0, 229, 255, 0.2);
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            gap: 5px;
+            background: #000;
         }
-
-        .chat-btn {
-            background: transparent;
-            color: #fff;
-            border: 1px solid #00e5ff;
-            padding: 12px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 10px;
-            cursor: pointer;
-            text-align: left;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        .chat-btn:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 10px #00e5ff; }
 
         .kohmz-bot-toggle {
             width: 85px; 
@@ -281,6 +274,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .kohmz-bot-toggle:hover {
+            transform: scale(1.05);
         }
 
         .bot-badge {
@@ -293,7 +291,7 @@
         }
 
         @media (max-width: 480px) {
-            .kohmz-chat-window { width: 260px; }
+            .kohmz-chat-window { width: 280px; }
             .kohmz-bot-toggle { width: 75px; height: 75px; }
         }
 
@@ -421,26 +419,19 @@
     </main>
 
     <div class="kohmz-bot-wrapper" id="draggableBot">
-        <div class="bot-value-tag" id="dragHint">⚡ KOHMZ Expert AI</div>
+        <div class="bot-value-tag" id="dragHint" onclick="toggleBotWindow()">⚡ KOHMZ Lexie</div>
 
         <div class="kohmz-chat-window" id="chatWindow">
             <div class="kohmz-chat-header">
-                <span>UNIT-01: SYSTEM ACTIVE</span>
+                <span>LEXIE AI: SYSTEM ACTIVE</span>
                 <span onclick="toggleBotWindow()" style="cursor:pointer; padding: 0 5px;">✕</span>
             </div>
             <div class="kohmz-chat-body" id="chatBody">
-                <div class="chat-bubble">Initialization complete. Kumusta! Ako ang iyong Cyber-Assistant. Ready na tayo para sa iyong Residential project.</div>
+                <div class="chat-bubble">Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! I'm here to provide you with top-notch technical support and guidance on PEC compliance and safety. How can I assist you today?</div>
             </div>
             <div class="kohmz-chat-options">
-                <button class="chat-btn" onclick="botAction('audit')" style="border-color:#ffd700; color:#ffd700;">
-                    <i class="fas fa-bolt"></i> > [RUN_AUDIT_ROUTINE]
-                </button>
-                <button class="chat-btn" onclick="botAction('fb')">
-                    <i class="fab fa-facebook-messenger"></i> > [FB_COMM_LINK]
-                </button>
-                <button class="chat-btn" onclick="botAction('wa')">
-                    <i class="fab fa-whatsapp"></i> > [DIRECT_WHATSAPP]
-                </button>
+                <input type="text" id="userQuery" placeholder="Ask Lexie anything..." style="flex:1;background:transparent;border:1px solid #00e5ff;color:#fff;padding:8px;font-family:'Share Tech Mono';font-size:11px;outline:none;">
+                <button onclick="askGemini()" style="background:#00e5ff;border:none;padding:5px 12px;cursor:pointer;"><i class="fas fa-paper-plane" style="color:#000;"></i></button>
             </div>
         </div>
 
@@ -475,6 +466,9 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
+        // WORKER URL CONFIGURATION
+        const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
+
         // INIT ANIMATIONS
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof AOS !== 'undefined') {
@@ -569,8 +563,30 @@
         }
 
         // ========================================= //
-        // UNTOUCHED: EXACT CHATBOT SCRIPT FROM USER //
+        // --- LEXIE AI LOGIC & DRAGGABLE SCRIPT --- //
         // ========================================= //
+        
+        setInterval(()=>{if(window.speechSynthesis)window.speechSynthesis.resume()},1000);
+        
+        window.speakText = function(e) {
+            if(!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            
+            // Punctuation trick para hindi tunog robot
+            let cleanText = e.replace(/\./g,"... ").replace(/,/g,",.. ");
+            
+            const n = new SpeechSynthesisUtterance(cleanText);
+            const s = window.speechSynthesis.getVoices();
+            const i = s.find(e => e.name.includes("Samantha") || e.name.includes("Aria") || e.name.includes("Google US English") || e.name.includes("Female") || e.name.includes("Enhanced")) || s[0];
+            
+            if(i) n.voice = i;
+            n.lang = "en-US";
+            n.pitch = 1.15;
+            n.rate = 0.85;
+            n.volume = 1;
+            window.speechSynthesis.speak(n);
+        };
+
         const wrapper = document.getElementById('draggableBot');
         const toggle = document.getElementById('botToggle');
         const chat = document.getElementById('chatWindow');
@@ -581,14 +597,15 @@
         let startX, startY, xOffset = 0, yOffset = 0;
         let dragStartTime; 
 
-        function toggleBotWindow() {
+        window.toggleBotWindow = function() {
             if (chat.style.display === 'flex') {
                 chat.style.display = 'none';
-                hint.innerHTML = "⚡ KOHMZ Expert AI";
+                hint.innerHTML = "⚡ KOHMZ Lexie";
             } else {
                 chat.style.display = 'flex';
                 badge.style.display = 'none';
                 hint.innerHTML = "🖐️ Drag to Move";
+                if(window.speechSynthesis) window.speechSynthesis.resume();
             }
         }
 
@@ -610,7 +627,6 @@
             xOffset = clientX - startX;
             yOffset = clientY - startY;
 
-            // FIX: Gumamit ng backticks dito:
             wrapper.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
         };
 
@@ -631,10 +647,50 @@
         window.addEventListener('mouseup', dragEnd);
         window.addEventListener('touchend', dragEnd);
 
-        function botAction(type) {
-            if(type === 'audit') window.location.href = 'https://kohmzelectrical.github.io/kohmz-electrical-services/book-now.html';
-            else if(type === 'fb') window.open('https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/', '_blank');
-            else if(type === 'wa') window.location.href = 'https://wa.me/639266174131';
+        window.askGemini = async function() {
+            const inputField = document.getElementById("userQuery");
+            const chatBody = document.getElementById("chatBody");
+            if(!inputField) return;
+            const message = inputField.value.trim();
+            if(!message) return;
+            
+            if(window.speechSynthesis) window.speechSynthesis.resume();
+            
+            chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background:rgba(0,229,255,0.1);align-self:flex-end;border-left:none;border-right:2px solid #ffb703;color:#fff;padding:10px;border-radius:12px 0 12px 12px;margin-bottom:10px;white-space:pre-wrap;text-align:right;">YOU: ${message}</div>`;
+            inputField.value = "";
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            const loadId = "loading-" + Date.now();
+            chatBody.innerHTML += `<div class="chat-bubble" id="${loadId}" style="border-left:2px solid #00e5ff;">Lexie: Processing request...</div>`;
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({message: message, name: "Web Client"})
+                });
+                const result = await response.json();
+                document.getElementById(loadId)?.remove();
+                
+                const aiReply = result.ai_answer || "System calibration error.";
+                const cleanReplyForButton = aiReply.replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/(?:\r\n|\r|\n)/g," ");
+                
+                chatBody.innerHTML += `<div class="chat-bubble" style="border-left:2px solid #00e5ff;">Lexie: ${aiReply}<div style="margin-top:8px;border-top:1px solid rgba(0,229,255,0.2);padding-top:5px;"><button onclick="speakText('${cleanReplyForButton}')" style="background:none;border:none;color:#ffb703;cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;"><i class="fas fa-volume-up"></i> Play Audio</button></div></div>`;
+                chatBody.scrollTop = chatBody.scrollHeight;
+                speakText(aiReply);
+            } catch(err) {
+                if(document.getElementById(loadId)) {
+                    document.getElementById(loadId).innerHTML = "Lexie: Connection lost. Re-syncing...";
+                }
+            }
+        };
+
+        const uQuery = document.getElementById("userQuery");
+        if (uQuery) {
+            uQuery.addEventListener("keypress", e => {
+                if (e.key === "Enter") window.askGemini();
+            });
         }
 
         setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 6000);
