@@ -88,7 +88,7 @@
         .logo-text { font-size: 22px; margin: 0; font-weight: 900; color: #fff; display: inline-block; font-family: 'Segoe UI', sans-serif;}
         .logo-text span { color: #ffb703; }
 
-        .menu-toggle { display: none; font-size: 26px; cursor: pointer; color: #00e5ff; z-index: 1001;}
+        .menu-toggle { display: none; font-size: 26px; cursor: pointer; color: #00e5ff; z-index: 1001; background: none; border: none; padding: 5px;}
 
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; transition: 0.3s ease; }
         .nav-links li a { 
@@ -109,20 +109,21 @@
         .dropdown:hover .dropdown-content { display: block; }
         .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-        /* MOBILE OVERLAY */
+        /* SELYADONG MOBILE NAVIGATION (Iwas Sabog) */
         @media (max-width: 992px) {
-            .menu-toggle { display: block; font-size: 26px; color: #00e5ff; cursor: pointer; background:none; border:none; padding:5px; }
+            .menu-toggle { display: block; }
             .nav-links { 
                 display: none; flex-direction: column; position: absolute; top: 100%; left: 0; 
                 width: 100%; background: rgba(8, 16, 24, 0.98); padding: 0; margin: 0;
                 border-bottom: 4px solid #00e5ff; 
+                max-height: 85vh; overflow-y: auto;
             }
             .nav-links.active { display: flex; }
             .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); margin: 0; }
             .nav-links li a { font-size: 14px; width: 100%; padding: 20px 25px; display: flex; justify-content: space-between; }
             .dropdown-content { position: static; display: none; background: rgba(0,0,0,0.4); width: 100%; border: none; padding-left: 0; }
             .dropdown.active .dropdown-content { display: block; }
-            .dropdown-content a { padding: 15px 20px 15px 45px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; }
+            .dropdown-content a { padding: 15px 20px 15px 45px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; white-space: normal; line-height: 1.4;}
         }
 
         /* --- HERO SECTION --- */
@@ -174,9 +175,23 @@
         .whatsapp { background: #25d366; }
         .email { background: #db4437; }
 
+        /* FIXED FLOATING BUTTONS PARA SA LOWER PART NG MOBILE */
         @media (max-width: 768px) {
-            .floating-container { flex-direction: row !important; justify-content: center !important; bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; width: max-content !important; background: rgba(0, 0, 0, 0.8); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(0, 229, 255, 0.3); backdrop-filter: blur(10px); }
-            .float-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; margin: 0 5px !important; }
+            .floating-container { 
+                flex-direction: row !important; 
+                justify-content: space-evenly !important; 
+                bottom: 15px !important; 
+                right: 50% !important; 
+                transform: translateX(50%) !important; 
+                width: 95% !important; 
+                max-width: 350px !important; 
+                background: rgba(0, 0, 0, 0.85); 
+                padding: 8px 10px; 
+                border-radius: 50px; 
+                border: 1px solid rgba(0, 229, 255, 0.3); 
+                backdrop-filter: blur(10px); 
+            }
+            .float-btn { width: 42px !important; height: 42px !important; font-size: 18px !important; margin: 0 !important; }
             .kohmz-bot-wrapper { bottom: 85px !important; right: 15px !important; }
         }
 
@@ -255,14 +270,6 @@
             white-space: pre-wrap;
             line-height: 1.5;
             font-family: 'Share Tech Mono', monospace;
-        }
-
-        .kohmz-chat-options {
-            padding: 10px;
-            border-top: 1px solid rgba(0, 229, 255, 0.2);
-            display: flex;
-            gap: 5px;
-            background: #000;
         }
 
         .kohmz-bot-toggle {
@@ -351,9 +358,9 @@
             <span class="logo-text">KOHMZ <span>Electrical</span></span>
         </a>
         
-        <div class="menu-toggle" id="mobile-menu">
+        <button class="menu-toggle" id="mobile-menu" aria-label="Toggle Navigation">
             <i class="fas fa-bars"></i>
-        </div>
+        </button>
 
         <nav>
             <ul class="nav-links" id="nav-list">
@@ -376,6 +383,7 @@
                         <a href="electrical-materials.html">Materials</a>
                     </div>
                 </li>
+                <li><a href="faq.html">FAQ</a></li>
                 <li><a href="about-us.html">About Us</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
             </ul>
@@ -429,9 +437,9 @@
             <div class="kohmz-chat-body" id="chatBody">
                 <div class="chat-bubble">Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! I'm here to provide you with top-notch technical support and guidance on PEC compliance and safety. How can I assist you today?</div>
             </div>
-            <div class="kohmz-chat-options">
+            <div style="padding: 10px; border-top: 1px solid rgba(0, 229, 255, 0.2); display: flex; gap: 5px; background: #000;">
                 <input type="text" id="userQuery" placeholder="Ask Lexie anything..." style="flex:1;background:transparent;border:1px solid #00e5ff;color:#fff;padding:8px;font-family:'Share Tech Mono';font-size:11px;outline:none;">
-                <button onclick="askGemini()" style="background:#00e5ff;border:none;padding:5px 12px;cursor:pointer;"><i class="fas fa-paper-plane" style="color:#000;"></i></button>
+                <button onclick="askGemini()" style="background:#00e5ff;border:none;padding:5px 12px;cursor:pointer;color:#000;"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
 
@@ -476,7 +484,7 @@
             }
         });
 
-        // MOBILE MENU LOGIC
+        // MOBILE MENU LOGIC & DROPDOWN FIX
         const menuToggle = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         const dropdowns = document.querySelectorAll('.dropdown');
@@ -493,20 +501,13 @@
         dropdowns.forEach(dropdown => {
             const dropbtn = dropdown.querySelector('.dropbtn');
             const handleDropdownToggle = (e) => {
-                if (window.innerWidth <= 992 || e.type === 'keydown' || e.type === 'touchstart') {
-                    if(dropbtn.getAttribute('href') === '#') e.preventDefault(); 
-                    
-                    dropdowns.forEach(d => {
-                        if (d !== dropdown) {
-                            d.classList.remove('active');
-                        }
-                    });
+                if (window.innerWidth <= 992) {
+                    if(dropbtn && dropbtn.getAttribute('href') === '#') e.preventDefault(); 
                     dropdown.classList.toggle('active');
                 }
             };
             if(dropbtn) {
                 dropbtn.addEventListener('click', handleDropdownToggle);
-                dropbtn.addEventListener('touchstart', handleDropdownToggle, {passive: true});
             }
         });
 
@@ -598,13 +599,14 @@
         let dragStartTime; 
 
         window.toggleBotWindow = function() {
+            if(window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); }
             if (chat.style.display === 'flex') {
                 chat.style.display = 'none';
-                hint.innerHTML = "⚡ KOHMZ Lexie";
+                if(hint) hint.innerHTML = "⚡ KOHMZ Lexie";
             } else {
                 chat.style.display = 'flex';
-                badge.style.display = 'none';
-                hint.innerHTML = "🖐️ Drag to Move";
+                if(badge) badge.style.display = 'none';
+                if(hint) hint.innerHTML = "🖐️ Drag to Move";
                 if(window.speechSynthesis) window.speechSynthesis.resume();
             }
         }
@@ -640,60 +642,80 @@
             }
         };
 
-        toggle.addEventListener('mousedown', dragStart);
-        toggle.addEventListener('touchstart', dragStart, {passive: false});
+        if(toggle) {
+            toggle.addEventListener('mousedown', dragStart);
+            toggle.addEventListener('touchstart', dragStart, {passive: false});
+        }
         window.addEventListener('mousemove', dragMove);
         window.addEventListener('touchmove', dragMove, {passive: false});
         window.addEventListener('mouseup', dragEnd);
         window.addEventListener('touchend', dragEnd);
 
+        // --- UNIVERSAL DATA SCRAPER ---
         window.askGemini = async function() {
             const inputField = document.getElementById("userQuery");
             const chatBody = document.getElementById("chatBody");
-            if(!inputField) return;
-            const message = inputField.value.trim();
+            if(!inputField) return; 
+            const message = inputField.value.trim(); 
             if(!message) return;
-            
+
             if(window.speechSynthesis) window.speechSynthesis.resume();
-            
+
             chatBody.innerHTML += `<div class="chat-bubble user-bubble" style="background:rgba(0,229,255,0.1);align-self:flex-end;border-left:none;border-right:2px solid #ffb703;color:#fff;padding:10px;border-radius:12px 0 12px 12px;margin-bottom:10px;white-space:pre-wrap;text-align:right;">YOU: ${message}</div>`;
-            inputField.value = "";
+            inputField.value = ""; 
             chatBody.scrollTop = chatBody.scrollHeight;
-            
-            const loadId = "loading-" + Date.now();
-            chatBody.innerHTML += `<div class="chat-bubble" id="${loadId}" style="border-left:2px solid #00e5ff;">Lexie: Processing request...</div>`;
+
+            const loadId = "loading-" + Date.now(); 
+            chatBody.innerHTML += `<div class="chat-bubble" id="${loadId}" style="border-left:2px solid #00e5ff;">Lexie: Processing request...</div>`; 
             chatBody.scrollTop = chatBody.scrollHeight;
-            
+
+            // DYNAMIC SCRAPING MAGIC
+            let scrapedContent = "";
+            const cards = document.querySelectorAll('.card');
+            if(cards.length > 0) {
+                scrapedContent += Array.from(cards).map(c => c.innerText.replace(/\n/g, ' ')).join(' | ');
+            }
+            const details = document.querySelectorAll('details');
+            if(details.length > 0) {
+                scrapedContent += " " + Array.from(details).map(d => d.innerText.replace(/\n/g, ' ')).join(' | ');
+            }
+            if(scrapedContent === "") {
+                const paragraphs = document.querySelectorAll('main p, .content-section p');
+                scrapedContent += Array.from(paragraphs).map(p => p.innerText).join(' ');
+            }
+            scrapedContent = scrapedContent.substring(0, 1500);
+
             try {
+                // IPAPADALA NATIN YUNG BINASANG LISTAHAN KAY LEXIE
                 const response = await fetch(WORKER_URL, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({message: message, name: "Web Client"})
+                    body: JSON.stringify({
+                        message: message, 
+                        name: "Web Client", 
+                        pageName: document.title,
+                        pageData: scrapedContent
+                    })
                 });
-                const result = await response.json();
+                
+                const result = await response.json(); 
                 document.getElementById(loadId)?.remove();
                 
-                const aiReply = result.ai_answer || "System calibration error.";
+                const aiReply = result.ai_answer || "System calibration error."; 
                 const cleanReplyForButton = aiReply.replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/(?:\r\n|\r|\n)/g," ");
                 
                 chatBody.innerHTML += `<div class="chat-bubble" style="border-left:2px solid #00e5ff;">Lexie: ${aiReply}<div style="margin-top:8px;border-top:1px solid rgba(0,229,255,0.2);padding-top:5px;"><button onclick="speakText('${cleanReplyForButton}')" style="background:none;border:none;color:#ffb703;cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;"><i class="fas fa-volume-up"></i> Play Audio</button></div></div>`;
-                chatBody.scrollTop = chatBody.scrollHeight;
+                chatBody.scrollTop = chatBody.scrollHeight; 
                 speakText(aiReply);
-            } catch(err) {
-                if(document.getElementById(loadId)) {
-                    document.getElementById(loadId).innerHTML = "Lexie: Connection lost. Re-syncing...";
-                }
+            } catch(e) {
+                if(document.getElementById(loadId)) document.getElementById(loadId).innerHTML = "Lexie: Connection lost. Re-syncing...";
             }
         };
 
         const uQuery = document.getElementById("userQuery");
-        if (uQuery) {
-            uQuery.addEventListener("keypress", e => {
-                if (e.key === "Enter") window.askGemini();
-            });
-        }
+        if (uQuery) { uQuery.addEventListener("keypress", e => { if (e.key === "Enter") window.askGemini(); }); }
 
-        setTimeout(() => { if (chat.style.display !== 'flex') toggleBotWindow(); }, 6000);
+        setTimeout(() => { if (chat && chat.style.display !== 'flex') toggleBotWindow(); }, 6000);
     </script>
 </body>
 </html>
