@@ -346,30 +346,52 @@
             }
         });
 
-        // --- BOA HANCOCK STRICTLY FEMALE VOICE FIX ---
+       // --- 2. STRICTLY FEMALE VOICE ENGINE (DELAY-FIXED) ---
+        let empressVoice = null;
+
+        // Function para hanapin at i-lock ang boses-babae
+        function loadFemaleVoice() {
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length === 0) return; // Wag pilitin kung di pa ready ang browser
+
+            // 1st Priority: Hanapin ang selyadong boses babae
+            empressVoice = voices.find(v => 
+                v.name.includes("Google US English Female") || 
+                v.name.includes("Google UK English Female") || 
+                v.name.includes("Microsoft Aria") || 
+                v.name.includes("Samantha") || 
+                v.name.includes("Zira") ||
+                v.name.toLowerCase().includes("female")
+            );
+
+            // 2nd Priority: Kung wala talaga, kumuha ng kahit anong boses na HINDI lalaki
+            if (!empressVoice) {
+                empressVoice = voices.find(v => !v.name.includes("David") && !v.name.includes("Mark") && !v.name.includes("Male"));
+            }
+        }
+
+        // Pilitin ang browser na i-load ang boses pagkabukas ng site
+        window.speechSynthesis.onvoiceschanged = loadFemaleVoice;
+        loadFemaleVoice(); // Subukan agad
+
         window.speakText = function(text) {
             if (!window.speechSynthesis) return;
             window.speechSynthesis.cancel();
             
             let utterance = new SpeechSynthesisUtterance(text);
-            const voices = window.speechSynthesis.getVoices();
             
-            // STRICT FILTER PARA HINDI MAGING LALAKI ANG BOSES
-            let selectedVoice = voices.find(v => 
-                v.name.includes("Google UK English Female") || 
-                v.name.includes("Google US English Female") || 
-                v.name.includes("Samantha") || 
-                v.name.includes("Zira") ||
-                v.name.includes("Female")
-            ) || voices[0];
+            // Double check kung na-load na ba si Empress
+            if (!empressVoice) loadFemaleVoice();
             
-            utterance.voice = selectedVoice;
-            utterance.pitch = 1.0;  // Standard Female Pitch (Iwas boses lalaki)
-            utterance.rate = 0.85;  // Slow, arrogant Empress pacing
+            if (empressVoice) {
+                utterance.voice = empressVoice;
+            }
+            
+            utterance.pitch = 1.1;  // Clear female pitch
+            utterance.rate = 0.85;  // Empress pacing (Boa Hancock style)
             
             window.speechSynthesis.speak(utterance);
         };
-
         // --- AI API CALL ---
         window.askGemini = async function() {
             const input = document.getElementById("userQuery");
