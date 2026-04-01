@@ -41,9 +41,9 @@
         .logo-text { font-size: 22px; margin: 0; font-weight: 900; color: #fff; display: inline-block; font-family: 'Segoe UI', sans-serif;}
         .logo-text span { color: #ffb703; }
 
-        .menu-toggle { display: none; font-size: 26px; cursor: pointer; color: #00e5ff; z-index: 1001; background: none; border: none; }
+        .menu-toggle { display: none; font-size: 26px; cursor: pointer; color: #00e5ff; z-index: 1001; background: none; border: none; padding: 5px; }
 
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 20px; transition: 0.3s ease; }
+        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 25px; transition: 0.3s ease; }
         .nav-links li a { color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; font-family: 'Share Tech Mono', monospace; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
         .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
         
@@ -59,14 +59,14 @@
                 display: none; flex-direction: column; position: absolute; top: 100%; left: 0; 
                 width: 100%; background: rgba(8, 16, 24, 0.98); padding: 0; margin: 0; 
                 border-bottom: 4px solid #00e5ff; 
-                max-height: 85vh; overflow-y: auto;
+                max-height: 80vh; overflow-y: auto;
             }
             .nav-links.active { display: flex; }
             .nav-links li { width: 100%; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); margin: 0; }
-            .nav-links li a { font-size: 14px; width: 100%; padding: 15px 25px; display: flex; justify-content: space-between; }
+            .nav-links li a { font-size: 14px; width: 100%; padding: 20px 25px; display: flex; justify-content: space-between; }
             .dropdown-content { position: static; display: none; background: rgba(0,0,0,0.4); width: 100%; border: none; padding-left: 0; }
             .dropdown.active .dropdown-content { display: block; }
-            .dropdown-content a { padding: 12px 20px 12px 40px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; }
+            .dropdown-content a { padding: 15px 20px 15px 45px !important; font-size: 13px !important; border-left: 3px solid #ffb703; color: #e0faff !important; white-space: normal; line-height: 1.4; }
         }
 
         .hero { background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; background-size: cover; padding: 100px 20px; text-align: center; color: white; position: relative; z-index: 2; }
@@ -219,7 +219,6 @@
 
         <section class="content-section">
             <h2 data-aos="fade-down">Advice from the KOHMZ Professional Team</h2>
-            
             <div class="tip-grid">
                 <details class="tip-card" data-aos="fade-up" data-aos-delay="100">
                     <summary>1. Panel Board Load Evaluation</summary>
@@ -293,11 +292,11 @@
     <footer aria-label="Site Footer">
         <div class="logo" style="justify-content: center; margin-bottom: 20px;">
             <img src="logo.jpg" alt="KOHMZ Electrical Services logo" width="35" height="35" loading="lazy" style="border: 1px solid #00e5ff; border-radius: 4px;">
-            <span class="logo-text" style="font-size: 22px; font-weight: 900; color: #fff; font-family: 'Segoe UI', sans-serif;">KOHMZ <span style="color: #ffb703;">Electrical</span></span>
+            <span class="logo-text">KOHMZ <span style="color: #ffb703;">Electrical</span></span>
         </div>
-        <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 12px; line-height: 1.6;">Your trusted partner in structural power integrity. We specialize in bringing world-class electrical engineering standards to every Philippine home and business facility.</p>
-        <p>&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
-        <nav class="footer-links" aria-label="Footer Navigation">
+        <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 12px; line-height: 1.6; text-align: center;">Your trusted partner in structural power integrity. We specialize in bringing world-class electrical engineering standards to every Philippine home and business facility.</p>
+        <p style="text-align:center;">&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
+        <nav class="footer-links" aria-label="Footer Navigation" style="text-align:center;">
             <p style="margin-bottom: 5px; color: #ffb703; font-weight: 800; font-size: 12px;">Technical Governance | Asset Protection | PEC-Compliant Architecture</p>
             <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
             <a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
@@ -344,19 +343,18 @@
             const dropbtn = dropdown.querySelector('.dropbtn'); 
             const handleDropdownToggle = (e) => { 
                 if (window.innerWidth <= 992) { 
-                    if(dropbtn.getAttribute('href') === '#') e.preventDefault(); 
+                    if(dropbtn && dropbtn.getAttribute('href') === '#') e.preventDefault(); 
                     dropdown.classList.toggle('active'); 
                 } 
             }; 
-            if(dropbtn) { 
-                dropbtn.addEventListener('click', handleDropdownToggle); 
-            } 
+            if(dropbtn) { dropbtn.addEventListener('click', handleDropdownToggle); } 
         });
 
-        // TYPEWRITER
+        // TYPEWRITER (FIXED: mainText -> mainTypeText)
         const mainTypeText = "TECHNICAL INSIGHTS & "; let mainTypeIndex = 0; const mainTypeElement = document.getElementById("main-typewriter-text");
-        function startTyping() { if (mainTypeElement && mainTypeIndex < mainTypeText.length) { mainTypeElement.innerHTML += mainText.charAt(mainTypeIndex++); setTimeout(startTyping, 60); } } 
+        function startTyping() { if (mainTypeElement && mainTypeIndex < mainTypeText.length) { mainTypeElement.innerHTML += mainTypeText.charAt(mainTypeIndex++); setTimeout(startTyping, 60); } } 
         startTyping();
+
         class TypeWriter { constructor(e,t,n){this.el=e;this.words=t;this.txt="";this.wordIdx=0;this.wait=parseInt(n,10);this.isDel=false;this.type()} type(){const e=this.wordIdx%this.words.length,t=this.words[e];this.txt=this.isDel?t.substring(0,this.txt.length-1):t.substring(0,this.txt.length+1);this.el.innerHTML=`<span class="txt">${this.txt}</span>`;let n=100;if(this.isDel)n/=2;if(!this.isDel&&this.txt===t){n=this.wait;this.isDel=true}else if(this.isDel&&this.txt===""){this.isDel=false;this.wordIdx++;n=500}setTimeout(()=>this.type(),n)} }
         const subEl = document.querySelector('.txt-type'); if (subEl) { const wordsData = subEl.getAttribute('data-words'), wait = subEl.getAttribute('data-wait'); if (wordsData) new TypeWriter(subEl, JSON.parse(wordsData), wait); }
 
@@ -370,16 +368,22 @@
             } else { alert("Pakisuyong ilagay ang Watts (P) para makapag-compute."); }
         }
 
-        // LEXIE AI & DRAG LOGIC
+        // LEXIE AI & DRAG LOGIC (FIXED: chatWindow -> chat)
         setInterval(()=>{if(window.speechSynthesis)window.speechSynthesis.resume()},1000);
         window.speakText=function(e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();let t=e.replace(/\./g,"... ").replace(/,/g,",.. ");const n=new SpeechSynthesisUtterance(t),s=window.speechSynthesis.getVoices(),i=s.find(e=>e.name.includes("Samantha")||e.name.includes("Aria")||e.name.includes("Google US English")||e.name.includes("Female")||e.name.includes("Enhanced"))||s[0];if(i)n.voice=i;n.lang="en-US";n.pitch=1.15;n.rate=0.85;n.volume=1;window.speechSynthesis.speak(n)};
-        window.toggleBotWindow=function(){const chat=document.getElementById("chatWindow"),hint=document.getElementById("dragHint");if(chat.style.display==="flex"){chat.style.display="none";hint.innerHTML="⚡ KOHMZ Lexie"}else{chat.style.display="flex";hint.innerHTML="🖐️ Drag to Move";if(window.speechSynthesis)window.speechSynthesis.resume()}};
         
-        const wrapper=document.getElementById('draggableBot'), toggle=document.getElementById('botToggle');
+        const wrapper=document.getElementById('draggableBot'), toggle=document.getElementById('botToggle'), chat=document.getElementById('chatWindow'), hint=document.getElementById('dragHint');
         let isDragging=false, startX, startY, xOffset=0, yOffset=0, dragStartTime; 
+
+        window.toggleBotWindow=function(){
+            if(window.speechSynthesis.speaking){window.speechSynthesis.cancel()}
+            if(chat.style.display==="flex"){chat.style.display="none";hint.innerHTML="⚡ KOHMZ Lexie"}else{chat.style.display="flex";hint.innerHTML="🖐️ Drag to Move";if(window.speechSynthesis)window.speechSynthesis.resume()}
+        };
+        
         const dragStart=(e)=>{isDragging=true; dragStartTime=Date.now(); const clientX=(e.type==="touchstart")?e.touches[0].clientX:e.clientX; const clientY=(e.type==="touchstart")?e.touches[0].clientY:e.clientY; startX=clientX-xOffset; startY=clientY-yOffset;};
         const dragMove=(e)=>{if(!isDragging)return; if(e.cancelable)e.preventDefault(); const clientX=(e.type==="touchmove")?e.touches[0].clientX:e.clientX; const clientY=(e.type==="touchmove")?e.touches[0].clientY:e.clientY; xOffset=clientX-startX; yOffset=clientY-startY; wrapper.style.transform=`translate3d(${xOffset}px, ${yOffset}px, 0)`;};
         const dragEnd=(e)=>{if(!isDragging)return; isDragging=false; if(Date.now()-dragStartTime<200) toggleBotWindow();};
+
         toggle.addEventListener('mousedown', dragStart); toggle.addEventListener('touchstart', dragStart, {passive: false});
         window.addEventListener('mousemove', dragMove); window.addEventListener('touchmove', dragMove, {passive: false});
         window.addEventListener('mouseup', dragEnd); window.addEventListener('touchend', dragEnd);
@@ -402,7 +406,7 @@
         const uQuery = document.getElementById("userQuery");
         if (uQuery) { uQuery.addEventListener("keypress", e => { if (e.key === "Enter") window.askGemini(); }); }
 
-        setTimeout(() => { if (chatWindow && chatWindow.style.display !== 'flex') toggleBotWindow(); }, 6000);
+        setTimeout(() => { if (chat && chat.style.display !== 'flex') toggleBotWindow(); }, 6000);
     </script>
 </body>
 </html>
