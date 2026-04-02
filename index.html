@@ -889,17 +889,26 @@ window.askGemini = async function() {
 
         aiReply = aiReply.replace(/\[CALENDAR: (.*?)\]/g, '<br><a href="$1" target="_blank" class="btn-pdf" style="background:var(--cyber-blue);color:#000;"><i class="fas fa-calendar-alt"></i> Save to Calendar</a>');
 
-        // FORMAL PDF TRIGGER LOGIC
+        // FORMAL PDF TRIGGER LOGIC (TIMEBOMB QA PASSED)
         if(result.has_estimate && !result.code_red) {
-            const rawEst = aiReply.replace(/<[^>]*>?/gm, '').replace(/\*\*/g, '').replace(/\*/g, '').replace(/'/g, "\\'"); 
-            sessionStorage.setItem('lastEst', rawEst);
+            // PREPARE DATA FOR PDF ONLY (NO BACKSLASHES HERE)
+            const cleanDataForPDF = aiReply
+                .replace(/<br\s*\/?>/gi, '\n') // Keep line breaks for jsPDF
+                .replace(/<[^>]*>?/gm, '')     // Remove remaining HTML tags
+                .replace(/\*\*/g, '')          // Remove markdown bold
+                .replace(/\*/g, '')            // Remove markdown bullet
+                .replace(/₱/g, 'PHP ');        // Prevent jsPDF encoding bug
+
+            sessionStorage.setItem('lastEst', cleanDataForPDF);
             aiReply += `<br><br><button onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Formal Estimate</button>`;
         }
 
         lexieMemory.push({ role: "assistant", content: result.ai_answer });
         sessionStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
         
+        // PREPARE DATA FOR AUDIO BUTTON ONLY (WITH BACKSLASHES TO PREVENT ONCLICK BREAK)
         const cleanReplyForButton = result.ai_answer.replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/(?:\r\n|\r|\n)/g, " ");
+        
         t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--cyber-blue);">Lexie: ${aiReply}<div style="margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;"><button onclick="window.speakText('${cleanReplyForButton}')" style="background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0; transition:0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--neon-gold)'"><i class="fas fa-volume-up"></i> Play Audio</button></div></div>`;
         t.scrollTop = t.scrollHeight;
         window.speakText(result.ai_answer);
@@ -912,56 +921,83 @@ window.askGemini = async function() {
     }
 };
 
-// --- NATIVE PDF GENERATOR (THE ULTIMATE ENTERPRISE FIX) ---
-window.downloadPDF = function() {
+// --- NATIVE PDF GENERATOR (THE ULTIMATE ENTERPRISE FIX - BUG FREE) ---
+window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) {
         alert("System Error: No estimate data found.");
         return;
     }
 
-    // Call Native jsPDF Engine directly
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ format: 'letter', unit: 'mm' });
 
-    // Measurements & Setup
     const margin = 15;
     const pageWidth = doc.internal.pageSize.getWidth();
     const contentWidth = pageWidth - (margin * 2);
     let cursorY = margin + 5;
 
-    // --- HEADER: KOHMZ ELECTRICAL ---
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(22);
-    doc.setTextColor(13, 27, 42); // Dark Navy
-    doc.text("KOHMZ", margin, cursorY);
-    
-    doc.setTextColor(255, 183, 3); // Neon Gold
-    doc.text("Electrical", margin + 35, cursorY);
+    // --- SAFELY LOAD LOGO (DYNAMIC BASE64) ---
+    try {
+        const imgData = await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                resolve(canvas.toDataURL('image/jpeg'));
+            };
+            img.onerror = reject;
+            img.src = 'logo.jpg';
+        });
+        
+        // If Logo loads successfully
+        doc.addImage(imgData, 'JPEG', margin, 15, 20, 20);
+        
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(22);
+        doc.setTextColor(13, 27, 42); 
+        doc.text("KOHMZ", margin + 25, 23);
+        doc.setTextColor(255, 183, 3); 
+        doc.text("Electrical", margin + 60, 23);
 
-    // Subheader
-    cursorY += 6;
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(8);
-    doc.setTextColor(100, 100, 100);
-    doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", margin, cursorY);
+        doc.setFontSize(8);
+        doc.setTextColor(100, 100, 100);
+        doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", margin + 25, 29);
+        
+    } catch (err) {
+        // FALLBACK: Pure Text Header (If WebView blocks Canvas CORS or Offline)
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(22);
+        doc.setTextColor(13, 27, 42); 
+        doc.text("KOHMZ", margin, 23);
+        doc.setTextColor(255, 183, 3); 
+        doc.text("Electrical", margin + 35, 23);
+
+        doc.setFontSize(8);
+        doc.setTextColor(100, 100, 100);
+        doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", margin, 29);
+    }
 
     // Contact Info (Right Aligned)
     doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
     doc.setTextColor(68, 68, 68);
-    doc.text("Laguna, Philippines", pageWidth - margin, cursorY - 10, { align: "right" });
-    doc.text("0926-617-4131", pageWidth - margin, cursorY - 5, { align: "right" });
-    doc.text("kohmzelectrical@gmail.com", pageWidth - margin, cursorY, { align: "right" });
+    doc.text("Laguna, Philippines", pageWidth - margin, 19, { align: "right" });
+    doc.text("0926-617-4131", pageWidth - margin, 24, { align: "right" });
+    doc.text("kohmzelectrical@gmail.com", pageWidth - margin, 29, { align: "right" });
 
     // Divider Line
-    cursorY += 8;
-    doc.setDrawColor(255, 183, 3); // Gold line
+    doc.setDrawColor(255, 183, 3); 
     doc.setLineWidth(1);
-    doc.line(margin, cursorY, pageWidth - margin, cursorY);
+    doc.line(margin, 35, pageWidth - margin, 35);
+    
+    cursorY = 45; // Set cursor below header
     
     // --- TITLE: AI ESTIMATE SUMMARY ---
-    cursorY += 15;
     doc.setFillColor(244, 244, 244);
     doc.rect(margin, cursorY - 6, contentWidth, 10, 'F');
     doc.setFont("helvetica", "bold");
@@ -987,11 +1023,8 @@ window.downloadPDF = function() {
     doc.setFontSize(10);
     doc.setTextColor(34, 34, 34);
 
-    // Clean data from any remaining HTML tags for safety
-    let cleanData = data.replace(/<[^>]*>?/gm, '').replace(/\*\*/g, '').replace(/\*/g, '');
-    
-    // Split text automatically to fit the paper width
-    const textLines = doc.splitTextToSize(cleanData, contentWidth);
+    // Split text automatically to fit the paper width (Natively respects \n)
+    const textLines = doc.splitTextToSize(data, contentWidth);
     const pageHeight = doc.internal.pageSize.getHeight();
 
     for (let i = 0; i < textLines.length; i++) {
@@ -1001,7 +1034,7 @@ window.downloadPDF = function() {
             cursorY = margin + 10;
         }
         doc.text(textLines[i], margin, cursorY);
-        cursorY += 5; // Line height spacing
+        cursorY += 5.5; // Line height spacing
     }
 
     // --- FOOTER DISCLAIMER ---
