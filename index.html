@@ -27,7 +27,8 @@
     
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
@@ -679,7 +680,7 @@ if (!userId) {
 let lexieMemory = JSON.parse(sessionStorage.getItem('lexie_memory')) || [];
 let currentImageData = null;
 let isGodMode = sessionStorage.getItem('isGod') === 'true';
-let godName = sessionStorage.getItem('god_name') || ""; // THE LOG PATCH UPDATE
+let godName = sessionStorage.getItem('god_name') || ""; 
 
 // CHECK IF ALREADY IN IMMORTAL MODE (Update UI)
 if(isGodMode) {
@@ -697,7 +698,7 @@ window.exitGodMode = function() {
     if(!isGodMode) return;
     isGodMode = false;
     sessionStorage.removeItem('isGod');
-    sessionStorage.removeItem('god_name'); // Clear identity
+    sessionStorage.removeItem('god_name'); 
     godName = "";
     
     const hint = document.getElementById("dragHint");
@@ -708,7 +709,7 @@ window.exitGodMode = function() {
     const tsCont = document.getElementById("cf-turnstile-container");
     if(tsCont) tsCont.style.display = "flex";
     
-    resetTurnstile(); // Lock button and verify again
+    resetTurnstile(); 
     
     const body = document.getElementById("chatBody");
     body.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold);">Lexie: Immortal Mode deactivated. Returning to standard protocol.</div>`;
@@ -911,7 +912,7 @@ window.askGemini = async function() {
     }
 };
 
-// --- FORMAL PDF GENERATOR (THE TITANIUM WEBVIEW FIX) ---
+// --- NATIVE PDF GENERATOR (THE ULTIMATE ENTERPRISE FIX) ---
 window.downloadPDF = function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) {
@@ -919,60 +920,110 @@ window.downloadPDF = function() {
         return;
     }
 
-    const container = document.createElement('div');
-    // Hack: Keep in viewport but invisible to force render, avoid scroll bugs
-    container.style.cssText = "position: absolute; top: 0; left: 0; z-index: -9999; opacity: 0.01; width: 800px; background-color: #ffffff; color: #000000; padding: 40px; font-family: 'Segoe UI', Arial, sans-serif; box-sizing: border-box; word-wrap: break-word; overflow-wrap: break-word;";
+    // Call Native jsPDF Engine directly
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ format: 'letter', unit: 'mm' });
 
-    container.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #ffb703;padding-bottom:15px;margin-bottom:30px;background-color:#ffffff;">
-            <div>
-                <h1 style="color:#0d1b2a;margin:0;font-size:32px;font-weight:900;text-transform:uppercase;letter-spacing:1px;">KOHMZ <span style="color:#ffb703;">Electrical</span></h1>
-                <p style="margin:5px 0 0;font-size:11px;color:#666666;font-weight:bold;letter-spacing:1.5px;">TECHNICAL GOVERNANCE & POWER ARCHITECTURE</p>
-            </div>
-            <div style="text-align:right;font-size:12px;color:#444444;line-height:1.6;">
-                <strong>Laguna, Philippines</strong><br>
-                📞 0926-617-4131<br>
-                ✉️ kohmzelectrical@gmail.com
-            </div>
-        </div>
-        
-        <h2 style="text-align:center;color:#0d1b2a;text-transform:uppercase;letter-spacing:2px;margin-bottom:25px;background-color:#f4f4f4;padding:10px; border-radius:4px;">AI Estimate Summary</h2>
-        
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:30px;background-color:#f0fcfd;padding:15px;border:1px solid #00e5ff; border-radius:4px;color:#000000;">
-            <span><strong>Tracking Ref ID:</strong> ${userId}</span>
-            <span><strong>Date Prepared:</strong> ${new Date().toLocaleDateString()}</span>
-        </div>
-        
-        <div style="font-size:13px;line-height:1.8;white-space:pre-wrap;word-break:break-word;width:100%;color:#222222;margin-bottom:60px;background-color:#ffffff;">${data}</div>
-        
-        <div style="margin-top:auto;border-top:1px solid #cccccc;padding-top:20px;font-size:10px;color:#666666;text-align:center;line-height:1.5;background-color:#ffffff;">
-            <strong style="color:#000000;">Prepared by: Lexie (KOHMZ AI Assistant)</strong><br><br>
-            <em>DISCLAIMER: This document is a rough, unverified AI estimate generated for reference purposes only. This does not serve as an official contract, quotation, or legal agreement. Final and accurate pricing is strictly subject to an actual on-site Technical Audit conducted by KOHMZ Electrical professionals.</em>
-        </div>
-    `;
+    // Measurements & Setup
+    const margin = 15;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const contentWidth = pageWidth - (margin * 2);
+    let cursorY = margin + 5;
 
-    document.body.appendChild(container);
+    // --- HEADER: KOHMZ ELECTRICAL ---
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.setTextColor(13, 27, 42); // Dark Navy
+    doc.text("KOHMZ", margin, cursorY);
+    
+    doc.setTextColor(255, 183, 3); // Neon Gold
+    doc.text("Electrical", margin + 35, cursorY);
 
-    // Force scroll 0 and explicit dimensions
-    html2pdf().set({
-        filename: 'KOHMZ_Estimate_Summary.pdf', 
-        margin: [0.5, 0.5, 0.5, 0.5],
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-            scale: 2, 
-            useCORS: true, 
-            letterRendering: true, 
-            width: 800, 
-            windowWidth: 800,
-            scrollX: 0,
-            scrollY: 0,
-            x: 0,
-            y: 0
-        },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    }).from(container).save().then(() => {
-        document.body.removeChild(container);
-    });
+    // Subheader
+    cursorY += 6;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", margin, cursorY);
+
+    // Contact Info (Right Aligned)
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(68, 68, 68);
+    doc.text("Laguna, Philippines", pageWidth - margin, cursorY - 10, { align: "right" });
+    doc.text("0926-617-4131", pageWidth - margin, cursorY - 5, { align: "right" });
+    doc.text("kohmzelectrical@gmail.com", pageWidth - margin, cursorY, { align: "right" });
+
+    // Divider Line
+    cursorY += 8;
+    doc.setDrawColor(255, 183, 3); // Gold line
+    doc.setLineWidth(1);
+    doc.line(margin, cursorY, pageWidth - margin, cursorY);
+    
+    // --- TITLE: AI ESTIMATE SUMMARY ---
+    cursorY += 15;
+    doc.setFillColor(244, 244, 244);
+    doc.rect(margin, cursorY - 6, contentWidth, 10, 'F');
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.setTextColor(13, 27, 42);
+    doc.text("AI ESTIMATE SUMMARY", pageWidth / 2, cursorY + 1, { align: "center" });
+
+    // --- META INFO BOX ---
+    cursorY += 12;
+    doc.setFillColor(240, 252, 253); 
+    doc.setDrawColor(0, 229, 255); 
+    doc.setLineWidth(0.3);
+    doc.rect(margin, cursorY, contentWidth, 8, 'FD');
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Tracking Ref ID: ${userId}`, margin + 3, cursorY + 5.5);
+    doc.text(`Date Prepared: ${new Date().toLocaleDateString()}`, pageWidth - margin - 3, cursorY + 5.5, { align: "right" });
+
+    // --- MAIN AI CONTENT ---
+    cursorY += 18;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(34, 34, 34);
+
+    // Clean data from any remaining HTML tags for safety
+    let cleanData = data.replace(/<[^>]*>?/gm, '').replace(/\*\*/g, '').replace(/\*/g, '');
+    
+    // Split text automatically to fit the paper width
+    const textLines = doc.splitTextToSize(cleanData, contentWidth);
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    for (let i = 0; i < textLines.length; i++) {
+        // Create new page if we run out of space
+        if (cursorY > pageHeight - 35) {
+            doc.addPage();
+            cursorY = margin + 10;
+        }
+        doc.text(textLines[i], margin, cursorY);
+        cursorY += 5; // Line height spacing
+    }
+
+    // --- FOOTER DISCLAIMER ---
+    const footerY = pageHeight - 20;
+    doc.setDrawColor(200, 200, 200);
+    doc.setLineWidth(0.5);
+    doc.line(margin, footerY - 5, pageWidth - margin, footerY - 5);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Prepared by: Lexie (KOHMZ AI Assistant)", pageWidth / 2, footerY, { align: "center" });
+
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(7);
+    doc.setTextColor(100, 100, 100);
+    const disclaimer = "DISCLAIMER: This document is a rough, unverified AI estimate generated for reference purposes only. This does not serve as an official contract, quotation, or legal agreement. Final and accurate pricing is strictly subject to an actual on-site Technical Audit conducted by KOHMZ Electrical professionals.";
+    const disclaimerLines = doc.splitTextToSize(disclaimer, contentWidth);
+    doc.text(disclaimerLines, pageWidth / 2, footerY + 5, { align: "center" });
+
+    // Generate & Download PDF
+    doc.save('KOHMZ_Estimate_Summary.pdf');
 };
 
 // --- AUDIO & UTILITIES ---
