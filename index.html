@@ -889,18 +889,19 @@ window.askGemini = async function() {
 
         aiReply = aiReply.replace(/\[CALENDAR: (.*?)\]/g, '<br><a href="$1" target="_blank" class="btn-pdf" style="background:var(--cyber-blue);color:#000;"><i class="fas fa-calendar-alt"></i> Save to Calendar</a>');
 
-        // FORMAL PDF TRIGGER LOGIC (TIMEBOMB QA PASSED)
+        // FORMAL PDF TRIGGER LOGIC (TIMEBOMB QA PASSED + FINAL LOCKS)
         if(result.has_estimate && !result.code_red) {
-            // PREPARE DATA FOR PDF ONLY (NO BACKSLASHES HERE)
+            // PREPARE DATA FOR PDF ONLY (NO BACKSLASHES, NO EMOJIS)
             const cleanDataForPDF = aiReply
                 .replace(/<br\s*\/?>/gi, '\n') // Keep line breaks for jsPDF
                 .replace(/<[^>]*>?/gm, '')     // Remove remaining HTML tags
                 .replace(/\*\*/g, '')          // Remove markdown bold
                 .replace(/\*/g, '')            // Remove markdown bullet
-                .replace(/₱/g, 'PHP ');        // Prevent jsPDF encoding bug
+                .replace(/₱/g, 'PHP ')         // Prevent jsPDF encoding bug
+                .replace(/[\u{1F300}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F1E0}-\u{1F1FF}\u{1F004}-\u{1F0CF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2B50}\u{2B55}\u{23F0}\u{23F3}]/gu, ''); // Emoji Eraser
 
             sessionStorage.setItem('lastEst', cleanDataForPDF);
-            aiReply += `<br><br><button onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Formal Estimate</button>`;
+            aiReply += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Formal Estimate</button>`;
         }
 
         lexieMemory.push({ role: "assistant", content: result.ai_answer });
@@ -921,7 +922,7 @@ window.askGemini = async function() {
     }
 };
 
-// --- NATIVE PDF GENERATOR (THE ULTIMATE ENTERPRISE FIX - BUG FREE) ---
+// --- NATIVE PDF GENERATOR (THE EXECUTIVE TIER) ---
 window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) {
@@ -929,17 +930,28 @@ window.downloadPDF = async function() {
         return;
     }
 
+    // ANTI-SPAM: Lock the button
+    const btn = document.getElementById('dlPdfBtn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+        btn.style.opacity = '0.6';
+        btn.style.cursor = 'not-allowed';
+    }
+
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ format: 'letter', unit: 'mm' });
 
     const margin = 15;
     const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
     const contentWidth = pageWidth - (margin * 2);
-    let cursorY = margin + 5;
+    
+    let textStartX = margin;
 
-    // --- SAFELY LOAD LOGO (DYNAMIC BASE64) ---
+    // 1. THE DYNAMIC LOGO LOADER (100% CRASH-FREE)
     try {
-        const imgData = await new Promise((resolve, reject) => {
+        const imgData = await new Promise((resolve) => {
             const img = new Image();
             img.crossOrigin = "Anonymous";
             img.onload = () => {
@@ -950,113 +962,123 @@ window.downloadPDF = async function() {
                 ctx.drawImage(img, 0, 0);
                 resolve(canvas.toDataURL('image/jpeg'));
             };
-            img.onerror = reject;
+            img.onerror = () => resolve(null); // Resolve null to prevent crash
             img.src = 'logo.jpg';
         });
-        
-        // If Logo loads successfully
-        doc.addImage(imgData, 'JPEG', margin, 15, 20, 20);
-        
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(22);
-        doc.setTextColor(13, 27, 42); 
-        doc.text("KOHMZ", margin + 25, 23);
-        doc.setTextColor(255, 183, 3); 
-        doc.text("Electrical", margin + 60, 23);
 
-        doc.setFontSize(8);
-        doc.setTextColor(100, 100, 100);
-        doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", margin + 25, 29);
-        
-    } catch (err) {
-        // FALLBACK: Pure Text Header (If WebView blocks Canvas CORS or Offline)
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(22);
-        doc.setTextColor(13, 27, 42); 
-        doc.text("KOHMZ", margin, 23);
-        doc.setTextColor(255, 183, 3); 
-        doc.text("Electrical", margin + 35, 23);
-
-        doc.setFontSize(8);
-        doc.setTextColor(100, 100, 100);
-        doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", margin, 29);
-    }
-
-    // Contact Info (Right Aligned)
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(68, 68, 68);
-    doc.text("Laguna, Philippines", pageWidth - margin, 19, { align: "right" });
-    doc.text("0926-617-4131", pageWidth - margin, 24, { align: "right" });
-    doc.text("kohmzelectrical@gmail.com", pageWidth - margin, 29, { align: "right" });
-
-    // Divider Line
-    doc.setDrawColor(255, 183, 3); 
-    doc.setLineWidth(1);
-    doc.line(margin, 35, pageWidth - margin, 35);
-    
-    cursorY = 45; // Set cursor below header
-    
-    // --- TITLE: AI ESTIMATE SUMMARY ---
-    doc.setFillColor(244, 244, 244);
-    doc.rect(margin, cursorY - 6, contentWidth, 10, 'F');
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(12);
-    doc.setTextColor(13, 27, 42);
-    doc.text("AI ESTIMATE SUMMARY", pageWidth / 2, cursorY + 1, { align: "center" });
-
-    // --- META INFO BOX ---
-    cursorY += 12;
-    doc.setFillColor(240, 252, 253); 
-    doc.setDrawColor(0, 229, 255); 
-    doc.setLineWidth(0.3);
-    doc.rect(margin, cursorY, contentWidth, 8, 'FD');
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(9);
-    doc.setTextColor(0, 0, 0);
-    doc.text(`Tracking Ref ID: ${userId}`, margin + 3, cursorY + 5.5);
-    doc.text(`Date Prepared: ${new Date().toLocaleDateString()}`, pageWidth - margin - 3, cursorY + 5.5, { align: "right" });
-
-    // --- MAIN AI CONTENT ---
-    cursorY += 18;
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.setTextColor(34, 34, 34);
-
-    // Split text automatically to fit the paper width (Natively respects \n)
-    const textLines = doc.splitTextToSize(data, contentWidth);
-    const pageHeight = doc.internal.pageSize.getHeight();
-
-    for (let i = 0; i < textLines.length; i++) {
-        // Create new page if we run out of space
-        if (cursorY > pageHeight - 35) {
-            doc.addPage();
-            cursorY = margin + 10;
+        if (imgData) {
+            doc.addImage(imgData, 'JPEG', margin, 15, 20, 20);
+            textStartX = margin + 25; // Shift text to right of logo
         }
-        doc.text(textLines[i], margin, cursorY);
-        cursorY += 5.5; // Line height spacing
+    } catch (e) {
+        textStartX = margin; // Fallback if logo totally fails
     }
 
-    // --- FOOTER DISCLAIMER ---
-    const footerY = pageHeight - 20;
-    doc.setDrawColor(200, 200, 200);
-    doc.setLineWidth(0.5);
-    doc.line(margin, footerY - 5, pageWidth - margin, footerY - 5);
+    // 2. THE "EXECUTIVE" HEADER
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(26);
+    doc.setTextColor(13, 27, 42); // Dark Navy
+    doc.text("KOHMZ", textStartX, 23);
+    
+    const kohmzWidth = doc.getTextWidth("KOHMZ ");
+    doc.setTextColor(255, 183, 3); // Neon Gold
+    doc.text("Electrical", textStartX + kohmzWidth, 23);
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
-    doc.setTextColor(0, 0, 0);
-    doc.text("Prepared by: Lexie (KOHMZ AI Assistant)", pageWidth / 2, footerY, { align: "center" });
+    doc.setTextColor(100, 100, 100);
+    doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
+
+    // 3. THE "FULL ARSENAL" CONTACT RIBBON (Right Aligned)
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(50, 50, 50);
+    const rightAlign = pageWidth - margin;
+    
+    doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
+    doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
+    doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
+    doc.text("Email: kohmzelectrical@gmail.com", rightAlign, 33, { align: "right" });
+
+    // Premium Divider Line
+    doc.setDrawColor(255, 183, 3); // Neon Gold
+    doc.setLineWidth(1.2);
+    doc.line(margin, 40, rightAlign, 40);
+
+    // 4. "SYSTEM-GENERATED" META BOX
+    let cursorY = 48;
+    doc.setFillColor(240, 250, 255); // Light Cyan
+    doc.setDrawColor(0, 229, 255); // Cyber Blue Border
+    doc.setLineWidth(0.4);
+    doc.rect(margin, cursorY, contentWidth, 12, 'FD');
+    
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(13, 27, 42);
+    doc.text(`TRACKING REF ID: ${userId}`, margin + 5, cursorY + 7.5);
+    doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, cursorY + 7.5, { align: "right" });
+
+    // Title
+    cursorY += 22;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.setTextColor(13, 27, 42);
+    doc.text("AI ESTIMATE SUMMARY", pageWidth / 2, cursorY, { align: "center" });
+    
+    // Subtle underline
+    doc.setDrawColor(200, 200, 200);
+    doc.setLineWidth(0.5);
+    doc.line((pageWidth/2) - 30, cursorY + 3, (pageWidth/2) + 30, cursorY + 3);
+
+    // 5. THE CLEAN AI ESTIMATE BODY
+    cursorY += 15;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(40, 40, 40);
+
+    const textLines = doc.splitTextToSize(data, contentWidth);
+    const lineHeight = 5.5;
+
+    for (let i = 0; i < textLines.length; i++) {
+        // Smart Pagination (Leave 35mm for bottom margins and footer)
+        if (cursorY > pageHeight - 35) {
+            doc.addPage();
+            cursorY = margin + 15; // Reset to top
+        }
+        doc.text(textLines[i], margin, cursorY);
+        cursorY += lineHeight;
+    }
+
+    // 6. THE "FORBES 500" FOOTER BLOCK
+    const footerY = pageHeight - 25;
+    
+    // Dark Navy Thick Line
+    doc.setDrawColor(13, 27, 42);
+    doc.setLineWidth(1.5);
+    doc.line(margin, footerY - 5, rightAlign, footerY - 5);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(13, 27, 42);
+    doc.text("PREPARED BY: LEXIE (KOHMZ AI ASSISTANT)", pageWidth / 2, footerY + 2, { align: "center" });
 
     doc.setFont("helvetica", "italic");
     doc.setFontSize(7);
     doc.setTextColor(100, 100, 100);
     const disclaimer = "DISCLAIMER: This document is a rough, unverified AI estimate generated for reference purposes only. This does not serve as an official contract, quotation, or legal agreement. Final and accurate pricing is strictly subject to an actual on-site Technical Audit conducted by KOHMZ Electrical professionals.";
     const disclaimerLines = doc.splitTextToSize(disclaimer, contentWidth);
-    doc.text(disclaimerLines, pageWidth / 2, footerY + 5, { align: "center" });
+    doc.text(disclaimerLines, pageWidth / 2, footerY + 7, { align: "center" });
 
     // Generate & Download PDF
     doc.save('KOHMZ_Estimate_Summary.pdf');
+
+    // ANTI-SPAM: Unlock the button
+    if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Formal Estimate';
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+    }
 };
 
 // --- AUDIO & UTILITIES ---
