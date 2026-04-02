@@ -679,6 +679,7 @@ if (!userId) {
 let lexieMemory = JSON.parse(sessionStorage.getItem('lexie_memory')) || [];
 let currentImageData = null;
 let isGodMode = sessionStorage.getItem('isGod') === 'true';
+let godName = sessionStorage.getItem('god_name') || ""; // THE LOG PATCH UPDATE
 
 // CHECK IF ALREADY IN IMMORTAL MODE (Update UI)
 if(isGodMode) {
@@ -696,6 +697,9 @@ window.exitGodMode = function() {
     if(!isGodMode) return;
     isGodMode = false;
     sessionStorage.removeItem('isGod');
+    sessionStorage.removeItem('god_name'); // Clear identity
+    godName = "";
+    
     const hint = document.getElementById("dragHint");
     if(hint) {
         hint.innerText = "⚡ KOHMZ Lexie Pro";
@@ -840,7 +844,7 @@ window.askGemini = async function() {
             body: JSON.stringify({ 
                 message: n, 
                 image: currentImageData,
-                name: "Web Client",
+                name: (isGodMode && godName) ? godName : "Web Client", // LOG PATCH IDENTITY FIX
                 userId: userId, 
                 pageName: document.title, 
                 pageData: sd, 
@@ -858,6 +862,10 @@ window.askGemini = async function() {
         if(result.god_mode_activated) {
             isGodMode = true;
             sessionStorage.setItem('isGod', 'true');
+            if(result.god_name) {
+                godName = result.god_name;
+                sessionStorage.setItem('god_name', godName); // Save identity for logs
+            }
             document.getElementById("dragHint").innerText = "👑 IMMORTAL MODE (Click to Exit)";
             document.getElementById("dragHint").classList.add('god-mode-tag');
             const tsCont = document.getElementById("cf-turnstile-container");
@@ -875,7 +883,7 @@ window.askGemini = async function() {
         } else {
             document.getElementById("chatWindow").classList.remove("code-red-active");
             document.getElementById("chatHeader").style.color = "var(--cyber-blue)";
-            document.getElementById("chatHeader").innerText = isGodMode ? "LEXIE AI: IMMORTAL 👑" : "LEXIE AI: SYSTEM ACTIVE";
+            document.getElementById("chatHeader").innerText = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE";
         }
 
         aiReply = aiReply.replace(/\[CALENDAR: (.*?)\]/g, '<br><a href="$1" target="_blank" class="btn-pdf" style="background:var(--cyber-blue);color:#000;"><i class="fas fa-calendar-alt"></i> Save to Calendar</a>');
@@ -911,11 +919,10 @@ window.downloadPDF = function() {
         return;
     }
     
-    // Create a detached container purely for html2pdf rendering
     const container = document.createElement('div');
     
-    // Apply styling directly to the container to ensure html2canvas captures it perfectly
-    container.style.cssText = "width: 800px; background: #fff; padding: 40px; font-family: 'Segoe UI', Arial, sans-serif; color: #000;";
+    // ULTIMATE PDF PATCH: Added word-wrap, overflow-wrap, and max-width.
+    container.style.cssText = "width: 800px; max-width: 100%; word-wrap: break-word; overflow-wrap: break-word; background: #fff; padding: 40px; font-family: 'Segoe UI', Arial, sans-serif; color: #000;";
     
     container.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ffb703;padding-bottom:15px;margin-bottom:30px;">
@@ -940,7 +947,7 @@ window.downloadPDF = function() {
             <span><strong>Date Prepared:</strong> ${new Date().toLocaleDateString()}</span>
         </div>
         
-        <div style="font-size:13px;line-height:1.8;white-space:pre-wrap;color:#222;margin-bottom:60px;">${data}</div>
+        <div style="font-size:13px;line-height:1.8;white-space:pre-wrap;word-wrap:break-word;max-width:100%;color:#222;margin-bottom:60px;">${data}</div>
         
         <div style="margin-top:auto;border-top:1px solid #ccc;padding-top:20px;font-size:10px;color:#666;text-align:center;line-height:1.5;">
             <strong style="color:#000;">Prepared by: Lexie (KOHMZ AI Assistant)</strong><br><br>
@@ -948,12 +955,12 @@ window.downloadPDF = function() {
         </div>
     `;
     
-    // Pass the detached container directly to html2pdf
+    // ULTIMATE PDF PATCH: windowWidth set to 800px
     html2pdf().set({
         filename: 'KOHMZ_Estimate_Summary.pdf', 
         margin: [0.5, 0.5, 0.5, 0.5],
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true, windowWidth: 800 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
     }).from(container).save();
 };
