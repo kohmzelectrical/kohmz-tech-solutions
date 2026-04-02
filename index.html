@@ -852,8 +852,11 @@ window.downloadPDF = function() {
         return;
     }
     
+    // 1. Gagawa tayo ng element, PERO HINDI NATIN ILALAGAY SA SCREEN (No appendChild)
     const container = document.createElement('div');
-    container.style.cssText = "position: absolute; top: 0; left: 0; z-index: -9999; opacity: 0.01; pointer-events: none; width: 800px; background: #fff; padding: 40px; font-family: Arial, sans-serif; color: #000;";
+    
+    // 2. Pure formatting lang, WALA nang nakatagong CSS hacks para hindi malito ang camera
+    container.style.cssText = "width: 800px; background: #fff; padding: 40px; font-family: Arial, sans-serif; color: #000;";
     
     container.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ffb703;padding-bottom:15px;margin-bottom:30px;">
@@ -886,19 +889,15 @@ window.downloadPDF = function() {
         </div>
     `;
     
-    document.body.appendChild(container);
-    
+    // 3. DIREKTA nating ipapasa kay html2pdf nang walang document.body.appendChild!
     html2pdf().set({
         filename: 'KOHMZ_Estimate_Summary.pdf', 
         margin: [0.3, 0.3, 0.3, 0.3],
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, allowTaint: true, scrollY: 0 },
+        html2canvas: { scale: 2, useCORS: true, allowTaint: true, letterRendering: true },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    }).from(container).save().then(() => {
-        document.body.removeChild(container);
-    });
+    }).from(container).save();
 };
-
 setInterval(()=>{if(window.speechSynthesis)window.speechSynthesis.resume()},1000);
 window.speakText=function(e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();let t=e.replace(/\[CALENDAR:.*?\]/g, '').replace(/\./g,"... ").replace(/,/g,",.. ");const n=new SpeechSynthesisUtterance(t),s=window.speechSynthesis.getVoices(),i=s.find(e=>e.name.includes("Samantha")||e.name.includes("Aria")||e.name.includes("Google US English")||e.name.includes("Female")||e.name.includes("Enhanced"))||s[0];if(i)n.voice=i;n.lang="en-US";n.pitch=1.15;n.rate=0.80;n.volume=1;window.speechSynthesis.speak(n)};
 
