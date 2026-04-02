@@ -200,7 +200,8 @@
         /* TURNSTILE WIDGET CONTAINER */
         #cf-turnstile-container { padding: 5px 10px; background: #000; border-top: 1px solid rgba(0,229,255,0.2); display: flex; justify-content: center; }
 
-        .chat-input-area{display:grid;grid-template-columns:35px 35px 1fr 40px;gap:5px;padding:10px;background:#000;border-top:1px solid rgba(0,229,255,0.2);align-items:center;}
+        /* UPDATED: CHAT INPUT AREA (3 BUTTONS) */
+        .chat-input-area{display:grid;grid-template-columns:35px 35px 35px 1fr 40px;gap:5px;padding:10px;background:#000;border-top:1px solid rgba(0,229,255,0.2);align-items:center;}
         .chat-tool-btn{height:35px;background:transparent;border:1px solid var(--cyber-blue);color:var(--cyber-blue);border-radius:4px;cursor:pointer;display:flex;justify-content:center;align-items:center;transition:0.2s;}
         .chat-tool-btn:hover{background:rgba(0,229,255,0.2);}
         .chat-input-field{height:35px;background:transparent;border:1px solid var(--cyber-blue);color:#fff;padding:0 10px;font-family:'Share Tech Mono';font-size:11px;outline:none;border-radius:4px;width:100%;box-sizing:border-box;}
@@ -560,9 +561,13 @@ Your browser does not support the video tag.
 </div>
 
 <div class="chat-input-area">
-    <button class="chat-tool-btn" onclick="document.getElementById('imgInput').click()" title="Upload Image"><i class="fas fa-paperclip"></i></button>
+    <button class="chat-tool-btn" onclick="document.getElementById('imgInput').click()" title="Upload Image"><i class="fas fa-image"></i></button>
+    <button class="chat-tool-btn" onclick="document.getElementById('cameraInput').click()" title="Take Photo"><i class="fas fa-camera"></i></button>
     <button id="micBtn" class="chat-tool-btn" onclick="startDictation()" title="Voice Input"><i class="fas fa-microphone"></i></button>
+    
     <input type="file" id="imgInput" hidden accept="image/*" onchange="handleImage(this)">
+    <input type="file" id="cameraInput" hidden accept="image/*" capture="environment" onchange="handleImage(this)">
+    
     <input type="text" id="userQuery" class="chat-input-field" placeholder="Ask Lexie or attach image...">
     <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="askGemini()"><i class="fas fa-spinner fa-spin"></i></button>
 </div>
@@ -677,7 +682,7 @@ function handleImage(input) {
             const img = new Image();
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 800;
+                const MAX_WIDTH = 500;
                 let width = img.width;
                 let height = img.height;
 
@@ -691,7 +696,7 @@ function handleImage(input) {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
                 
-                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6);
                 currentImageData = compressedDataUrl.split(',')[1];
                 document.getElementById("prev-img").src = compressedDataUrl;
                 document.getElementById("vision-preview").style.display = "flex";
@@ -706,6 +711,7 @@ function clearImage() {
     currentImageData = null;
     document.getElementById("vision-preview").style.display = "none";
     document.getElementById("imgInput").value = "";
+    document.getElementById("cameraInput").value = "";
 }
 
 // --- VOICE DICTATION ---
@@ -825,7 +831,6 @@ window.askGemini = async function() {
         lexieMemory.push({ role: "assistant", content: result.ai_answer });
         sessionStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
         
-        // FIX: RENDER UI INSIDE TRY BLOCK TO AVOID REFERENCE ERRORS
         const cleanReplyForButton = result.ai_answer.replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/(?:\r\n|\r|\n)/g, " ");
         t.innerHTML += `<div class="chat-bubble" style="border-left:2px solid #00e5ff;">Lexie: ${aiReply}<div style="margin-top:8px;border-top:1px solid rgba(0,229,255,0.2);padding-top:5px;"><button onclick="window.speakText('${cleanReplyForButton}')" style="background:none;border:none;color:#ffb703;cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;"><i class="fas fa-volume-up"></i> Play Audio</button></div></div>`;
         t.scrollTop = t.scrollHeight;
@@ -834,7 +839,6 @@ window.askGemini = async function() {
     } catch (error) {
         if (document.getElementById(s)) { document.getElementById(s).innerHTML = "Lexie: Connection lost or Firewall active. Retry."; }
     } finally {
-        // FIX: CLEANUP TASKS ONLY (Runs even if fetch fails)
         clearImage();
         resetTurnstile(); 
     }
@@ -848,9 +852,8 @@ window.downloadPDF = function() {
         return;
     }
     
-    // Attach to DOM but push it off-screen so user doesn't see it
     const container = document.createElement('div');
-    container.style.cssText = "position: absolute; top: -9999px; left: -9999px; width: 800px; background: #fff; padding: 40px; font-family: Arial, sans-serif; color: #000; z-index: -9999;";
+    container.style.cssText = "position: absolute; top: 0; left: 0; z-index: -9999; opacity: 0.01; pointer-events: none; width: 800px; background: #fff; padding: 40px; font-family: Arial, sans-serif; color: #000;";
     
     container.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #ffb703;padding-bottom:15px;margin-bottom:30px;">
@@ -889,7 +892,7 @@ window.downloadPDF = function() {
         filename: 'KOHMZ_Estimate_Summary.pdf', 
         margin: [0.3, 0.3, 0.3, 0.3],
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, allowTaint: true },
+        html2canvas: { scale: 2, useCORS: true, allowTaint: true, scrollY: 0 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
     }).from(container).save().then(() => {
         document.body.removeChild(container);
