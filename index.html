@@ -889,10 +889,14 @@ window.askGemini = async function() {
 
         aiReply = aiReply.replace(/\[CALENDAR: (.*?)\]/g, '<br><a href="$1" target="_blank" class="btn-pdf" style="background:var(--cyber-blue);color:#000;"><i class="fas fa-calendar-alt"></i> Save to Calendar</a>');
 
-        // FORMAL PDF TRIGGER LOGIC (TIMEBOMB QA PASSED + FINAL LOCKS)
+        // FORMAL PDF TRIGGER LOGIC (V7.0 DUAL-STREAM SPLITTER)
         if(result.has_estimate && !result.code_red) {
-            // PREPARE DATA FOR PDF ONLY (NO BACKSLASHES, NO EMOJIS)
-            const cleanDataForPDF = aiReply
+            // ====================================================================
+            // V7.0 THE PDF STREAM FIX: Grabbing ONLY the isolated English quote from the backend
+            // ====================================================================
+            let pdfStreamData = result.pdf_data || aiReply; // Use the dedicated PDF block if provided, fallback to chat if missing
+
+            const cleanDataForPDF = pdfStreamData
                 .replace(/<br\s*\/?>/gi, '\n') // Keep line breaks for jsPDF
                 .replace(/<[^>]*>?/gm, '')     // Remove remaining HTML tags
                 .replace(/\*\*/g, '')          // Remove markdown bold
