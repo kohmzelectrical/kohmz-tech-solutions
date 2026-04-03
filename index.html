@@ -545,8 +545,7 @@ Your browser does not support the video tag.
     <span onclick="toggleBotWindow()" style="cursor:pointer;padding:0 5px;font-size:18px;">✕</span>
 </div>
 <div class="kohmz-chat-body" id="chatBody">
-<div class="chat-bubble">Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! I can read images and save your quotes. Paano kita matutulungan boss?</div>
-</div>
+    </div>
 <div id="vision-preview">
     <img id="prev-img" src="" alt="Preview">
     <span>📎 Image attached for analysis.</span>
@@ -578,7 +577,7 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — V14.1 (UNIVERSAL MEMORY + PAGE GREETING + NANGHAHABOL)
+// KOHMZ LEXIE AI — V14.2 (TTS FIXED + TURNSTILE UX + MOBILE EXIT)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 const VIP_FAMILY = { "/pepot": true, "/joy": true, "/samsam": true, "/mara": true, "/mantha": true };
@@ -591,15 +590,14 @@ window.onTurnstileSuccess = function(token) {
 };
 
 function resetTurnstile() {
+    // FIX: Only resets quietly in background. Does NOT visually disable the send button to prevent UX loops.
     if (typeof turnstile !== 'undefined' && !isGodMode) {
         currentTurnstileToken = "";
-        const btn = document.getElementById('mainSendBtn');
-        if (btn) { btn.disabled = true; btn.style.opacity = "0.5"; btn.innerHTML = '<i class="fas fa-shield-alt fa-spin"></i>'; }
-        turnstile.reset();
+        turnstile.reset(); 
     }
 }
 
-// 🧠 UPGRADE 1: LOCALSTORAGE MEMORY (Di nakakalimot kahit lumipat ng page)
+// Memory (Bumped to 15 limit)
 let userId = localStorage.getItem('kohmz_uuid');
 if (!userId) { userId = 'user-' + Math.random().toString(36).substr(2, 9); localStorage.setItem('kohmz_uuid', userId); }
 let lexieMemory = JSON.parse(localStorage.getItem('lexie_memory')) || [];
@@ -630,10 +628,13 @@ window.exitGodMode = function() {
     document.getElementById("chatBody").innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold);">Lexie: Immortal Mode deactivated. Returning to standard protocol.</div>`;
 };
 
-// 🧠 UPGRADE 2: AUTO-GREET PAG LUMIPAT NG PAGE AT LOAD MEMORY
+// Auto-greet + UI Glitch Fix
 window.addEventListener('load', () => {
     const t = document.getElementById("chatBody");
-    if (lexieMemory.length > 0) {
+    
+    if (lexieMemory.length === 0) {
+        t.innerHTML = `<div class="chat-bubble" style="border-left:3px solid var(--cyber-blue);">Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! I can read images and save your quotes. Paano kita matutulungan boss?</div>`;
+    } else {
         lexieMemory.forEach(m => {
             if (m.role !== "system") {
                 const isUser = m.role === "user";
@@ -649,7 +650,7 @@ window.addEventListener('load', () => {
     // Page Tracker Logic
     let currentPageName = document.title.split('|')[0].trim() || "kabilang page";
     let lastPage = sessionStorage.getItem('kohmz_last_page');
-    if (lastPage && lastPage !== currentPageName) {
+    if (lastPage && lastPage !== currentPageName && lexieMemory.length > 0) {
         setTimeout(() => {
             t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold);">Lexie: Uy boss, napadaan ka pala dito sa ${currentPageName}! May napusuan ka bang service natin dito? I-chat mo lang ako ha!</div>`;
             t.scrollTop = t.scrollHeight;
@@ -658,23 +659,35 @@ window.addEventListener('load', () => {
     sessionStorage.setItem('kohmz_last_page', currentPageName);
 });
 
-// 🏃‍♀️ UPGRADE 3: NANGHAHABOL NA TINDERA (EXIT INTENT) - NAIBALIK NA!
-document.addEventListener("mouseleave", (e) => {
-    if (isGodMode) return; // Wag guluhin si Boss Pepot
-    if (e.clientY < 0 && !sessionStorage.getItem('exit_offered')) {
-        const chat = document.getElementById("chatWindow");
-        if (chat.style.display !== "flex") {
-            chat.style.display = "flex";
-            const hint = document.getElementById("dragHint");
-            if (hint) hint.innerHTML = "🖐️ Drag to Move";
-        }
-        const t = document.getElementById("chatBody");
-        t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold); color: var(--neon-gold);">Lexie: Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊</div>`;
-        t.scrollTop = t.scrollHeight;
-        sessionStorage.setItem('exit_offered', 'true');
-        if (window.speechSynthesis) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
+// MULTI-DEVICE EXIT INTENT (Nanghahabol)
+function triggerExitIntent() {
+    if (isGodMode || sessionStorage.getItem('exit_offered')) return;
+    const chat = document.getElementById("chatWindow");
+    if (chat.style.display !== "flex") {
+        chat.style.display = "flex";
+        const hint = document.getElementById("dragHint");
+        if (hint) hint.innerHTML = "🖐️ Drag to Move";
     }
-});
+    const t = document.getElementById("chatBody");
+    t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold); color: var(--neon-gold);">Lexie: Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊</div>`;
+    t.scrollTop = t.scrollHeight;
+    sessionStorage.setItem('exit_offered', 'true');
+    if (window.speechSynthesis) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
+}
+
+// 1. Desktop Mouse Leave
+document.addEventListener("mouseleave", (e) => { if (e.clientY < 0) triggerExitIntent(); });
+// 2. Mobile Tab Switch / Minimize
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === 'hidden') triggerExitIntent(); });
+// 3. Mobile Fast Scroll Up
+let lastScrollTop = 0, lastScrollTime = Date.now();
+window.addEventListener("scroll", () => {
+    let st = window.pageYOffset || document.documentElement.scrollTop;
+    let now = Date.now(), timeDiff = now - lastScrollTime;
+    if (st < lastScrollTop - 150 && timeDiff < 100) triggerExitIntent();
+    lastScrollTop = st <= 0 ? 0 : st;
+    lastScrollTime = now;
+}, { passive: true });
 
 function handleImage(input) {
     if (input.files && input.files[0]) {
@@ -700,8 +713,8 @@ function handleImage(input) {
 function clearImage() {
     currentImageData = null;
     document.getElementById("vision-preview").style.display = "none";
-    document.getElementById("imgInput").value = "";
-    document.getElementById("cameraInput").value = "";
+    document.getElementById("imgInput").value = null;
+    document.getElementById("cameraInput").value = null;
 }
 
 window.startDictation = function() {
@@ -734,13 +747,13 @@ window.askGemini = async function() {
         t.scrollTop = t.scrollHeight; return;
     }
 
-    if (window.speechSynthesis) window.speechSynthesis.resume();
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    
     t.innerHTML += `<div class="chat-bubble" style="background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;">YOU: ${n || '[Image Attached]'}</div>`;
     e.value = ""; t.scrollTop = t.scrollHeight;
 
-    // SAVE TO LOCALSTORAGE INSTEAD OF SESSION
     lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
-    if (lexieMemory.length > 8) lexieMemory = lexieMemory.slice(-8);
+    if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
     localStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
 
     const s = "load-" + Date.now();
@@ -796,8 +809,15 @@ window.askGemini = async function() {
         window.speakText(result.ai_answer);
 
     } catch (err) {
-        if (document.getElementById(s)) document.getElementById(s).innerHTML = "Lexie: Connection Firewall blocked. Please refresh.";
-    } finally { clearImage(); resetTurnstile(); }
+        if (document.getElementById(s)) document.getElementById(s).innerHTML = "Lexie: Connection Firewall blocked. Please try again.";
+        // On strict error, we reset turnstile visibly
+        resetTurnstile();
+        const btn = document.getElementById('mainSendBtn');
+        if (btn) { btn.disabled = true; btn.style.opacity = "0.5"; btn.innerHTML = '<i class="fas fa-shield-alt fa-spin"></i>'; }
+    } finally { 
+        clearImage(); 
+        resetTurnstile(); // Silent reset for background re-validation
+    }
 };
 
 // FULL PDF GENERATOR
@@ -869,17 +889,39 @@ window.downloadPDF = async function() {
     if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Formal Estimate'; btn.style.opacity = '1'; }
 };
 
-// FULL AUDIO
-setInterval(() => { if (window.speechSynthesis) window.speechSynthesis.resume(); }, 1000);
-window.speakText = function(e) {
+// FULL AUDIO (CHUNKED FIX PARA HINDI MAG-CRASH)
+window.speakText = function(text) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
-    let t = e.replace(/\[CALENDAR:.*?\]/g, '').replace(/\./g, "... ").replace(/,/g, ",.. ");
-    const n = new SpeechSynthesisUtterance(t);
-    const s = window.speechSynthesis.getVoices();
-    const i = s.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Google US English") || v.name.includes("Female") || v.name.includes("Enhanced")) || s[0];
-    if (i) n.voice = i; n.lang = "en-US"; n.pitch = 1.15; n.rate = 0.80; n.volume = 1;
-    window.speechSynthesis.speak(n);
+    
+    // Clean text before reading
+    let cleanText = text.replace(/\[CALENDAR:.*?\]/g, '').replace(/\*/g, '');
+    
+    // Split the text by sentences so the browser TTS engine doesn't timeout
+    let sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
+    let currentIdx = 0;
+
+    function speakNextChunk() {
+        if (currentIdx >= sentences.length) return;
+        
+        let utterance = new SpeechSynthesisUtterance(sentences[currentIdx].trim());
+        let voices = window.speechSynthesis.getVoices();
+        let voice = voices.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Google US English") || v.name.includes("Female") || v.name.includes("Enhanced")) || voices[0];
+        
+        if (voice) utterance.voice = voice;
+        utterance.lang = "en-US";
+        utterance.pitch = 1.15;
+        utterance.rate = 0.85;
+
+        utterance.onend = () => {
+            currentIdx++;
+            speakNextChunk();
+        };
+        
+        window.speechSynthesis.speak(utterance);
+    }
+    
+    speakNextChunk();
 };
 
 // DRAG LOGIC
@@ -910,19 +952,20 @@ window.toggleBotWindow = function() {
     }
 };
 
-// ============================================================
-// ORIGINAL DOM LOAD LOGIC (Intact)
-// ============================================================
+// TYPEWRITER + GLOBAL EVENTS
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof AOS !== "undefined") AOS.init({ duration: 800, once: true, offset: 50 });
     const menuBtn = document.getElementById("mobile-menu"), navList = document.getElementById("nav-list");
     if (menuBtn && navList) menuBtn.addEventListener("click", () => navList.classList.toggle("active"));
 
-    const mainText = "INTEGRATED POWER ARCHITECTURE & ";
-    let mainIdx = 0;
-    const typeEl = document.getElementById("main-typewriter-text");
-    function typeMain() { if (typeEl && mainIdx < mainText.length) { typeEl.innerHTML += mainText.charAt(mainIdx++); setTimeout(typeMain, 60); } }
-    typeMain();
+    // Unified Typewriter Logic
+    function runTypewriter(el, text, speed) {
+        let i = 0;
+        function type() { if (i < text.length) { el.innerHTML += text.charAt(i++); setTimeout(type, speed); } }
+        type();
+    }
+    const mainTypeEl = document.getElementById("main-typewriter-text");
+    if (mainTypeEl) runTypewriter(mainTypeEl, "INTEGRATED POWER ARCHITECTURE & ", 60);
 
     class TypeWriter {
         constructor(el, words, wait) { this.el = el; this.words = words; this.txt = ""; this.wordIdx = 0; this.wait = parseInt(wait, 10); this.isDel = false; this.type(); }
