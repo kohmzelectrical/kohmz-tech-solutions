@@ -28,6 +28,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
@@ -588,7 +589,7 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V17.1 (ENTERPRISE FINAL SYNC)
+// KOHMZ LEXIE AI — FRONTEND V17.2 (ENTERPRISE FINAL PREMIUM TABLE SYNC)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 const VIP_KEYWORDS = ["/pepot", "/joy", "/samsam", "/mara", "/mantha"];
@@ -802,7 +803,7 @@ window.askLexie = async function() {
                 image: currentImageData,
                 name: godName || "Web Client",
                 userId: userId,
-                pageData: document.getElementById("main-content")?.innerText?.substring(0, 1000) || "",
+                pageData: document.getElementById("main-content")?.innerText?.substring(0, 1500) || "",
                 history: lexieMemory.slice(-8),
                 turnstileToken: currentTurnstileToken,
                 vipName: godName 
@@ -884,7 +885,7 @@ window.askLexie = async function() {
     }
 };
 
-// ── V17.1: Dynamic Multi-Page PDF Generator ───────────────────
+// ── V17.2: AutoTable Premium PDF Estimate Generator ──────────
 window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) { alert("System Error: No estimate data found."); return; }
@@ -927,39 +928,72 @@ window.downloadPDF = async function() {
     doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
     doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
 
-    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
-    const lines = doc.splitTextToSize(data, contentWidth - 10);
-    
-    let cursorY = 75;
-    let boxStartY = 55;
-    const lineHeight = 5.5;
-    const pageMaxY = 240; 
+    let parts = data.split('-----------------------------------');
+    let itemsStr = parts[0] || "";
+    let restorationStr = (parts[1] || "").trim();
+    let totalStr = (parts[2] || "").trim();
 
-    for (let i = 0; i < lines.length; i++) {
-        if (cursorY + lineHeight > pageMaxY) {
-            doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
-            doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
-            doc.setDrawColor(200, 200, 200); doc.line(margin, 255, rightAlign, 255);
-            doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
-            doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth/2, 260, {align:"center"});
-            doc.addPage();
-            boxStartY = 20;
-            cursorY = 30;
-            doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(13, 27, 42);
-            doc.text("KOHMZ ELECTRICAL - ESTIMATE CONTINUATION", margin, boxStartY - 5);
-            doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
+    let rawItems = itemsStr.split('|||');
+    let tableBody = [];
+
+    rawItems.forEach(itemBlock => {
+        if(!itemBlock.trim()) return;
+        let lines = itemBlock.split('\n').map(l => l.trim()).filter(l => l);
+        let itemName = "-", qty = "-", labor = "-", mat = "-";
+        lines.forEach(line => {
+            let upperLine = line.toUpperCase();
+            if(upperLine.startsWith('ITEM:')) itemName = line.substring(5).trim();
+            else if(upperLine.startsWith('QTY:')) qty = line.substring(4).trim();
+            else if(upperLine.startsWith('LABOR COST:')) labor = line.substring(11).trim();
+            else if(upperLine.startsWith('MATERIALS COST:')) mat = line.substring(15).trim();
+        });
+        if(itemName !== "-") {
+            tableBody.push([itemName, qty, labor, mat]);
         }
-        doc.text(lines[i], margin + 5, cursorY);
-        cursorY += lineHeight;
-    }
+    });
+
+    doc.autoTable({
+        startY: 70,
+        head: [['ITEM / SERVICE DESCRIPTION', 'QTY', 'LABOR COST', 'MATERIALS COST']],
+        body: tableBody,
+        theme: 'grid',
+        headStyles: { fillColor: [13, 27, 42], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center' },
+        bodyStyles: { textColor: [40, 40, 40], fontSize: 9 },
+        columnStyles: {
+            0: { cellWidth: 'auto' },
+            1: { cellWidth: 20, halign: 'center' },
+            2: { cellWidth: 35, halign: 'right' },
+            3: { cellWidth: 35, halign: 'right' }
+        },
+        margin: { left: margin, right: margin }
+    });
+
+    let finalY = doc.lastAutoTable.finalY + 10;
     
-    doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
-    doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
-    doc.setDrawColor(200, 200, 200); doc.line(margin, pageMaxY, rightAlign, pageMaxY);
-    doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
-    doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth/2, pageMaxY + 5, {align:"center"});
-    doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, pageMaxY + 8, {align:"center"});
-    doc.text("Restoration (masonry/painting) is strictly separate from the electrical labor fee.", pageWidth/2, pageMaxY + 11, {align:"center"});
+    if(finalY > 230) { doc.addPage(); finalY = 20; }
+    
+    doc.setFillColor(245, 245, 245);
+    doc.rect(margin, finalY, contentWidth, 12, 'F');
+    doc.setFont("helvetica", "italic"); doc.setFontSize(9); doc.setTextColor(100, 100, 100);
+    doc.text(restorationStr || "RESTORATION COST: TO FOLLOW (Requires On-Site Inspection).", margin + 5, finalY + 7.5);
+
+    finalY += 18;
+    if(finalY > 230) { doc.addPage(); finalY = 20; }
+
+    doc.setFillColor(255, 183, 3);
+    doc.rect(margin, finalY, contentWidth, 14, 'F');
+    doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(13, 27, 42);
+    doc.text(totalStr || "GRAND TOTAL ESTIMATE: TBD", rightAlign - 5, finalY + 9, { align: "right" });
+
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
+        doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+        doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth/2, 265, {align:"center"});
+        doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, 268, {align:"center"});
+        doc.text("Restoration (masonry/painting) is strictly separate from the electrical labor fee.", pageWidth/2, 271, {align:"center"});
+    }
 
     doc.save(`KOHMZ_Estimate_${userId.substring(0,5)}.pdf`);
     if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Official Estimate'; btn.style.opacity = '1'; }
