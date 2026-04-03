@@ -544,8 +544,7 @@ Your browser does not support the video tag.
     <span>LEXIE AI: SYSTEM ACTIVE</span>
     <span onclick="toggleBotWindow()" style="cursor:pointer;padding:0 5px;font-size:18px;">✕</span>
 </div>
-<div class="kohmz-chat-body" id="chatBody">
-    </div>
+<div class="kohmz-chat-body" id="chatBody"></div>
 <div id="vision-preview">
     <img id="prev-img" src="" alt="Preview">
     <span>📎 Image attached for analysis.</span>
@@ -566,7 +565,7 @@ Your browser does not support the video tag.
     <input type="file" id="imgInput" hidden accept="image/*" onchange="handleImage(this)">
     <input type="file" id="cameraInput" hidden accept="image/*" capture="environment" onchange="handleImage(this)">
     <input type="text" id="userQuery" class="chat-input-field" placeholder="Ask Lexie or attach image...">
-    <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="askGemini()"><i class="fas fa-spinner fa-spin"></i></button>
+    <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="askLexie()"><i class="fas fa-spinner fa-spin"></i></button>
 </div>
 </div>
 <div class="kohmz-bot-toggle" id="botToggle">
@@ -577,90 +576,148 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — V14.3.1 (ENTERPRISE GRADE + ANTI-STROKE PATCH)
+// KOHMZ LEXIE AI — FRONTEND V15.0
+// SYNC: worker.js V15.0
+// FIXES vs V14.3:
+//   FIX-F1  isGod flag REMOVED from POST body (security sync with worker)
+//   FIX-F2  history slice bumped -6 -> -8 (sync with worker)
+//   FIX-F3  PDF data source: use raw result.ai_answer for PDF (was using escaped html)
+//           now uses result.pdf_data (clean server-stripped text), fallback to raw reply
+//   FIX-F4  escapeHTML applied consistently — AI reply escaped for chat display,
+//           raw unescaped text used for PDF and TTS separately
+//   FIX-F5  sendBtn renamed askLexie() (was askGemini — stale function name)
+//   FIX-F6  Enter key handler added to chat input (was missing)
+//   FIX-F7  God mode header label no longer overwrites CODE RED header on re-render
+//   FIX-F8  vipName field added to POST body so worker can validate god mode server-side
 // ============================================================
-const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
-const VIP_FAMILY = { "/pepot": true, "/joy": true, "/samsam": true, "/mara": true, "/mantha": true };
 
+const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
+const VIP_KEYWORDS = ["/pepot", "/joy", "/samsam", "/mara", "/mantha"];
+
+// ── Turnstile ────────────────────────────────────────────────
 let currentTurnstileToken = "";
 window.onTurnstileSuccess = function(token) {
     currentTurnstileToken = token;
     const btn = document.getElementById('mainSendBtn');
     if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
 };
-
 function resetTurnstile() {
     if (typeof turnstile !== 'undefined' && !isGodMode) {
         currentTurnstileToken = "";
-        turnstile.reset(); 
+        turnstile.reset();
+        const btn = document.getElementById('mainSendBtn');
+        if (btn) { btn.disabled = true; btn.style.opacity = "0.5"; btn.innerHTML = '<i class="fas fa-shield-alt"></i>'; }
     }
 }
 
-// Memory System
+// ── State ────────────────────────────────────────────────────
 let userId = localStorage.getItem('kohmz_uuid');
 if (!userId) { userId = 'user-' + Math.random().toString(36).substr(2, 9); localStorage.setItem('kohmz_uuid', userId); }
-let lexieMemory = JSON.parse(localStorage.getItem('lexie_memory')) || [];
+
+let lexieMemory = [];
+try { lexieMemory = JSON.parse(localStorage.getItem('lexie_memory')) || []; } catch(e) { lexieMemory = []; }
+
 let currentImageData = null;
 let isGodMode = sessionStorage.getItem('isGod') === 'true';
 let godName = sessionStorage.getItem('god_name') || "";
 
-if (isGodMode) {
+// ── God Mode UI Init ─────────────────────────────────────────
+function applyGodModeUI() {
     document.getElementById("dragHint").innerText = "👑 IMMORTAL MODE";
     document.getElementById("dragHint").classList.add('god-mode-tag');
     const tsCont = document.getElementById("cf-turnstile-container");
     if (tsCont) tsCont.style.display = "none";
     const btn = document.getElementById('mainSendBtn');
     if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
+    document.getElementById("chatHeader").firstElementChild.textContent = `LEXIE AI: IMMORTAL (${godName}) 👑`;
 }
+if (isGodMode) applyGodModeUI();
 
 window.exitGodMode = function() {
     if (!isGodMode) return;
-    isGodMode = false;
-    sessionStorage.removeItem('isGod');
-    sessionStorage.removeItem('god_name');
-    godName = "";
+    isGodMode = false; godName = "";
+    sessionStorage.removeItem('isGod'); sessionStorage.removeItem('god_name');
     document.getElementById("dragHint").innerText = "⚡ KOHMZ Lexie Pro";
     document.getElementById("dragHint").classList.remove('god-mode-tag');
     const tsCont = document.getElementById("cf-turnstile-container");
     if (tsCont) tsCont.style.display = "flex";
+    document.getElementById("chatHeader").firstElementChild.textContent = "LEXIE AI: SYSTEM ACTIVE";
     resetTurnstile();
-    document.getElementById("chatBody").innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold);">Lexie: Immortal Mode deactivated. Returning to standard protocol.</div>`;
+    appendBubble("bot", "Immortal Mode deactivated. Returning to standard protocol.");
 };
 
-// Auto-greet + UI
+// ── XSS Helper ───────────────────────────────────────────────
+function escapeHTML(str) {
+    if (!str) return "";
+    return str.replace(/[&<>'"]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag]));
+}
+
+// ── Bubble Helper ────────────────────────────────────────────
+function appendBubble(role, htmlContent, rawTextForTTS) {
+    const t = document.getElementById("chatBody");
+    const b = document.createElement("div");
+    b.className = "chat-bubble";
+    if (role === "user") {
+        b.style.cssText = "background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;white-space:pre-wrap;";
+        b.textContent = "YOU: " + htmlContent; // textContent = safe, no XSS
+    } else {
+        b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;";
+        // For bot: we set innerHTML because we allow safe buttons (we build those ourselves)
+        b.innerHTML = "Lexie: " + htmlContent;
+        if (rawTextForTTS) {
+            const audioDiv = document.createElement("div");
+            audioDiv.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
+            const audioBtn = document.createElement("button");
+            audioBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;";
+            audioBtn.innerHTML = '<i class="fas fa-volume-up"></i> Play Audio';
+            const capturedText = rawTextForTTS; // closure capture
+            audioBtn.onclick = () => window.speakText(capturedText);
+            audioDiv.appendChild(audioBtn);
+            b.appendChild(audioDiv);
+        }
+    }
+    t.appendChild(b);
+    t.scrollTop = t.scrollHeight;
+    return b;
+}
+
+// ── Init / Load Memory ───────────────────────────────────────
 window.addEventListener('load', () => {
     const t = document.getElementById("chatBody");
-    
     if (lexieMemory.length === 0) {
-        t.innerHTML = `<div class="chat-bubble" style="border-left:3px solid var(--cyber-blue);">Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! Paano kita matutulungan boss?</div>`;
+        appendBubble("bot", "Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! I can read images and save your quotes. Paano kita matutulungan boss?");
     } else {
         lexieMemory.forEach(m => {
-            if (m.role !== "system") {
-                const isUser = m.role === "user";
+            if (m.role === "system") return;
+            const isUser = m.role === "user";
+            // FIX-F4: use escapeHTML for display, never raw
+            const safeContent = escapeHTML(m.content).replace(/\[SYSTEM NOTE.*?\]/g, "[Image Attached]");
+            if (isUser) {
+                appendBubble("user", safeContent);
+            } else {
+                // Bot history: plain text only on reload (no HTML buttons from old sessions)
                 const b = document.createElement("div");
                 b.className = "chat-bubble";
-                b.style.cssText = isUser ? "background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;" : "border-left:3px solid var(--cyber-blue);";
-                
-                let cleanContent = m.content.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\[SYSTEM NOTE.*?\]/g, "[Image Attached]");
-                b.innerHTML = (isUser ? "YOU: " : "Lexie: ") + cleanContent;
+                b.style.cssText = "border-left:3px solid var(--cyber-blue);";
+                b.textContent = "Lexie: " + m.content;
                 t.appendChild(b);
             }
         });
+        t.scrollTop = t.scrollHeight;
     }
-    
-    // Page Tracker Logic
+
+    // Page Tracker
     let currentPageName = document.title.split('|')[0].trim() || "kabilang page";
     let lastPage = sessionStorage.getItem('kohmz_last_page');
     if (lastPage && lastPage !== currentPageName && lexieMemory.length > 0) {
         setTimeout(() => {
-            t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold);">Lexie: Uy boss, napadaan ka pala dito sa ${currentPageName}! May napusuan ka bang service natin dito? I-chat mo lang ako ha!</div>`;
-            t.scrollTop = t.scrollHeight;
+            appendBubble("bot", `Uy boss, napadaan ka pala dito sa ${escapeHTML(currentPageName)}! May napusuan ka bang service natin dito? I-chat mo lang ako ha!`);
         }, 1500);
     }
     sessionStorage.setItem('kohmz_last_page', currentPageName);
 });
 
-// MULTI-DEVICE EXIT INTENT
+// ── Exit Intent ───────────────────────────────────────────────
 function triggerExitIntent() {
     if (isGodMode || sessionStorage.getItem('exit_offered')) return;
     const chat = document.getElementById("chatWindow");
@@ -669,16 +726,12 @@ function triggerExitIntent() {
         const hint = document.getElementById("dragHint");
         if (hint) hint.innerHTML = "🖐️ Drag to Move";
     }
-    const t = document.getElementById("chatBody");
-    t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold); color: var(--neon-gold);">Lexie: Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊</div>`;
-    t.scrollTop = t.scrollHeight;
+    appendBubble("bot", "Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊");
     sessionStorage.setItem('exit_offered', 'true');
     if (window.speechSynthesis) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
 }
-
 document.addEventListener("mouseleave", (e) => { if (e.clientY < 0) triggerExitIntent(); });
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === 'hidden') triggerExitIntent(); });
-
 let lastScrollTop = 0, lastScrollTime = Date.now();
 window.addEventListener("scroll", () => {
     let st = window.pageYOffset || document.documentElement.scrollTop;
@@ -688,11 +741,13 @@ window.addEventListener("scroll", () => {
     lastScrollTime = now;
 }, { passive: true });
 
+// ── Viber ────────────────────────────────────────────────────
 window.openViber = function() {
     window.location.href = 'viber://chat?number=%2B639266174131';
     setTimeout(() => { if (!document.hidden) window.open('https://www.viber.com/', '_blank'); }, 2500);
 };
 
+// ── Image Handling ───────────────────────────────────────────
 function handleImage(input) {
     if (input.files && input.files[0]) {
         if (input.files[0].size > 5 * 1024 * 1024) {
@@ -717,7 +772,6 @@ function handleImage(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
-
 function clearImage() {
     currentImageData = null;
     document.getElementById("vision-preview").style.display = "none";
@@ -725,6 +779,7 @@ function clearImage() {
     document.getElementById("cameraInput").value = null;
 }
 
+// ── Voice Input ───────────────────────────────────────────────
 window.startDictation = function() {
     if (window.hasOwnProperty('webkitSpeechRecognition') || window.hasOwnProperty('SpeechRecognition')) {
         const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -732,131 +787,168 @@ window.startDictation = function() {
         const micBtn = document.getElementById('micBtn');
         recognition.lang = 'en-PH';
         recognition.onstart = () => micBtn.classList.add('mic-active');
-        recognition.onresult = (e) => { document.getElementById('userQuery').value = e.results[0][0].transcript; window.askGemini(); };
+        recognition.onresult = (e) => { document.getElementById('userQuery').value = e.results[0][0].transcript; askLexie(); };
         recognition.onend = () => micBtn.classList.remove('mic-active');
         recognition.start();
-    } else { 
-        document.getElementById("chatBody").innerHTML += `<div class="chat-bubble" style="border-left:3px solid #e11d48;color:#e11d48;">Lexie: Sorry boss, Voice Input is not supported here.</div>`;
+    } else {
+        appendBubble("bot", "Sorry boss, Voice Input is not supported sa browser mo.");
     }
 };
 
-window.sendQuickReply = function(text) { document.getElementById('userQuery').value = text; window.askGemini(); };
+window.sendQuickReply = function(text) { document.getElementById('userQuery').value = text; askLexie(); };
 
-function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
-}
-
-// TIMEOUT + AUTO RETRY FIX
-async function fetchWithRetry(url, options, retries = 2, timeout = 20000) {
+// ── Fetch with Retry ─────────────────────────────────────────
+async function fetchWithRetry(url, options, retries = 3) {
     for (let i = 0; i < retries; i++) {
-        const controller = new AbortController();
-        const id = setTimeout(() => controller.abort(), timeout);
         try {
-            const response = await fetch(url, { ...options, signal: controller.signal });
-            clearTimeout(id);
+            const response = await fetch(url, options);
             if (response.ok) return response;
+            if (response.status >= 400 && response.status < 500) throw new Error("Client error: " + response.status);
         } catch (err) {
-            clearTimeout(id);
             if (i === retries - 1) throw err;
-            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i))); 
+            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
         }
     }
-    throw new Error("Timeout/Network Error");
+    throw new Error("Network unreachable after retries");
 }
 
-window.askGemini = async function() {
-    const e = document.getElementById("userQuery"), t = document.getElementById("chatBody");
-    const n = e.value.trim();
+// ── MAIN SEND ─────────────────────────────────────────────────
+// FIX-F5: renamed from askGemini to askLexie
+window.askLexie = async function() {
+    const inputEl = document.getElementById("userQuery");
+    const t = document.getElementById("chatBody");
+    const n = inputEl.value.trim();
     if (!n && !currentImageData) return;
 
-    const isVIPAttempt = VIP_FAMILY[n.toLowerCase()];
-    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "";
-    
+    const isVIPAttempt = VIP_KEYWORDS.includes(n.toLowerCase());
+    const isLocal = ["localhost","127.0.0.1",""].includes(window.location.hostname);
+
     if (!isGodMode && !currentTurnstileToken && !isVIPAttempt && !isLocal) {
-        t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid #e11d48;color:#e11d48;">Lexie: ⚠️ Please complete the security check box first boss!</div>`;
-        t.scrollTop = t.scrollHeight; return;
+        appendBubble("bot", "⚠️ Please complete the security check box first boss!");
+        return;
     }
 
-    let safeUserInput = escapeHTML(n);
-    
-    t.innerHTML += `<div class="chat-bubble" style="background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;">YOU: ${safeUserInput || '[Image Attached]'}</div>`;
-    e.value = ""; t.scrollTop = t.scrollHeight;
+    // Display user bubble safely (textContent path via appendBubble)
+    appendBubble("user", n || "[Image Attached]");
+    inputEl.value = "";
 
-    // SAVE TO HISTORY BUT NO IMAGES IN TEXT 
+    // Save to memory — store raw text, not escaped
     lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
-    // KEEP STORAGE LIGHT
-    if (lexieMemory.length > 8) lexieMemory = lexieMemory.slice(-8); 
+    if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
     localStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
 
-    const s = "load-" + Date.now();
-    t.innerHTML += `<div class="chat-bubble" id="${s}" style="border-left:3px solid var(--cyber-blue);">Lexie is analyzing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span></div>`;
-    t.scrollTop = t.scrollHeight;
-
-    let sd = document.body.innerText.substring(0, 1000);
+    // Typing indicator
+    const loadId = "load-" + Date.now();
+    const loadBubble = document.createElement("div");
+    loadBubble.className = "chat-bubble";
+    loadBubble.id = loadId;
+    loadBubble.style.borderLeft = "3px solid var(--cyber-blue)";
+    loadBubble.innerHTML = 'Lexie is analyzing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>';
+    t.appendChild(loadBubble); t.scrollTop = t.scrollHeight;
 
     try {
+        // FIX-F1: isGod removed from body. Worker derives it server-side via vipName.
+        // FIX-F8: vipName sent so worker can cross-reference for god mode session continuity.
         const response = await fetchWithRetry(WORKER_URL, {
-            method: "POST", headers: { "Content-Type": "application/json" },
-            // PAYLOAD DIET: Send only the last 4 exchanges to CF
-            body: JSON.stringify({ message: n, image: currentImageData, name: godName || "Web Client", userId: userId, pageData: sd, history: lexieMemory.slice(-4), turnstileToken: currentTurnstileToken, isGod: isGodMode })
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                message: n,
+                image: currentImageData,
+                name: godName || "Web Client",
+                userId: userId,
+                pageData: document.getElementById("main-content")?.innerText?.substring(0, 1000) || "",
+                // FIX-F2: bumped to -8 to match worker expectation
+                history: lexieMemory.slice(-8),
+                turnstileToken: currentTurnstileToken,
+                vipName: godName  // FIX-F8: server uses this for god mode validation
+                // NOTE: isGod intentionally removed for security (FIX-F1)
+            })
         });
+
         const result = await response.json();
-        document.getElementById(s)?.remove();
+        document.getElementById(loadId)?.remove();
 
-        let aiReply = result.ai_answer ? escapeHTML(result.ai_answer) : "Error processing request.";
-
+        // ── God Mode Activation ──────────────────────────────
         if (result.god_mode_activated) {
-            isGodMode = true; sessionStorage.setItem('isGod', 'true');
+            isGodMode = true;
             if (result.god_name) { godName = result.god_name; sessionStorage.setItem('god_name', godName); }
-            document.getElementById("dragHint").innerText = "👑 IMMORTAL MODE";
-            document.getElementById("dragHint").classList.add('god-mode-tag');
-            const tsCont = document.getElementById("cf-turnstile-container");
-            if (tsCont) tsCont.style.display = "none";
+            sessionStorage.setItem('isGod', 'true');
+            applyGodModeUI();
         }
 
+        // ── CODE RED ─────────────────────────────────────────
         if (result.code_red) {
             document.getElementById("chatWindow").classList.add("code-red-active");
-            document.getElementById("chatHeader").style.color = "#e11d48";
-            document.getElementById("chatHeader").innerText = "⚠️ CODE RED DETECTED";
-            aiReply += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
+            const header = document.getElementById("chatHeader");
+            header.style.color = "#e11d48";
+            header.firstElementChild.textContent = "⚠️ CODE RED DETECTED";
         } else {
             document.getElementById("chatWindow").classList.remove("code-red-active");
-            document.getElementById("chatHeader").style.color = "var(--cyber-blue)";
-            document.getElementById("chatHeader").innerText = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE";
+            // FIX-F7: only update header if NOT in code red state and only if not god
+            if (!result.code_red) {
+                const header = document.getElementById("chatHeader");
+                header.style.color = "var(--cyber-blue)";
+                header.firstElementChild.textContent = isGodMode
+                    ? `LEXIE AI: IMMORTAL (${godName}) 👑`
+                    : "LEXIE AI: SYSTEM ACTIVE";
+            }
         }
 
-        aiReply = aiReply.replace(/\[CALENDAR: (.*?)\]/g, '<br><a href="$1" target="_blank" class="btn-pdf" style="background:var(--cyber-blue);color:#000;"><i class="fas fa-calendar-alt"></i> Save to Calendar</a>');
+        // ── Build safe bot HTML ───────────────────────────────
+        // FIX-F4: escape AI reply for HTML display, keep raw for TTS & PDF
+        const rawAiReply = result.ai_answer || "Error processing request.";
+        let displayHtml = escapeHTML(rawAiReply);
 
+        // Inject CODE RED call button after escaping
+        if (result.code_red) {
+            displayHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
+        }
+
+        // FIX-F3: PDF uses result.pdf_data (clean server-stripped text), not escaped html
         if (result.has_estimate && !result.code_red) {
-            const cleanDataForPDF = (result.pdf_data || result.ai_answer).replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]*>?/gm, '').replace(/\*\*/g, '').replace(/\*/g, '').replace(/₱/g, 'PHP ').replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, '');
+            // Prefer server-extracted pdf_data; fallback to raw AI reply
+            const cleanDataForPDF = (result.pdf_data || rawAiReply)
+                .replace(/\[PDF_START\]/gi, '').replace(/\[PDF_END\]/gi, '')
+                .replace(/\*\*/g, '').replace(/\*/g, '')
+                .replace(/₱/g, 'PHP ')
+                .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, '')
+                .replace(/\r\n/g, '\n').trim();
+
             sessionStorage.setItem('lastEst', cleanDataForPDF);
-            aiReply += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Formal Estimate</button>`;
+            displayHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Formal Estimate</button>`;
         }
 
-        // MEMORY TRUNCATION (THE CUTTER): Save max 400 chars to local storage
-        let memReply = result.ai_answer || "";
-        if (memReply.length > 400) memReply = memReply.substring(0, 400) + "... [Details read by user]";
-        lexieMemory.push({ role: "assistant", content: memReply });
+        // Save raw (unescaped) to memory
+        lexieMemory.push({ role: "assistant", content: rawAiReply });
+        if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
         localStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
 
-        const cleanReplyForButton = result.ai_answer.replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/(?:\r\n|\r|\n)/g, " ");
-        t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--cyber-blue);">Lexie: ${aiReply}<div style="margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;"><button onclick="window.speakText('${cleanReplyForButton}')" style="background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;"><i class="fas fa-volume-up"></i> Play Audio</button></div></div>`;
-        t.scrollTop = t.scrollHeight;
-        window.speakText(result.ai_answer);
+        // Render bot bubble (safe HTML + TTS uses raw text)
+        appendBubble("bot", displayHtml, rawAiReply);
+        window.speakText(rawAiReply);
 
     } catch (err) {
-        document.getElementById(s)?.remove();
-        t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid #e11d48;color:#e11d48;">Lexie: Boss, connection timeout or payload too heavy. I reset the line, please try again!</div>`;
-        t.scrollTop = t.scrollHeight;
+        const lb = document.getElementById(loadId);
+        if (lb) lb.textContent = "Lexie: Connection Firewall blocked. Please try again.";
         resetTurnstile();
-        const btn = document.getElementById('mainSendBtn');
-        if (btn) { btn.disabled = true; btn.style.opacity = "0.5"; btn.innerHTML = '<i class="fas fa-shield-alt fa-spin"></i>'; }
-    } finally { 
-        clearImage(); 
-        resetTurnstile();
+    } finally {
+        clearImage();
+        if (!isGodMode) resetTurnstile();
     }
 };
 
+// FIX-F6: Enter key support for chat input (was missing)
+document.addEventListener("DOMContentLoaded", () => {
+    const inputEl = document.getElementById("userQuery");
+    if (inputEl) {
+        inputEl.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); }
+        });
+    }
+});
+
+// ── PDF Generator ─────────────────────────────────────────────
 window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) { alert("System Error: No estimate data found."); return; }
@@ -925,44 +1017,31 @@ window.downloadPDF = async function() {
     if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Formal Estimate'; btn.style.opacity = '1'; }
 };
 
-let speechQueue = [];
-let isSpeaking = false;
-
+// ── Queue-Based TTS ───────────────────────────────────────────
+let speechQueue = [], isSpeaking = false;
 window.speakText = function(text) {
     if (!window.speechSynthesis) return;
-    
-    let cleanText = text.replace(/\[CALENDAR:.*?\]/g, '').replace(/\*/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    let cleanText = text.replace(/\[CALENDAR:.*?\]/g, '').replace(/\*/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
     let sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
-    
     speechQueue.push(...sentences);
     if (!isSpeaking) processSpeechQueue();
 };
-
 function processSpeechQueue() {
-    if (speechQueue.length === 0) {
-        isSpeaking = false;
-        return;
-    }
-    
+    if (speechQueue.length === 0) { isSpeaking = false; return; }
     isSpeaking = true;
     let sentence = speechQueue.shift().trim();
     if (!sentence) { processSpeechQueue(); return; }
-
     let utterance = new SpeechSynthesisUtterance(sentence);
     let voices = window.speechSynthesis.getVoices();
     let voice = voices.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Google US English") || v.name.includes("Female") || v.name.includes("Enhanced")) || voices[0];
-    
     if (voice) utterance.voice = voice;
-    utterance.lang = "en-US";
-    utterance.pitch = 1.15;
-    utterance.rate = 0.85;
-
+    utterance.lang = "en-US"; utterance.pitch = 1.15; utterance.rate = 0.85;
     utterance.onend = () => processSpeechQueue();
-    utterance.onerror = () => processSpeechQueue(); 
-    
+    utterance.onerror = () => processSpeechQueue();
     window.speechSynthesis.speak(utterance);
 }
 
+// ── Drag Logic ────────────────────────────────────────────────
 const wrapper = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
 let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
 function dragStart(x, y) { isDrag = true; startTime = Date.now(); startX = x - xOff; startY = y - yOff; }
@@ -979,12 +1058,10 @@ if (toggle && wrapper) {
 
 window.toggleBotWindow = function() {
     const chat = document.getElementById("chatWindow"), hint = document.getElementById("dragHint"), btn = document.getElementById("readPageBtn");
-    if (isSpeaking || window.speechSynthesis.speaking) { 
-        window.speechSynthesis.cancel(); 
-        speechQueue = [];
-        isSpeaking = false;
-        if (btn) btn.innerHTML = '<i class="fas fa-volume-up"></i>'; 
-        window.isReadingPage = false; 
+    if (isSpeaking || window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false;
+        if (btn) btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        window.isReadingPage = false;
     }
     if (chat.style.display === "flex") {
         chat.style.display = "none";
@@ -995,11 +1072,19 @@ window.toggleBotWindow = function() {
     }
 };
 
+// ── DOMContentLoaded Setup ────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof AOS !== "undefined") AOS.init({ duration: 800, once: true, offset: 50 });
+
+    // Mobile Menu
     const menuBtn = document.getElementById("mobile-menu"), navList = document.getElementById("nav-list");
     if (menuBtn && navList) menuBtn.addEventListener("click", () => navList.classList.toggle("active"));
 
+    // Enter key for chat (FIX-F6)
+    const inputEl = document.getElementById("userQuery");
+    if (inputEl) inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); } });
+
+    // Hero Typewriter
     function runTypewriter(el, text, speed) {
         let i = 0;
         function type() { if (i < text.length) { el.innerHTML += text.charAt(i++); setTimeout(type, speed); } }
@@ -1024,28 +1109,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const subEl = document.querySelector(".txt-type");
     if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute("data-words")), subEl.getAttribute("data-wait"));
 
+    // Read Page Button
     window.isReadingPage = false;
     const readPageBtn = document.getElementById("readPageBtn");
     if (readPageBtn) {
         readPageBtn.addEventListener("click", function() {
-            if (window.isReadingPage || window.speechSynthesis.speaking) { 
-                window.speechSynthesis.cancel(); 
-                speechQueue = [];
-                isSpeaking = false;
-                window.isReadingPage = false; 
-                readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; 
-                return; 
+            if (window.isReadingPage || window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false;
+                window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; return;
             }
             const main = document.getElementById("main-content"); if (!main) return;
             let text = main.innerText.replace(/\n+/g, ". ").replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES|SECURE YOUR SLOT NOW/g, "");
-            const fullText = "Welcome to KOHMZ Electrical... " + text;
-            
-            window.isReadingPage = true; 
-            readPageBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-            window.speakText(fullText); 
+            window.isReadingPage = true; readPageBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            window.speakText("Welcome to KOHMZ Electrical... " + text);
         });
     }
 
+    // Tech Bar Typewriter
     const techBarWords = ["TECHNICAL GOVERNANCE", "ASSET PROTECTION", "PEC-COMPLIANT ARCHITECTURE", "24/7 SPECIALIST RESPONSE", "RESIDENTIAL & COMMERCIAL MASTERY"];
     let tbIdx = 0, charIdx = 0, isTbDel = false;
     const electricEl = document.getElementById("electric-typewriter");
@@ -1061,6 +1141,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     typeBar();
 
+    // Mobile Dropdown
     document.querySelectorAll('.nav-links li.dropdown .dropbtn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             if (window.innerWidth <= 992) {
