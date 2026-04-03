@@ -577,7 +577,7 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — V14.3 (ENTERPRISE FIXES: XSS, Queue, Retries, Size Limits)
+// KOHMZ LEXIE AI — V14.3.1 (ENTERPRISE GRADE + ANTI-STROKE PATCH)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 const VIP_FAMILY = { "/pepot": true, "/joy": true, "/samsam": true, "/mara": true, "/mantha": true };
@@ -596,7 +596,7 @@ function resetTurnstile() {
     }
 }
 
-// Memory (Bumped to 15 limit)
+// Memory System
 let userId = localStorage.getItem('kohmz_uuid');
 if (!userId) { userId = 'user-' + Math.random().toString(36).substr(2, 9); localStorage.setItem('kohmz_uuid', userId); }
 let lexieMemory = JSON.parse(localStorage.getItem('lexie_memory')) || [];
@@ -627,12 +627,12 @@ window.exitGodMode = function() {
     document.getElementById("chatBody").innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold);">Lexie: Immortal Mode deactivated. Returning to standard protocol.</div>`;
 };
 
-// Auto-greet + UI Glitch Fix
+// Auto-greet + UI
 window.addEventListener('load', () => {
     const t = document.getElementById("chatBody");
     
     if (lexieMemory.length === 0) {
-        t.innerHTML = `<div class="chat-bubble" style="border-left:3px solid var(--cyber-blue);">Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! I can read images and save your quotes. Paano kita matutulungan boss?</div>`;
+        t.innerHTML = `<div class="chat-bubble" style="border-left:3px solid var(--cyber-blue);">Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! Paano kita matutulungan boss?</div>`;
     } else {
         lexieMemory.forEach(m => {
             if (m.role !== "system") {
@@ -641,7 +641,6 @@ window.addEventListener('load', () => {
                 b.className = "chat-bubble";
                 b.style.cssText = isUser ? "background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;" : "border-left:3px solid var(--cyber-blue);";
                 
-                // Anti-XSS for loaded history
                 let cleanContent = m.content.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\[SYSTEM NOTE.*?\]/g, "[Image Attached]");
                 b.innerHTML = (isUser ? "YOU: " : "Lexie: ") + cleanContent;
                 t.appendChild(b);
@@ -661,7 +660,7 @@ window.addEventListener('load', () => {
     sessionStorage.setItem('kohmz_last_page', currentPageName);
 });
 
-// MULTI-DEVICE EXIT INTENT (Nanghahabol)
+// MULTI-DEVICE EXIT INTENT
 function triggerExitIntent() {
     if (isGodMode || sessionStorage.getItem('exit_offered')) return;
     const chat = document.getElementById("chatWindow");
@@ -677,11 +676,9 @@ function triggerExitIntent() {
     if (window.speechSynthesis) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
 }
 
-// 1. Desktop Mouse Leave
 document.addEventListener("mouseleave", (e) => { if (e.clientY < 0) triggerExitIntent(); });
-// 2. Mobile Tab Switch / Minimize
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === 'hidden') triggerExitIntent(); });
-// 3. Mobile Fast Scroll Up
+
 let lastScrollTop = 0, lastScrollTime = Date.now();
 window.addEventListener("scroll", () => {
     let st = window.pageYOffset || document.documentElement.scrollTop;
@@ -691,23 +688,17 @@ window.addEventListener("scroll", () => {
     lastScrollTime = now;
 }, { passive: true });
 
-// Viber Fallback Logic
 window.openViber = function() {
     window.location.href = 'viber://chat?number=%2B639266174131';
-    setTimeout(() => {
-        if (!document.hidden) window.open('https://www.viber.com/', '_blank');
-    }, 2500);
+    setTimeout(() => { if (!document.hidden) window.open('https://www.viber.com/', '_blank'); }, 2500);
 };
 
 function handleImage(input) {
     if (input.files && input.files[0]) {
-        // IMAGE SIZE VALIDATION (Max 5MB)
         if (input.files[0].size > 5 * 1024 * 1024) {
             alert("Uy boss, masyadong malaki yung image! Hanggang 5MB lang po sana para hindi mag-freeze ang system.");
-            input.value = null;
-            return;
+            input.value = null; return;
         }
-
         const reader = new FileReader();
         reader.onload = (e) => {
             const img = new Image();
@@ -751,25 +742,26 @@ window.startDictation = function() {
 
 window.sendQuickReply = function(text) { document.getElementById('userQuery').value = text; window.askGemini(); };
 
-// XSS Sanitizer Helper
 function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, tag => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-    }[tag]));
+    return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
 }
 
-// Fetch with Auto-Retry (Exponential Backoff)
-async function fetchWithRetry(url, options, retries = 3) {
+// TIMEOUT + AUTO RETRY FIX
+async function fetchWithRetry(url, options, retries = 2, timeout = 20000) {
     for (let i = 0; i < retries; i++) {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
         try {
-            const response = await fetch(url, options);
+            const response = await fetch(url, { ...options, signal: controller.signal });
+            clearTimeout(id);
             if (response.ok) return response;
         } catch (err) {
+            clearTimeout(id);
             if (i === retries - 1) throw err;
-            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i))); // Waits 1s, 2s, 4s...
+            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i))); 
         }
     }
-    throw new Error("Network unreachable after retries");
+    throw new Error("Timeout/Network Error");
 }
 
 window.askGemini = async function() {
@@ -790,8 +782,10 @@ window.askGemini = async function() {
     t.innerHTML += `<div class="chat-bubble" style="background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;">YOU: ${safeUserInput || '[Image Attached]'}</div>`;
     e.value = ""; t.scrollTop = t.scrollHeight;
 
+    // SAVE TO HISTORY BUT NO IMAGES IN TEXT 
     lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
-    if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
+    // KEEP STORAGE LIGHT
+    if (lexieMemory.length > 8) lexieMemory = lexieMemory.slice(-8); 
     localStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
 
     const s = "load-" + Date.now();
@@ -803,12 +797,12 @@ window.askGemini = async function() {
     try {
         const response = await fetchWithRetry(WORKER_URL, {
             method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: n, image: currentImageData, name: godName || "Web Client", userId: userId, pageData: sd, history: lexieMemory.slice(-6), turnstileToken: currentTurnstileToken, isGod: isGodMode })
+            // PAYLOAD DIET: Send only the last 4 exchanges to CF
+            body: JSON.stringify({ message: n, image: currentImageData, name: godName || "Web Client", userId: userId, pageData: sd, history: lexieMemory.slice(-4), turnstileToken: currentTurnstileToken, isGod: isGodMode })
         });
         const result = await response.json();
         document.getElementById(s)?.remove();
 
-        // XSS Protection for LLM Response before adding our own buttons
         let aiReply = result.ai_answer ? escapeHTML(result.ai_answer) : "Error processing request.";
 
         if (result.god_mode_activated) {
@@ -839,7 +833,10 @@ window.askGemini = async function() {
             aiReply += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Formal Estimate</button>`;
         }
 
-        lexieMemory.push({ role: "assistant", content: result.ai_answer });
+        // MEMORY TRUNCATION (THE CUTTER): Save max 400 chars to local storage
+        let memReply = result.ai_answer || "";
+        if (memReply.length > 400) memReply = memReply.substring(0, 400) + "... [Details read by user]";
+        lexieMemory.push({ role: "assistant", content: memReply });
         localStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
 
         const cleanReplyForButton = result.ai_answer.replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/(?:\r\n|\r|\n)/g, " ");
@@ -848,18 +845,18 @@ window.askGemini = async function() {
         window.speakText(result.ai_answer);
 
     } catch (err) {
-        if (document.getElementById(s)) document.getElementById(s).innerHTML = "Lexie: Connection Firewall blocked. Please try again.";
-        // On strict error, we reset turnstile visibly
+        document.getElementById(s)?.remove();
+        t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid #e11d48;color:#e11d48;">Lexie: Boss, connection timeout or payload too heavy. I reset the line, please try again!</div>`;
+        t.scrollTop = t.scrollHeight;
         resetTurnstile();
         const btn = document.getElementById('mainSendBtn');
         if (btn) { btn.disabled = true; btn.style.opacity = "0.5"; btn.innerHTML = '<i class="fas fa-shield-alt fa-spin"></i>'; }
     } finally { 
         clearImage(); 
-        resetTurnstile(); // Silent reset for background re-validation
+        resetTurnstile();
     }
 };
 
-// FULL PDF GENERATOR
 window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) { alert("System Error: No estimate data found."); return; }
@@ -928,18 +925,15 @@ window.downloadPDF = async function() {
     if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Formal Estimate'; btn.style.opacity = '1'; }
 };
 
-// QUEUE-BASED AUDIO (RACE CONDITION FIX)
 let speechQueue = [];
 let isSpeaking = false;
 
 window.speakText = function(text) {
     if (!window.speechSynthesis) return;
     
-    // Clean text before reading
     let cleanText = text.replace(/\[CALENDAR:.*?\]/g, '').replace(/\*/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
     let sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
     
-    // Push new sentences to the queue
     speechQueue.push(...sentences);
     if (!isSpeaking) processSpeechQueue();
 };
@@ -963,14 +957,12 @@ function processSpeechQueue() {
     utterance.pitch = 1.15;
     utterance.rate = 0.85;
 
-    // Process next sentence automatically
     utterance.onend = () => processSpeechQueue();
-    utterance.onerror = () => processSpeechQueue(); // Skip on error so it doesn't freeze
+    utterance.onerror = () => processSpeechQueue(); 
     
     window.speechSynthesis.speak(utterance);
 }
 
-// DRAG LOGIC
 const wrapper = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
 let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
 function dragStart(x, y) { isDrag = true; startTime = Date.now(); startX = x - xOff; startY = y - yOff; }
@@ -1003,13 +995,11 @@ window.toggleBotWindow = function() {
     }
 };
 
-// TYPEWRITER + GLOBAL EVENTS
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof AOS !== "undefined") AOS.init({ duration: 800, once: true, offset: 50 });
     const menuBtn = document.getElementById("mobile-menu"), navList = document.getElementById("nav-list");
     if (menuBtn && navList) menuBtn.addEventListener("click", () => navList.classList.toggle("active"));
 
-    // Unified Typewriter Logic
     function runTypewriter(el, text, speed) {
         let i = 0;
         function type() { if (i < text.length) { el.innerHTML += text.charAt(i++); setTimeout(type, speed); } }
@@ -1052,7 +1042,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
             window.isReadingPage = true; 
             readPageBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-            window.speakText(fullText); // Re-uses the newly bulletproofed queue!
+            window.speakText(fullText); 
         });
     }
 
