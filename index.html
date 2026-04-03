@@ -1043,9 +1043,10 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("main-typewriter-text").innerHTML += mainText.charAt(mIdx++); 
             setTimeout(typeHero, 60); 
         } else {
-            // Trigger the subtitle typing sequence
+            // Trigger the subtitle typing sequence safely
             const txtElement = document.querySelector('.txt-type');
-            if(txtElement) {
+            if(txtElement && !txtElement.classList.contains('started')) {
+                txtElement.classList.add('started');
                 const words = JSON.parse(txtElement.getAttribute('data-words'));
                 const wait = txtElement.getAttribute('data-wait');
                 new TypeWriter(txtElement, words, wait);
@@ -1066,7 +1067,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     typeBar();
 
-    // UPGRADED: Added mobile touch events for dragging
+    // UPGRADED: Mobile touch events for smooth dragging
     const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
     let isDrag = false, startX, startY, xOff = 0, yOff = 0;
     
