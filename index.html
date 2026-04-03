@@ -40,6 +40,16 @@
             --circuit-line: rgba(255, 183, 3, 0.07);
             --bg-dark: #010409;
         }
+
+        /* 🌟 DYNAMIC UI MODES (NANO PARTICLES ACTION) */
+        body { transition: background-color 1s ease; }
+        body.mode-red { --cyber-blue: #ff2a2a; --neon-gold: #ff4d4d; --blue-glow: rgba(255,0,0,0.4); background-color: #1a0000; }
+        body.mode-red .particle { background: #ff2a2a; box-shadow: 0 0 15px #ff2a2a; }
+        body.mode-red .energy-line { background: linear-gradient(to bottom, transparent, #ff2a2a, #ff4d4d, transparent); }
+        
+        body.mode-gold { --cyber-blue: #ffb703; --neon-gold: #ffe600; --blue-glow: rgba(255,183,3,0.4); background-color: #1a1300; }
+        body.mode-gold .particle { background: #ffb703; box-shadow: 0 0 15px #ffb703; }
+        body.mode-gold .energy-line { background: linear-gradient(to bottom, transparent, #ffb703, #ffe600, transparent); }
         
         *{box-sizing:border-box}
         body{font-size:12px;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg-dark);color:#f8fafc;scroll-behavior:smooth;line-height:1.6;margin:0;padding:0;overflow-x:hidden}
@@ -67,7 +77,7 @@
         @keyframes flowBolt { 0%{transform:translateY(-300px);opacity:0} 50%{opacity:1} 100%{transform:translateY(120vh);opacity:0} }
         
         .particle-container { position:fixed; width:100vw; height:100vh; top:0; left:0; z-index:-1; pointer-events:none; }
-        .particle { position:absolute; background:var(--cyber-blue); border-radius:50%; box-shadow:0 0 12px var(--cyber-blue); opacity:0; animation:floatUp 12s infinite linear; }
+        .particle { position:absolute; background:var(--cyber-blue); border-radius:50%; box-shadow:0 0 12px var(--cyber-blue); opacity:0; transition: background 1s, box-shadow 1s; animation:floatUp 12s infinite linear; }
         .p1{left:15%; width:4px; height:4px; animation-duration:9s; animation-delay:0s;}
         .p2{left:35%; width:3px; height:3px; animation-duration:14s; animation-delay:2s; background:var(--neon-gold); box-shadow:0 0 12px var(--neon-gold);}
         .p3{left:65%; width:5px; height:5px; animation-duration:10s; animation-delay:4s;}
@@ -564,8 +574,8 @@ Your browser does not support the video tag.
     <button id="micBtn" class="chat-tool-btn" onclick="startDictation()" title="Voice Input"><i class="fas fa-microphone"></i></button>
     <input type="file" id="imgInput" hidden accept="image/*" onchange="handleImage(this)">
     <input type="file" id="cameraInput" hidden accept="image/*" capture="environment" onchange="handleImage(this)">
-    <input type="text" id="userQuery" class="chat-input-field" placeholder="Ask Lexie or attach image...">
-    <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="askLexie()"><i class="fas fa-spinner fa-spin"></i></button>
+    <input type="text" id="userQuery" class="chat-input-field" maxlength="600" placeholder="Ask Lexie or attach image...">
+    <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="askLexie()"><i class="fas fa-shield-alt"></i></button>
 </div>
 </div>
 <div class="kohmz-bot-toggle" id="botToggle">
@@ -576,31 +586,21 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V15.0
-// SYNC: worker.js V15.0
-// FIXES vs V14.3:
-//   FIX-F1  isGod flag REMOVED from POST body (security sync with worker)
-//   FIX-F2  history slice bumped -6 -> -8 (sync with worker)
-//   FIX-F3  PDF data source: use raw result.ai_answer for PDF (was using escaped html)
-//           now uses result.pdf_data (clean server-stripped text), fallback to raw reply
-//   FIX-F4  escapeHTML applied consistently — AI reply escaped for chat display,
-//           raw unescaped text used for PDF and TTS separately
-//   FIX-F5  sendBtn renamed askLexie() (was askGemini — stale function name)
-//   FIX-F6  Enter key handler added to chat input (was missing)
-//   FIX-F7  God mode header label no longer overwrites CODE RED header on re-render
-//   FIX-F8  vipName field added to POST body so worker can validate god mode server-side
+// KOHMZ LEXIE AI — FRONTEND V16.3 (PREMIUM UPDATE)
 // ============================================================
-
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 const VIP_KEYWORDS = ["/pepot", "/joy", "/samsam", "/mara", "/mantha"];
 
-// ── Turnstile ────────────────────────────────────────────────
+// ── Turnstile Logic (Passive Security Mode) ──────────────────
 let currentTurnstileToken = "";
+let messageCount = parseInt(sessionStorage.getItem('msg_count')) || 0;
+
 window.onTurnstileSuccess = function(token) {
     currentTurnstileToken = token;
     const btn = document.getElementById('mainSendBtn');
     if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
 };
+
 function resetTurnstile() {
     if (typeof turnstile !== 'undefined' && !isGodMode) {
         currentTurnstileToken = "";
@@ -610,18 +610,18 @@ function resetTurnstile() {
     }
 }
 
-// ── State ────────────────────────────────────────────────────
+// ── Memory Logic (VIP = Permanent | Normal = Auto-Delete) ────
 let userId = localStorage.getItem('kohmz_uuid');
 if (!userId) { userId = 'user-' + Math.random().toString(36).substr(2, 9); localStorage.setItem('kohmz_uuid', userId); }
 
+let isGodMode = localStorage.getItem('isGod') === 'true';
+let godName = localStorage.getItem('god_name') || "";
+
 let lexieMemory = [];
-try { lexieMemory = JSON.parse(localStorage.getItem('lexie_memory')) || []; } catch(e) { lexieMemory = []; }
-
+let memoryStorage = isGodMode ? localStorage : sessionStorage;
+try { lexieMemory = JSON.parse(memoryStorage.getItem('lexie_memory')) || []; } catch(e) { lexieMemory = []; }
 let currentImageData = null;
-let isGodMode = sessionStorage.getItem('isGod') === 'true';
-let godName = sessionStorage.getItem('god_name') || "";
 
-// ── God Mode UI Init ─────────────────────────────────────────
 function applyGodModeUI() {
     document.getElementById("dragHint").innerText = "👑 IMMORTAL MODE";
     document.getElementById("dragHint").classList.add('god-mode-tag');
@@ -636,7 +636,7 @@ if (isGodMode) applyGodModeUI();
 window.exitGodMode = function() {
     if (!isGodMode) return;
     isGodMode = false; godName = "";
-    sessionStorage.removeItem('isGod'); sessionStorage.removeItem('god_name');
+    localStorage.removeItem('isGod'); localStorage.removeItem('god_name');
     document.getElementById("dragHint").innerText = "⚡ KOHMZ Lexie Pro";
     document.getElementById("dragHint").classList.remove('god-mode-tag');
     const tsCont = document.getElementById("cf-turnstile-container");
@@ -646,23 +646,21 @@ window.exitGodMode = function() {
     appendBubble("bot", "Immortal Mode deactivated. Returning to standard protocol.");
 };
 
-// ── XSS Helper ───────────────────────────────────────────────
+// ── Bubble Helper (No HTML escaping issues) ──────────────────
 function escapeHTML(str) {
     if (!str) return "";
     return str.replace(/[&<>'"]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag]));
 }
 
-// ── Bubble Helper ────────────────────────────────────────────
 function appendBubble(role, htmlContent, rawTextForTTS) {
     const t = document.getElementById("chatBody");
     const b = document.createElement("div");
     b.className = "chat-bubble";
     if (role === "user") {
         b.style.cssText = "background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;white-space:pre-wrap;";
-        b.textContent = "YOU: " + htmlContent; // textContent = safe, no XSS
+        b.textContent = "YOU: " + htmlContent; 
     } else {
         b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;";
-        // For bot: we set innerHTML because we allow safe buttons (we build those ourselves)
         b.innerHTML = "Lexie: " + htmlContent;
         if (rawTextForTTS) {
             const audioDiv = document.createElement("div");
@@ -670,18 +668,18 @@ function appendBubble(role, htmlContent, rawTextForTTS) {
             const audioBtn = document.createElement("button");
             audioBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;";
             audioBtn.innerHTML = '<i class="fas fa-volume-up"></i> Play Audio';
-            const capturedText = rawTextForTTS; // closure capture
+            const capturedText = rawTextForTTS; 
             audioBtn.onclick = () => window.speakText(capturedText);
             audioDiv.appendChild(audioBtn);
             b.appendChild(audioDiv);
         }
     }
     t.appendChild(b);
-    t.scrollTop = t.scrollHeight;
+    setTimeout(() => { t.scrollTop = t.scrollHeight; }, 100); // Wait for render
     return b;
 }
 
-// ── Init / Load Memory ───────────────────────────────────────
+// ── Load Initial State ───────────────────────────────────────
 window.addEventListener('load', () => {
     const t = document.getElementById("chatBody");
     if (lexieMemory.length === 0) {
@@ -690,12 +688,10 @@ window.addEventListener('load', () => {
         lexieMemory.forEach(m => {
             if (m.role === "system") return;
             const isUser = m.role === "user";
-            // FIX-F4: use escapeHTML for display, never raw
             const safeContent = escapeHTML(m.content).replace(/\[SYSTEM NOTE.*?\]/g, "[Image Attached]");
             if (isUser) {
                 appendBubble("user", safeContent);
             } else {
-                // Bot history: plain text only on reload (no HTML buttons from old sessions)
                 const b = document.createElement("div");
                 b.className = "chat-bubble";
                 b.style.cssText = "border-left:3px solid var(--cyber-blue);";
@@ -706,114 +702,15 @@ window.addEventListener('load', () => {
         t.scrollTop = t.scrollHeight;
     }
 
-    // Page Tracker
     let currentPageName = document.title.split('|')[0].trim() || "kabilang page";
     let lastPage = sessionStorage.getItem('kohmz_last_page');
     if (lastPage && lastPage !== currentPageName && lexieMemory.length > 0) {
-        setTimeout(() => {
-            appendBubble("bot", `Uy boss, napadaan ka pala dito sa ${escapeHTML(currentPageName)}! May napusuan ka bang service natin dito? I-chat mo lang ako ha!`);
-        }, 1500);
+        setTimeout(() => { appendBubble("bot", `Uy boss, napadaan ka pala dito sa ${escapeHTML(currentPageName)}! May napusuan ka bang service natin dito? I-chat mo lang ako ha!`); }, 1500);
     }
     sessionStorage.setItem('kohmz_last_page', currentPageName);
 });
 
-// ── Exit Intent ───────────────────────────────────────────────
-function triggerExitIntent() {
-    if (isGodMode || sessionStorage.getItem('exit_offered')) return;
-    const chat = document.getElementById("chatWindow");
-    if (chat.style.display !== "flex") {
-        chat.style.display = "flex";
-        const hint = document.getElementById("dragHint");
-        if (hint) hint.innerHTML = "🖐️ Drag to Move";
-    }
-    appendBubble("bot", "Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊");
-    sessionStorage.setItem('exit_offered', 'true');
-    if (window.speechSynthesis) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
-}
-document.addEventListener("mouseleave", (e) => { if (e.clientY < 0) triggerExitIntent(); });
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === 'hidden') triggerExitIntent(); });
-let lastScrollTop = 0, lastScrollTime = Date.now();
-window.addEventListener("scroll", () => {
-    let st = window.pageYOffset || document.documentElement.scrollTop;
-    let now = Date.now(), timeDiff = now - lastScrollTime;
-    if (st < lastScrollTop - 150 && timeDiff < 100) triggerExitIntent();
-    lastScrollTop = st <= 0 ? 0 : st;
-    lastScrollTime = now;
-}, { passive: true });
-
-// ── Viber ────────────────────────────────────────────────────
-window.openViber = function() {
-    window.location.href = 'viber://chat?number=%2B639266174131';
-    setTimeout(() => { if (!document.hidden) window.open('https://www.viber.com/', '_blank'); }, 2500);
-};
-
-// ── Image Handling ───────────────────────────────────────────
-function handleImage(input) {
-    if (input.files && input.files[0]) {
-        if (input.files[0].size > 5 * 1024 * 1024) {
-            alert("Uy boss, masyadong malaki yung image! Hanggang 5MB lang po sana para hindi mag-freeze ang system.");
-            input.value = null; return;
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                let width = img.width, height = img.height;
-                if (width > 500) { height = Math.round((height * 500) / width); width = 500; }
-                canvas.width = width; canvas.height = height;
-                canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-                currentImageData = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
-                document.getElementById("prev-img").src = canvas.toDataURL('image/jpeg', 0.6);
-                document.getElementById("vision-preview").style.display = "flex";
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-function clearImage() {
-    currentImageData = null;
-    document.getElementById("vision-preview").style.display = "none";
-    document.getElementById("imgInput").value = null;
-    document.getElementById("cameraInput").value = null;
-}
-
-// ── Voice Input ───────────────────────────────────────────────
-window.startDictation = function() {
-    if (window.hasOwnProperty('webkitSpeechRecognition') || window.hasOwnProperty('SpeechRecognition')) {
-        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = new SR();
-        const micBtn = document.getElementById('micBtn');
-        recognition.lang = 'en-PH';
-        recognition.onstart = () => micBtn.classList.add('mic-active');
-        recognition.onresult = (e) => { document.getElementById('userQuery').value = e.results[0][0].transcript; askLexie(); };
-        recognition.onend = () => micBtn.classList.remove('mic-active');
-        recognition.start();
-    } else {
-        appendBubble("bot", "Sorry boss, Voice Input is not supported sa browser mo.");
-    }
-};
-
-window.sendQuickReply = function(text) { document.getElementById('userQuery').value = text; askLexie(); };
-
-// ── Fetch with Retry ─────────────────────────────────────────
-async function fetchWithRetry(url, options, retries = 3) {
-    for (let i = 0; i < retries; i++) {
-        try {
-            const response = await fetch(url, options);
-            if (response.ok) return response;
-            if (response.status >= 400 && response.status < 500) throw new Error("Client error: " + response.status);
-        } catch (err) {
-            if (i === retries - 1) throw err;
-            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
-        }
-    }
-    throw new Error("Network unreachable after retries");
-}
-
-// ── MAIN SEND ─────────────────────────────────────────────────
-// FIX-F5: renamed from askGemini to askLexie
+// ── Main Ask Lexie Function ──────────────────────────────────
 window.askLexie = async function() {
     const inputEl = document.getElementById("userQuery");
     const t = document.getElementById("chatBody");
@@ -821,23 +718,24 @@ window.askLexie = async function() {
     if (!n && !currentImageData) return;
 
     const isVIPAttempt = VIP_KEYWORDS.includes(n.toLowerCase());
-    const isLocal = ["localhost","127.0.0.1",""].includes(window.location.hostname);
-
-    if (!isGodMode && !currentTurnstileToken && !isVIPAttempt && !isLocal) {
-        appendBubble("bot", "⚠️ Please complete the security check box first boss!");
-        return;
+    
+    // Passive Turnstile Verification (Allows 2 free messages)
+    if (!isGodMode && !isVIPAttempt) {
+        if (messageCount >= 2 && !currentTurnstileToken) {
+            appendBubble("bot", "⚠️ Boss, paki-check muna yung security box (I am not a robot) sa ibaba para makapag-tuloy tayo.");
+            return;
+        }
+        messageCount++;
+        sessionStorage.setItem('msg_count', messageCount);
     }
 
-    // Display user bubble safely (textContent path via appendBubble)
     appendBubble("user", n || "[Image Attached]");
     inputEl.value = "";
 
-    // Save to memory — store raw text, not escaped
     lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
     if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
-    localStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
+    memoryStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
 
-    // Typing indicator
     const loadId = "load-" + Date.now();
     const loadBubble = document.createElement("div");
     loadBubble.className = "chat-bubble";
@@ -847,9 +745,7 @@ window.askLexie = async function() {
     t.appendChild(loadBubble); t.scrollTop = t.scrollHeight;
 
     try {
-        // FIX-F1: isGod removed from body. Worker derives it server-side via vipName.
-        // FIX-F8: vipName sent so worker can cross-reference for god mode session continuity.
-        const response = await fetchWithRetry(WORKER_URL, {
+        const response = await fetch(WORKER_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -858,56 +754,49 @@ window.askLexie = async function() {
                 name: godName || "Web Client",
                 userId: userId,
                 pageData: document.getElementById("main-content")?.innerText?.substring(0, 1000) || "",
-                // FIX-F2: bumped to -8 to match worker expectation
                 history: lexieMemory.slice(-8),
                 turnstileToken: currentTurnstileToken,
-                vipName: godName  // FIX-F8: server uses this for god mode validation
-                // NOTE: isGod intentionally removed for security (FIX-F1)
+                vipName: godName 
             })
         });
 
         const result = await response.json();
         document.getElementById(loadId)?.remove();
 
-        // ── God Mode Activation ──────────────────────────────
         if (result.god_mode_activated) {
             isGodMode = true;
-            if (result.god_name) { godName = result.god_name; sessionStorage.setItem('god_name', godName); }
-            sessionStorage.setItem('isGod', 'true');
+            if (result.god_name) { godName = result.god_name; localStorage.setItem('god_name', godName); }
+            localStorage.setItem('isGod', 'true');
             applyGodModeUI();
         }
 
-        // ── CODE RED ─────────────────────────────────────────
+        // UI ACTIONS (NANO PARTICLES TRIGGERS)
         if (result.code_red) {
+            document.body.classList.add("mode-red");
+            setTimeout(() => document.body.classList.remove("mode-red"), 6000);
+            
             document.getElementById("chatWindow").classList.add("code-red-active");
             const header = document.getElementById("chatHeader");
             header.style.color = "#e11d48";
             header.firstElementChild.textContent = "⚠️ CODE RED DETECTED";
         } else {
             document.getElementById("chatWindow").classList.remove("code-red-active");
-            // FIX-F7: only update header if NOT in code red state and only if not god
-            if (!result.code_red) {
-                const header = document.getElementById("chatHeader");
-                header.style.color = "var(--cyber-blue)";
-                header.firstElementChild.textContent = isGodMode
-                    ? `LEXIE AI: IMMORTAL (${godName}) 👑`
-                    : "LEXIE AI: SYSTEM ACTIVE";
+            const header = document.getElementById("chatHeader");
+            header.style.color = "var(--cyber-blue)";
+            header.firstElementChild.textContent = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE";
+            
+            if (result.quote_ready) {
+                document.body.classList.add("mode-gold");
+                setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
             }
         }
 
-        // ── Build safe bot HTML ───────────────────────────────
-        // FIX-F4: escape AI reply for HTML display, keep raw for TTS & PDF
         const rawAiReply = result.ai_answer || "Error processing request.";
         let displayHtml = escapeHTML(rawAiReply);
 
-        // Inject CODE RED call button after escaping
-        if (result.code_red) {
-            displayHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
-        }
+        if (result.code_red) displayHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
 
-        // FIX-F3: PDF uses result.pdf_data (clean server-stripped text), not escaped html
         if (result.has_estimate && !result.code_red) {
-            // Prefer server-extracted pdf_data; fallback to raw AI reply
             const cleanDataForPDF = (result.pdf_data || rawAiReply)
                 .replace(/\[PDF_START\]/gi, '').replace(/\[PDF_END\]/gi, '')
                 .replace(/\*\*/g, '').replace(/\*/g, '')
@@ -916,39 +805,27 @@ window.askLexie = async function() {
                 .replace(/\r\n/g, '\n').trim();
 
             sessionStorage.setItem('lastEst', cleanDataForPDF);
-            displayHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Formal Estimate</button>`;
+            displayHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Official Estimate</button>`;
         }
 
-        // Save raw (unescaped) to memory
         lexieMemory.push({ role: "assistant", content: rawAiReply });
         if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
-        localStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
+        memoryStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
 
-        // Render bot bubble (safe HTML + TTS uses raw text)
         appendBubble("bot", displayHtml, rawAiReply);
         window.speakText(rawAiReply);
 
     } catch (err) {
         const lb = document.getElementById(loadId);
         if (lb) lb.textContent = "Lexie: Connection Firewall blocked. Please try again.";
-        resetTurnstile();
+        resetTurnstile(); // Reset on error to prevent stuck state
     } finally {
         clearImage();
-        if (!isGodMode) resetTurnstile();
+        if (!isGodMode && messageCount >= 2 && currentTurnstileToken) resetTurnstile(); // Reset after successful token use
     }
 };
 
-// FIX-F6: Enter key support for chat input (was missing)
-document.addEventListener("DOMContentLoaded", () => {
-    const inputEl = document.getElementById("userQuery");
-    if (inputEl) {
-        inputEl.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); }
-        });
-    }
-});
-
-// ── PDF Generator ─────────────────────────────────────────────
+// ── V16.3: Dynamic Multi-Page PDF Generator ───────────────────
 window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) { alert("System Error: No estimate data found."); return; }
@@ -957,8 +834,9 @@ window.downloadPDF = async function() {
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ format: 'letter', unit: 'mm' });
-    const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), pageHeight = doc.internal.pageSize.getHeight(), contentWidth = pageWidth - (margin * 2);
-    let textStartX = margin;
+    const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const contentWidth = pageWidth - (margin * 2);
 
     try {
         const imgData = await new Promise((resolve) => {
@@ -966,58 +844,111 @@ window.downloadPDF = async function() {
             img.onload = () => { const c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); resolve(c.toDataURL('image/jpeg')); };
             img.onerror = () => resolve(null); img.src = 'logo.jpg';
         });
-        if (imgData) { doc.addImage(imgData, 'JPEG', margin, 15, 20, 20); textStartX = margin + 25; }
-    } catch (e) { textStartX = margin; }
+        if (imgData) doc.addImage(imgData, 'JPEG', margin, 15, 20, 20); 
+    } catch (e) { }
 
+    const textStartX = margin + 25;
     doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
     doc.text("KOHMZ", textStartX, 23);
     doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
     doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
     doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
 
-    const rightAlign = pageWidth - margin;
-    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(50, 50, 50);
+    doc.setFontSize(8); doc.setTextColor(50, 50, 50);
     doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
     doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
     doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
-    doc.text("Email: kohmzelectrical@gmail.com", rightAlign, 33, { align: "right" });
-
+    
     doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
 
-    let cursorY = 48;
-    doc.setFillColor(240, 250, 255); doc.setDrawColor(0, 229, 255); doc.setLineWidth(0.4);
-    doc.rect(margin, cursorY, contentWidth, 12, 'FD');
-    doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(13, 27, 42);
-    doc.text(`TRACKING REF ID: ${userId}`, margin + 5, cursorY + 7.5);
-    doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, cursorY + 7.5, { align: "right" });
+    // Box Header
+    doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, 'F');
+    doc.setTextColor(255, 255, 255); doc.setFontSize(10);
+    doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
+    doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
 
-    cursorY += 22;
-    doc.setFont("helvetica", "bold"); doc.setFontSize(14); doc.setTextColor(13, 27, 42);
-    doc.text("AI ESTIMATE SUMMARY", pageWidth / 2, cursorY, { align: "center" });
-    doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.5);
-    doc.line((pageWidth/2) - 30, cursorY + 3, (pageWidth/2) + 30, cursorY + 3);
+    doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+    doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
 
-    cursorY += 15;
+    // Dynamic Multi-Page Engine
     doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
-    const textLines = doc.splitTextToSize(data, contentWidth);
-    for (let i = 0; i < textLines.length; i++) {
-        if (cursorY > pageHeight - 35) { doc.addPage(); cursorY = margin + 15; }
-        doc.text(textLines[i], margin, cursorY); cursorY += 5.5;
+    const lines = doc.splitTextToSize(data, contentWidth - 10);
+    
+    let cursorY = 75;
+    let boxStartY = 55;
+    const lineHeight = 5.5;
+    const pageMaxY = 240; // Leave room for footer
+
+    for (let i = 0; i < lines.length; i++) {
+        if (cursorY + lineHeight > pageMaxY) {
+            // Close the box for the current page
+            doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
+            doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
+
+            // Add Disclaimer Footer to current page
+            doc.setDrawColor(200, 200, 200); doc.line(margin, 255, rightAlign, 255);
+            doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+            doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth/2, 260, {align:"center"});
+
+            doc.addPage();
+            
+            boxStartY = 20;
+            cursorY = 30;
+            
+            doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(13, 27, 42);
+            doc.text("KOHMZ ELECTRICAL - ESTIMATE CONTINUATION", margin, boxStartY - 5);
+            doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
+        }
+        doc.text(lines[i], margin + 5, cursorY);
+        cursorY += lineHeight;
     }
+    
+    // Draw the final box to close the last page
+    doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
+    doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
 
-    const footerY = pageHeight - 25;
-    doc.setDrawColor(13, 27, 42); doc.setLineWidth(1.5); doc.line(margin, footerY - 5, rightAlign, footerY - 5);
-    doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(13, 27, 42);
-    doc.text("PREPARED BY: LEXIE (KOHMZ AI ASSISTANT)", pageWidth / 2, footerY + 2, { align: "center" });
-    doc.setFont("helvetica", "italic"); doc.setFontSize(7); doc.setTextColor(100, 100, 100);
-    const disc = "DISCLAIMER: This document is a rough, unverified AI estimate for reference only. Final pricing is subject to an actual on-site Technical Audit.";
-    doc.text(doc.splitTextToSize(disc, contentWidth), pageWidth / 2, footerY + 7, { align: "center" });
+    // Final Page Disclaimer
+    doc.setDrawColor(200, 200, 200); doc.line(margin, pageMaxY, rightAlign, pageMaxY);
+    doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+    doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth/2, pageMaxY + 5, {align:"center"});
+    doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, pageMaxY + 8, {align:"center"});
+    doc.text("Restoration (masonry/painting) is strictly separate from the electrical labor fee.", pageWidth/2, pageMaxY + 11, {align:"center"});
 
-    doc.save('KOHMZ_Estimate_Summary.pdf');
-    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Formal Estimate'; btn.style.opacity = '1'; }
+    doc.save(`KOHMZ_Estimate_${userId.substring(0,5)}.pdf`);
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Official Estimate'; btn.style.opacity = '1'; }
 };
 
-// ── Queue-Based TTS ───────────────────────────────────────────
+// ── Images, Audio, Misc ───────────────────────────────────────
+function handleImage(input) {
+    if (input.files && input.files[0]) {
+        if (input.files[0].size > 5 * 1024 * 1024) { alert("Hanggang 5MB lang po sana para hindi mag-freeze ang system."); input.value = null; return; }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image(); img.onload = () => {
+                const canvas = document.createElement('canvas'); let width = img.width, height = img.height;
+                if (width > 500) { height = Math.round((height * 500) / width); width = 500; }
+                canvas.width = width; canvas.height = height; canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                currentImageData = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
+                document.getElementById("prev-img").src = canvas.toDataURL('image/jpeg', 0.6);
+                document.getElementById("vision-preview").style.display = "flex";
+            }; img.src = e.target.result;
+        }; reader.readAsDataURL(input.files[0]);
+    }
+}
+function clearImage() { currentImageData = null; document.getElementById("vision-preview").style.display = "none"; document.getElementById("imgInput").value = null; document.getElementById("cameraInput").value = null; }
+
+window.startDictation = function() {
+    if (window.hasOwnProperty('webkitSpeechRecognition') || window.hasOwnProperty('SpeechRecognition')) {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); recognition.lang = 'en-PH';
+        recognition.onstart = () => document.getElementById('micBtn').classList.add('mic-active');
+        recognition.onresult = (e) => { document.getElementById('userQuery').value = e.results[0][0].transcript; askLexie(); };
+        recognition.onend = () => document.getElementById('micBtn').classList.remove('mic-active');
+        recognition.start();
+    } else { appendBubble("bot", "Sorry boss, Voice Input is not supported sa browser mo."); }
+};
+window.sendQuickReply = function(text) { document.getElementById('userQuery').value = text; askLexie(); };
+window.openViber = function() { window.location.href = 'viber://chat?number=%2B639266174131'; setTimeout(() => { if (!document.hidden) window.open('https://www.viber.com/', '_blank'); }, 2500); };
+
 let speechQueue = [], isSpeaking = false;
 window.speakText = function(text) {
     if (!window.speechSynthesis) return;
@@ -1028,131 +959,92 @@ window.speakText = function(text) {
 };
 function processSpeechQueue() {
     if (speechQueue.length === 0) { isSpeaking = false; return; }
-    isSpeaking = true;
-    let sentence = speechQueue.shift().trim();
+    isSpeaking = true; let sentence = speechQueue.shift().trim();
     if (!sentence) { processSpeechQueue(); return; }
     let utterance = new SpeechSynthesisUtterance(sentence);
     let voices = window.speechSynthesis.getVoices();
     let voice = voices.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Google US English") || v.name.includes("Female") || v.name.includes("Enhanced")) || voices[0];
-    if (voice) utterance.voice = voice;
-    utterance.lang = "en-US"; utterance.pitch = 1.15; utterance.rate = 0.85;
-    utterance.onend = () => processSpeechQueue();
-    utterance.onerror = () => processSpeechQueue();
-    window.speechSynthesis.speak(utterance);
+    if (voice) utterance.voice = voice; utterance.lang = "en-US"; utterance.pitch = 1.15; utterance.rate = 0.85;
+    utterance.onend = () => processSpeechQueue(); 
+    utterance.onerror = () => { console.warn("TTS Error"); processSpeechQueue(); }; 
+    // Safely attempt to speak, browsers might block if no user interaction
+    try { window.speechSynthesis.speak(utterance); } catch(e) { processSpeechQueue(); }
 }
 
-// ── Drag Logic ────────────────────────────────────────────────
-const wrapper = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
-let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
-function dragStart(x, y) { isDrag = true; startTime = Date.now(); startX = x - xOff; startY = y - yOff; }
-function dragMove(x, y) { if (!isDrag) return; xOff = x - startX; yOff = y - startY; wrapper.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; }
-function dragEnd() { if (isDrag) { isDrag = false; if (Date.now() - startTime < 200) window.toggleBotWindow(); } }
-if (toggle && wrapper) {
-    toggle.addEventListener("mousedown", e => dragStart(e.clientX, e.clientY));
-    window.addEventListener("mousemove", e => dragMove(e.clientX, e.clientY));
-    window.addEventListener("mouseup", dragEnd);
-    toggle.addEventListener("touchstart", e => { e.preventDefault(); dragStart(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
-    window.addEventListener("touchmove", e => { if (isDrag) { e.preventDefault(); dragMove(e.touches[0].clientX, e.touches[0].clientY); } }, { passive: false });
-    window.addEventListener("touchend", dragEnd);
-}
-
-window.toggleBotWindow = function() {
-    const chat = document.getElementById("chatWindow"), hint = document.getElementById("dragHint"), btn = document.getElementById("readPageBtn");
-    if (isSpeaking || window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false;
-        if (btn) btn.innerHTML = '<i class="fas fa-volume-up"></i>';
-        window.isReadingPage = false;
-    }
-    if (chat.style.display === "flex") {
-        chat.style.display = "none";
-        if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "⚡ KOHMZ Lexie Pro";
-    } else {
-        chat.style.display = "flex";
-        if (hint) hint.innerHTML = "🖐️ Drag to Move";
-    }
-};
-
-// ── DOMContentLoaded Setup ────────────────────────────────────
+// ── Event Listeners ───────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof AOS !== "undefined") AOS.init({ duration: 800, once: true, offset: 50 });
-
-    // Mobile Menu
-    const menuBtn = document.getElementById("mobile-menu"), navList = document.getElementById("nav-list");
-    if (menuBtn && navList) menuBtn.addEventListener("click", () => navList.classList.toggle("active"));
-
-    // Enter key for chat (FIX-F6)
     const inputEl = document.getElementById("userQuery");
     if (inputEl) inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); } });
 
-    // Hero Typewriter
-    function runTypewriter(el, text, speed) {
-        let i = 0;
-        function type() { if (i < text.length) { el.innerHTML += text.charAt(i++); setTimeout(type, speed); } }
-        type();
-    }
-    const mainTypeEl = document.getElementById("main-typewriter-text");
-    if (mainTypeEl) runTypewriter(mainTypeEl, "INTEGRATED POWER ARCHITECTURE & ", 60);
+    document.getElementById("mobile-menu")?.addEventListener("click", () => document.getElementById("nav-list")?.classList.toggle("active"));
 
-    class TypeWriter {
-        constructor(el, words, wait) { this.el = el; this.words = words; this.txt = ""; this.wordIdx = 0; this.wait = parseInt(wait, 10); this.isDel = false; this.type(); }
-        type() {
-            const word = this.words[this.wordIdx % this.words.length];
-            this.txt = this.isDel ? word.substring(0, this.txt.length - 1) : word.substring(0, this.txt.length + 1);
-            this.el.innerHTML = `<span class="txt">${this.txt}</span>`;
-            let speed = 100;
-            if (this.isDel) speed /= 2;
-            if (!this.isDel && this.txt === word) { speed = this.wait; this.isDel = true; }
-            else if (this.isDel && this.txt === "") { this.isDel = false; this.wordIdx++; speed = 500; }
-            setTimeout(() => this.type(), speed);
-        }
-    }
-    const subEl = document.querySelector(".txt-type");
-    if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute("data-words")), subEl.getAttribute("data-wait"));
+    let mIdx = 0; const mainText = "INTEGRATED POWER ARCHITECTURE & ";
+    const typeHero = () => { if(mIdx < mainText.length){ document.getElementById("main-typewriter-text").innerHTML += mainText.charAt(mIdx++); setTimeout(typeHero, 60); } };
+    typeHero();
 
-    // Read Page Button
-    window.isReadingPage = false;
-    const readPageBtn = document.getElementById("readPageBtn");
-    if (readPageBtn) {
-        readPageBtn.addEventListener("click", function() {
-            if (window.isReadingPage || window.speechSynthesis.speaking) {
-                window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false;
-                window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; return;
-            }
-            const main = document.getElementById("main-content"); if (!main) return;
-            let text = main.innerText.replace(/\n+/g, ". ").replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES|SECURE YOUR SLOT NOW/g, "");
-            window.isReadingPage = true; readPageBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-            window.speakText("Welcome to KOHMZ Electrical... " + text);
-        });
-    }
-
-    // Tech Bar Typewriter
-    const techBarWords = ["TECHNICAL GOVERNANCE", "ASSET PROTECTION", "PEC-COMPLIANT ARCHITECTURE", "24/7 SPECIALIST RESPONSE", "RESIDENTIAL & COMMERCIAL MASTERY"];
-    let tbIdx = 0, charIdx = 0, isTbDel = false;
-    const electricEl = document.getElementById("electric-typewriter");
+    const techWords = ["TECHNICAL GOVERNANCE", "PEC-COMPLIANT ARCHITECTURE", "24/7 SPECIALIST RESPONSE", "RESIDENTIAL & COMMERCIAL MASTERY"];
+    let tbIdx = 0, charIdx = 0, isDel = false;
     function typeBar() {
-        if (!electricEl) return;
-        const word = techBarWords[tbIdx];
-        electricEl.innerText = isTbDel ? word.substring(0, charIdx - 1) : word.substring(0, charIdx + 1);
-        isTbDel ? charIdx-- : charIdx++;
-        let speed = 50; if (isTbDel) speed /= 2;
-        if (!isTbDel && charIdx === word.length) { speed = 2000; isTbDel = true; }
-        else if (isTbDel && charIdx === 0) { isTbDel = false; tbIdx = (tbIdx + 1) % techBarWords.length; speed = 500; }
-        setTimeout(typeBar, speed);
+        const el = document.getElementById("electric-typewriter"); if(!el) return;
+        const word = techWords[tbIdx];
+        el.innerText = isDel ? word.substring(0, charIdx--) : word.substring(0, charIdx++);
+        if (!isDel && charIdx === word.length + 1) { isDel = true; setTimeout(typeBar, 2000); }
+        else if (isDel && charIdx === 0) { isDel = false; tbIdx = (tbIdx + 1) % techWords.length; setTimeout(typeBar, 500); }
+        else { setTimeout(typeBar, isDel ? 30 : 60); }
     }
     typeBar();
 
-    // Mobile Dropdown
+    const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
+    let isDrag = false, startX, startY, xOff = 0, yOff = 0;
+    toggle.addEventListener("mousedown", e => { isDrag = true; startX = e.clientX - xOff; startY = e.clientY - yOff; });
+    window.addEventListener("mousemove", e => { if (isDrag) { xOff = e.clientX - startX; yOff = e.clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; } });
+    window.addEventListener("mouseup", () => isDrag = false);
+    toggle.addEventListener("click", () => { if(!isDrag) window.toggleBotWindow(); });
+
     document.querySelectorAll('.nav-links li.dropdown .dropbtn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            if (window.innerWidth <= 992) {
-                e.preventDefault();
-                const parent = this.parentElement;
-                document.querySelectorAll('.nav-links li.dropdown').forEach(li => { if (li !== parent) li.classList.remove('open'); });
-                parent.classList.toggle('open');
-            }
-        });
+        btn.addEventListener('click', function(e) { if (window.innerWidth <= 992) { e.preventDefault(); this.parentElement.classList.toggle('open'); } });
     });
+    
+    const readBtn = document.getElementById("readPageBtn");
+    if (readBtn) {
+        readBtn.addEventListener("click", function() {
+            if (window.isReadingPage || window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false; window.isReadingPage = false; readBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; return;
+            }
+            const main = document.getElementById("main-content"); if (!main) return;
+            let text = main.innerText.replace(/\n+/g, ". ").replace(/SECURE TECHNICAL AUDIT|OFFICIAL UPDATES|VIEW CAPABILITIES|SECURE YOUR SLOT NOW/g, "");
+            window.isReadingPage = true; readBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'; window.speakText("Welcome to KOHMZ Electrical... " + text);
+        });
+    }
 });
+
+window.toggleBotWindow = function() {
+    const win = document.getElementById("chatWindow"), hint = document.getElementById("dragHint"), btn = document.getElementById("readPageBtn");
+    if (isSpeaking || window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false; if (btn) btn.innerHTML = '<i class="fas fa-volume-up"></i>'; window.isReadingPage = false; }
+    if (win.style.display === "flex") { win.style.display = "none"; if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "⚡ KOHMZ Lexie Pro"; } 
+    else { win.style.display = "flex"; if (hint) hint.innerHTML = "🖐️ Drag to Move"; }
+};
+
+function triggerExitIntent() {
+    if (isGodMode || sessionStorage.getItem('exit_offered')) return;
+    const chat = document.getElementById("chatWindow");
+    if (chat.style.display !== "flex") { chat.style.display = "flex"; const hint = document.getElementById("dragHint"); if (hint) hint.innerHTML = "🖐️ Drag to Move"; }
+    appendBubble("bot", "Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊");
+    sessionStorage.setItem('exit_offered', 'true');
+    if (window.speechSynthesis) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
+}
+document.addEventListener("mouseleave", (e) => { if (e.clientY < 0) triggerExitIntent(); });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === 'hidden') triggerExitIntent(); });
+// Refined scroll exit intent to avoid accidental mobile triggers
+let lastScrollTop = 0, lastScrollTime = Date.now();
+window.addEventListener("scroll", () => { 
+    let st = window.pageYOffset || document.documentElement.scrollTop; 
+    let now = Date.now(), timeDiff = now - lastScrollTime; 
+    if (st < lastScrollTop - 250 && timeDiff < 100) triggerExitIntent(); // increased threshold to 250px
+    lastScrollTop = st <= 0 ? 0 : st; 
+    lastScrollTime = now; 
+}, { passive: true });
 </script>
 </body>
 </html>
