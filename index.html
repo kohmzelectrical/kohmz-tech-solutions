@@ -379,7 +379,7 @@
 
 <section class="content-section" aria-labelledby="sectors-heading">
 <h2 id="sectors-heading" data-aos="fade-down">Priority Sectors of Operation</h2>
-<p class="intro-text" data-aos="fade-up">"The KOHMZ Advantage: We don't just install wires; we practice and impliment most resilience. Every project begins with rigorous mathematical load profiling to ensure your infrastructure can handle peak demands without thermal stress or voltage drops."</p>
+<p class="intro-text" data-aos="fade-up">"The KOHMZ Advantage: We don't just install wires; we practice and implement maximum resilience. Every project begins with rigorous mathematical load profiling to ensure your infrastructure can handle peak demands without thermal stress or voltage drops."</p>
 <p class="section-subtitle">We deploy specialized professional teams tailored to the unique demands of your environment. Every conduit run and terminal connection serves a strategic purpose for your property's longevity.</p>
 <div class="cards-container">
 <article class="card" style="border-top-color:#1155cc;" data-aos="fade-up" data-aos-delay="0">
@@ -582,17 +582,51 @@ Your browser does not support the video tag.
 </div>
 </div>
 <div class="kohmz-bot-toggle" id="botToggle">
-<lottie-player src="Live chatbot.json" background="transparent" speed="1" style="width:100%;height:100%;" loop autoplay></lottie-player>
+<lottie-player src="Live%20chatbot.json" background="transparent" speed="1" style="width:100%;height:100%;" loop autoplay></lottie-player>
 </div>
 </div>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V16.4 (ULTIMATE SYNC)
+// KOHMZ LEXIE AI — FRONTEND V16.5 (ULTIMATE SYNC)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 const VIP_KEYWORDS = ["/pepot", "/joy", "/samsam", "/mara", "/mantha"];
+
+// ── TypeWriter Class (Restored & Fixed) ──────────────────────
+class TypeWriter {
+    constructor(txtElement, words, wait = 3000) {
+        this.txtElement = txtElement;
+        this.words = words;
+        this.txt = '';
+        this.wordIndex = 0;
+        this.wait = parseInt(wait, 10);
+        this.type();
+        this.isDeleting = false;
+    }
+    type() {
+        const current = this.wordIndex % this.words.length;
+        const fullTxt = this.words[current];
+        if (this.isDeleting) {
+            this.txt = fullTxt.substring(0, this.txt.length - 1);
+        } else {
+            this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+        this.txtElement.innerHTML = `<span class="txt">${this.txt}</span>`;
+        let typeSpeed = 100;
+        if (this.isDeleting) typeSpeed /= 2;
+        if (!this.isDeleting && this.txt === fullTxt) {
+            typeSpeed = this.wait;
+            this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+            this.isDeleting = false;
+            this.wordIndex++;
+            typeSpeed = 500;
+        }
+        setTimeout(() => this.type(), typeSpeed);
+    }
+}
 
 // ── Mute Logic ───────────────────────────────────────────────
 let isMuted = localStorage.getItem('lexie_muted') === 'true';
@@ -619,7 +653,7 @@ window.onTurnstileSuccess = function(token) {
 };
 
 window.resetTurnstile = function() {
-    if (typeof turnstile !== 'undefined' && !isGodMode) {
+    if (typeof turnstile !== 'undefined' && turnstile.reset && !isGodMode) {
         currentTurnstileToken = "";
         turnstile.reset();
         const btn = document.getElementById('mainSendBtn');
@@ -810,6 +844,7 @@ window.askLexie = async function() {
 
         const rawAiReply = result.ai_answer || "Error processing request.";
         let displayHtml = escapeHTML(rawAiReply);
+        let textToSpeak = rawAiReply;
 
         if (result.code_red) displayHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
 
@@ -823,14 +858,17 @@ window.askLexie = async function() {
 
             sessionStorage.setItem('lastEst', cleanDataForPDF);
             displayHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Official Estimate</button>`;
+            
+            // TTS FILTER UPGRADE: Don't read the whole PDF table out loud
+            textToSpeak = textToSpeak.replace(/\[PDF_START\][\s\S]*?\[PDF_END\]/, " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ");
         }
 
         lexieMemory.push({ role: "assistant", content: rawAiReply });
         if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
         memoryStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
 
-        appendBubble("bot", displayHtml, rawAiReply);
-        window.speakText(rawAiReply);
+        appendBubble("bot", displayHtml, textToSpeak);
+        window.speakText(textToSpeak.replace(/\[UI_ACTION:.*?\]/g, ""));
 
     } catch (err) {
         const lb = document.getElementById(loadId);
@@ -842,7 +880,7 @@ window.askLexie = async function() {
     }
 };
 
-// ── V16.4: Dynamic Multi-Page PDF Generator ───────────────────
+// ── V16.5: Dynamic Multi-Page PDF Generator ───────────────────
 window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) { alert("System Error: No estimate data found."); return; }
@@ -998,8 +1036,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("mobile-menu")?.addEventListener("click", () => document.getElementById("nav-list")?.classList.toggle("active"));
 
+    // Main Hero Typing Logic with TypeWriter integration
     let mIdx = 0; const mainText = "INTEGRATED POWER ARCHITECTURE & ";
-    const typeHero = () => { if(mIdx < mainText.length){ document.getElementById("main-typewriter-text").innerHTML += mainText.charAt(mIdx++); setTimeout(typeHero, 60); } };
+    const typeHero = () => { 
+        if(mIdx < mainText.length){ 
+            document.getElementById("main-typewriter-text").innerHTML += mainText.charAt(mIdx++); 
+            setTimeout(typeHero, 60); 
+        } else {
+            // Trigger the subtitle typing sequence
+            const txtElement = document.querySelector('.txt-type');
+            if(txtElement) {
+                const words = JSON.parse(txtElement.getAttribute('data-words'));
+                const wait = txtElement.getAttribute('data-wait');
+                new TypeWriter(txtElement, words, wait);
+            }
+        }
+    };
     typeHero();
 
     const techWords = ["TECHNICAL GOVERNANCE", "PEC-COMPLIANT ARCHITECTURE", "24/7 SPECIALIST RESPONSE", "RESIDENTIAL & COMMERCIAL MASTERY"];
@@ -1014,11 +1066,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     typeBar();
 
+    // UPGRADED: Added mobile touch events for dragging
     const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
     let isDrag = false, startX, startY, xOff = 0, yOff = 0;
+    
+    // Mouse Events
     toggle.addEventListener("mousedown", e => { isDrag = true; startX = e.clientX - xOff; startY = e.clientY - yOff; });
     window.addEventListener("mousemove", e => { if (isDrag) { xOff = e.clientX - startX; yOff = e.clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; } });
     window.addEventListener("mouseup", () => isDrag = false);
+    
+    // Touch Events
+    toggle.addEventListener("touchstart", e => { isDrag = true; startX = e.touches[0].clientX - xOff; startY = e.touches[0].clientY - yOff; }, {passive: true});
+    window.addEventListener("touchmove", e => { if (isDrag) { xOff = e.touches[0].clientX - startX; yOff = e.touches[0].clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; e.preventDefault(); } }, {passive: false});
+    window.addEventListener("touchend", () => isDrag = false);
+
     toggle.addEventListener("click", () => { if(!isDrag) window.toggleBotWindow(); });
 
     document.querySelectorAll('.nav-links li.dropdown .dropbtn').forEach(btn => {
@@ -1042,7 +1103,7 @@ window.toggleBotWindow = function() {
     const win = document.getElementById("chatWindow"), hint = document.getElementById("dragHint"), btn = document.getElementById("readPageBtn");
     if (isSpeaking || window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false; if (btn) btn.innerHTML = '<i class="fas fa-volume-up"></i>'; window.isReadingPage = false; }
     if (win.style.display === "flex") { win.style.display = "none"; if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "⚡ KOHMZ Lexie Pro"; } 
-    else { win.style.display = "flex"; if (hint) hint.innerHTML = "🖐️ Drag to Move"; }
+    else { win.style.display = "flex"; if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "🖐️ Drag to Move"; }
 };
 
 function triggerExitIntent() {
