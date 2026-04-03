@@ -578,7 +578,7 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — V14 (UNIVERSAL MEMORY + PAGE GREETING + PDF)
+// KOHMZ LEXIE AI — V14.1 (UNIVERSAL MEMORY + PAGE GREETING + NANGHAHABOL)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 const VIP_FAMILY = { "/pepot": true, "/joy": true, "/samsam": true, "/mara": true, "/mantha": true };
@@ -599,7 +599,7 @@ function resetTurnstile() {
     }
 }
 
-// 🧠 UPGRADE: LOCALSTORAGE MEMORY (Di nakakalimot kahit lumipat ng page)
+// 🧠 UPGRADE 1: LOCALSTORAGE MEMORY (Di nakakalimot kahit lumipat ng page)
 let userId = localStorage.getItem('kohmz_uuid');
 if (!userId) { userId = 'user-' + Math.random().toString(36).substr(2, 9); localStorage.setItem('kohmz_uuid', userId); }
 let lexieMemory = JSON.parse(localStorage.getItem('lexie_memory')) || [];
@@ -630,7 +630,7 @@ window.exitGodMode = function() {
     document.getElementById("chatBody").innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold);">Lexie: Immortal Mode deactivated. Returning to standard protocol.</div>`;
 };
 
-// 🧠 UPGRADE: AUTO-GREET PAG LUMIPAT NG PAGE AT LOAD MEMORY
+// 🧠 UPGRADE 2: AUTO-GREET PAG LUMIPAT NG PAGE AT LOAD MEMORY
 window.addEventListener('load', () => {
     const t = document.getElementById("chatBody");
     if (lexieMemory.length > 0) {
@@ -656,6 +656,24 @@ window.addEventListener('load', () => {
         }, 1500);
     }
     sessionStorage.setItem('kohmz_last_page', currentPageName);
+});
+
+// 🏃‍♀️ UPGRADE 3: NANGHAHABOL NA TINDERA (EXIT INTENT) - NAIBALIK NA!
+document.addEventListener("mouseleave", (e) => {
+    if (isGodMode) return; // Wag guluhin si Boss Pepot
+    if (e.clientY < 0 && !sessionStorage.getItem('exit_offered')) {
+        const chat = document.getElementById("chatWindow");
+        if (chat.style.display !== "flex") {
+            chat.style.display = "flex";
+            const hint = document.getElementById("dragHint");
+            if (hint) hint.innerHTML = "🖐️ Drag to Move";
+        }
+        const t = document.getElementById("chatBody");
+        t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold); color: var(--neon-gold);">Lexie: Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊</div>`;
+        t.scrollTop = t.scrollHeight;
+        sessionStorage.setItem('exit_offered', 'true');
+        if (window.speechSynthesis) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
+    }
 });
 
 function handleImage(input) {
