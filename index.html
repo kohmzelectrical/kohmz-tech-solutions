@@ -428,7 +428,6 @@
 <h2 id="video-heading" data-aos="fade-up">Precision in Motion</h2>
 <p class="section-subtitle">Watch our technical specialists execute the <strong>KOHMZ Standard</strong> in real-time. Quality workmanship, zero compromises.</p>
 <div style="max-width:850px;margin:0 auto;border:4px solid var(--neon-gold);border-radius:15px;overflow:hidden;box-shadow:0 0 40px var(--power-glow);position:relative;" data-aos="zoom-in">
-<!-- FIX: Removed empty <track> src to stop silent 404. Add a real .vtt file when available. -->
 <video width="100%" height="auto" controls playsinline preload="metadata" poster="logo.jpg" aria-label="Video demonstrating KOHMZ Electrical installation precision" style="display:block;">
 <source src="presentation%20kohmz%20electrical%20design%20and%20build.pptx.webm" type="video/webm">
 Your browser does not support the video tag.
@@ -538,7 +537,6 @@ Your browser does not support the video tag.
 </nav>
 </footer>
 
-<!-- LEXIE AI CHATBOT -->
 <div class="kohmz-bot-wrapper" id="draggableBot">
 <div class="bot-value-tag" id="dragHint" onclick="isGodMode ? exitGodMode() : toggleBotWindow()">⚡ KOHMZ Lexie Pro</div>
 <div class="kohmz-chat-window" id="chatWindow">
@@ -580,20 +578,12 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — V10.0 (ALL BUGS FIXED)
-// FIX 1: CORS — handled in worker
-// FIX 2: God Mode — trusted from session, no history re-scan
-// FIX 3: Rate limit — by userId (worker-side)
-// FIX 4: Emoji stripper — full Unicode range
-// FIX 5: exitGodMode — no more auto-close glitch
-// FIX 6: Touch drag — mobile drag now works
-// FIX 7: Video track — empty src removed
+// KOHMZ LEXIE AI — V14 (UNIVERSAL MEMORY + PAGE GREETING + PDF)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 const VIP_FAMILY = { "/pepot": true, "/joy": true, "/samsam": true, "/mara": true, "/mantha": true };
 
 let currentTurnstileToken = "";
-
 window.onTurnstileSuccess = function(token) {
     currentTurnstileToken = token;
     const btn = document.getElementById('mainSendBtn');
@@ -609,16 +599,16 @@ function resetTurnstile() {
     }
 }
 
-// UUID & session memory
+// 🧠 UPGRADE: LOCALSTORAGE MEMORY (Di nakakalimot kahit lumipat ng page)
 let userId = localStorage.getItem('kohmz_uuid');
 if (!userId) { userId = 'user-' + Math.random().toString(36).substr(2, 9); localStorage.setItem('kohmz_uuid', userId); }
-let lexieMemory = JSON.parse(sessionStorage.getItem('lexie_memory')) || [];
+let lexieMemory = JSON.parse(localStorage.getItem('lexie_memory')) || [];
 let currentImageData = null;
 let isGodMode = sessionStorage.getItem('isGod') === 'true';
 let godName = sessionStorage.getItem('god_name') || "";
 
 if (isGodMode) {
-    document.getElementById("dragHint").innerText = "👑 IMMORTAL MODE (Click to Exit)";
+    document.getElementById("dragHint").innerText = "👑 IMMORTAL MODE";
     document.getElementById("dragHint").classList.add('god-mode-tag');
     const tsCont = document.getElementById("cf-turnstile-container");
     if (tsCont) tsCont.style.display = "none";
@@ -626,47 +616,48 @@ if (isGodMode) {
     if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
 }
 
-// FIX 5: exitGodMode — no more auto-close of chat window
 window.exitGodMode = function() {
     if (!isGodMode) return;
     isGodMode = false;
     sessionStorage.removeItem('isGod');
     sessionStorage.removeItem('god_name');
     godName = "";
-
-    const hint = document.getElementById("dragHint");
-    if (hint) { hint.innerText = "⚡ KOHMZ Lexie Pro"; hint.classList.remove('god-mode-tag'); }
-
+    document.getElementById("dragHint").innerText = "⚡ KOHMZ Lexie Pro";
+    document.getElementById("dragHint").classList.remove('god-mode-tag');
     const tsCont = document.getElementById("cf-turnstile-container");
     if (tsCont) tsCont.style.display = "flex";
-
     resetTurnstile();
-
-    const body = document.getElementById("chatBody");
-    body.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold);">Lexie: Immortal Mode deactivated. Returning to standard protocol.</div>`;
-    body.scrollTop = body.scrollHeight;
-    // NOTE: Removed toggleBotWindow() call — chat stays open after exit
+    document.getElementById("chatBody").innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold);">Lexie: Immortal Mode deactivated. Returning to standard protocol.</div>`;
 };
 
-// Restore memory on load
+// 🧠 UPGRADE: AUTO-GREET PAG LUMIPAT NG PAGE AT LOAD MEMORY
 window.addEventListener('load', () => {
+    const t = document.getElementById("chatBody");
     if (lexieMemory.length > 0) {
         lexieMemory.forEach(m => {
             if (m.role !== "system") {
                 const isUser = m.role === "user";
                 const b = document.createElement("div");
                 b.className = "chat-bubble";
-                let displayContent = m.content;
-                if (displayContent.includes("[SYSTEM NOTE")) displayContent = "[Image Uploaded]";
                 b.style.cssText = isUser ? "background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;" : "border-left:3px solid var(--cyber-blue);";
-                b.innerHTML = (isUser ? "YOU: " : "Lexie: ") + displayContent;
-                document.getElementById("chatBody").appendChild(b);
+                b.innerHTML = (isUser ? "YOU: " : "Lexie: ") + m.content.replace(/\[SYSTEM NOTE.*?\]/g, "[Image Attached]");
+                t.appendChild(b);
             }
         });
     }
+    
+    // Page Tracker Logic
+    let currentPageName = document.title.split('|')[0].trim() || "kabilang page";
+    let lastPage = sessionStorage.getItem('kohmz_last_page');
+    if (lastPage && lastPage !== currentPageName) {
+        setTimeout(() => {
+            t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--neon-gold);">Lexie: Uy boss, napadaan ka pala dito sa ${currentPageName}! May napusuan ka bang service natin dito? I-chat mo lang ako ha!</div>`;
+            t.scrollTop = t.scrollHeight;
+        }, 1500);
+    }
+    sessionStorage.setItem('kohmz_last_page', currentPageName);
 });
 
-// Image compression
 function handleImage(input) {
     if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -674,14 +665,12 @@ function handleImage(input) {
             const img = new Image();
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 500;
                 let width = img.width, height = img.height;
-                if (width > MAX_WIDTH) { height = Math.round((height * MAX_WIDTH) / width); width = MAX_WIDTH; }
+                if (width > 500) { height = Math.round((height * 500) / width); width = 500; }
                 canvas.width = width; canvas.height = height;
                 canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-                const compressed = canvas.toDataURL('image/jpeg', 0.6);
-                currentImageData = compressed.split(',')[1];
-                document.getElementById("prev-img").src = compressed;
+                currentImageData = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
+                document.getElementById("prev-img").src = canvas.toDataURL('image/jpeg', 0.6);
                 document.getElementById("vision-preview").style.display = "flex";
             };
             img.src = e.target.result;
@@ -697,95 +686,75 @@ function clearImage() {
     document.getElementById("cameraInput").value = "";
 }
 
-// Voice dictation
 window.startDictation = function() {
     if (window.hasOwnProperty('webkitSpeechRecognition') || window.hasOwnProperty('SpeechRecognition')) {
         const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = new SR();
         const micBtn = document.getElementById('micBtn');
-        recognition.continuous = false; recognition.interimResults = false; recognition.lang = 'en-PH';
+        recognition.lang = 'en-PH';
         recognition.onstart = () => micBtn.classList.add('mic-active');
-        recognition.onresult = (e) => { document.getElementById('userQuery').value = e.results[0][0].transcript; recognition.stop(); window.askGemini(); };
-        recognition.onerror = () => { recognition.stop(); micBtn.classList.remove('mic-active'); };
+        recognition.onresult = (e) => { document.getElementById('userQuery').value = e.results[0][0].transcript; window.askGemini(); };
         recognition.onend = () => micBtn.classList.remove('mic-active');
         recognition.start();
-    } else {
-        // FIX: Use in-chat error instead of alert()
-        const t = document.getElementById("chatBody");
-        t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid #e11d48;color:#e11d48;">Lexie: Sorry boss, Voice Input is not supported in this browser. Try Chrome!</div>`;
-        t.scrollTop = t.scrollHeight;
+    } else { 
+        document.getElementById("chatBody").innerHTML += `<div class="chat-bubble" style="border-left:3px solid #e11d48;color:#e11d48;">Lexie: Sorry boss, Voice Input is not supported here.</div>`;
     }
 };
 
 window.sendQuickReply = function(text) { document.getElementById('userQuery').value = text; window.askGemini(); };
 
-// Main AI call
 window.askGemini = async function() {
     const e = document.getElementById("userQuery"), t = document.getElementById("chatBody");
     const n = e.value.trim();
     if (!n && !currentImageData) return;
 
-    const isVIPAttempt = VIP_FAMILY[n.toLowerCase().trim()];
-    if (!isGodMode && !currentTurnstileToken && !isVIPAttempt) {
-        t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid #e11d48;color:#e11d48;">Lexie: ⚠️ Please wait for the security check to complete first.</div>`;
-        t.scrollTop = t.scrollHeight;
-        return;
+    const isVIPAttempt = VIP_FAMILY[n.toLowerCase()];
+    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "";
+    
+    if (!isGodMode && !currentTurnstileToken && !isVIPAttempt && !isLocal) {
+        t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid #e11d48;color:#e11d48;">Lexie: ⚠️ Please complete the security check box first boss!</div>`;
+        t.scrollTop = t.scrollHeight; return;
     }
 
     if (window.speechSynthesis) window.speechSynthesis.resume();
     t.innerHTML += `<div class="chat-bubble" style="background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;">YOU: ${n || '[Image Attached]'}</div>`;
-    e.value = "";
-    t.scrollTop = t.scrollHeight;
+    e.value = ""; t.scrollTop = t.scrollHeight;
 
+    // SAVE TO LOCALSTORAGE INSTEAD OF SESSION
     lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
     if (lexieMemory.length > 8) lexieMemory = lexieMemory.slice(-8);
+    localStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
 
-    const s = "loading-" + Date.now();
+    const s = "load-" + Date.now();
     t.innerHTML += `<div class="chat-bubble" id="${s}" style="border-left:3px solid var(--cyber-blue);">Lexie is analyzing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span></div>`;
     t.scrollTop = t.scrollHeight;
 
-    let sd = "";
-    document.querySelectorAll('main p,.content-section p').forEach(p => sd += p.innerText + ' ');
-    sd = sd.substring(0, 1000);
+    let sd = document.body.innerText.substring(0, 1000);
 
     try {
         const response = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                message: n,
-                image: currentImageData,
-                name: (isGodMode && godName) ? godName : "Web Client",
-                userId: userId,
-                pageName: document.title,
-                pageData: sd,
-                history: lexieMemory.slice(-6),
-                turnstileToken: currentTurnstileToken,
-                isGod: isGodMode
-            })
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: n, image: currentImageData, name: godName || "Web Client", userId: userId, pageData: sd, history: lexieMemory.slice(-6), turnstileToken: currentTurnstileToken, isGod: isGodMode })
         });
         const result = await response.json();
         document.getElementById(s)?.remove();
 
-        let aiReply = result.ai_answer || "System calibration error.";
+        let aiReply = result.ai_answer || "Error processing request.";
 
         if (result.god_mode_activated) {
-            isGodMode = true;
-            sessionStorage.setItem('isGod', 'true');
+            isGodMode = true; sessionStorage.setItem('isGod', 'true');
             if (result.god_name) { godName = result.god_name; sessionStorage.setItem('god_name', godName); }
-            document.getElementById("dragHint").innerText = "👑 IMMORTAL MODE (Click to Exit)";
+            document.getElementById("dragHint").innerText = "👑 IMMORTAL MODE";
             document.getElementById("dragHint").classList.add('god-mode-tag');
             const tsCont = document.getElementById("cf-turnstile-container");
             if (tsCont) tsCont.style.display = "none";
-            const btn = document.getElementById('mainSendBtn');
-            if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
         }
 
         if (result.code_red) {
             document.getElementById("chatWindow").classList.add("code-red-active");
             document.getElementById("chatHeader").style.color = "#e11d48";
             document.getElementById("chatHeader").innerText = "⚠️ CODE RED DETECTED";
-            aiReply += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ ELECTRICAL NOW</a>`;
+            aiReply += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
         } else {
             document.getElementById("chatWindow").classList.remove("code-red-active");
             document.getElementById("chatHeader").style.color = "var(--cyber-blue)";
@@ -795,35 +764,25 @@ window.askGemini = async function() {
         aiReply = aiReply.replace(/\[CALENDAR: (.*?)\]/g, '<br><a href="$1" target="_blank" class="btn-pdf" style="background:var(--cyber-blue);color:#000;"><i class="fas fa-calendar-alt"></i> Save to Calendar</a>');
 
         if (result.has_estimate && !result.code_red) {
-            let pdfStreamData = result.pdf_data || aiReply;
-            // FIX 4: Complete emoji Unicode range stripper
-            const cleanDataForPDF = pdfStreamData
-                .replace(/<br\s*\/?>/gi, '\n')
-                .replace(/<[^>]*>?/gm, '')
-                .replace(/\*\*/g, '').replace(/\*/g, '')
-                .replace(/₱/g, 'PHP ')
-                .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, '');
+            const cleanDataForPDF = (result.pdf_data || aiReply).replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]*>?/gm, '').replace(/\*\*/g, '').replace(/\*/g, '').replace(/₱/g, 'PHP ').replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, '');
             sessionStorage.setItem('lastEst', cleanDataForPDF);
             aiReply += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Formal Estimate</button>`;
         }
 
         lexieMemory.push({ role: "assistant", content: result.ai_answer });
-        sessionStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
+        localStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
 
         const cleanReplyForButton = result.ai_answer.replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/(?:\r\n|\r|\n)/g, " ");
         t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--cyber-blue);">Lexie: ${aiReply}<div style="margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;"><button onclick="window.speakText('${cleanReplyForButton}')" style="background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;"><i class="fas fa-volume-up"></i> Play Audio</button></div></div>`;
         t.scrollTop = t.scrollHeight;
         window.speakText(result.ai_answer);
 
-    } catch (error) {
-        if (document.getElementById(s)) document.getElementById(s).innerHTML = "Lexie: Connection lost or Firewall active. Retry.";
-    } finally {
-        clearImage();
-        resetTurnstile();
-    }
+    } catch (err) {
+        if (document.getElementById(s)) document.getElementById(s).innerHTML = "Lexie: Connection Firewall blocked. Please refresh.";
+    } finally { clearImage(); resetTurnstile(); }
 };
 
-// PDF Generator
+// FULL PDF GENERATOR
 window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) { alert("System Error: No estimate data found."); return; }
@@ -885,14 +844,14 @@ window.downloadPDF = async function() {
     doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(13, 27, 42);
     doc.text("PREPARED BY: LEXIE (KOHMZ AI ASSISTANT)", pageWidth / 2, footerY + 2, { align: "center" });
     doc.setFont("helvetica", "italic"); doc.setFontSize(7); doc.setTextColor(100, 100, 100);
-    const disc = "DISCLAIMER: This document is a rough, unverified AI estimate for reference only. This does not serve as an official contract, quotation, or legal agreement. Final pricing is subject to an actual on-site Technical Audit by KOHMZ Electrical professionals.";
+    const disc = "DISCLAIMER: This document is a rough, unverified AI estimate for reference only. Final pricing is subject to an actual on-site Technical Audit.";
     doc.text(doc.splitTextToSize(disc, contentWidth), pageWidth / 2, footerY + 7, { align: "center" });
 
     doc.save('KOHMZ_Estimate_Summary.pdf');
     if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Formal Estimate'; btn.style.opacity = '1'; }
 };
 
-// Audio
+// FULL AUDIO
 setInterval(() => { if (window.speechSynthesis) window.speechSynthesis.resume(); }, 1000);
 window.speakText = function(e) {
     if (!window.speechSynthesis) return;
@@ -905,34 +864,27 @@ window.speakText = function(e) {
     window.speechSynthesis.speak(n);
 };
 
-// FIX 6: Draggable bot — BOTH mouse AND touch events
+// DRAG LOGIC
 const wrapper = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
 let isDrag = false, startX, startY, xOff = 0, yOff = 0, startTime;
-
 function dragStart(x, y) { isDrag = true; startTime = Date.now(); startX = x - xOff; startY = y - yOff; }
 function dragMove(x, y) { if (!isDrag) return; xOff = x - startX; yOff = y - startY; wrapper.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; }
 function dragEnd() { if (isDrag) { isDrag = false; if (Date.now() - startTime < 200) window.toggleBotWindow(); } }
-
 if (toggle && wrapper) {
-    // Mouse
     toggle.addEventListener("mousedown", e => dragStart(e.clientX, e.clientY));
     window.addEventListener("mousemove", e => dragMove(e.clientX, e.clientY));
     window.addEventListener("mouseup", dragEnd);
-    // Touch
     toggle.addEventListener("touchstart", e => { e.preventDefault(); dragStart(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
     window.addEventListener("touchmove", e => { if (isDrag) { e.preventDefault(); dragMove(e.touches[0].clientX, e.touches[0].clientY); } }, { passive: false });
     window.addEventListener("touchend", dragEnd);
 }
-
-const uQuery = document.getElementById("userQuery");
-if (uQuery) uQuery.addEventListener("keypress", e => { if (e.key === "Enter") window.askGemini(); });
 
 window.toggleBotWindow = function() {
     const chat = document.getElementById("chatWindow"), hint = document.getElementById("dragHint"), btn = document.getElementById("readPageBtn");
     if (window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); if (btn) btn.innerHTML = '<i class="fas fa-volume-up"></i>'; window.isReadingPage = false; }
     if (chat.style.display === "flex") {
         chat.style.display = "none";
-        if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE (Click to Exit)" : "⚡ KOHMZ Lexie Pro";
+        if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "⚡ KOHMZ Lexie Pro";
     } else {
         chat.style.display = "flex";
         if (hint) hint.innerHTML = "🖐️ Drag to Move";
@@ -940,17 +892,9 @@ window.toggleBotWindow = function() {
     }
 };
 
-document.addEventListener("mouseleave", (e) => {
-    if (isGodMode) return;
-    if (e.clientY < 0 && !sessionStorage.getItem('exit_offered')) {
-        document.getElementById("chatWindow").style.display = "flex";
-        const t = document.getElementById("chatBody");
-        t.innerHTML += `<div class="chat-bubble" style="border-left:3px solid var(--cyber-blue);">Lexie: Wait boss! Before you go, do you want to secure a quick technical audit schedule? It's free to ask!</div>`;
-        t.scrollTop = t.scrollHeight;
-        sessionStorage.setItem('exit_offered', 'true');
-    }
-});
-
+// ============================================================
+// ORIGINAL DOM LOAD LOGIC (Intact)
+// ============================================================
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof AOS !== "undefined") AOS.init({ duration: 800, once: true, offset: 50 });
     const menuBtn = document.getElementById("mobile-menu"), navList = document.getElementById("nav-list");
