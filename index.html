@@ -241,8 +241,8 @@
         .kohmz-bot-toggle:active { cursor:grabbing; }
         lottie-player { width:100%!important; height:100%!important; pointer-events:none; }
         
-        .kohmz-chat-window { display:none; width:320px; height:450px; max-height:75vh; max-width:calc(100vw - 30px); background:rgba(8,16,24,0.98); border:1px solid var(--cyber-blue); border-top:4px solid var(--cyber-blue); box-shadow:0 15px 50px rgba(0,0,0,0.9), 0 0 20px rgba(0,229,255,0.2); margin-bottom:12px; flex-direction:column; backdrop-filter:blur(15px); box-sizing:border-box; border-radius: 8px;}
-        .kohmz-chat-header { background:#000; color:var(--cyber-blue); padding:15px; font-weight:900; display:flex; justify-content:space-between; font-size:13px; border-bottom:1px solid rgba(0,229,255,0.3); box-sizing:border-box; letter-spacing: 1px;}
+        .kohmz-chat-window { display:none; width:320px; height:75dvh; max-height:550px; max-width:calc(100vw - 30px); background:rgba(8,16,24,0.98); border:1px solid var(--cyber-blue); border-top:4px solid var(--cyber-blue); box-shadow:0 15px 50px rgba(0,0,0,0.9), 0 0 20px rgba(0,229,255,0.2); margin-bottom:12px; flex-direction:column; backdrop-filter:blur(15px); box-sizing:border-box; border-radius: 8px;}
+        .kohmz-chat-header { background:#000; color:var(--cyber-blue); padding:15px; font-weight:900; display:flex; justify-content:space-between; align-items:center; font-size:13px; border-bottom:1px solid rgba(0,229,255,0.3); box-sizing:border-box; letter-spacing: 1px;}
         
         .kohmz-chat-body { padding:15px; flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; display:flex; flex-direction:column; gap:12px; box-sizing:border-box;}
         .kohmz-chat-body::-webkit-scrollbar { width: 4px; }
@@ -294,7 +294,7 @@
             .float-btn { width:42px!important; height:42px!important; font-size:18px!important; }
             .kohmz-bot-wrapper { bottom:90px!important; left:15px!important; }
             .kohmz-bot-toggle { width:65px!important; height:65px!important; }
-            .kohmz-chat-window { width:calc(100vw - 30px)!important; margin-bottom:15px; height: 500px; max-height: 65vh;}
+            .kohmz-chat-window { width:calc(100vw - 30px)!important; margin-bottom:15px; height: 75dvh; max-height: 500px;}
         }
 
         footer { background:#000; color:#fff; text-align:center; padding:70px 20px 90px; border-top:2px solid var(--neon-gold); position:relative; z-index: 2; box-shadow: 0 -10px 30px rgba(0,0,0,0.5);}
@@ -552,7 +552,10 @@ Your browser does not support the video tag.
 <div class="kohmz-chat-window" id="chatWindow">
 <div class="kohmz-chat-header" id="chatHeader">
     <span>LEXIE AI: SYSTEM ACTIVE</span>
-    <span onclick="toggleBotWindow()" style="cursor:pointer;padding:0 5px;font-size:18px;">✕</span>
+    <div>
+        <span id="muteBtn" onclick="toggleMute()" style="cursor:pointer;padding:0 10px;font-size:16px;" title="Mute/Unmute Voice">🔊</span>
+        <span onclick="toggleBotWindow()" style="cursor:pointer;padding:0 5px;font-size:18px;" title="Close">✕</span>
+    </div>
 </div>
 <div class="kohmz-chat-body" id="chatBody"></div>
 <div id="vision-preview">
@@ -566,7 +569,7 @@ Your browser does not support the video tag.
     <button onclick="sendQuickReply('I want to request an audit.')">Book an audit</button>
 </div>
 <div id="cf-turnstile-container">
-    <div class="cf-turnstile" data-sitekey="0x4AAAAAACzFc-mcc5y-ha36" data-callback="onTurnstileSuccess" data-theme="dark"></div>
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAACzFc-mcc5y-ha36" data-callback="onTurnstileSuccess" data-expired-callback="resetTurnstile" data-error-callback="resetTurnstile" data-theme="dark"></div>
 </div>
 <div class="chat-input-area">
     <button class="chat-tool-btn" onclick="document.getElementById('imgInput').click()" title="Upload Image"><i class="fas fa-image"></i></button>
@@ -586,10 +589,24 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V16.3 (PREMIUM UPDATE)
+// KOHMZ LEXIE AI — FRONTEND V16.4 (ULTIMATE SYNC)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 const VIP_KEYWORDS = ["/pepot", "/joy", "/samsam", "/mara", "/mantha"];
+
+// ── Mute Logic ───────────────────────────────────────────────
+let isMuted = localStorage.getItem('lexie_muted') === 'true';
+function applyMuteUI() {
+    const btn = document.getElementById('muteBtn');
+    if (btn) btn.innerText = isMuted ? '🔇' : '🔊';
+}
+window.toggleMute = function() {
+    isMuted = !isMuted;
+    localStorage.setItem('lexie_muted', isMuted);
+    applyMuteUI();
+    if (isMuted && window.speechSynthesis) window.speechSynthesis.cancel();
+};
+applyMuteUI();
 
 // ── Turnstile Logic (Passive Security Mode) ──────────────────
 let currentTurnstileToken = "";
@@ -601,14 +618,14 @@ window.onTurnstileSuccess = function(token) {
     if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
 };
 
-function resetTurnstile() {
+window.resetTurnstile = function() {
     if (typeof turnstile !== 'undefined' && !isGodMode) {
         currentTurnstileToken = "";
         turnstile.reset();
         const btn = document.getElementById('mainSendBtn');
         if (btn) { btn.disabled = true; btn.style.opacity = "0.5"; btn.innerHTML = '<i class="fas fa-shield-alt"></i>'; }
     }
-}
+};
 
 // ── Memory Logic (VIP = Permanent | Normal = Auto-Delete) ────
 let userId = localStorage.getItem('kohmz_uuid');
@@ -669,13 +686,13 @@ function appendBubble(role, htmlContent, rawTextForTTS) {
             audioBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;";
             audioBtn.innerHTML = '<i class="fas fa-volume-up"></i> Play Audio';
             const capturedText = rawTextForTTS; 
-            audioBtn.onclick = () => window.speakText(capturedText);
+            audioBtn.onclick = () => { if(isMuted) toggleMute(); window.speakText(capturedText); };
             audioDiv.appendChild(audioBtn);
             b.appendChild(audioDiv);
         }
     }
     t.appendChild(b);
-    setTimeout(() => { t.scrollTop = t.scrollHeight; }, 100); // Wait for render
+    setTimeout(() => { t.scrollTop = t.scrollHeight; }, 100); 
     return b;
 }
 
@@ -818,14 +835,14 @@ window.askLexie = async function() {
     } catch (err) {
         const lb = document.getElementById(loadId);
         if (lb) lb.textContent = "Lexie: Connection Firewall blocked. Please try again.";
-        resetTurnstile(); // Reset on error to prevent stuck state
+        resetTurnstile(); 
     } finally {
         clearImage();
-        if (!isGodMode && messageCount >= 2 && currentTurnstileToken) resetTurnstile(); // Reset after successful token use
+        if (!isGodMode && messageCount >= 2 && currentTurnstileToken) resetTurnstile(); 
     }
 };
 
-// ── V16.3: Dynamic Multi-Page PDF Generator ───────────────────
+// ── V16.4: Dynamic Multi-Page PDF Generator ───────────────────
 window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) { alert("System Error: No estimate data found."); return; }
@@ -877,15 +894,13 @@ window.downloadPDF = async function() {
     let cursorY = 75;
     let boxStartY = 55;
     const lineHeight = 5.5;
-    const pageMaxY = 240; // Leave room for footer
+    const pageMaxY = 240; 
 
     for (let i = 0; i < lines.length; i++) {
         if (cursorY + lineHeight > pageMaxY) {
-            // Close the box for the current page
             doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
             doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
 
-            // Add Disclaimer Footer to current page
             doc.setDrawColor(200, 200, 200); doc.line(margin, 255, rightAlign, 255);
             doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
             doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth/2, 260, {align:"center"});
@@ -903,7 +918,6 @@ window.downloadPDF = async function() {
         cursorY += lineHeight;
     }
     
-    // Draw the final box to close the last page
     doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
     doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
 
@@ -921,7 +935,13 @@ window.downloadPDF = async function() {
 // ── Images, Audio, Misc ───────────────────────────────────────
 function handleImage(input) {
     if (input.files && input.files[0]) {
-        if (input.files[0].size > 5 * 1024 * 1024) { alert("Hanggang 5MB lang po sana para hindi mag-freeze ang system."); input.value = null; return; }
+        if (input.files[0].size > 5 * 1024 * 1024) { 
+            const chat = document.getElementById("chatWindow");
+            if (chat.style.display !== "flex") chat.style.display = "flex";
+            appendBubble("bot", "⚠️ Boss, masyadong malaki yung image! Hanggang 5MB lang po sana para hindi mag-freeze ang system."); 
+            input.value = null; 
+            return; 
+        }
         const reader = new FileReader();
         reader.onload = (e) => {
             const img = new Image(); img.onload = () => {
@@ -951,14 +971,14 @@ window.openViber = function() { window.location.href = 'viber://chat?number=%2B6
 
 let speechQueue = [], isSpeaking = false;
 window.speakText = function(text) {
-    if (!window.speechSynthesis) return;
+    if (!window.speechSynthesis || isMuted) return;
     let cleanText = text.replace(/\[CALENDAR:.*?\]/g, '').replace(/\*/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
     let sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
     speechQueue.push(...sentences);
     if (!isSpeaking) processSpeechQueue();
 };
 function processSpeechQueue() {
-    if (speechQueue.length === 0) { isSpeaking = false; return; }
+    if (speechQueue.length === 0 || isMuted) { isSpeaking = false; return; }
     isSpeaking = true; let sentence = speechQueue.shift().trim();
     if (!sentence) { processSpeechQueue(); return; }
     let utterance = new SpeechSynthesisUtterance(sentence);
@@ -967,7 +987,6 @@ function processSpeechQueue() {
     if (voice) utterance.voice = voice; utterance.lang = "en-US"; utterance.pitch = 1.15; utterance.rate = 0.85;
     utterance.onend = () => processSpeechQueue(); 
     utterance.onerror = () => { console.warn("TTS Error"); processSpeechQueue(); }; 
-    // Safely attempt to speak, browsers might block if no user interaction
     try { window.speechSynthesis.speak(utterance); } catch(e) { processSpeechQueue(); }
 }
 
@@ -1032,16 +1051,15 @@ function triggerExitIntent() {
     if (chat.style.display !== "flex") { chat.style.display = "flex"; const hint = document.getElementById("dragHint"); if (hint) hint.innerHTML = "🖐️ Drag to Move"; }
     appendBubble("bot", "Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊");
     sessionStorage.setItem('exit_offered', 'true');
-    if (window.speechSynthesis) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
+    if (window.speechSynthesis && !isMuted) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
 }
 document.addEventListener("mouseleave", (e) => { if (e.clientY < 0) triggerExitIntent(); });
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === 'hidden') triggerExitIntent(); });
-// Refined scroll exit intent to avoid accidental mobile triggers
 let lastScrollTop = 0, lastScrollTime = Date.now();
 window.addEventListener("scroll", () => { 
     let st = window.pageYOffset || document.documentElement.scrollTop; 
     let now = Date.now(), timeDiff = now - lastScrollTime; 
-    if (st < lastScrollTop - 250 && timeDiff < 100) triggerExitIntent(); // increased threshold to 250px
+    if (st < lastScrollTop - 250 && timeDiff < 100) triggerExitIntent(); 
     lastScrollTop = st <= 0 ? 0 : st; 
     lastScrollTime = now; 
 }, { passive: true });
