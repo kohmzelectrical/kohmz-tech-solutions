@@ -41,7 +41,6 @@
             --bg-dark: #010409;
         }
 
-        /* 🌟 DYNAMIC UI MODES (NANO PARTICLES ACTION) */
         body { transition: background-color 1s ease; }
         body.mode-red { --cyber-blue: #ff2a2a; --neon-gold: #ff4d4d; --blue-glow: rgba(255,0,0,0.4); background-color: #1a0000; }
         body.mode-red .particle { background: #ff2a2a; box-shadow: 0 0 15px #ff2a2a; }
@@ -589,12 +588,12 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V16.5 (ULTIMATE SYNC)
+// KOHMZ LEXIE AI — FRONTEND V17.1 (ENTERPRISE FINAL SYNC)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 const VIP_KEYWORDS = ["/pepot", "/joy", "/samsam", "/mara", "/mantha"];
 
-// ── TypeWriter Class (Restored & Fixed) ──────────────────────
+// ── TypeWriter Class ─────────────────────────────────────────
 class TypeWriter {
     constructor(txtElement, words, wait = 3000) {
         this.txtElement = txtElement;
@@ -642,7 +641,7 @@ window.toggleMute = function() {
 };
 applyMuteUI();
 
-// ── Turnstile Logic (Passive Security Mode) ──────────────────
+// ── Turnstile Logic ──────────────────────────────────────────
 let currentTurnstileToken = "";
 let messageCount = parseInt(sessionStorage.getItem('msg_count')) || 0;
 
@@ -661,7 +660,7 @@ window.resetTurnstile = function() {
     }
 };
 
-// ── Memory Logic (VIP = Permanent | Normal = Auto-Delete) ────
+// ── Memory Logic ─────────────────────────────────────────────
 let userId = localStorage.getItem('kohmz_uuid');
 if (!userId) { userId = 'user-' + Math.random().toString(36).substr(2, 9); localStorage.setItem('kohmz_uuid', userId); }
 
@@ -697,7 +696,7 @@ window.exitGodMode = function() {
     appendBubble("bot", "Immortal Mode deactivated. Returning to standard protocol.");
 };
 
-// ── Bubble Helper (No HTML escaping issues) ──────────────────
+// ── Bubble Helper ────────────────────────────────────────────
 function escapeHTML(str) {
     if (!str) return "";
     return str.replace(/[&<>'"]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag]));
@@ -770,7 +769,6 @@ window.askLexie = async function() {
 
     const isVIPAttempt = VIP_KEYWORDS.includes(n.toLowerCase());
     
-    // Passive Turnstile Verification (Allows 2 free messages)
     if (!isGodMode && !isVIPAttempt) {
         if (messageCount >= 2 && !currentTurnstileToken) {
             appendBubble("bot", "⚠️ Boss, paki-check muna yung security box (I am not a robot) sa ibaba para makapag-tuloy tayo.");
@@ -821,7 +819,6 @@ window.askLexie = async function() {
             applyGodModeUI();
         }
 
-        // UI ACTIONS (NANO PARTICLES TRIGGERS)
         if (result.code_red) {
             document.body.classList.add("mode-red");
             setTimeout(() => document.body.classList.remove("mode-red"), 6000);
@@ -836,7 +833,7 @@ window.askLexie = async function() {
             header.style.color = "var(--cyber-blue)";
             header.firstElementChild.textContent = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE";
             
-            if (result.quote_ready) {
+            if (result.quote_ready || result.has_estimate || result.has_agreement) {
                 document.body.classList.add("mode-gold");
                 setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
             }
@@ -849,18 +846,25 @@ window.askLexie = async function() {
         if (result.code_red) displayHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
 
         if (result.has_estimate && !result.code_red) {
-            const cleanDataForPDF = (result.pdf_data || rawAiReply)
-                .replace(/\[PDF_START\]/gi, '').replace(/\[PDF_END\]/gi, '')
+            const cleanDataForPDF = result.pdf_data
                 .replace(/\*\*/g, '').replace(/\*/g, '')
                 .replace(/₱/g, 'PHP ')
                 .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, '')
-                .replace(/\r\n/g, '\n').trim();
-
+                .trim();
             sessionStorage.setItem('lastEst', cleanDataForPDF);
             displayHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Official Estimate</button>`;
-            
-            // TTS FILTER UPGRADE: Don't read the whole PDF table out loud
-            textToSpeak = textToSpeak.replace(/\[PDF_START\][\s\S]*?\[PDF_END\]/, " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ");
+            textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
+        }
+
+        if (result.has_agreement && !result.code_red) {
+            const cleanDataForAgreement = result.agreement_data
+                .replace(/\*\*/g, '').replace(/\*/g, '')
+                .replace(/₱/g, 'PHP ')
+                .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, '')
+                .trim();
+            sessionStorage.setItem('lastAgreement', cleanDataForAgreement);
+            displayHtml += `<br><br><button id="dlAgreeBtn" onclick="downloadAgreement()" class="btn-pdf" style="background:var(--cyber-blue);color:#000;"><i class="fas fa-file-contract"></i> Download Service Agreement</button>`;
+            textToSpeak += " Handa na rin po ang Service Agreement natin boss, i-download niyo na lang po. ";
         }
 
         lexieMemory.push({ role: "assistant", content: rawAiReply });
@@ -880,7 +884,7 @@ window.askLexie = async function() {
     }
 };
 
-// ── V16.5: Dynamic Multi-Page PDF Generator ───────────────────
+// ── V17.1: Dynamic Multi-Page PDF Generator ───────────────────
 window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) { alert("System Error: No estimate data found."); return; }
@@ -890,7 +894,6 @@ window.downloadPDF = async function() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ format: 'letter', unit: 'mm' });
     const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
-    const pageHeight = doc.internal.pageSize.getHeight();
     const contentWidth = pageWidth - (margin * 2);
 
     try {
@@ -916,7 +919,6 @@ window.downloadPDF = async function() {
     
     doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
 
-    // Box Header
     doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, 'F');
     doc.setTextColor(255, 255, 255); doc.setFontSize(10);
     doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
@@ -925,7 +927,6 @@ window.downloadPDF = async function() {
     doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
     doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
 
-    // Dynamic Multi-Page Engine
     doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
     const lines = doc.splitTextToSize(data, contentWidth - 10);
     
@@ -938,16 +939,12 @@ window.downloadPDF = async function() {
         if (cursorY + lineHeight > pageMaxY) {
             doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
             doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
-
             doc.setDrawColor(200, 200, 200); doc.line(margin, 255, rightAlign, 255);
             doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
             doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth/2, 260, {align:"center"});
-
             doc.addPage();
-            
             boxStartY = 20;
             cursorY = 30;
-            
             doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(13, 27, 42);
             doc.text("KOHMZ ELECTRICAL - ESTIMATE CONTINUATION", margin, boxStartY - 5);
             doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
@@ -958,8 +955,6 @@ window.downloadPDF = async function() {
     
     doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
     doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
-
-    // Final Page Disclaimer
     doc.setDrawColor(200, 200, 200); doc.line(margin, pageMaxY, rightAlign, pageMaxY);
     doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
     doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth/2, pageMaxY + 5, {align:"center"});
@@ -968,6 +963,85 @@ window.downloadPDF = async function() {
 
     doc.save(`KOHMZ_Estimate_${userId.substring(0,5)}.pdf`);
     if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Official Estimate'; btn.style.opacity = '1'; }
+};
+
+window.downloadAgreement = async function() {
+    const data = sessionStorage.getItem('lastAgreement');
+    if (!data) { alert("System Error: No agreement data found."); return; }
+    const btn = document.getElementById('dlAgreeBtn');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = '0.6'; }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ format: 'letter', unit: 'mm' });
+    const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
+    const contentWidth = pageWidth - (margin * 2);
+
+    try {
+        const imgData = await new Promise((resolve) => {
+            const img = new Image(); img.crossOrigin = "Anonymous";
+            img.onload = () => { const c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); resolve(c.toDataURL('image/jpeg')); };
+            img.onerror = () => resolve(null); img.src = 'logo.jpg';
+        });
+        if (imgData) doc.addImage(imgData, 'JPEG', margin, 15, 20, 20); 
+    } catch (e) { }
+
+    const textStartX = margin + 25;
+    doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
+    doc.text("KOHMZ", textStartX, 23);
+    doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
+    doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
+
+    doc.setFontSize(8); doc.setTextColor(50, 50, 50);
+    doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
+    doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
+    doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
+    
+    doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
+
+    doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, 'F');
+    doc.setTextColor(255, 255, 255); doc.setFontSize(10);
+    doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
+    doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
+
+    doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+    doc.text("OFFICIAL SERVICE AGREEMENT", pageWidth / 2, 65, { align: "center" });
+
+    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
+    const lines = doc.splitTextToSize(data, contentWidth - 10);
+    
+    let cursorY = 75;
+    let boxStartY = 55;
+    const lineHeight = 5.5;
+    const pageMaxY = 240; 
+
+    for (let i = 0; i < lines.length; i++) {
+        if (cursorY + lineHeight > pageMaxY) {
+            doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
+            doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
+            doc.setDrawColor(200, 200, 200); doc.line(margin, 255, rightAlign, 255);
+            doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+            doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, 260, {align:"center"});
+            doc.addPage();
+            boxStartY = 20;
+            cursorY = 30;
+            doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(13, 27, 42);
+            doc.text("KOHMZ ELECTRICAL - AGREEMENT CONTINUATION", margin, boxStartY - 5);
+            doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
+        }
+        doc.text(lines[i], margin + 5, cursorY);
+        cursorY += lineHeight;
+    }
+    
+    doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
+    doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
+    doc.setDrawColor(200, 200, 200); doc.line(margin, pageMaxY, rightAlign, pageMaxY);
+    doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+    doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, pageMaxY + 5, {align:"center"});
+    doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, pageMaxY + 8, {align:"center"});
+
+    doc.save(`KOHMZ_Agreement_${userId.substring(0,5)}.pdf`);
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-contract"></i> Download Service Agreement'; btn.style.opacity = '1'; }
 };
 
 // ── Images, Audio, Misc ───────────────────────────────────────
@@ -1032,18 +1106,22 @@ function processSpeechQueue() {
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof AOS !== "undefined") AOS.init({ duration: 800, once: true, offset: 50 });
     const inputEl = document.getElementById("userQuery");
-    if (inputEl) inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); } });
+    
+    // UPGRADE: Mobile keyboard input focus fix
+    if (inputEl) {
+        inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); } });
+        inputEl.addEventListener("focus", () => { setTimeout(() => { const t = document.getElementById("chatBody"); t.scrollTop = t.scrollHeight; }, 300); });
+    }
 
     document.getElementById("mobile-menu")?.addEventListener("click", () => document.getElementById("nav-list")?.classList.toggle("active"));
 
-    // Main Hero Typing Logic with TypeWriter integration
+    // Main Hero Typing Logic
     let mIdx = 0; const mainText = "INTEGRATED POWER ARCHITECTURE & ";
     const typeHero = () => { 
         if(mIdx < mainText.length){ 
             document.getElementById("main-typewriter-text").innerHTML += mainText.charAt(mIdx++); 
             setTimeout(typeHero, 60); 
         } else {
-            // Trigger the subtitle typing sequence safely
             const txtElement = document.querySelector('.txt-type');
             if(txtElement && !txtElement.classList.contains('started')) {
                 txtElement.classList.add('started');
@@ -1071,12 +1149,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
     let isDrag = false, startX, startY, xOff = 0, yOff = 0;
     
-    // Mouse Events
     toggle.addEventListener("mousedown", e => { isDrag = true; startX = e.clientX - xOff; startY = e.clientY - yOff; });
     window.addEventListener("mousemove", e => { if (isDrag) { xOff = e.clientX - startX; yOff = e.clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; } });
     window.addEventListener("mouseup", () => isDrag = false);
     
-    // Touch Events
     toggle.addEventListener("touchstart", e => { isDrag = true; startX = e.touches[0].clientX - xOff; startY = e.touches[0].clientY - yOff; }, {passive: true});
     window.addEventListener("touchmove", e => { if (isDrag) { xOff = e.touches[0].clientX - startX; yOff = e.touches[0].clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; e.preventDefault(); } }, {passive: false});
     window.addEventListener("touchend", () => isDrag = false);
