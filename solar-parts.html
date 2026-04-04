@@ -163,7 +163,7 @@
         @keyframes blink { from, to { opacity: 1; } 50% { opacity: 0; } }
         .hero p { font-size: 13px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; color: #cbd5e1; } 
 
-        /* --- SHOP GRID STYLING - CYBER THEME ENHANCED --- */
+        /* --- SHOP GRID STYLING - CYBER THEME --- */
         .content-section { padding: 80px 10%; text-align: center; position: relative; z-index: 2;}
         .content-section h2 { font-size: 20px; color: var(--cyber-blue); margin-bottom: 50px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; position: relative; display: inline-block; text-shadow: 0 0 10px rgba(0,229,255,0.4);}
         .content-section h2::after { content: ''; width: 60px; height: 4px; background: var(--neon-gold); position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 10px var(--neon-gold);}
@@ -207,7 +207,7 @@
         .float-btn:hover { transform: scale(1.15) translateY(-5px); outline: none; }
         .float-btn:hover::before { opacity: 1; filter: blur(15px); }
 
-        /* --- LEXIE AI BOT STYLES (SYNCED FROM INDEX) --- */
+        /* --- LEXIE AI BOT STYLES (SYNCED) --- */
         .kohmz-bot-wrapper { position:fixed; bottom:25px; left:20px; z-index:999999; font-family:'Share Tech Mono',monospace; display:flex; flex-direction:column; align-items:flex-start; }
         .kohmz-bot-toggle { width:130px; height:130px; background:transparent; cursor:grab; position:relative; display:flex; justify-content:center; align-items:center; transition:transform 0.2s; touch-action:none; filter: drop-shadow(0 0 10px rgba(0,229,255,0.5));}
         .kohmz-bot-toggle:hover { transform:scale(1.05); filter: drop-shadow(0 0 20px rgba(0,229,255,0.8));}
@@ -354,7 +354,7 @@
                 
                 <div class="card" data-aos="fade-up" data-aos-delay="100">
                     <div class="product-image-wrap">
-                        <img src="river-2-ecoflow.jpg" alt="EcoFlow River 2">
+                        <img src="river 2 ecoflow.jpg" alt="EcoFlow River 2">
                     </div>
                     <h3>EcoFlow 240Wh River 2</h3>
                     <p>Ultra-portable power station. Charges 0-100% in 60 mins. Ideal for emergency lighting and mobile charging.</p>
@@ -364,7 +364,7 @@
 
                 <div class="card" data-aos="fade-up" data-aos-delay="200">
                     <div class="product-image-wrap">
-                        <img src="ecoflow-delta-3.jpg" alt="EcoFlow Delta 3">
+                        <img src="ecoflow delta 3.jpg" alt="EcoFlow Delta 3">
                     </div>
                     <h3>ECOFLOW Portable Power Station DELTA 3 1500</h3>
                     <p>High-capacity 1536Wh LiFePO4 battery. Technical-grade backup for heavy home appliances.</p>
@@ -374,7 +374,7 @@
 
                 <div class="card" data-aos="fade-up" data-aos-delay="300">
                     <div class="product-image-wrap">
-                        <img src="gentai-power-24v-100ah-lefepo4-lithium-battery.jpg" alt="Gentai Battery">
+                        <img src="gentai power 24v 100ah lefepo4 lithium battery.jpg" alt="Gentai Battery">
                     </div>
                     <h3>GENTAI POWER 24V 100Ah LiFePO4 Lithium Battery</h3>
                     <p>Upgraded Bluetooth version with Low-Temp protection. 2560W Max output for RV or home solar energy storage.</p>
@@ -384,7 +384,7 @@
 
                 <div class="card" data-aos="fade-up" data-aos-delay="400">
                     <div class="product-image-wrap">
-                        <img src="solar-photovoltaic-panel-battery-board-550-580-700w-monocrystalline.jpg" alt="Jinko Board">
+                        <img src="solar photovoltaic panel battery board 550-580-700w monocrystalline.jpg" alt="Jinko Board">
                     </div>
                     <h3>Jinko Mono-Crystalline Board 550W-700W</h3>
                     <p>High-performance Monocrystalline Silicon Photovoltaic Board. Tier-1 brand for maximum sunlight absorption.</p>
@@ -394,7 +394,7 @@
 
                 <div class="card" data-aos="fade-up" data-aos-delay="500">
                     <div class="product-image-wrap">
-                        <img src="ecoflow-delta-2-extra-battery.jpg" alt="EcoFlow Delta Extra Battery">
+                        <img src="ecoflow delta 2 extra battery.jpg" alt="EcoFlow Delta Extra Battery">
                     </div>
                     <h3>EcoFlow Delta 2 Series Smart Extra Battery</h3>
                     <p>1024Wh LiFePO4 Expansion Battery. Expand capacity seamlessly for Power Station Delta 2, Delta 3, or Delta 3 Plus.</p>
@@ -404,7 +404,7 @@
 
                 <div class="card" data-aos="fade-up" data-aos-delay="600">
                     <div class="product-image-wrap">
-                        <img src="srne-3kw-hybrid-offgrid-solar-inverter.png" alt="SRNE Inverter">
+                        <img src="srne 3kw hybrid offgrid solar inverter.png" alt="SRNE Inverter">
                     </div>
                     <h3>3KW 24V SRNE Hybrid Off-Grid Solar Inverter</h3>
                     <p>Professional residential 24V off-grid solar inverter with built-in MPPT controller optimized for home solar systems.</p>
@@ -414,7 +414,7 @@
 
                 <div class="card" data-aos="fade-up" data-aos-delay="700">
                     <div class="product-image-wrap">
-                        <img src="ecoflow-river-3-max.jpg" alt="EcoFlow River 3 Max">
+                        <img src="ecoflow river 3 max.jpg" alt="EcoFlow River 3 Max">
                     </div>
                     <h3>EcoFlow Portable Power Station River 3 Max</h3>
                     <p>Expand capacity from 286Wh to 572Wh. 3 Up to 1200W AC Outlets, <10 MS UPS, <30 dB Quiet operation with LiFePO4 Battery.</p>
@@ -606,6 +606,45 @@
                     let desc = card.querySelector('p') ? card.querySelector('p').innerText : '';
                     return `${index + 1}. ${title} - ${desc}`;
                 }).join('\n');
+            }
+
+            // --- READ PAGE ALOUD LOGIC (ACCESSIBILITY ONLY) ---
+            window.isReadingPage = false;
+            const readPageBtn = document.getElementById("readPageBtn");
+            if(readPageBtn) {
+                readPageBtn.addEventListener("click", function() {
+                    if(window.isReadingPage || window.speechSynthesis.speaking) {
+                        window.speechSynthesis.cancel();
+                        window.isReadingPage = false;
+                        readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
+                        return;
+                    }
+                    const mainElement = document.querySelector("main");
+                    if(!mainElement) return;
+                    let contentToRead = mainElement.innerText.replace(/\n+/g,". "),
+                        fullText = "Welcome to KOHMZ Solar Parts Shop. " + contentToRead,
+                        sentences = fullText.match(/[^.!?]+[.!?]+/g) || [fullText];
+                    window.isReadingPage = true;
+                    readPageBtn.innerHTML = '<i class="fas fa-volume-mute" aria-hidden="true"></i>';
+                    let currentSentence = 0;
+                    function playNextSentence() {
+                        if(!window.isReadingPage || currentSentence >= sentences.length) {
+                            window.isReadingPage = false;
+                            readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>';
+                            return;
+                        }
+                        let chunk = new SpeechSynthesisUtterance(sentences[currentSentence].trim()),
+                            voices = window.speechSynthesis.getVoices(),
+                            profVoice = voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Google US English")||v.name.includes("Female")||v.name.includes("Enhanced")) || voices[0];
+                        if(profVoice) chunk.voice = profVoice;
+                        chunk.pitch = 1.15;
+                        chunk.rate = 0.80;
+                        chunk.onend = () => { currentSentence++; playNextSentence(); };
+                        chunk.onerror = () => { window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up" aria-hidden="true"></i>'; };
+                        window.speechSynthesis.speak(chunk);
+                    }
+                    playNextSentence();
+                });
             }
         });
     </script>
