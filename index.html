@@ -671,8 +671,10 @@ let isGodMode = localStorage.getItem('isGod') === 'true';
 let godName = localStorage.getItem('god_name') || "";
 
 let lexieMemory = [];
-let memoryStorage = isGodMode ? localStorage : sessionStorage;
+let memoryStorage = sessionStorage; // 🛡️ SECURED: Palaging naka-session storage para mabura kapag kinlose ang tab
 try { lexieMemory = JSON.parse(memoryStorage.getItem('lexie_memory')) || []; } catch(e) { lexieMemory = []; }
+// Cleanup para sa naiwan na bug dati:
+localStorage.removeItem('lexie_memory');
 let currentImageData = null;
 
 function applyGodModeUI() {
@@ -691,18 +693,27 @@ window.exitGodMode = function() {
     if (!isGodMode) return;
     isGodMode = false; godName = "";
     
-    // Clear security keys
+    // 1. Clear security keys
     mySecretAdminToken = "";
     sessionStorage.removeItem('admin_token');
+    localStorage.removeItem('isGod'); 
+    localStorage.removeItem('god_name');
+
+    // 2. 🛡️ SECURED: WIPE CHAT MEMORY AND CLEAR SCREEN
+    lexieMemory = [];
+    sessionStorage.removeItem('lexie_memory');
+    document.getElementById("chatBody").innerHTML = ""; // Binubura nito ang mga text sa screen mo
     
-    localStorage.removeItem('isGod'); localStorage.removeItem('god_name');
+    // 3. Reset UI
     document.getElementById("dragHint").innerText = "⚡ KOHMZ Lexie Pro";
     document.getElementById("dragHint").classList.remove('god-mode-tag');
     const tsCont = document.getElementById("cf-turnstile-container");
     if (tsCont) tsCont.style.display = "flex";
     document.getElementById("chatHeader").firstElementChild.textContent = "LEXIE AI: SYSTEM ACTIVE";
     resetTurnstile();
-    appendBubble("bot", "Immortal Mode deactivated. Secret Token cleared. Returning to standard protocol.");
+    
+    // 4. Magpakita ng bagong malinis na chat
+    appendBubble("bot", "Immortal Mode deactivated. Session memory wiped. Returning to standard protocol.");
 };
 
 // ── Bubble Helper ────────────────────────────────────────────
