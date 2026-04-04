@@ -20,6 +20,9 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
@@ -41,7 +44,7 @@
             overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6;
         } 
 
-        /* --- V20 SPECIFIC STYLES --- */
+        /* --- V21 UI SYNC --- */
         .typing-dots span { animation: blink 1.4s infinite both; }
         .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
         .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
@@ -49,53 +52,25 @@
         .code-red-active { border-color: #e11d48 !important; box-shadow: 0 0 30px rgba(225, 29, 72, 0.5) !important; }
         .mode-gold { background: rgba(255,183,3,0.1) !important; transition: background 0.5s; }
         .btn-pdf { display:block; margin-top:10px; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer; font-family:'Share Tech Mono'; transition:0.3s; background:#ffb703; color:#000; border:none; text-transform:uppercase; width:100%; text-align:center; }
-        .btn-pdf:hover { transform:translateY(-2px); box-shadow:0 0 15px #ffb703; }
         
         .bot-value-tag {
             background: rgba(8, 16, 24, 0.95); color: #00e5ff; padding: 5px 12px; border: 1px solid #00e5ff;
             border-radius: 4px; font-size: 11px; margin-bottom: 8px; cursor: pointer; text-align: center;
             box-shadow: 0 0 10px rgba(0, 229, 255, 0.2); font-weight: bold; transition: all 0.3s ease;
         }
-        .bot-value-tag:hover { background: #00e5ff; color: #000; }
         .god-mode-tag { border-color: #ffb703 !important; color: #ffb703 !important; box-shadow: 0 0 15px rgba(255, 183, 3, 0.5) !important; }
-        .god-mode-tag:hover { background: #ffb703 !important; color: #000 !important; }
         .mic-active { color: #e11d48 !important; animation: blink 1s infinite; }
 
         /* --- ENHANCED LIVE 3D CAD BACKGROUND --- */
-        .cad-background {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            perspective: 1000px; z-index: -2; overflow: hidden;
-            background: radial-gradient(circle at center, #0a192f 0%, #04080f 100%);
-        }
-        .cad-grid {
-            position: absolute; width: 200%; height: 200%;
-            bottom: -50%; left: -50%;
-            background-image: 
-                linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: rotateX(60deg);
-            animation: cadMove 8s linear infinite;
-        }
-        @keyframes cadMove {
-            0% { transform: rotateX(60deg) translateY(0); }
-            100% { transform: rotateX(60deg) translateY(50px); }
-        }
-        .cad-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(8,16,24,1) 0%, transparent 40%, rgba(8,16,24,1) 100%);
-            pointer-events: none;
-        }
+        .cad-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; perspective: 1000px; z-index: -2; overflow: hidden; background: radial-gradient(circle at center, #0a192f 0%, #04080f 100%); }
+        .cad-grid { position: absolute; width: 200%; height: 200%; bottom: -50%; left: -50%; background-image: linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px); background-size: 50px 50px; transform: rotateX(60deg); animation: cadMove 8s linear infinite; }
+        @keyframes cadMove { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(50px); } }
+        .cad-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(8,16,24,1) 0%, transparent 40%, rgba(8,16,24,1) 100%); pointer-events: none; }
 
         /* FLOATING DATA PARTICLES */
         .particle-container { position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1; pointer-events: none; }
         .particle { position: absolute; background: #00e5ff; border-radius: 50%; box-shadow: 0 0 10px #00e5ff; opacity: 0; animation: floatUp 10s infinite linear; }
-        .p1 { left: 10%; width: 4px; height: 4px; animation-duration: 8s; animation-delay: 0s; }
-        .p2 { left: 30%; width: 3px; height: 3px; animation-duration: 12s; animation-delay: 2s; background: #ffb703; box-shadow: 0 0 10px #ffb703;}
-        .p3 { left: 60%; width: 5px; height: 5px; animation-duration: 9s; animation-delay: 4s; }
-        .p4 { left: 85%; width: 2px; height: 2px; animation-duration: 15s; animation-delay: 1s; }
-        .p5 { left: 50%; width: 4px; height: 4px; animation-duration: 11s; animation-delay: 5s; }
-        @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 20% { opacity: 0.6; } 80% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+        @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 20% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
 
         /* --- ELECTRIC TYPEWRITER TECH BAR --- */
         .tech-bar{height:35px;background:#010409;border-bottom:1px solid rgba(0,229,255,0.4);position:relative;z-index:1001;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 15px rgba(0,229,255,0.2)}
@@ -113,46 +88,25 @@
         .logo-text span { color: #ffb703; }
 
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; }
-        .nav-links li.dropdown { position: relative; }
-        .nav-links li a { color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; font-family: 'Share Tech Mono', monospace; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
+        .nav-links li a { color: #e0faff; text-decoration: none; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; font-family: 'Share Tech Mono', monospace; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
         .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
 
         .dropdown-content { display: none; position: absolute; background: rgba(8,16,24,0.98); min-width: 180px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); z-index: 1001; top: 100%; left: 50%; transform: translateX(-50%); border-top: 3px solid #00e5ff; backdrop-filter: blur(10px); }
         .nav-links li.dropdown:hover .dropdown-content { display: block; animation: dropIn .3s ease; }
         @keyframes dropIn { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
         .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: left; }
-        .dropdown-content a:hover { background: rgba(0,229,255,0.1); color: #00e5ff !important; padding-left: 20px; }
-        .caret { transition: transform 0.3s ease; }
 
         /* --- MOBILE NAVIGATION --- */
         @media (max-width: 992px) {
             .menu-toggle { display: block; font-size: 24px; color: #00e5ff; cursor: pointer; background: none; border: none; padding: 5px; }
-            .nav-links { 
-                display: none; flex-direction: column; position: absolute; top: calc(100% + 10px); 
-                left: 25%; width: 50%; 
-                background: rgba(8, 16, 24, 0.95); padding: 5px 0; margin: 0; border: 1px solid #00e5ff; border-top: 3px solid #ffb703; 
-                border-radius: 8px; max-height: 30vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 9999;
-            }
-            .nav-links.active { display: flex; animation: menuFadeIn 0.3s ease forwards; }
-            @keyframes menuFadeIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
-            .nav-links li { width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-            .nav-links li:last-child { border-bottom: none; }
-            .nav-links li a { font-size: 12px; width: 100%; padding: 10px 15px; justify-content: center; text-align: center; }
-            
-            .nav-links li.dropdown:hover .dropdown-content { display: none; }
-            .nav-links li.dropdown.open .dropdown-content { display: block; animation: dropInMobile 0.3s ease; }
-            .nav-links li.dropdown.open .caret { transform: rotate(180deg); color:#ffb703; }
-
-            .dropdown-content { position: static !important; display: none; background: rgba(0,0,0,0.3) !important; width: 100% !important; border: none !important; transform: none !important; left: 0 !important; box-shadow: inset 0 0 10px rgba(0,0,0,0.6); }
-            @keyframes dropInMobile { from { opacity:0; max-height:0; } to { opacity:1; max-height:400px; } }
-            .dropdown-content a { padding: 8px 10px !important; border-left: none !important; color: #cbd5e1 !important; font-size: 11px !important; border-bottom: 1px solid rgba(255,255,255,0.02); justify-content: center; text-align: center!important;}
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 25%; width: 50%; background: rgba(8, 16, 24, 0.95); padding: 5px 0; margin: 0; border: 1px solid #00e5ff; border-top: 3px solid #ffb703; border-radius: 8px; max-height: 30vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 9999; }
+            .nav-links.active { display: flex; }
+            .nav-links li a { justify-content: center; }
+            .nav-links li.dropdown.open .dropdown-content { display: block; position: static !important; background: rgba(0,0,0,0.3) !important; width: 100% !important; transform: none !important; left: 0 !important; box-shadow: inset 0 0 10px rgba(0,0,0,0.6); }
         }
 
         /* --- HERO --- */
-        .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; 
-            background-size: cover; padding: 100px 20px; text-align: center; color: white; position: relative; z-index: 2;
-        }
+        .hero { background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; background-size: cover; padding: 100px 20px; text-align: center; color: white; position: relative; z-index: 2; }
         .hero h2 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
         #typewriter-title { color: #ffb703; }
         .cursor-policy { color: #00e5ff; animation: blink-policy 1s step-end infinite; }
@@ -168,81 +122,46 @@
             position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         .collapsible::before { content:''; position:absolute; left:0; top:0; height:100%; width:0%; background:linear-gradient(90deg, rgba(0,229,255,0.15), transparent); transition:width 0.4s ease; z-index:-1; }
-        .collapsible:hover::before, .collapsible.active::before { width: 100%; }
-        
-        .collapsible:hover, .collapsible.active { 
-            transform: translateX(8px); 
-            box-shadow: -5px 5px 20px rgba(0,0,0,0.6), inset 4px 0 0 #00e5ff; 
-            border-color: rgba(0,229,255,0.5); color: #00e5ff;
-        }
-        
+        .collapsible:hover, .collapsible.active { transform: translateX(8px); box-shadow: -5px 5px 20px rgba(0,0,0,0.6), inset 4px 0 0 #00e5ff; border-color: rgba(0,229,255,0.5); color: #00e5ff; }
         .collapsible:after { content: '\002B'; font-size: 18px; transition: 0.3s transform; }
         .collapsible.active:after { content: "\2212"; transform: rotate(180deg); color: #ffb703;}
 
-        .panel { 
-            padding: 0 25px; background-color: rgba(10, 20, 35, 0.6); max-height: 0; overflow: hidden; 
-            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), padding 0.4s ease; 
-            border-radius: 0 0 5px 5px; margin-bottom: 20px; 
-            border-left: 4px solid #ffb703; backdrop-filter: blur(15px); box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-        }
+        .panel { padding: 0 25px; background-color: rgba(10, 20, 35, 0.6); max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), padding 0.4s ease; border-radius: 0 0 5px 5px; margin-bottom: 20px; border-left: 4px solid #ffb703; backdrop-filter: blur(15px); box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
         .panel.open-padding { padding: 15px 25px 30px; } 
-        
         .panel-content { color: #cbd5e1; font-size: 12px; opacity: 0; transform: translateY(-10px); transition: all 0.5s ease 0.1s;}
         .panel.open-padding .panel-content { opacity: 1; transform: translateY(0); } 
-        
-        .panel-content h3 { color: #00e5ff; margin-top: 25px; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid rgba(0,229,255,0.1); padding-bottom: 5px; display:inline-block;}
 
-        /* --- FLOATING CONTACTS & BOT (V20 UI) --- */
+        /* --- FLOATING CONTACTS & BOT (V21 UI SHELL) --- */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
         .float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff !important; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all .3s cubic-bezier(.175,.885,.32,1.275); position: relative; border: none; cursor: pointer; }
         .float-btn::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: inherit; z-index: -1; filter: blur(10px); opacity: 0.6; transition: 0.3s; }
-        .float-btn:hover { transform: scale(1.15) translateY(-5px); outline: none; }
-        .float-btn:hover::before { opacity: 1; filter: blur(15px); }
 
         .kohmz-bot-wrapper { position: fixed; bottom: 25px; left: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-start; touch-action: none; user-select: none;}
         .kohmz-bot-toggle { width: 130px; height: 130px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s; filter: drop-shadow(0 0 10px rgba(0,229,255,0.5));}
-        .kohmz-bot-toggle:hover { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(0,229,255,0.8));}
+        .kohmz-bot-toggle lottie-player { pointer-events: none; width: 100% !important; height: 100% !important; }
         
-        .kohmz-chat-window { display: none; width: 320px; height: 75dvh; max-height: 550px; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); border-radius: 8px;}
+        .kohmz-chat-window { display: none; width: 340px; height: 75dvh; max-height: 550px; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); border-radius: 8px;}
         .kohmz-chat-header { background: #000; color: #00e5ff; padding: 15px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
         .kohmz-chat-body { padding: 15px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .chat-bubble { background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 12px; border-radius: 0 12px 12px 12px; margin-bottom: 5px; border-left: 3px solid #00e5ff; font-size: 12px; word-wrap: break-word; white-space: pre-wrap; line-height: 1.5; font-family: 'Share Tech Mono', monospace;}
-
+        
         .quick-replies { display:flex; flex-wrap:wrap; gap:8px; padding:12px; background:rgba(8,16,24,0.98); border-top:1px solid rgba(0,229,255,0.15); width:100%; box-sizing:border-box; justify-content:center; }
         .quick-replies button { background:rgba(0,229,255,0.1); border:1px solid #00e5ff; color:#00e5ff; border-radius:20px; padding:8px 14px; font-size:11px; cursor:pointer; transition:0.3s; font-family:'Share Tech Mono',monospace; font-weight:800; flex:1 1 auto; }
-        .quick-replies button:hover { background:#00e5ff; color:#000; }
 
         #cf-turnstile-container { padding: 8px 10px; background: #000; border-top: 1px solid rgba(0,229,255,0.2); display: flex; justify-content: center; }
         .chat-input-area { display:grid; grid-template-columns:35px 35px 35px 1fr 45px; gap:6px; padding:12px; background:#000; border-top:1px solid rgba(0,229,255,0.2); align-items:center; border-radius: 0 0 8px 8px;}
-        .chat-tool-btn { height:35px; background:transparent; border:1px solid rgba(0,229,255,0.5); color:#00e5ff; border-radius:4px; cursor:pointer; display:flex; justify-content:center; align-items:center; transition:0.2s; }
         .chat-input-field { height:35px; background:rgba(255,255,255,0.05); border:1px solid rgba(0,229,255,0.5); color:#fff; padding:0 12px; font-family:'Share Tech Mono'; font-size:12px; outline:none; border-radius:4px; width:100%; box-sizing:border-box; }
         .chat-send-btn { height:35px; background:#00e5ff; border:none; border-radius:4px; color:#000; cursor:pointer; font-weight:bold; transition:0.3s; display:flex; justify-content:center; align-items:center; }
 
-        #vision-preview { display:none; padding:8px 12px; background:rgba(0,229,255,0.1); border-top:1px solid #00e5ff; align-items:center; gap:12px; font-size:11px; color:#00e5ff; font-family: 'Share Tech Mono', monospace;}
-        #vision-preview img { height:35px; width:35px; border:1px solid #00e5ff; object-fit:cover; border-radius: 4px;}
-
         @media(max-width: 768px) {
             .hero { background-size: 100% auto; background-position: center top; padding: 100px 5%; }
-            .floating-container{
-                flex-direction: row !important; flex-wrap: nowrap !important;
-                bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; 
-                gap: 12px !important; width: auto !important; justify-content: center !important;
-                background: rgba(8,16,24,0.85); padding: 8px 15px; border-radius: 30px;
-                border: 1px solid rgba(0,229,255,0.4); box-shadow: 0 10px 25px rgba(0,0,0,0.9); backdrop-filter: blur(10px);
-            }
-            .float-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; }
-            .kohmz-bot-wrapper { bottom: 85px !important; left: 10px !important; right: auto !important;}
-            .kohmz-bot-toggle { width: 65px !important; height: 65px !important; }
+            .floating-container{ flex-direction: row !important; bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; background: rgba(8,16,24,0.85); padding: 8px 15px; border-radius: 30px; border: 1px solid rgba(0,229,255,0.4); box-shadow: 0 10px 25px rgba(0,0,0,0.9); backdrop-filter: blur(10px); }
+            .kohmz-bot-wrapper { bottom: 85px !important; left: 10px !important; }
+            .kohmz-bot-toggle { width: 75px !important; height: 75px !important; }
             .kohmz-chat-window { width: calc(100vw - 30px); }
         }
 
-        /* --- FOOTER SYNC --- */
-        footer { 
-            background: #000; color: white; text-align: center; padding: 60px 20px 40px; 
-            border-top: 2px solid var(--neon-gold); position: relative; z-index: 2; margin-top: 40px;
-        }
+        footer { background: #000; color: white; text-align: center; padding: 60px 20px 40px; border-top: 2px solid var(--neon-gold); position: relative; z-index: 2; margin-top: 40px;}
         footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; font-weight: bold; }
-        footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
         .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
     </style>
 </head>
@@ -254,11 +173,9 @@
     </div>
     
     <div class="particle-container">
-        <div class="particle p1"></div>
-        <div class="particle p2"></div>
-        <div class="particle p3"></div>
-        <div class="particle p4"></div>
-        <div class="particle p5"></div>
+        <div class="particle p1" style="left:10%;"></div>
+        <div class="particle p2" style="left:30%;"></div>
+        <div class="particle p3" style="left:60%;"></div>
     </div>
 
     <div class="tech-bar">
@@ -270,12 +187,12 @@
     </div>
 
     <header>
-        <a href="index.html" class="logo" aria-label="KOHMZ Electrical Services Homepage">
+        <a href="index.html" class="logo">
             <img src="logo.jpg" alt="KOHMZ Logo">
             <span class="logo-text">KOHMZ <span>Electrical</span></span>
         </a>
-        <button class="menu-toggle" id="mobile-menu" aria-label="Open Mobile Menu"><i class="fas fa-bars"></i></button>
-        <nav aria-label="Main Navigation">
+        <button class="menu-toggle" id="mobile-menu"><i class="fas fa-bars"></i></button>
+        <nav>
             <ul class="nav-links" id="nav-list">
                 <li><a href="index.html">Overview</a></li>
                 <li class="dropdown">
@@ -286,20 +203,12 @@
                         <a href="pro-tips.html">Pro Tips</a>
                     </div>
                 </li>
-                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" rel="noopener noreferrer">Request Quote</a></li>
+                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank">Request Quote</a></li>
                 <li><a href="book-now.html">Book Now</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">Technical Shop <i class="fas fa-chevron-down caret"></i></a>
-                    <div class="dropdown-content">
-                        <a href="solar-parts.html">Solar Parts</a>
-                        <a href="powertools.html">Power Tools</a>
-                        <a href="electrical-materials.html">Materials</a>
-                    </div>
-                </li>
                 <li><a href="about-us.html">About Us</a></li>
                 <li><a href="portfolio.html">Portfolio</a></li>
                 <li><a href="faq.html">FAQ</a></li>
-                <li><a href="privacy-policy.html" style="color:#ffb703; text-shadow: 0 0 8px #ffb703;">Privacy Policy</a></li>
+                <li><a href="privacy-policy.html" style="color:#ffb703;">Privacy Policy</a></li>
             </ul>
         </nav>
     </header>
@@ -320,13 +229,7 @@
                     <h3>1. Information Collection</h3>
                     <p>We collect necessary personal information when you use our "Request a Quote" or "Book Now" forms. This includes your Full Name, Email Address, Contact Number, Property Address, and project-related photos or blueprints.</p>
                     <h3>2. Use of Collected Data</h3>
-                    <p>Your information is used strictly for operational purposes: to provide accurate technical assessments, issue formal quotations, schedule site inspections, and communicate updates regarding your requested electrical or solar projects.</p>
-                    <h3>3. Data Protection & Security</h3>
-                    <p>We implement strict security measures to maintain the safety of your personal information. All project blueprints, layout photos, and personal details submitted are kept highly confidential and stored securely within our technical database.</p>
-                    <h3>4. Third-Party Disclosure</h3>
-                    <p>We absolutely do not sell, trade, or rent your personally identifiable information to outside parties. Your data is only shared with trusted internal engineers and specialists directly involved in executing your project.</p>
-                    <h3>5. Client Rights & Control</h3>
-                    <p>You have the right to request the deletion or modification of your personal data and project files from our system at any time after the completion of the assessment or project. Simply contact our support team to initiate the request.</p>
+                    <p>Your information is used strictly for operational purposes: to provide accurate technical assessments, issue formal quotations, schedule site inspections, and communicate updates regarding in-progress projects.</p>
                 </div>
             </div>
 
@@ -335,50 +238,18 @@
                 <div class="panel-content">
                     <p>By engaging the services of <strong>KOHMZ Electrical Design and Build</strong>, you agree to be bound by the following professional terms and operational guidelines:</p>
                     <h3>1. Quotations & Estimates</h3>
-                    <p>All initial quotes provided via email or messaging are estimates based on the information provided by the client. Final project costs are subject to change and will only be locked in following a comprehensive, on-site technical inspection by our specialists.</p>
+                    <p>All initial quotes provided via email or messaging are estimates. Final project costs are subject to change and will only be locked in following a comprehensive, on-site technical inspection by aming specialists.</p>
                     <h3>2. Safety & Code Compliance</h3>
-                    <p>KOHMZ Electrical refuses to compromise on structural safety. All electrical, wiring, and solar installations are executed in strict compliance with the Philippine Electrical Code (PEC) and NEMA standards.</p>
-                    <h3>3. Project Agreements & Payment</h3>
-                    <p>For mid-to-large-scale operations, payment milestones and specific deliverables will be outlined in a formal contract. This agreement must be signed and the initial mobilization fee settled before the commencement of any physical work.</p>
-                    <h3>4. Warranty & Workmanship</h3>
-                    <p>We stand by the quality of our execution. KOHMZ provides a formal workmanship warranty for all new installations and panel upgrades. Warranties are voided if the system is tampered with by unauthorized third-party technicians.</p>
-                    <h3>5. Liability & Project Delays</h3>
-                    <p>While we strive for strict adherence to timelines, KOHMZ Electrical is not liable for project delays caused by unforeseen circumstances such as extreme weather or delays in third-party utility approvals.</p>
-                </div>
-            </div>
-
-            <button type="button" class="collapsible">Refund & Cancellation Policy</button>
-            <div class="panel">
-                <div class="panel-content">
-                    <p>Due to the customized nature of electrical engineering and procurement, our refund and cancellation structures are strictly defined:</p>
-                    <h3>1. Initial Mobilization Fees</h3>
-                    <p>Once a project contract is signed and the initial downpayment/mobilization fee is deposited, it becomes non-refundable. This fee immediately covers the logistics, blueprint drafting, and pre-purchasing of authentic copper wires, breakers, and materials specific to your layout.</p>
-                    <h3>2. Project Cancellation by Client</h3>
-                    <p>If a client decides to halt a project mid-execution, they will be billed for all the labor hours rendered and materials installed up to that exact date. Remaining materials stored on-site that are already paid for will be turned over to the client.</p>
-                    <h3>3. Service Rescheduling</h3>
-                    <p>We understand that construction schedules change. Clients must notify us at least 48 hours in advance if an agreed-upon deployment date needs to be moved. Repeated sudden cancellations may incur a minimal rescheduling penalty due to the lost hours of our dispatched engineers.</p>
-                </div>
-            </div>
-
-            <button type="button" class="collapsible">Cookie & Technology Policy</button>
-            <div class="panel">
-                <div class="panel-content">
-                    <p>To enhance your experience, the KOHMZ Electrical website uses modern web technologies.</p>
-                    <h3>1. AI Chatbot Integration</h3>
-                    <p>Our website utilizes an AI Assistant (Lexie) to provide instant technical support. Chat logs may be temporarily stored to improve the AI's contextual understanding of electrical queries and improve customer service. No sensitive personal data (like passwords or full credit card numbers) should be submitted through the chat.</p>
-                    <h3>2. Analytics Tracking</h3>
-                    <p>We use Google Analytics to monitor which pages are most helpful to our clients. This data is aggregated and anonymous. It helps us understand if users are looking more for Solar Integration, Commercial Rewiring, or Residential fixes, allowing us to publish better resources.</p>
+                    <p>KOHMZ Electrical refuses to compromise on structural safety. All installations are executed in strict compliance with the Philippine Electrical Code (PEC).</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <aside class="floating-container" aria-label="Quick Contact Options">
-        <button id="readPageBtn" class="float-btn" style="background:#e11d48; color:white; cursor:pointer;" aria-label="Read Page Aloud" title="Listen to Page Content"><i class="fas fa-volume-up"></i></button>
-        <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" rel="noopener noreferrer" class="float-btn" style="background:#0084ff;" aria-label="Message KOHMZ Electrical on Facebook Messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" rel="noopener noreferrer" class="float-btn" style="background:#25d366;" aria-label="Message KOHMZ Electrical on WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="viber://chat?number=%2B639266174131" target="_blank" rel="noopener noreferrer" class="float-btn" style="background:#7360f2;" aria-label="Message KOHMZ Electrical on Viber"><i class="fab fa-viber"></i></a>
-        <a href="tel:09266174131" class="float-btn" style="background:#ffb703; color:#000;" aria-label="Call KOHMZ Electrical Technical Support via Phone"><i class="fas fa-phone"></i></a>
+    <aside class="floating-container">
+        <button id="readPageBtn" class="float-btn" style="background:#e11d48; color:white;"><i class="fas fa-volume-up"></i></button>
+        <a href="https://wa.me/639266174131" target="_blank" class="float-btn" style="background:#25d366;"><i class="fab fa-whatsapp"></i></a>
+        <a href="tel:09266174131" class="float-btn" style="background:#ffb703; color:#000 !important;"><i class="fas fa-phone"></i></a>
     </aside>
 
     <div class="kohmz-bot-wrapper" id="draggableBot">
@@ -387,95 +258,53 @@
             <div class="kohmz-chat-header" id="chatHeader">
                 <span>LEXIE AI: SYSTEM ACTIVE</span>
                 <div>
-                    <span id="muteBtn" onclick="typeof window.toggleMute === 'function' ? window.toggleMute() : null" style="cursor:pointer;padding:0 10px;font-size:16px;" title="Mute/Unmute Voice">🔊</span>
-                    <span onclick="typeof window.toggleBotWindow === 'function' ? window.toggleBotWindow() : null" style="cursor:pointer;padding:0 5px;font-size:18px;" title="Close">✕</span>
+                    <span id="muteBtn" onclick="typeof window.toggleMute === 'function' ? window.toggleMute() : null" style="cursor:pointer;padding:0 10px;">🔊</span>
+                    <span onclick="typeof window.toggleBotWindow === 'function' ? window.toggleBotWindow() : null" style="cursor:pointer;">✕</span>
                 </div>
             </div>
-            
             <div class="kohmz-chat-body" id="chatBody"></div>
-            
-            <div id="vision-preview">
-                <img id="prev-img" src="" alt="Preview">
-                <span>📎 Image attached for analysis.</span>
-                <span onclick="typeof window.clearImage === 'function' ? window.clearImage() : null" style="margin-left:auto;color:#e11d48;cursor:pointer;font-weight:bold;background:rgba(225,29,72,0.1);padding:2px 6px;border-radius:4px;">REMOVE</span>
-            </div>
-            
-            <div class="quick-replies" id="quickReplies">
-                <button onclick="typeof window.sendQuickReply === 'function' ? window.sendQuickReply('How do you ensure PEC compliance?') : null">PEC Compliance Check</button>
-                <button onclick="typeof window.sendQuickReply === 'function' ? window.sendQuickReply('Can I see more solar project details?') : null">Solar Project Info</button>
-                <button onclick="typeof window.sendQuickReply === 'function' ? window.sendQuickReply('I want to schedule an audit.') : null">Book Audit Now</button>
-            </div>
-            
             <div id="cf-turnstile-container">
-                <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITEKEY_HERE" data-callback="onTurnstileSuccess" data-expired-callback="resetTurnstile" data-error-callback="resetTurnstile" data-theme="dark"></div>
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAACzFc-mcc5y-ha36" data-callback="onTurnstileSuccess" data-theme="dark"></div>
             </div>
-            
             <div class="chat-input-area">
-                <button class="chat-tool-btn" onclick="document.getElementById('imgInput').click()" title="Upload Image"><i class="fas fa-image"></i></button>
-                <button class="chat-tool-btn" onclick="document.getElementById('cameraInput').click()" title="Take Photo"><i class="fas fa-camera"></i></button>
-                <button id="micBtn" class="chat-tool-btn" onclick="typeof window.startDictation === 'function' ? window.startDictation() : null" title="Voice Input"><i class="fas fa-microphone"></i></button>
-                
+                <button class="chat-tool-btn" onclick="document.getElementById('imgInput').click()"><i class="fas fa-image"></i></button>
                 <input type="file" id="imgInput" hidden accept="image/*" onchange="typeof window.handleImage === 'function' ? window.handleImage(this) : null">
-                <input type="file" id="cameraInput" hidden accept="image/*" capture="environment" onchange="typeof window.handleImage === 'function' ? window.handleImage(this) : null">
-                
-                <input type="text" id="userQuery" class="chat-input-field" maxlength="600" placeholder="Ask Lexie...">
-                <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="typeof window.askLexie === 'function' ? window.askLexie() : null"><i class="fas fa-shield-alt"></i></button>
+                <input type="text" id="userQuery" class="chat-input-field" placeholder="Ask Lexie...">
+                <button class="chat-send-btn" id="mainSendBtn" disabled onclick="typeof window.askLexie === 'function' ? window.askLexie() : null"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
         <div class="kohmz-bot-toggle" id="botToggle">
             <i class="fas fa-robot" style="position:absolute; font-size: 40px; color: #00e5ff; z-index:-1;"></i>
-            <lottie-player src="Live-chatbot.json" background="transparent" speed="1" style="width:100%; height:100%;" loop autoplay></lottie-player>
+            <lottie-player src="Live-chatbot.json" background="transparent" speed="1" loop autoplay></lottie-player>
         </div>
     </div>
 
     <footer aria-label="Site Footer">
         <div class="logo" style="justify-content: center; margin-bottom: 20px;">
-            <img src="logo.jpg" alt="KOHMZ Logo" width="35" height="35" loading="lazy">
+            <img src="logo.jpg" alt="KOHMZ Logo" width="35" height="35">
             <span class="logo-text">KOHMZ <span>Electrical</span></span>
         </div>
-        <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 12px; line-height: 1.6; text-align: center;">Your trusted partner in structural power integrity. We specialize in bringing world-class electrical engineering standards to every Philippine home and business facility.</p>
-        <p style="text-align: center; color: white;">&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
-        <nav class="footer-links" aria-label="Footer Navigation">
-            <p style="margin-bottom: 5px; color: #ffb703; font-weight: 800;">Technical Governance | Asset Protection | PEC-Compliant Architecture</p>
+        <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px;">Your trusted partner in structural power integrity.</p>
+        <p>&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
+        <nav class="footer-links">
             <a href="privacy-policy.html" style="color: #00e5ff;">Privacy Policy</a> &nbsp;|&nbsp; 
             <a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
             <a href="about-us.html">About Us</a>
         </nav>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
     <script src="lexie.js"></script>
-    
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Initialize AOS Animations
             if (typeof AOS !== "undefined") AOS.init({ duration: 600, once: true });
 
-            // Mobile Menu Logic
+            // Mobile Menu
             const menuBtn = document.getElementById("mobile-menu");
             const navList = document.getElementById("nav-list"); 
-            if(menuBtn && navList){ 
-                menuBtn.addEventListener("click", () => navList.classList.toggle("active")); 
-            }
-            
-            const dropdownBtns = document.querySelectorAll('.nav-links li.dropdown .dropbtn'); 
-            dropdownBtns.forEach(btn => { 
-                btn.addEventListener('click', function(e) { 
-                    if(window.innerWidth <= 992) { 
-                        e.preventDefault(); 
-                        const parentLi = this.parentElement; 
-                        dropdownBtns.forEach(otherBtn => { 
-                            if(otherBtn !== this) otherBtn.parentElement.classList.remove('open'); 
-                        }); 
-                        parentLi.classList.toggle('open'); 
-                    } 
-                }); 
-            });
+            if(menuBtn && navList) menuBtn.addEventListener("click", () => navList.classList.toggle("active"));
 
             // Accordion Logic
             var coll = document.getElementsByClassName("collapsible");
@@ -484,91 +313,35 @@
                     this.classList.toggle("active"); 
                     var panel = this.nextElementSibling;
                     if (panel.style.maxHeight) { 
-                        panel.style.maxHeight = null; 
-                        panel.classList.remove('open-padding'); 
+                        panel.style.maxHeight = null; panel.classList.remove('open-padding'); 
                     } else { 
-                        panel.style.maxHeight = panel.scrollHeight + 50 + "px"; 
-                        panel.classList.add('open-padding'); 
+                        panel.style.maxHeight = panel.scrollHeight + 50 + "px"; panel.classList.add('open-padding'); 
                     } 
                 });
             }
 
-            // Hero Policy Title Typewriter
-            const policyTitleText = "Corporate Policies & Terms"; 
-            let policyTitleIndex = 0; 
-            const policyTitleElement = document.getElementById("typewriter-title");
-            function typeWriterPolicy() { 
-                if (policyTitleIndex === 0 && policyTitleElement) { policyTitleElement.innerHTML = ''; } 
-                if (policyTitleElement && policyTitleIndex < policyTitleText.length) { 
-                    policyTitleElement.innerHTML += policyTitleText.charAt(policyTitleIndex); 
-                    policyTitleIndex++; 
-                    setTimeout(typeWriterPolicy, 70); 
-                } 
-            } 
-            typeWriterPolicy();
+            // Typewriter Policy Title
+            const pTitle = "Corporate Policies & Terms"; let pIdx = 0; const pEl = document.getElementById("typewriter-title");
+            function typeP() { if (pEl && pIdx < pTitle.length) { pEl.innerHTML += pTitle.charAt(pIdx++); setTimeout(typeP, 70); } } typeP();
 
             // Tech Bar Typewriter
-            const techBarWords = ["TECHNICAL GOVERNANCE", "ASSET PROTECTION", "PEC-COMPLIANT ARCHITECTURE", "24/7 SPECIALIST RESPONSE", "RESIDENTIAL & COMMERCIAL MASTERY"]; 
-            let tbIdx = 0, charIdx = 0, isTbDeleting = false; 
-            const electricEl = document.getElementById("electric-typewriter");
-            function typeElectricBar() {
-                if(!electricEl) return; 
-                const currentWord = techBarWords[tbIdx];
-                if(isTbDeleting) { 
-                    electricEl.innerText = currentWord.substring(0, charIdx - 1); charIdx--; 
-                } else { 
-                    electricEl.innerText = currentWord.substring(0, charIdx + 1); charIdx++; 
-                }
-                let typeSpeed = isTbDeleting ? 25 : 50; 
-                if(!isTbDeleting && charIdx === currentWord.length) { 
-                    typeSpeed = 2000; isTbDeleting = true; 
-                } else if(isTbDeleting && charIdx === 0) { 
-                    isTbDeleting = false; tbIdx = (tbIdx + 1) % techBarWords.length; typeSpeed = 500; 
-                }
-                setTimeout(typeElectricBar, typeSpeed);
-            } 
-            typeElectricBar();
+            const techWords = ["TECHNICAL GOVERNANCE", "ASSET PROTECTION", "PEC-COMPLIANT"]; let tbIdx = 0, charIdx = 0, isDel = false; const electricEl = document.getElementById("electric-typewriter");
+            function typeB() {
+                if(!electricEl) return; const word = techWords[tbIdx];
+                electricEl.innerText = isDel ? word.substring(0, charIdx--) : word.substring(0, charIdx++);
+                if (!isDel && charIdx === word.length + 1) { isDel = true; setTimeout(typeB, 2000); }
+                else if (isDel && charIdx === 0) { isDel = false; tbIdx = (tbIdx + 1) % techWords.length; setTimeout(typeB, 500); }
+                else setTimeout(typeB, isDel ? 30 : 60);
+            } typeB();
 
-            // Read Page Aloud Feature (Standalone, Non-Lexie TTS)
-            window.isReadingPage = false;
-            const readPageBtn = document.getElementById("readPageBtn");
-            if(readPageBtn){
-                readPageBtn.addEventListener("click", function(){
-                    if(window.isReadingPage || window.speechSynthesis.speaking){
-                        window.speechSynthesis.cancel();
-                        window.isReadingPage = false;
-                        readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                        return;
-                    }
-                    const mainElement = document.querySelector(".policy-container");
-                    if(!mainElement) return;
-                    let contentToRead = mainElement.innerText.replace(/\n+/g,". ");
-                    let fullText = "Welcome to KOHMZ Electrical Policies. " + contentToRead;
-                    let sentences = fullText.match(/[^.!?]+[.!?]+/g) || [fullText];
-                    
-                    window.isReadingPage = true;
-                    readPageBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                    let currentSentence = 0;
-                    
-                    function playNextSentence(){
-                        if(!window.isReadingPage || currentSentence >= sentences.length){
-                            window.isReadingPage = false;
-                            readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                            return;
-                        }
-                        let chunk = new SpeechSynthesisUtterance(sentences[currentSentence].trim());
-                        let voices = window.speechSynthesis.getVoices();
-                        let profVoice = voices.find(v => v.name.includes("Aria") || v.name.includes("Samantha") || v.name.includes("Female")) || voices[0];
-                        
-                        if(profVoice) chunk.voice = profVoice;
-                        chunk.pitch = 1.15;
-                        chunk.rate = 0.85;
-                        chunk.onend = () => { currentSentence++; playNextSentence(); };
-                        chunk.onerror = () => { window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; };
-                        
-                        window.speechSynthesis.speak(chunk);
-                    }
-                    playNextSentence();
+            // Read Aloud
+            const readBtn = document.getElementById("readPageBtn");
+            if(readBtn){
+                readBtn.addEventListener("click", () => {
+                    if(window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); return; }
+                    const txt = document.querySelector(".policy-container").innerText;
+                    const ut = new SpeechSynthesisUtterance("Privacy Policy. " + txt);
+                    ut.rate = 0.85; window.speechSynthesis.speak(ut);
                 });
             }
         });
