@@ -46,6 +46,9 @@
             overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6;
         } 
 
+        body.mode-red { --cyber-blue: #ff2a2a; --neon-gold: #ff4d4d; background-color: #1a0000; }
+        body.mode-gold { --cyber-blue: #ffb703; --neon-gold: #ffe600; background-color: #1a1300; }
+
         /* --- PREMIUM LOADING OVERLAY --- */
         #cyber-loader {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -60,7 +63,7 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* --- ENHANCED LIVE 3D CAD BACKGROUND (SYNCED) --- */
+        /* --- ENHANCED LIVE 3D CAD BACKGROUND --- */
         .cad-background {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             perspective: 1000px; z-index: -2; overflow: hidden;
@@ -86,7 +89,7 @@
             pointer-events: none;
         }
 
-        /* --- FLOATING DATA PARTICLES (SYNCED) --- */
+        /* --- FLOATING DATA PARTICLES --- */
         .particle-container { position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1; pointer-events: none; }
         .particle { position: absolute; background: #00e5ff; border-radius: 50%; box-shadow: 0 0 10px #00e5ff; opacity: 0; animation: floatUp 10s infinite linear; }
         .p1 { left: 10%; width: 4px; height: 4px; animation-duration: 8s; animation-delay: 0s; }
@@ -96,7 +99,7 @@
         .p5 { left: 50%; width: 4px; height: 4px; animation-duration: 11s; animation-delay: 5s; }
         @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 20% { opacity: 0.6; } 80% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
 
-        /* --- ELECTRIC TYPEWRITER TECH BAR (SYNCED) --- */
+        /* --- ELECTRIC TYPEWRITER TECH BAR --- */
         .tech-bar{height:35px;background:#010409;border-bottom:1px solid rgba(0,229,255,0.4);position:relative;z-index:1001;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 15px rgba(0,229,255,0.2)}
         .tech-bar-content{display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;}
         .electric-text{color:#00e5ff;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 8px #00e5ff;}
@@ -104,7 +107,7 @@
         @keyframes pulseBolt { 0%, 100% { text-shadow: 0 0 5px #00e5ff; opacity: 1; } 50% { text-shadow: 0 0 20px #fff; opacity: 0.5; } }
         .tech-cursor{color:#00e5ff;font-weight:bold;animation:blink .8s step-end infinite;}
 
-        /* --- HEADER & NAV (SYNCED) --- */
+        /* --- HEADER & NAV --- */
         header { background: rgba(8, 16, 24, 0.95); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
         .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
         .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
@@ -231,6 +234,38 @@
         .kohmz-chat-body { padding: 15px; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; scroll-behavior: smooth;}
         .chat-bubble { background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; margin-bottom: 10px; border-left: 2px solid #00e5ff; font-size: 12px; word-wrap: break-word; white-space: pre-wrap; line-height: 1.5; font-family: 'Share Tech Mono', monospace; }
 
+        .quick-replies { display:flex; flex-wrap:wrap; gap:8px; padding:12px; background:rgba(8,16,24,0.98); border-top:1px solid rgba(0,229,255,0.15); width:100%; box-sizing:border-box; justify-content:center; }
+        .quick-replies button { white-space:nowrap; background:rgba(0,229,255,0.1); border:1px solid var(--cyber-blue); color:var(--cyber-blue); border-radius:20px; padding:8px 14px; font-size:11px; cursor:pointer; transition:0.3s; font-family:'Share Tech Mono',monospace; font-weight:800; flex:1 1 auto; letter-spacing: 0.5px;}
+        .quick-replies button:hover, .quick-replies button:active { background:var(--cyber-blue); color:#000; box-shadow: 0 0 10px var(--cyber-blue);}
+
+        #cf-turnstile-container { padding: 8px 10px; background: #000; border-top: 1px solid rgba(0,229,255,0.2); display: flex; justify-content: center; }
+
+        .chat-input-area { display:grid; grid-template-columns:35px 35px 35px 1fr 45px; gap:6px; padding:12px; background:#000; border-top:1px solid rgba(0,229,255,0.2); align-items:center; border-radius: 0 0 8px 8px;}
+        .chat-tool-btn { height:35px; background:transparent; border:1px solid rgba(0,229,255,0.5); color:var(--cyber-blue); border-radius:4px; cursor:pointer; display:flex; justify-content:center; align-items:center; transition:0.2s; }
+        .chat-tool-btn:hover { background:rgba(0,229,255,0.2); border-color: var(--cyber-blue); box-shadow: 0 0 8px rgba(0,229,255,0.3);}
+        .chat-input-field { height:35px; background:rgba(255,255,255,0.05); border:1px solid rgba(0,229,255,0.5); color:#fff; padding:0 12px; font-family:'Share Tech Mono'; font-size:12px; outline:none; border-radius:4px; width:100%; box-sizing:border-box; transition: 0.3s;}
+        .chat-input-field:focus { border-color: var(--cyber-blue); background: rgba(0,229,255,0.05); box-shadow: inset 0 0 5px rgba(0,229,255,0.2);}
+        .chat-send-btn { height:35px; background:var(--cyber-blue); border:none; border-radius:4px; color:#000; cursor:pointer; font-weight:bold; font-size: 14px; transition:0.3s; display:flex; justify-content:center; align-items:center; }
+        .chat-send-btn:hover { background:#fff; box-shadow: 0 0 15px var(--cyber-blue);}
+
+        #vision-preview { display:none; padding:8px 12px; background:rgba(0,229,255,0.1); border-top:1px solid var(--cyber-blue); align-items:center; gap:12px; font-size:11px; color:var(--cyber-blue); font-family: 'Share Tech Mono', monospace;}
+        #vision-preview img { height:35px; width:35px; border:1px solid var(--cyber-blue); object-fit:cover; border-radius: 4px;}
+        .code-red-active { border-color:#e11d48!important; box-shadow:0 0 30px rgba(225,29,72,0.6)!important; }
+        .btn-pdf { background:var(--neon-gold); color:#000; border:none; padding:8px 12px; font-size:11px; font-weight:900; margin-top:8px; border-radius:4px; cursor:pointer; display:inline-block; font-family:'Share Tech Mono'; letter-spacing: 0.5px; transition: 0.3s; text-transform: uppercase;}
+        .btn-pdf:hover { background: #fff; box-shadow: 0 0 15px var(--neon-gold);}
+
+        .typing-dots span { animation:blinkDot 1.4s infinite both; font-size:18px; font-weight:bold; line-height:10px; }
+        .typing-dots span:nth-child(2) { animation-delay:0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay:0.4s; }
+        @keyframes blinkDot { 0%,80%,100%{opacity:0;} 40%{opacity:1;} }
+        .mic-active { background:#e11d48!important; color:#fff!important; border-color:#e11d48!important; animation:pulseMic 1.5s infinite; }
+        @keyframes pulseMic { 0%{box-shadow:0 0 0 0 rgba(225,29,72,0.7);} 70%{box-shadow:0 0 0 10px rgba(225,29,72,0);} 100%{box-shadow:0 0 0 0 rgba(225,29,72,0);} }
+        
+        .bot-value-tag { background:rgba(0,229,255,0.15); border:1px solid var(--cyber-blue); color:var(--cyber-blue); font-size:11px; padding:8px 14px; border-radius:4px; font-weight:900; text-transform:uppercase; cursor:pointer; margin-bottom:8px; transition:0.3s; letter-spacing: 1px; box-shadow: 0 0 10px rgba(0,229,255,0.1);}
+        .bot-value-tag:hover { background: var(--cyber-blue); color: #000; box-shadow: 0 0 20px var(--cyber-blue);}
+        .god-mode-tag { background:var(--neon-gold)!important; color:#000!important; border-color:var(--neon-gold)!important; box-shadow:0 0 20px var(--neon-gold); animation: pulseGod 2s infinite alternate;}
+        @keyframes pulseGod { 0%{box-shadow:0 0 10px var(--power-glow);} 100%{box-shadow:0 0 30px var(--neon-gold);} }
+
         /* --- MOBILE RESPONSIVE FIXES --- */
         @media(max-width: 768px) {
             .hero { background-size: 100% auto; background-position: center top; padding: 100px 5%; }
@@ -258,9 +293,6 @@
         footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
         .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
     </style>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
 
@@ -493,23 +525,45 @@
     </aside>
 
     <div class="kohmz-bot-wrapper" id="draggableBot">
-        <div class="bot-value-tag" id="dragHint" onclick="toggleBotWindow()">⚡ KOHMZ Lexie</div>
+        <div class="bot-value-tag" id="dragHint" onclick="isGodMode ? exitGodMode() : toggleBotWindow()">⚡ KOHMZ Lexie Pro</div>
         <div class="kohmz-chat-window" id="chatWindow">
-            <div class="kohmz-chat-header" id="chatHeader"><span>LEXIE AI: SYSTEM ACTIVE</span><span onclick="toggleBotWindow()" style="cursor:pointer; padding:0 5px;">✕</span></div>
+            <div class="kohmz-chat-header" id="chatHeader">
+                <span>LEXIE AI: SYSTEM ACTIVE</span>
+                <div>
+                    <span id="muteBtn" onclick="toggleMute()" style="cursor:pointer;padding:0 10px;font-size:16px;" title="Mute/Unmute Voice">🔊</span>
+                    <span onclick="toggleBotWindow()" style="cursor:pointer;padding:0 5px;font-size:18px;" title="Close">✕</span>
+                </div>
+            </div>
             <div class="kohmz-chat-body" id="chatBody"></div>
             
-            <div style="padding:10px; border-top:1px solid rgba(0,229,255,0.2); background:#000;">
-                <div id="cf-turnstile-container" style="display:flex; justify-content:center; margin-bottom:10px;">
-                    <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITEKEY_HERE" data-callback="onTurnstileSuccess"></div>
-                </div>
-                <div style="display:flex; gap:5px;">
-                    <input type="text" id="userQuery" placeholder="Ask Lexie for help..." style="flex:1; background:transparent; border:1px solid #00e5ff; color:#fff; padding:8px; font-family:'Share Tech Mono'; font-size:11px; outline:none;">
-                    <button id="mainSendBtn" onclick="askLexie()" disabled style="opacity:0.5; background:#00e5ff; border:none; padding:5px 12px; cursor:pointer;"><i class="fas fa-shield-alt" style="color:#000;"></i></button>
-                </div>
+            <div id="vision-preview">
+                <img id="prev-img" src="" alt="Preview">
+                <span>📎 Image attached for analysis.</span>
+                <span onclick="clearImage()" style="margin-left:auto;color:#e11d48;cursor:pointer;font-weight:bold;background:rgba(225,29,72,0.1);padding:2px 6px;border-radius:4px;">REMOVE</span>
+            </div>
+            
+            <div class="quick-replies" id="quickReplies">
+                <button onclick="sendQuickReply('Magkano po ang inspection?')">Magkano inspection?</button>
+                <button onclick="sendQuickReply('Are you PEC Compliant?')">PEC Compliant ba kayo?</button>
+                <button onclick="sendQuickReply('I need an emergency electrical repair right now.')">Emergency Repair</button>
+            </div>
+            
+            <div id="cf-turnstile-container">
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAACzFc-mcc5y-ha36" data-callback="onTurnstileSuccess" data-expired-callback="resetTurnstile" data-error-callback="resetTurnstile" data-theme="dark"></div>
+            </div>
+            
+            <div class="chat-input-area">
+                <button class="chat-tool-btn" onclick="document.getElementById('imgInput').click()" title="Upload Image"><i class="fas fa-image"></i></button>
+                <button class="chat-tool-btn" onclick="document.getElementById('cameraInput').click()" title="Take Photo"><i class="fas fa-camera"></i></button>
+                <button id="micBtn" class="chat-tool-btn" onclick="startDictation()" title="Voice Input"><i class="fas fa-microphone"></i></button>
+                <input type="file" id="imgInput" hidden accept="image/*" onchange="handleImage(this)">
+                <input type="file" id="cameraInput" hidden accept="image/*" capture="environment" onchange="handleImage(this)">
+                <input type="text" id="userQuery" class="chat-input-field" maxlength="600" placeholder="Ask Lexie for help...">
+                <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="askLexie()"><i class="fas fa-shield-alt"></i></button>
             </div>
         </div>
         <div class="kohmz-bot-toggle" id="botToggle">
-            <lottie-player src="Live%20chatbot.json" background="transparent" speed="1" style="width:100%; height:100%;" loop autoplay></lottie-player>
+            <lottie-player src="Live chatbot.json" background="transparent" speed="1" style="width:100%;height:100%;" loop autoplay></lottie-player>
         </div>
     </div>
 
@@ -529,6 +583,8 @@
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="lexie.js"></script>
+    
     <script>
         // --- ELECTRIC TYPEWRITER LOGIC FOR TECH BAR (SYNCED) ---
         const techBarWords = ["SECURE SCHEDULING", "TECHNICAL AUDIT", "SITE INSPECTION", "VIP DEPLOYMENT", "RAPID RESPONSE"];
@@ -558,427 +614,6 @@
         }
         typeElectricBar();
 
-        // ============================================================
-        // ⚡ KOHMZ LEXIE AI — V20 FRONTEND ENGINE (GLOBALLY SYNCED)
-        // ============================================================
-        const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
-
-        let isGodMode = false;
-        let godName = "";
-        let mySecretAdminToken = sessionStorage.getItem("kohmz_admin_token") || "";
-
-        let isMuted = localStorage.getItem("lexie_muted") === "true";
-        let currentTurnstileToken = "";
-        let messageCount = parseInt(sessionStorage.getItem("msg_count")) || 0;
-
-        function applyMuteUI() {
-            const btn = document.getElementById("muteBtn");
-            if (btn) btn.innerText = isMuted ? "🔇" : "🔊";
-        }
-
-        window.toggleMute = function () {
-            isMuted = !isMuted;
-            localStorage.setItem("lexie_muted", isMuted);
-            applyMuteUI();
-            if (isMuted && window.speechSynthesis) window.speechSynthesis.cancel();
-        };
-
-        window.onTurnstileSuccess = function (token) {
-            currentTurnstileToken = token;
-            const btn = document.getElementById("mainSendBtn");
-            if (btn) {
-                btn.disabled = false;
-                btn.style.opacity = "1";
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i>';
-            }
-        };
-
-        window.resetTurnstile = function () {
-            if (typeof turnstile !== "undefined" && turnstile.reset && !isGodMode) {
-                currentTurnstileToken = "";
-                turnstile.reset();
-                const btn = document.getElementById("mainSendBtn");
-                if (btn) {
-                    btn.disabled = true;
-                    btn.style.opacity = "0.5";
-                    btn.innerHTML = '<i class="fas fa-shield-alt"></i>';
-                }
-            }
-        };
-
-        let userId = localStorage.getItem("kohmz_uuid");
-        if (!userId) {
-            userId = "user-" + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem("kohmz_uuid", userId);
-        }
-
-        let lexieMemory = [];
-        try { lexieMemory = JSON.parse(sessionStorage.getItem("lexie_memory")) || []; } catch (e) { lexieMemory = []; }
-        let currentImageData = null;
-
-        function applyGodModeUI() {
-            const hint = document.getElementById("dragHint");
-            if (hint) { hint.innerText = "👑 IMMORTAL MODE"; hint.classList.add("god-mode-tag"); }
-            const tsCont = document.getElementById("cf-turnstile-container");
-            if (tsCont) tsCont.style.display = "none";
-            const btn = document.getElementById("mainSendBtn");
-            if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
-            const header = document.getElementById("chatHeader");
-            if (header) header.firstElementChild.textContent = `LEXIE AI: IMMORTAL (${godName}) 👑`;
-        }
-
-        window.exitGodMode = function () {
-            if (!isGodMode) return;
-            isGodMode = false; godName = ""; mySecretAdminToken = "";
-            sessionStorage.removeItem("kohmz_admin_token");
-            lexieMemory = []; sessionStorage.removeItem("lexie_memory");
-            document.getElementById("chatBody").innerHTML = "";
-            const hint = document.getElementById("dragHint");
-            if (hint) { hint.innerText = "⚡ KOHMZ Lexie"; hint.classList.remove("god-mode-tag"); }
-            const tsCont = document.getElementById("cf-turnstile-container");
-            if (tsCont) tsCont.style.display = "flex";
-            const header = document.getElementById("chatHeader");
-            if (header) header.firstElementChild.textContent = "LEXIE AI: SYSTEM ACTIVE";
-            resetTurnstile();
-            appendBubble("bot", "Immortal Mode deactivated. Session memory wiped.");
-        };
-
-        function formatNumbers(text) {
-            if (!text) return "";
-            return text.replace(/(?<!\d)(?!09|639|\+639)\d{4,}(?!\d)/g, function (match) {
-                return parseInt(match, 10).toLocaleString("en-US");
-            });
-        }
-
-        function escapeHTML(str) {
-            if (!str) return "";
-            return str.replace(/[&<>'"]/g, tag => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[tag]));
-        }
-
-        function appendBubble(role, htmlContent, rawTextForTTS) {
-            const t = document.getElementById("chatBody");
-            const b = document.createElement("div");
-            b.className = "chat-bubble";
-
-            if (role === "user") {
-                b.style.cssText = "background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;white-space:pre-wrap;";
-                b.textContent = "YOU: " + htmlContent;
-            } else {
-                b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;";
-                b.innerHTML = "Lexie: " + htmlContent;
-                if (rawTextForTTS) {
-                    const audioDiv = document.createElement("div");
-                    audioDiv.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
-                    const audioBtn = document.createElement("button");
-                    audioBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;";
-                    audioBtn.innerHTML = '<i class="fas fa-volume-up"></i> Play Audio';
-                    audioBtn.onclick = () => { if (isMuted) toggleMute(); window.speakText(rawTextForTTS); };
-                    audioDiv.appendChild(audioBtn);
-                    b.appendChild(audioDiv);
-                }
-            }
-            t.appendChild(b);
-            setTimeout(() => { t.scrollTop = t.scrollHeight; }, 100);
-            return b;
-        }
-
-        // ── V20 STREAMING ASK LEXIE ─────────────────────────────
-        window.askLexie = async function (retryMessage = null) {
-            const inputEl = document.getElementById("userQuery");
-            const t = document.getElementById("chatBody");
-            const n = retryMessage !== null ? retryMessage : inputEl.value.trim();
-
-            if (!n && !currentImageData) return;
-
-            if (!isGodMode) {
-                if (messageCount >= 2 && !currentTurnstileToken) {
-                    appendBubble("bot", "⚠️ Boss, paki-check muna yung security box (I am not a robot) sa ibaba para makapag-tuloy tayo.");
-                    return;
-                }
-            }
-
-            if (window.speechSynthesis) {
-                window.speechSynthesis.cancel();
-                speechQueue = [];
-                isSpeaking = false;
-            }
-
-            if (retryMessage === null) {
-                appendBubble("user", n || "[Image Attached]");
-                inputEl.value = "";
-
-                lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
-                if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
-                sessionStorage.setItem("lexie_memory", JSON.stringify(lexieMemory));
-
-                if (!isGodMode) {
-                    messageCount++;
-                    sessionStorage.setItem("msg_count", messageCount);
-                }
-            }
-
-            const loadId = "load-" + Date.now();
-            const botBubble = appendBubble("bot", 'Lexie is checking the schedule<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>');
-            botBubble.id = loadId;
-
-            // 🎯 FORM SCRAPER & SNIPER CONTEXT FOR BOOKING PAGE
-            let sd = "Form Fields on this page: ";
-            const ls = document.querySelectorAll('label, .section-title');
-            if (ls.length > 0) sd += Array.from(ls).map(l => l.innerText).join(' | ');
-            sd = "LOCATION: BOOK NOW PAGE. ROLE: Form Assistant & Booking Agent. Aggressively push for ocular inspection. Help user fill out these fields: " + sd.substring(0, 1000);
-
-            try {
-                const response = await fetch(WORKER_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        message: n,
-                        image: currentImageData,
-                        name: godName || "Web Client",
-                        userId: userId,
-                        pageData: sd,
-                        history: lexieMemory.slice(-8),
-                        turnstileToken: currentTurnstileToken,
-                        vipName: godName,
-                        adminToken: mySecretAdminToken
-                    })
-                });
-
-                const contentType = response.headers.get("content-type") || "";
-
-                if (contentType.includes("application/json")) {
-                    const result = await response.json();
-                    
-                    if (result.auth_challenge) {
-                        const enteredToken = prompt("🔒 VIP SYSTEM DETECTED.\nPlease enter Master Key to proceed:");
-                        if (!enteredToken) {
-                            botBubble.innerHTML = "Lexie: ⚠️ Auth canceled. Proceeding as standard client.";
-                            return;
-                        }
-                        mySecretAdminToken = enteredToken;
-                        sessionStorage.setItem("kohmz_admin_token", enteredToken);
-                        botBubble.remove();
-                        return askLexie(n);
-                    }
-
-                    if (result.god_mode_activated) {
-                        isGodMode = true;
-                        godName = result.god_name || "Admin";
-                        lexieMemory = [];
-                        sessionStorage.removeItem("lexie_memory");
-                        applyGodModeUI();
-                    }
-
-                    botBubble.innerHTML = "Lexie: " + escapeHTML(result.ai_answer || "System error.");
-                    window.speakText(result.ai_answer || "");
-                    return;
-                }
-
-                const reader = response.body.getReader();
-                const decoder = new TextDecoder("utf-8");
-                let fullText = "";
-                botBubble.innerHTML = "Lexie: "; 
-
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-                    
-                    const chunk = decoder.decode(value, { stream: true });
-                    const lines = chunk.split('\n');
-                    
-                    for (const line of lines) {
-                        if (line.startsWith('data: ') && line !== 'data: [DONE]') {
-                            try {
-                                const data = JSON.parse(line.slice(6));
-                                if (data.response) {
-                                    fullText += data.response;
-                                    
-                                    let displayHtml = fullText
-                                        .replace(/ESTIMATE_JSON_START[\s\S]*?(ESTIMATE_JSON_END)?/gi, "")
-                                        .replace(/\[AGREEMENT_START\][\s\S]*?(\[AGREEMENT_END\])?/gi, "")
-                                        .replace(/\[UI_ACTION:.*?\]/g, "")
-                                        .replace(/\*\*/g, "")
-                                        .trim();
-                                    
-                                    botBubble.innerHTML = "Lexie: " + escapeHTML(formatNumbers(displayHtml));
-                                    t.scrollTop = t.scrollHeight; 
-                                }
-                            } catch (e) {}
-                        }
-                    }
-                }
-
-                let finalHtml = botBubble.innerHTML;
-                let textToSpeak = fullText.replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "").replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "").replace(/\[.*?\]/g, "").trim();
-
-                if (fullText.includes("[UI_ACTION:CODE_RED]")) {
-                    document.body.classList.add("mode-red");
-                    setTimeout(() => document.body.classList.remove("mode-red"), 6000);
-                    document.getElementById("chatWindow").classList.add("code-red-active");
-                    const header = document.getElementById("chatHeader");
-                    if (header) {
-                        header.style.color = "#e11d48";
-                        header.firstElementChild.textContent = "⚠️ CODE RED DETECTED";
-                    }
-                    finalHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
-                } else {
-                    const chatWin = document.getElementById("chatWindow");
-                    if (chatWin) chatWin.classList.remove("code-red-active");
-                    const header = document.getElementById("chatHeader");
-                    if (header) {
-                        header.style.color = "var(--cyber-blue)";
-                        header.firstElementChild.textContent = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE";
-                    }
-                }
-
-                const jsonMatch = fullText.match(/ESTIMATE_JSON_START\s*([\s\S]*?)\s*ESTIMATE_JSON_END/i);
-                if (jsonMatch) {
-                    try {
-                        const estimateJSON = JSON.parse(jsonMatch[1].trim());
-                        let pdfLines = estimateJSON.items.map(it => `ITEM: ${it.item}\nQTY: ${it.qty}\nLABOR COST: ${it.labor}\nMATERIALS COST: ${it.materials}`).join("\n|||\n");
-                        pdfLines += `\n-----------------------------------\nRESTORATION COST: ${estimateJSON.restoration}\n-----------------------------------\nGRAND TOTAL ESTIMATE: ${estimateJSON.grand_total}`;
-                        
-                        const cleanDataForPDF = pdfLines.replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
-                        sessionStorage.setItem("lastEst", cleanDataForPDF);
-                        
-                        document.body.classList.add("mode-gold");
-                        setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
-                        
-                        finalHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf" style="width:100%; text-align:center;"><i class="fas fa-file-invoice-dollar"></i> Download Official Estimate</button>`;
-                        textToSpeak += " Naihanda ko na po ang estimate natin boss. ";
-                    } catch (e) {
-                        console.error("Failed to parse estimate JSON", e);
-                    }
-                }
-
-                const agreeMatch = fullText.match(/\[AGREEMENT_START\]([\s\S]*?)\[AGREEMENT_END\]/i);
-                if (agreeMatch) {
-                    const cleanDataForAgreement = agreeMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
-                    sessionStorage.setItem("lastAgreement", cleanDataForAgreement);
-                    
-                    document.body.classList.add("mode-gold");
-                    setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
-                    
-                    finalHtml += `<br><br><button id="dlAgreeBtn" onclick="downloadAgreement()" class="btn-pdf" style="width:100%; text-align:center; background:var(--cyber-blue); color:#000;"><i class="fas fa-file-signature"></i> Download Service Agreement</button>`;
-                    textToSpeak += " Handa na rin po ang Service Agreement natin boss. ";
-                }
-
-                botBubble.innerHTML = finalHtml;
-                window.speakText(textToSpeak);
-
-                lexieMemory.push({ role: "assistant", content: fullText.replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "[Provided Estimate]").replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "[Provided Agreement]") });
-                if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
-                sessionStorage.setItem("lexie_memory", JSON.stringify(lexieMemory));
-
-            } catch (err) {
-                const lb = document.getElementById(loadId);
-                if (lb) lb.textContent = "Lexie: Connection Firewall blocked. Please try again.";
-                resetTurnstile();
-            } finally {
-                if (!isGodMode && messageCount >= 2 && currentTurnstileToken) resetTurnstile();
-            }
-        };
-
-        // ── PDF Generators ─────────────────────────────
-        window.downloadPDF = async function () {
-            const data = sessionStorage.getItem("lastEst");
-            if (!data) return;
-            const btn = document.getElementById("dlPdfBtn");
-            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = "0.6"; }
-            try {
-                const { jsPDF } = window.jspdf; const doc = new jsPDF({ format: "letter", unit: "mm" });
-                const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin, contentWidth = pageWidth - (margin * 2);
-                try { const imgData = await new Promise((resolve) => { const img = new Image(); img.crossOrigin = "Anonymous"; img.onload = () => { const c = document.createElement("canvas"); c.width = img.width; c.height = img.height; c.getContext("2d").drawImage(img, 0, 0); resolve(c.toDataURL("image/jpeg")); }; img.onerror = () => resolve(null); img.src = "logo.jpg"; }); if (imgData) doc.addImage(imgData, "JPEG", margin, 15, 20, 20); } catch (e) {}
-                const textStartX = margin + 25; doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42); doc.text("KOHMZ", textStartX, 23); doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23); doc.setFontSize(8); doc.setTextColor(100, 100, 100); doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
-                doc.setTextColor(50, 50, 50); doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" }); doc.text("Viber: 0926-617-4131", rightAlign, 28, { align: "right" });
-                doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
-                doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, "F"); doc.setTextColor(255, 255, 255); doc.setFontSize(10); doc.text(`REF: ${userId}`, margin + 5, 51.5); doc.text(`${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
-                doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
-                
-                const formattedData = formatNumbers(data); let parts = formattedData.split(/[-=]{10,}/); let itemsStr = parts[0] || ""; let restorationStr = (parts[1] || "").trim(); let totalStr = (parts[2] || "").trim();
-                if (!totalStr && restorationStr && restorationStr.toUpperCase().includes("GRAND TOTAL")) { totalStr = restorationStr; restorationStr = "RESTORATION COST: TO FOLLOW"; }
-                let rawItems = itemsStr.split("|||"); let tableBody = [];
-                rawItems.forEach(itemBlock => { if (!itemBlock.trim()) return; let lines = itemBlock.split("\n").map(l => l.trim()).filter(l => l); let itemName = "-", qty = "-", labor = "-", mat = "-"; lines.forEach(line => { let upperLine = line.toUpperCase(); if (upperLine.startsWith("ITEM:")) itemName = line.substring(5).trim(); else if (upperLine.startsWith("QTY:")) qty = line.substring(4).trim(); else if (upperLine.startsWith("LABOR COST:")) labor = line.substring(11).trim(); else if (upperLine.startsWith("MATERIALS COST:")) mat = line.substring(15).trim(); }); if (itemName !== "-") tableBody.push([itemName, qty, labor, mat]); });
-                if (tableBody.length === 0 && itemsStr.trim().length > 0) tableBody.push([itemsStr.substring(0, 100) + "...", "1", "TBD", "TBD"]);
-                
-                doc.autoTable({ startY: 70, head: [["ITEM DESCRIPTION", "QTY", "LABOR COST", "MATERIALS COST"]], body: tableBody, theme: "grid", headStyles: { fillColor: [13, 27, 42] }, margin: { left: margin, right: margin } });
-                let finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 80; if (finalY > 230) { doc.addPage(); finalY = 20; }
-                doc.setFillColor(245, 245, 245); doc.rect(margin, finalY, contentWidth, 12, "F"); doc.setFont("helvetica", "italic"); doc.setFontSize(9); doc.setTextColor(100, 100, 100); doc.text(restorationStr || "RESTORATION COST: TO FOLLOW", margin + 5, finalY + 7.5); finalY += 18;
-                doc.setFillColor(255, 183, 3); doc.rect(margin, finalY, contentWidth, 14, "F"); doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(13, 27, 42); doc.text(totalStr || "GRAND TOTAL ESTIMATE: TBD", rightAlign - 5, finalY + 9, { align: "right" });
-                for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) { doc.setPage(i); doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.text("DISCLAIMER: This is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth / 2, 265, { align: "center" }); }
-                doc.save(`KOHMZ_Estimate_${userId.substring(0, 5)}.pdf`);
-            } catch (err) { alert("Error generating PDF."); } finally { if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-invoice-dollar"></i> Download Official Estimate'; btn.style.opacity = "1"; } }
-        };
-
-        window.downloadAgreement = async function () {
-            const data = sessionStorage.getItem("lastAgreement"); if (!data) return;
-            const btn = document.getElementById("dlAgreeBtn"); if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = "0.6"; }
-            try {
-                const { jsPDF } = window.jspdf; const doc = new jsPDF({ format: "letter", unit: "mm" });
-                const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin, contentWidth = pageWidth - (margin * 2);
-                try { const imgData = await new Promise((resolve) => { const img = new Image(); img.crossOrigin = "Anonymous"; img.onload = () => { const c = document.createElement("canvas"); c.width = img.width; c.height = img.height; c.getContext("2d").drawImage(img, 0, 0); resolve(c.toDataURL("image/jpeg")); }; img.onerror = () => resolve(null); img.src = "logo.jpg"; }); if (imgData) doc.addImage(imgData, "JPEG", margin, 15, 20, 20); } catch (e) {}
-                doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42); doc.text("KOHMZ", margin + 25, 23); doc.setTextColor(255, 183, 3); doc.text("Electrical", margin + 25 + doc.getTextWidth("KOHMZ "), 23);
-                doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
-                doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, "F"); doc.setTextColor(255, 255, 255); doc.setFontSize(10); doc.text(`REF: ${userId}`, margin + 5, 51.5);
-                doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.text("OFFICIAL SERVICE AGREEMENT", pageWidth / 2, 65, { align: "center" });
-                doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
-                const lines = doc.splitTextToSize(formatNumbers(data), contentWidth - 10);
-                let cursorY = 75; let boxStartY = 55;
-                for (let i = 0; i < lines.length; i++) {
-                    if (cursorY + 6 > 250) { doc.setDrawColor(13, 27, 42); doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 2, "S"); doc.addPage(); boxStartY = 20; cursorY = 30; }
-                    doc.text(lines[i], margin + 5, cursorY); cursorY += 6;
-                }
-                doc.setDrawColor(13, 27, 42); doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, "S");
-                doc.save(`KOHMZ_Agreement_${userId.substring(0, 5)}.pdf`);
-            } catch (err) { alert("Error generating Agreement."); } finally { if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-signature"></i> Download Service Agreement'; btn.style.opacity = "1"; } }
-        };
-
-        let speechQueue = [], isSpeaking = false;
-        window.speakText = function (text) {
-            if (!window.speechSynthesis || isMuted) return;
-            let cleanText = text.replace(/\[CALENDAR:.*?\]/g, "").replace(/\*/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
-            let sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
-            speechQueue.push(...sentences);
-            if (!isSpeaking) processSpeechQueue();
-        };
-
-        function processSpeechQueue() {
-            if (speechQueue.length === 0 || isMuted) { isSpeaking = false; return; }
-            isSpeaking = true; let sentence = speechQueue.shift().trim();
-            if (!sentence) { processSpeechQueue(); return; }
-            let utterance = new SpeechSynthesisUtterance(sentence);
-            let voices = window.speechSynthesis.getVoices();
-            let voice = voices.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Enhanced")) || voices[0];
-            if (voice) utterance.voice = voice;
-            utterance.lang = "en-US"; utterance.pitch = 1.15; utterance.rate = 0.85;
-            utterance.onend = () => processSpeechQueue();
-            utterance.onerror = () => processSpeechQueue();
-            try { window.speechSynthesis.speak(utterance); } catch (e) { processSpeechQueue(); }
-        }
-
-        window.addEventListener("load", () => {
-            const t = document.getElementById("chatBody");
-            if (t) {
-                if (lexieMemory.length === 0) {
-                    appendBubble("bot", "Good day! Welcome sa KOHMZ Booking page. Ako si Lexie! Matutulungan ko po kayong sagutan ang form na ito para makapag-schedule tayo agad ng Technical Audit.");
-                } else {
-                    lexieMemory.forEach(m => {
-                        if (m.role === "system") return;
-                        if (m.role === "user") { appendBubble("user", escapeHTML(m.content)); } 
-                        else { const b = document.createElement("div"); b.className = "chat-bubble"; b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;"; b.textContent = "Lexie: " + m.content; t.appendChild(b); }
-                    });
-                    t.scrollTop = t.scrollHeight;
-                }
-            }
-            let currentPageName = document.title.split("|")[0].trim() || "kabilang page";
-            let lastPage = sessionStorage.getItem("kohmz_last_page");
-            if (lastPage && lastPage !== currentPageName && lexieMemory.length > 0) {
-                setTimeout(() => { appendBubble("bot", `Uy boss, napadaan ka sa Booking Page! Pwede na nating i-finalize yung gusto mong schedule, message mo lang ako.`); }, 1500);
-            }
-            sessionStorage.setItem("kohmz_last_page", currentPageName);
-        });
-
-        // ── UI Listeners (Bot Drag) ─────────────────────
         document.addEventListener("DOMContentLoaded", () => {
             if(typeof AOS !== "undefined") AOS.init({ duration: 600, once: true });
             
@@ -1005,24 +640,14 @@
             }
             const subEl = document.querySelector(".txt-type"); if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute("data-words")), subEl.getAttribute("data-wait"));
 
-            const inputEl = document.getElementById("userQuery");
-            if (inputEl) {
-                inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); } });
-                inputEl.addEventListener("focus", () => { setTimeout(() => { const t = document.getElementById("chatBody"); t.scrollTop = t.scrollHeight; }, 300); });
+            // --- PAGE SPECIFIC SCRAPER FOR LEXIE.JS ---
+            window.pageContextData = "Form Fields on this page: ";
+            const formLabels = document.querySelectorAll('label, .section-title');
+            if(formLabels.length > 0) {
+                window.pageContextData += Array.from(formLabels).map(l => l.innerText).join(' | ');
             }
+            window.pageContextData = "LOCATION: BOOK NOW PAGE. ROLE: Form Assistant & Booking Agent. Aggressively push for ocular inspection. Help user fill out these fields: " + window.pageContextData;
 
-            const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
-            if (wrap && toggle) {
-                let isDrag = false, startX, startY, xOff = 0, yOff = 0;
-                toggle.addEventListener("mousedown", e => { isDrag = true; startX = e.clientX - xOff; startY = e.clientY - yOff; });
-                window.addEventListener("mousemove", e => { if (isDrag) { xOff = e.clientX - startX; yOff = e.clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; } });
-                window.addEventListener("mouseup", () => { isDrag = false; });
-                toggle.addEventListener("touchstart", e => { isDrag = true; startX = e.touches[0].clientX - xOff; startY = e.touches[0].clientY - yOff; }, { passive: true });
-                window.addEventListener("touchmove", e => { if (isDrag) { xOff = e.touches[0].clientX - startX; yOff = e.touches[0].clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; e.preventDefault(); } }, { passive: false });
-                window.addEventListener("touchend", () => isDrag = false);
-                toggle.addEventListener("click", () => { if (!isDrag) window.toggleBotWindow(); });
-            }
-            
             // --- READ PAGE ALOUD ---
             window.isReadingPage = false;
             const readPageBtn = document.getElementById("readPageBtn");
@@ -1035,13 +660,6 @@
                 });
             }
         });
-
-        window.toggleBotWindow = function () {
-            const win = document.getElementById("chatWindow"), hint = document.getElementById("dragHint");
-            if (isSpeaking || window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false; }
-            if (win.style.display === "flex") { win.style.display = "none"; if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "⚡ KOHMZ Lexie"; } 
-            else { win.style.display = "flex"; if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "🖐️ Drag to Move"; }
-        };
     </script>
 </body>
 </html>
