@@ -588,10 +588,13 @@ Your browser does not support the video tag.
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V17.3 (ENTERPRISE MASTER FIXES)
+// KOHMZ LEXIE AI — FRONTEND V18.5.1 (SECURED MASTER FIXES)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 const VIP_KEYWORDS = ["/pepot", "/joy", "/samsam", "/mara", "/mantha"];
+
+// 🛡️ SECURITY ADDITION: Retrieve Admin Key if saved in session
+let mySecretAdminToken = sessionStorage.getItem('admin_token') || "";
 
 // ── TypeWriter Class ─────────────────────────────────────────
 class TypeWriter {
@@ -683,9 +686,15 @@ function applyGodModeUI() {
 }
 if (isGodMode) applyGodModeUI();
 
+// 🛡️ SECURITY UPDATE: Clear secret token on exit
 window.exitGodMode = function() {
     if (!isGodMode) return;
     isGodMode = false; godName = "";
+    
+    // Clear security keys
+    mySecretAdminToken = "";
+    sessionStorage.removeItem('admin_token');
+    
     localStorage.removeItem('isGod'); localStorage.removeItem('god_name');
     document.getElementById("dragHint").innerText = "⚡ KOHMZ Lexie Pro";
     document.getElementById("dragHint").classList.remove('god-mode-tag');
@@ -693,7 +702,7 @@ window.exitGodMode = function() {
     if (tsCont) tsCont.style.display = "flex";
     document.getElementById("chatHeader").firstElementChild.textContent = "LEXIE AI: SYSTEM ACTIVE";
     resetTurnstile();
-    appendBubble("bot", "Immortal Mode deactivated. Returning to standard protocol.");
+    appendBubble("bot", "Immortal Mode deactivated. Secret Token cleared. Returning to standard protocol.");
 };
 
 // ── Bubble Helper ────────────────────────────────────────────
@@ -767,7 +776,20 @@ window.askLexie = async function() {
     const n = inputEl.value.trim();
     if (!n && !currentImageData) return;
 
-    const isVIPAttempt = VIP_KEYWORDS.includes(n.toLowerCase());
+    // 🛡️ SECURITY UPDATE: Better Keyword Detection
+    const isVIPAttempt = VIP_KEYWORDS.some(keyword => n.toLowerCase().startsWith(keyword));
+    
+    // 🛡️ SECURITY UPDATE: Invisible Password Prompt
+    if (isVIPAttempt && mySecretAdminToken === "") {
+        mySecretAdminToken = prompt("🔒 VIP COMMAND DETECTED.\nPlease enter the Master Key:");
+        
+        if (!mySecretAdminToken) {
+            appendBubble("bot", "⚠️ Command canceled: Master Key is required for VIP Access.");
+            return; // Stop execution
+        }
+        
+        sessionStorage.setItem('admin_token', mySecretAdminToken);
+    }
     
     if (!isGodMode && !isVIPAttempt) {
         if (messageCount >= 2 && !currentTurnstileToken) {
@@ -805,7 +827,8 @@ window.askLexie = async function() {
                 pageData: document.getElementById("main-content")?.innerText?.substring(0, 1500) || "",
                 history: lexieMemory.slice(-8),
                 turnstileToken: currentTurnstileToken,
-                vipName: godName 
+                vipName: godName,
+                adminToken: mySecretAdminToken // 🛡️ SECURED: Sent safely in payload
             })
         });
 
@@ -827,6 +850,12 @@ window.askLexie = async function() {
             const header = document.getElementById("chatHeader");
             header.style.color = "#e11d48";
             header.firstElementChild.textContent = "⚠️ CODE RED DETECTED";
+            
+            // If they entered the wrong password
+            if (result.ai_answer.includes("SECURITY ALERT")) {
+                mySecretAdminToken = "";
+                sessionStorage.removeItem('admin_token');
+            }
         } else {
             document.getElementById("chatWindow").classList.remove("code-red-active");
             const header = document.getElementById("chatHeader");
@@ -843,7 +872,9 @@ window.askLexie = async function() {
         let displayHtml = escapeHTML(rawAiReply);
         let textToSpeak = rawAiReply;
 
-        if (result.code_red) displayHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
+        if (result.code_red && !result.ai_answer.includes("SECURITY ALERT")) {
+             displayHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
+        }
 
         if (result.has_estimate && !result.code_red) {
             const cleanDataForPDF = result.pdf_data
@@ -928,13 +959,11 @@ window.downloadPDF = async function() {
         doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
         doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
 
-        // UPGRADE: Regex splitter to handle any amount of dashes or equals signs
         let parts = data.split(/[-=]{10,}/);
         let itemsStr = parts[0] || "";
         let restorationStr = (parts[1] || "").trim();
         let totalStr = (parts[2] || "").trim();
 
-        // Fallback if AI missed the second divider line
         if(!totalStr && restorationStr && restorationStr.toUpperCase().includes("GRAND TOTAL")) {
             totalStr = restorationStr;
             restorationStr = "RESTORATION COST: TO FOLLOW (Requires On-Site Inspection).";
@@ -959,7 +988,6 @@ window.downloadPDF = async function() {
             }
         });
 
-        // UPGRADE: Fallback row if parsing fails but string has content
         if(tableBody.length === 0 && itemsStr.trim().length > 0) {
             tableBody.push([itemsStr.substring(0, 100) + "...", "1", "TBD", "TBD"]);
         }
@@ -1061,7 +1089,7 @@ window.downloadAgreement = async function() {
         doc.text("OFFICIAL SERVICE AGREEMENT", pageWidth / 2, 65, { align: "center" });
 
         doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
-        // UPGRADE: Safe text wrap array handling
+        
         let lines = [];
         if (data && typeof data === 'string') {
             lines = doc.splitTextToSize(data, contentWidth - 10);
