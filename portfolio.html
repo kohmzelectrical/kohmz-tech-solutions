@@ -13,6 +13,8 @@
       gtag('config', 'G-S79X3QL1TV');
     </script>
     
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    
     <title>Portfolio | KOHMZ Electrical Design and Build</title>
     <meta name="description" content="Explore the KOHMZ Electrical Portfolio. See our high-impact Technical Governance for Residential and Commercial assets through strict PEC-compliant electrical engineering.">
     
@@ -20,6 +22,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
@@ -198,7 +203,6 @@
         .kohmz-bot-toggle { width: 130px; height: 130px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s; filter: drop-shadow(0 0 10px rgba(0,229,255,0.5));}
         .kohmz-bot-toggle:hover { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(0,229,255,0.8));}
         
-        /* BOT TAG CLASSES */
         .bot-value-tag {
             background: rgba(8, 16, 24, 0.95); color: #00e5ff; padding: 5px 12px; border: 1px solid #00e5ff;
             border-radius: 4px; font-size: 11px; margin-bottom: 8px; cursor: pointer; text-align: center;
@@ -437,7 +441,7 @@
             </div>
             
             <div id="cf-turnstile-container">
-                <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITEKEY_HERE" data-callback="onTurnstileSuccess" data-expired-callback="resetTurnstile" data-error-callback="resetTurnstile" data-theme="dark"></div>
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAACzFc-mcc5y-ha36" data-callback="onTurnstileSuccess" data-expired-callback="resetTurnstile" data-error-callback="resetTurnstile" data-theme="dark"></div>
             </div>
             
             <div class="chat-input-area">
@@ -453,8 +457,7 @@
             </div>
         </div>
         <div class="kohmz-bot-toggle" id="botToggle">
-            <i class="fas fa-robot" style="position:absolute; font-size: 40px; color: #00e5ff; z-index:-1;"></i>
-            <lottie-player src="Live-chatbot.json" background="transparent" speed="1" style="width:100%;height:100%;" loop autoplay></lottie-player>
+            <lottie-player src="Live chatbot.json" background="transparent" speed="1" style="width:100%;height:100%;" loop autoplay></lottie-player>
         </div>
     </div>
 
@@ -473,19 +476,16 @@
         </nav>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <script src="lexie.js"></script>
-    
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // 1. Initialize Animations
             if(typeof AOS !== "undefined") AOS.init({ duration: 600, once: true });
             
+            // 2. Mobile Menu Logic
             const menuBtn = document.getElementById("mobile-menu");
             const navList = document.getElementById("nav-list");
             if(menuBtn && navList) {
@@ -508,6 +508,7 @@
                 });
             });
 
+            // 3. Accordion Logic (Specific to Portfolio framework)
             const colls = document.querySelectorAll(".collapsible");
             colls.forEach(coll => {
                 coll.addEventListener("click", function() {
@@ -523,6 +524,7 @@
                 });
             });
 
+            // 4. Hero Typewriter Logic
             const mainText = "PROJECT CAPABILITIES & ";
             let mainIdx = 0;
             const typeEl = document.getElementById("main-typewriter-text");
@@ -575,6 +577,7 @@
             const subEl = document.querySelector(".txt-type");
             if(subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute("data-words")), subEl.getAttribute("data-wait"));
 
+            // 5. Tech Bar Typewriter
             const techBarWords = ["PORTFOLIO & CAPABILITIES", "DIGITAL PROTOTYPING", "100% PEC-COMPLIANT", "INDUSTRIAL-GRADE EXECUTION", "ADVANCED QA TESTING"];
             let tbIdx = 0, charIdx = 0, isTbDeleting = false;
             const electricEl = document.getElementById("electric-typewriter");
@@ -603,6 +606,7 @@
             }
             typeElectricBar();
 
+            // 6. Standalone Read Page Aloud (TTS for general content)
             window.isReadingPage = false;
             const readPageBtn = document.getElementById("readPageBtn");
             if(readPageBtn) {
