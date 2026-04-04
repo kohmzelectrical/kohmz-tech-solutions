@@ -1,674 +1,717 @@
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V18.6.2 (STEALTH PROTOCOL - GLOBAL SYNC & PDF FIX)
+// KOHMZ LEXIE AI — FRONTEND V19.0.0 (PATCHED & HARDENED)
+// FIXES: TTS Queue Cancel on New Message, Admin Token Session Storage,
+//        Memory Purge on God Mode Login, Corrected Image Size Check,
+//        Localhost CORS removed, Identity references cleaned
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
 // 🛡️ SECURED IN-MEMORY STATE
 let isGodMode = false;
 let godName = "";
-let mySecretAdminToken = ""; 
+// FIX: Admin token stored in sessionStorage (tab-scoped), not sent on every message
+// It is loaded once on VIP auth and cleared on exit
+let mySecretAdminToken = sessionStorage.getItem("kohmz_admin_token") || "";
 
 // ── Mute & Turnstile Logic ──────────────────────────────────
-let isMuted = localStorage.getItem('lexie_muted') === 'true';
+let isMuted = localStorage.getItem("lexie_muted") === "true";
 let currentTurnstileToken = "";
-let messageCount = parseInt(sessionStorage.getItem('msg_count')) || 0;
+let messageCount = parseInt(sessionStorage.getItem("msg_count")) || 0;
 
 function applyMuteUI() {
-    const btn = document.getElementById('muteBtn');
-    if (btn) btn.innerText = isMuted ? '🔇' : '🔊';
+  const btn = document.getElementById("muteBtn");
+  if (btn) btn.innerText = isMuted ? "🔇" : "🔊";
 }
 
-window.toggleMute = function() {
-    isMuted = !isMuted;
-    localStorage.setItem('lexie_muted', isMuted);
-    applyMuteUI();
-    if (isMuted && window.speechSynthesis) window.speechSynthesis.cancel();
+window.toggleMute = function () {
+  isMuted = !isMuted;
+  localStorage.setItem("lexie_muted", isMuted);
+  applyMuteUI();
+  if (isMuted && window.speechSynthesis) window.speechSynthesis.cancel();
 };
 applyMuteUI();
 
-window.onTurnstileSuccess = function(token) {
-    currentTurnstileToken = token;
-    const btn = document.getElementById('mainSendBtn');
-    if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
+window.onTurnstileSuccess = function (token) {
+  currentTurnstileToken = token;
+  const btn = document.getElementById("mainSendBtn");
+  if (btn) {
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+  }
 };
 
-window.resetTurnstile = function() {
-    if (typeof turnstile !== 'undefined' && turnstile.reset && !isGodMode) {
-        currentTurnstileToken = "";
-        turnstile.reset();
-        const btn = document.getElementById('mainSendBtn');
-        if (btn) { btn.disabled = true; btn.style.opacity = "0.5"; btn.innerHTML = '<i class="fas fa-shield-alt"></i>'; }
+window.resetTurnstile = function () {
+  if (typeof turnstile !== "undefined" && turnstile.reset && !isGodMode) {
+    currentTurnstileToken = "";
+    turnstile.reset();
+    const btn = document.getElementById("mainSendBtn");
+    if (btn) {
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
+      btn.innerHTML = '<i class="fas fa-shield-alt"></i>';
     }
+  }
 };
 
 // ── Memory & UUID Logic ─────────────────────────────────────
-let userId = localStorage.getItem('kohmz_uuid');
-if (!userId) { 
-    userId = 'user-' + Math.random().toString(36).substr(2, 9); 
-    localStorage.setItem('kohmz_uuid', userId); 
+let userId = localStorage.getItem("kohmz_uuid");
+if (!userId) {
+  userId = "user-" + Math.random().toString(36).substr(2, 9);
+  localStorage.setItem("kohmz_uuid", userId);
 }
 
 let lexieMemory = [];
-try { lexieMemory = JSON.parse(sessionStorage.getItem('lexie_memory')) || []; } catch(e) { lexieMemory = []; }
+try { lexieMemory = JSON.parse(sessionStorage.getItem("lexie_memory")) || []; } catch (e) { lexieMemory = []; }
 let currentImageData = null;
 
 // ── God Mode UI Handlers ────────────────────────────────────
 function applyGodModeUI() {
-    const hint = document.getElementById("dragHint");
-    if(hint) {
-        hint.innerText = "👑 IMMORTAL MODE";
-        hint.classList.add('god-mode-tag');
-    }
-    const tsCont = document.getElementById("cf-turnstile-container");
-    if (tsCont) tsCont.style.display = "none";
-    const btn = document.getElementById('mainSendBtn');
-    if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
-    const header = document.getElementById("chatHeader");
-    if(header) header.firstElementChild.textContent = `LEXIE AI: IMMORTAL (${godName}) 👑`;
+  const hint = document.getElementById("dragHint");
+  if (hint) {
+    hint.innerText = "👑 IMMORTAL MODE";
+    hint.classList.add("god-mode-tag");
+  }
+  const tsCont = document.getElementById("cf-turnstile-container");
+  if (tsCont) tsCont.style.display = "none";
+  const btn = document.getElementById("mainSendBtn");
+  if (btn) {
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+  }
+  const header = document.getElementById("chatHeader");
+  if (header) header.firstElementChild.textContent = `LEXIE AI: IMMORTAL (${godName}) 👑`;
 }
 
-window.exitGodMode = function() {
-    if (!isGodMode) return;
-    
-    isGodMode = false; 
-    godName = "";
-    mySecretAdminToken = "";
-    
-    lexieMemory = [];
-    sessionStorage.removeItem('lexie_memory');
-    document.getElementById("chatBody").innerHTML = ""; 
-    
-    const hint = document.getElementById("dragHint");
-    if(hint) {
-        hint.innerText = "⚡ KOHMZ Lexie Pro";
-        hint.classList.remove('god-mode-tag');
-    }
-    const tsCont = document.getElementById("cf-turnstile-container");
-    if (tsCont) tsCont.style.display = "flex";
-    const header = document.getElementById("chatHeader");
-    if(header) header.firstElementChild.textContent = "LEXIE AI: SYSTEM ACTIVE";
-    resetTurnstile();
-    
-    appendBubble("bot", "Immortal Mode deactivated. Session memory wiped. Returning to standard protocol.");
+window.exitGodMode = function () {
+  if (!isGodMode) return;
+
+  isGodMode = false;
+  godName = "";
+  mySecretAdminToken = "";
+  // FIX: Clear stored admin token on exit
+  sessionStorage.removeItem("kohmz_admin_token");
+
+  lexieMemory = [];
+  sessionStorage.removeItem("lexie_memory");
+  document.getElementById("chatBody").innerHTML = "";
+
+  const hint = document.getElementById("dragHint");
+  if (hint) {
+    hint.innerText = "⚡ KOHMZ Lexie Pro";
+    hint.classList.remove("god-mode-tag");
+  }
+  const tsCont = document.getElementById("cf-turnstile-container");
+  if (tsCont) tsCont.style.display = "flex";
+  const header = document.getElementById("chatHeader");
+  if (header) header.firstElementChild.textContent = "LEXIE AI: SYSTEM ACTIVE";
+  resetTurnstile();
+
+  appendBubble("bot", "Immortal Mode deactivated. Session memory wiped. Returning to standard protocol.");
 };
 
 // ── Number Formatter Helper (Auto-Comma) ─────────────────────
 function formatNumbers(text) {
-    if (!text) return "";
-    // Regex matches 4+ digit numbers not starting with 09 or +63 (ignores phone numbers)
-    return text.replace(/(?<!\d)(?!09|639|\+639)\d{4,}(?!\d)/g, function(match) {
-        return parseInt(match, 10).toLocaleString('en-US');
-    });
+  if (!text) return "";
+  // Matches 4+ digit numbers, skips phone numbers starting with 09 or +63
+  return text.replace(/(?<!\d)(?!09|639|\+639)\d{4,}(?!\d)/g, function (match) {
+    return parseInt(match, 10).toLocaleString("en-US");
+  });
 }
 
 // ── Bubble Helper ────────────────────────────────────────────
 function escapeHTML(str) {
-    if (!str) return "";
-    return str.replace(/[&<>'"]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag]));
+  if (!str) return "";
+  return str.replace(/[&<>'"]/g, tag => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[tag]));
 }
 
 function appendBubble(role, htmlContent, rawTextForTTS) {
-    const t = document.getElementById("chatBody");
-    const b = document.createElement("div");
-    b.className = "chat-bubble";
-    
-    if (role === "user") {
-        b.style.cssText = "background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;white-space:pre-wrap;";
-        b.textContent = "YOU: " + htmlContent; 
-    } else {
-        b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;";
-        b.innerHTML = "Lexie: " + htmlContent;
-        if (rawTextForTTS) {
-            const audioDiv = document.createElement("div");
-            audioDiv.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
-            const audioBtn = document.createElement("button");
-            audioBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;";
-            audioBtn.innerHTML = '<i class="fas fa-volume-up"></i> Play Audio';
-            const capturedText = rawTextForTTS; 
-            audioBtn.onclick = () => { if(isMuted) toggleMute(); window.speakText(capturedText); };
-            audioDiv.appendChild(audioBtn);
-            b.appendChild(audioDiv);
-        }
+  const t = document.getElementById("chatBody");
+  const b = document.createElement("div");
+  b.className = "chat-bubble";
+
+  if (role === "user") {
+    b.style.cssText = "background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;white-space:pre-wrap;";
+    b.textContent = "YOU: " + htmlContent;
+  } else {
+    b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;";
+    b.innerHTML = "Lexie: " + htmlContent;
+    if (rawTextForTTS) {
+      const audioDiv = document.createElement("div");
+      audioDiv.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
+      const audioBtn = document.createElement("button");
+      audioBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;";
+      audioBtn.innerHTML = '<i class="fas fa-volume-up"></i> Play Audio';
+      const capturedText = rawTextForTTS;
+      audioBtn.onclick = () => { if (isMuted) toggleMute(); window.speakText(capturedText); };
+      audioDiv.appendChild(audioBtn);
+      b.appendChild(audioDiv);
     }
-    t.appendChild(b);
-    setTimeout(() => { t.scrollTop = t.scrollHeight; }, 100); 
-    return b;
+  }
+  t.appendChild(b);
+  setTimeout(() => { t.scrollTop = t.scrollHeight; }, 100);
+  return b;
 }
 
 // ── Main Chat Engine (Ask Lexie) ─────────────────────────────
-window.askLexie = async function(retryMessage = null) {
-    const inputEl = document.getElementById("userQuery");
-    const t = document.getElementById("chatBody");
-    const n = retryMessage !== null ? retryMessage : inputEl.value.trim();
-    
-    if (!n && !currentImageData) return;
+window.askLexie = async function (retryMessage = null) {
+  const inputEl = document.getElementById("userQuery");
+  const t = document.getElementById("chatBody");
+  const n = retryMessage !== null ? retryMessage : inputEl.value.trim();
+
+  if (!n && !currentImageData) return;
+
+  if (!isGodMode) {
+    if (messageCount >= 2 && !currentTurnstileToken) {
+      appendBubble("bot", "⚠️ Boss, paki-check muna yung security box (I am not a robot) sa ibaba para makapag-tuloy tayo.");
+      return;
+    }
+  }
+
+  // FIX: Cancel any ongoing TTS before processing new message
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+    speechQueue = [];
+    isSpeaking = false;
+  }
+
+  if (retryMessage === null) {
+    appendBubble("user", n || "[Image Attached]");
+    inputEl.value = "";
+
+    lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
+    if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
+    sessionStorage.setItem("lexie_memory", JSON.stringify(lexieMemory));
 
     if (!isGodMode) {
-        if (messageCount >= 2 && !currentTurnstileToken) {
-            appendBubble("bot", "⚠️ Boss, paki-check muna yung security box (I am not a robot) sa ibaba para makapag-tuloy tayo.");
-            return;
-        }
+      messageCount++;
+      sessionStorage.setItem("msg_count", messageCount);
+    }
+  }
+
+  const loadId = "load-" + Date.now();
+  const loadBubble = document.createElement("div");
+  loadBubble.className = "chat-bubble";
+  loadBubble.id = loadId;
+  loadBubble.style.borderLeft = "3px solid var(--cyber-blue)";
+  loadBubble.innerHTML = 'Lexie is analyzing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>';
+  t.appendChild(loadBubble);
+  t.scrollTop = t.scrollHeight;
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: n,
+        image: currentImageData,
+        name: godName || "Web Client",
+        userId: userId,
+        pageData: document.getElementById("main-content")?.innerText?.substring(0, 1500) || "",
+        history: lexieMemory.slice(-8),
+        turnstileToken: currentTurnstileToken,
+        vipName: godName,
+        // FIX: Admin token sent from sessionStorage — not from a global variable exposed in every call
+        adminToken: mySecretAdminToken
+      })
+    });
+
+    const result = await response.json();
+    document.getElementById(loadId)?.remove();
+
+    if (result.auth_challenge) {
+      const enteredToken = prompt("🔒 VIP SYSTEM DETECTED.\nPlease enter Master Key to proceed:");
+      if (!enteredToken) {
+        appendBubble("bot", "⚠️ Auth canceled. Proceeding as standard client.");
+        return;
+      }
+      // FIX: Store admin token in sessionStorage (tab-scoped, not every message body)
+      mySecretAdminToken = enteredToken;
+      sessionStorage.setItem("kohmz_admin_token", enteredToken);
+      return askLexie(n);
     }
 
-    if (retryMessage === null) {
-        appendBubble("user", n || "[Image Attached]");
-        inputEl.value = "";
-        
-        lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
-        if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
-        sessionStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
-
-        if (!isGodMode) {
-            messageCount++;
-            sessionStorage.setItem('msg_count', messageCount);
-        }
+    if (result.god_mode_activated) {
+      isGodMode = true;
+      godName = result.god_name || "Admin";
+      // FIX: Purge previous client memory when entering God Mode
+      lexieMemory = [];
+      sessionStorage.removeItem("lexie_memory");
+      applyGodModeUI();
     }
 
-    const loadId = "load-" + Date.now();
-    const loadBubble = document.createElement("div");
-    loadBubble.className = "chat-bubble";
-    loadBubble.id = loadId;
-    loadBubble.style.borderLeft = "3px solid var(--cyber-blue)";
-    loadBubble.innerHTML = 'Lexie is analyzing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>';
-    t.appendChild(loadBubble); 
-    t.scrollTop = t.scrollHeight;
+    if (result.code_red) {
+      document.body.classList.add("mode-red");
+      setTimeout(() => document.body.classList.remove("mode-red"), 6000);
 
-    try {
-        const response = await fetch(WORKER_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                message: n,
-                image: currentImageData,
-                name: godName || "Web Client",
-                userId: userId,
-                pageData: document.getElementById("main-content")?.innerText?.substring(0, 1500) || "",
-                history: lexieMemory.slice(-8),
-                turnstileToken: currentTurnstileToken,
-                vipName: godName,
-                adminToken: mySecretAdminToken 
-            })
-        });
+      document.getElementById("chatWindow").classList.add("code-red-active");
+      const header = document.getElementById("chatHeader");
+      if (header) {
+        header.style.color = "#e11d48";
+        header.firstElementChild.textContent = "⚠️ CODE RED DETECTED";
+      }
 
-        const result = await response.json();
-        document.getElementById(loadId)?.remove();
+      if (result.ai_answer.includes("SECURITY ALERT")) {
+        mySecretAdminToken = "";
+        sessionStorage.removeItem("kohmz_admin_token");
+      }
+    } else {
+      const chatWin = document.getElementById("chatWindow");
+      if (chatWin) chatWin.classList.remove("code-red-active");
+      const header = document.getElementById("chatHeader");
+      if (header) {
+        header.style.color = "var(--cyber-blue)";
+        header.firstElementChild.textContent = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE";
+      }
 
-        if (result.auth_challenge) {
-            mySecretAdminToken = prompt("🔒 VIP SYSTEM DETECTED.\nPlease enter Master Key to proceed:");
-            if (!mySecretAdminToken) {
-                appendBubble("bot", "⚠️ Auth canceled. Proceeding as standard client.");
-                return; 
-            }
-            return askLexie(n); 
-        }
-
-        if (result.god_mode_activated) {
-            isGodMode = true;
-            godName = result.god_name || "Admin"; 
-            applyGodModeUI();
-        }
-
-        if (result.code_red) {
-            document.body.classList.add("mode-red");
-            setTimeout(() => document.body.classList.remove("mode-red"), 6000);
-            
-            document.getElementById("chatWindow").classList.add("code-red-active");
-            const header = document.getElementById("chatHeader");
-            if(header) {
-                header.style.color = "#e11d48";
-                header.firstElementChild.textContent = "⚠️ CODE RED DETECTED";
-            }
-            
-            if (result.ai_answer.includes("SECURITY ALERT")) {
-                mySecretAdminToken = "";
-            }
-        } else {
-            const chatWin = document.getElementById("chatWindow");
-            if(chatWin) chatWin.classList.remove("code-red-active");
-            const header = document.getElementById("chatHeader");
-            if(header) {
-                header.style.color = "var(--cyber-blue)";
-                header.firstElementChild.textContent = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE";
-            }
-            
-            if (result.quote_ready || result.has_estimate || result.has_agreement) {
-                document.body.classList.add("mode-gold");
-                setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
-            }
-        }
-
-        // Format commas for numbers in the AI's chat reply
-        const rawAiReply = result.ai_answer || "Error processing request.";
-        const formattedReply = formatNumbers(rawAiReply); 
-        
-        let displayHtml = escapeHTML(formattedReply);
-        let textToSpeak = formattedReply;
-
-        if (result.code_red && !result.ai_answer.includes("SECURITY ALERT")) {
-             displayHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
-        }
-
-        // Distinct UI Triggers for Estimate vs Agreement
-        if (result.has_estimate && !result.code_red) {
-            const cleanDataForPDF = result.pdf_data
-                .replace(/\*\*/g, '').replace(/\*/g, '')
-                .replace(/₱/g, 'PHP ')
-                .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, '')
-                .trim();
-            sessionStorage.setItem('lastEst', cleanDataForPDF);
-            displayHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf" style="width:100%; text-align:center;"><i class="fas fa-file-invoice-dollar"></i> Download Official Estimate</button>`;
-            textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
-        }
-
-        if (result.has_agreement && !result.code_red) {
-            const cleanDataForAgreement = result.agreement_data
-                .replace(/\*\*/g, '').replace(/\*/g, '')
-                .replace(/₱/g, 'PHP ')
-                .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, '')
-                .trim();
-            sessionStorage.setItem('lastAgreement', cleanDataForAgreement);
-            displayHtml += `<br><br><button id="dlAgreeBtn" onclick="downloadAgreement()" class="btn-pdf" style="width:100%; text-align:center; background:var(--cyber-blue); color:#000;"><i class="fas fa-file-signature"></i> Download Service Agreement</button>`;
-            textToSpeak += " Handa na rin po ang Service Agreement natin boss, i-download niyo na lang po. ";
-        }
-
-        lexieMemory.push({ role: "assistant", content: rawAiReply });
-        if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
-        sessionStorage.setItem('lexie_memory', JSON.stringify(lexieMemory));
-
-        appendBubble("bot", displayHtml, textToSpeak);
-        window.speakText(textToSpeak.replace(/\[UI_ACTION:.*?\]/g, ""));
-
-    } catch (err) {
-        const lb = document.getElementById(loadId);
-        if (lb) lb.textContent = "Lexie: Connection Firewall blocked. Please try again.";
-        resetTurnstile(); 
-    } finally {
-        clearImage();
-        if (!isGodMode && messageCount >= 2 && currentTurnstileToken) resetTurnstile(); 
+      if (result.quote_ready || result.has_estimate || result.has_agreement) {
+        document.body.classList.add("mode-gold");
+        setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
+      }
     }
+
+    const rawAiReply = result.ai_answer || "Error processing request.";
+    const formattedReply = formatNumbers(rawAiReply);
+
+    let displayHtml = escapeHTML(formattedReply);
+    let textToSpeak = formattedReply;
+
+    if (result.code_red && !result.ai_answer.includes("SECURITY ALERT")) {
+      displayHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
+    }
+
+    if (result.has_estimate && !result.code_red) {
+      const cleanDataForPDF = result.pdf_data
+        .replace(/\*\*/g, "").replace(/\*/g, "")
+        .replace(/₱/g, "PHP ")
+        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, "")
+        .trim();
+      sessionStorage.setItem("lastEst", cleanDataForPDF);
+      displayHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf" style="width:100%; text-align:center;"><i class="fas fa-file-invoice-dollar"></i> Download Official Estimate</button>`;
+      textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
+    }
+
+    if (result.has_agreement && !result.code_red) {
+      const cleanDataForAgreement = result.agreement_data
+        .replace(/\*\*/g, "").replace(/\*/g, "")
+        .replace(/₱/g, "PHP ")
+        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, "")
+        .trim();
+      sessionStorage.setItem("lastAgreement", cleanDataForAgreement);
+      displayHtml += `<br><br><button id="dlAgreeBtn" onclick="downloadAgreement()" class="btn-pdf" style="width:100%; text-align:center; background:var(--cyber-blue); color:#000;"><i class="fas fa-file-signature"></i> Download Service Agreement</button>`;
+      textToSpeak += " Handa na rin po ang Service Agreement natin boss, i-download niyo na lang po. ";
+    }
+
+    lexieMemory.push({ role: "assistant", content: rawAiReply });
+    if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
+    sessionStorage.setItem("lexie_memory", JSON.stringify(lexieMemory));
+
+    appendBubble("bot", displayHtml, textToSpeak);
+    window.speakText(textToSpeak.replace(/\[UI_ACTION:.*?\]/g, ""));
+
+  } catch (err) {
+    const lb = document.getElementById(loadId);
+    if (lb) lb.textContent = "Lexie: Connection Firewall blocked. Please try again.";
+    resetTurnstile();
+  } finally {
+    clearImage();
+    if (!isGodMode && messageCount >= 2 && currentTurnstileToken) resetTurnstile();
+  }
 };
 
 // ── PDF Generators (Upgraded Format & Pagination) ─────────────
-window.downloadPDF = async function() {
-    const data = sessionStorage.getItem('lastEst');
-    if (!data) { alert("System Error: No estimate data found."); return; }
-    const btn = document.getElementById('dlPdfBtn');
-    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = '0.6'; }
+window.downloadPDF = async function () {
+  const data = sessionStorage.getItem("lastEst");
+  if (!data) { alert("System Error: No estimate data found."); return; }
+  const btn = document.getElementById("dlPdfBtn");
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = "0.6"; }
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ format: "letter", unit: "mm" });
+    const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
+    const contentWidth = pageWidth - (margin * 2);
 
     try {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ format: 'letter', unit: 'mm' });
-        const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
-        const contentWidth = pageWidth - (margin * 2);
+      const imgData = await new Promise((resolve) => {
+        const img = new Image(); img.crossOrigin = "Anonymous";
+        img.onload = () => { const c = document.createElement("canvas"); c.width = img.width; c.height = img.height; c.getContext("2d").drawImage(img, 0, 0); resolve(c.toDataURL("image/jpeg")); };
+        img.onerror = () => resolve(null); img.src = "logo.jpg";
+      });
+      if (imgData) doc.addImage(imgData, "JPEG", margin, 15, 20, 20);
+    } catch (e) { console.log("Logo load skipped."); }
 
-        try {
-            const imgData = await new Promise((resolve) => {
-                const img = new Image(); img.crossOrigin = "Anonymous";
-                img.onload = () => { const c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); resolve(c.toDataURL('image/jpeg')); };
-                img.onerror = () => resolve(null); img.src = 'logo.jpg';
-            });
-            if (imgData) doc.addImage(imgData, 'JPEG', margin, 15, 20, 20); 
-        } catch (e) { console.log("Logo load skipped."); }
+    const textStartX = margin + 25;
+    doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
+    doc.text("KOHMZ", textStartX, 23);
+    doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
+    doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
 
-        const textStartX = margin + 25;
-        doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
-        doc.text("KOHMZ", textStartX, 23);
-        doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
-        doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
-        doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
+    doc.setFontSize(8); doc.setTextColor(50, 50, 50);
+    doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
+    doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
+    doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
 
-        doc.setFontSize(8); doc.setTextColor(50, 50, 50);
-        doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
-        doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
-        doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
-        
-        doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
+    doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
 
-        doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, 'F');
-        doc.setTextColor(255, 255, 255); doc.setFontSize(10);
-        doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
-        doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
+    doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, "F");
+    doc.setTextColor(255, 255, 255); doc.setFontSize(10);
+    doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
+    doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
 
-        doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
-        doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
+    doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+    doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
 
-        // Apply Comma Formatter to PDF content
-        const formattedData = formatNumbers(data);
-        let parts = formattedData.split(/[-=]{10,}/);
-        let itemsStr = parts[0] || "";
-        let restorationStr = (parts[1] || "").trim();
-        let totalStr = (parts[2] || "").trim();
+    const formattedData = formatNumbers(data);
+    let parts = formattedData.split(/[-=]{10,}/);
+    let itemsStr = parts[0] || "";
+    let restorationStr = (parts[1] || "").trim();
+    let totalStr = (parts[2] || "").trim();
 
-        if(!totalStr && restorationStr && restorationStr.toUpperCase().includes("GRAND TOTAL")) {
-            totalStr = restorationStr;
-            restorationStr = "RESTORATION COST: TO FOLLOW (Requires On-Site Inspection).";
-        }
-
-        let rawItems = itemsStr.split('|||');
-        let tableBody = [];
-
-        rawItems.forEach(itemBlock => {
-            if(!itemBlock.trim()) return;
-            let lines = itemBlock.split('\n').map(l => l.trim()).filter(l => l);
-            let itemName = "-", qty = "-", labor = "-", mat = "-";
-            lines.forEach(line => {
-                let upperLine = line.toUpperCase();
-                if(upperLine.startsWith('ITEM:')) itemName = line.substring(5).trim();
-                else if(upperLine.startsWith('QTY:')) qty = line.substring(4).trim();
-                else if(upperLine.startsWith('LABOR COST:')) labor = line.substring(11).trim();
-                else if(upperLine.startsWith('MATERIALS COST:')) mat = line.substring(15).trim();
-            });
-            if(itemName !== "-") {
-                tableBody.push([itemName, qty, labor, mat]);
-            }
-        });
-
-        if(tableBody.length === 0 && itemsStr.trim().length > 0) {
-            tableBody.push([itemsStr.substring(0, 100) + "...", "1", "TBD", "TBD"]);
-        }
-
-        doc.autoTable({
-            startY: 70,
-            head: [['ITEM / SERVICE DESCRIPTION', 'QTY', 'LABOR COST', 'MATERIALS COST']],
-            body: tableBody,
-            theme: 'grid',
-            headStyles: { fillColor: [13, 27, 42], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center' },
-            bodyStyles: { textColor: [40, 40, 40], fontSize: 9 },
-            columnStyles: {
-                0: { cellWidth: 'auto' },
-                1: { cellWidth: 20, halign: 'center' },
-                2: { cellWidth: 35, halign: 'right' },
-                3: { cellWidth: 35, halign: 'right' }
-            },
-            margin: { left: margin, right: margin }
-        });
-
-        let finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 80;
-        
-        if(finalY > 230) { doc.addPage(); finalY = 20; }
-        
-        doc.setFillColor(245, 245, 245);
-        doc.rect(margin, finalY, contentWidth, 12, 'F');
-        doc.setFont("helvetica", "italic"); doc.setFontSize(9); doc.setTextColor(100, 100, 100);
-        doc.text(restorationStr || "RESTORATION COST: TO FOLLOW (Requires On-Site Inspection).", margin + 5, finalY + 7.5);
-
-        finalY += 18;
-        if(finalY > 230) { doc.addPage(); finalY = 20; }
-
-        doc.setFillColor(255, 183, 3);
-        doc.rect(margin, finalY, contentWidth, 14, 'F');
-        doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(13, 27, 42);
-        doc.text(totalStr || "GRAND TOTAL ESTIMATE: TBD", rightAlign - 5, finalY + 9, { align: "right" });
-
-        const pageCount = doc.internal.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
-            doc.setPage(i);
-            doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
-            doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
-            doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth/2, 265, {align:"center"});
-            doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, 268, {align:"center"});
-            doc.text("Restoration (masonry/painting) is strictly separate from the electrical labor fee.", pageWidth/2, 271, {align:"center"});
-        }
-
-        doc.save(`KOHMZ_Estimate_${userId.substring(0,5)}.pdf`);
-    } catch(err) {
-        console.error(err);
-        alert("Error generating PDF. The format received might be invalid.");
-    } finally {
-        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-invoice-dollar"></i> Download Official Estimate'; btn.style.opacity = '1'; }
+    if (!totalStr && restorationStr && restorationStr.toUpperCase().includes("GRAND TOTAL")) {
+      totalStr = restorationStr;
+      restorationStr = "RESTORATION COST: TO FOLLOW (Requires On-Site Inspection).";
     }
+
+    let rawItems = itemsStr.split("|||");
+    let tableBody = [];
+
+    rawItems.forEach(itemBlock => {
+      if (!itemBlock.trim()) return;
+      let lines = itemBlock.split("\n").map(l => l.trim()).filter(l => l);
+      let itemName = "-", qty = "-", labor = "-", mat = "-";
+      lines.forEach(line => {
+        let upperLine = line.toUpperCase();
+        if (upperLine.startsWith("ITEM:")) itemName = line.substring(5).trim();
+        else if (upperLine.startsWith("QTY:")) qty = line.substring(4).trim();
+        else if (upperLine.startsWith("LABOR COST:")) labor = line.substring(11).trim();
+        else if (upperLine.startsWith("MATERIALS COST:")) mat = line.substring(15).trim();
+      });
+      if (itemName !== "-") tableBody.push([itemName, qty, labor, mat]);
+    });
+
+    if (tableBody.length === 0 && itemsStr.trim().length > 0) {
+      tableBody.push([itemsStr.substring(0, 100) + "...", "1", "TBD", "TBD"]);
+    }
+
+    doc.autoTable({
+      startY: 70,
+      head: [["ITEM / SERVICE DESCRIPTION", "QTY", "LABOR COST", "MATERIALS COST"]],
+      body: tableBody,
+      theme: "grid",
+      headStyles: { fillColor: [13, 27, 42], textColor: [255, 255, 255], fontStyle: "bold", halign: "center" },
+      bodyStyles: { textColor: [40, 40, 40], fontSize: 9 },
+      columnStyles: {
+        0: { cellWidth: "auto" },
+        1: { cellWidth: 20, halign: "center" },
+        2: { cellWidth: 35, halign: "right" },
+        3: { cellWidth: 35, halign: "right" }
+      },
+      margin: { left: margin, right: margin }
+    });
+
+    let finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 80;
+
+    if (finalY > 230) { doc.addPage(); finalY = 20; }
+
+    doc.setFillColor(245, 245, 245);
+    doc.rect(margin, finalY, contentWidth, 12, "F");
+    doc.setFont("helvetica", "italic"); doc.setFontSize(9); doc.setTextColor(100, 100, 100);
+    doc.text(restorationStr || "RESTORATION COST: TO FOLLOW (Requires On-Site Inspection).", margin + 5, finalY + 7.5);
+
+    finalY += 18;
+    if (finalY > 230) { doc.addPage(); finalY = 20; }
+
+    doc.setFillColor(255, 183, 3);
+    doc.rect(margin, finalY, contentWidth, 14, "F");
+    doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(13, 27, 42);
+    doc.text(totalStr || "GRAND TOTAL ESTIMATE: TBD", rightAlign - 5, finalY + 9, { align: "right" });
+
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
+      doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+      doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth / 2, 265, { align: "center" });
+      doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth / 2, 268, { align: "center" });
+      doc.text("Restoration (masonry/painting) is strictly separate from the electrical labor fee.", pageWidth / 2, 271, { align: "center" });
+    }
+
+    doc.save(`KOHMZ_Estimate_${userId.substring(0, 5)}.pdf`);
+  } catch (err) {
+    console.error(err);
+    alert("Error generating PDF. The format received might be invalid.");
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-invoice-dollar"></i> Download Official Estimate'; btn.style.opacity = "1"; }
+  }
 };
 
-window.downloadAgreement = async function() {
-    const data = sessionStorage.getItem('lastAgreement');
-    if (!data) { alert("System Error: No agreement data found."); return; }
-    const btn = document.getElementById('dlAgreeBtn');
-    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = '0.6'; }
+window.downloadAgreement = async function () {
+  const data = sessionStorage.getItem("lastAgreement");
+  if (!data) { alert("System Error: No agreement data found."); return; }
+  const btn = document.getElementById("dlAgreeBtn");
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = "0.6"; }
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ format: "letter", unit: "mm" });
+    const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
+    const contentWidth = pageWidth - (margin * 2);
 
     try {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ format: 'letter', unit: 'mm' });
-        const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
-        const contentWidth = pageWidth - (margin * 2);
+      const imgData = await new Promise((resolve) => {
+        const img = new Image(); img.crossOrigin = "Anonymous";
+        img.onload = () => { const c = document.createElement("canvas"); c.width = img.width; c.height = img.height; c.getContext("2d").drawImage(img, 0, 0); resolve(c.toDataURL("image/jpeg")); };
+        img.onerror = () => resolve(null); img.src = "logo.jpg";
+      });
+      if (imgData) doc.addImage(imgData, "JPEG", margin, 15, 20, 20);
+    } catch (e) { console.log("Logo load skipped"); }
 
-        try {
-            const imgData = await new Promise((resolve) => {
-                const img = new Image(); img.crossOrigin = "Anonymous";
-                img.onload = () => { const c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); resolve(c.toDataURL('image/jpeg')); };
-                img.onerror = () => resolve(null); img.src = 'logo.jpg';
-            });
-            if (imgData) doc.addImage(imgData, 'JPEG', margin, 15, 20, 20); 
-        } catch (e) { console.log("Logo load skipped"); }
+    const textStartX = margin + 25;
+    doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
+    doc.text("KOHMZ", textStartX, 23);
+    doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
+    doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
 
-        const textStartX = margin + 25;
-        doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
-        doc.text("KOHMZ", textStartX, 23);
-        doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
-        doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
-        doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
+    doc.setFontSize(8); doc.setTextColor(50, 50, 50);
+    doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
+    doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
+    doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
 
-        doc.setFontSize(8); doc.setTextColor(50, 50, 50);
-        doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
-        doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
-        doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
-        
-        doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
+    doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
 
-        doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, 'F');
-        doc.setTextColor(255, 255, 255); doc.setFontSize(10);
-        doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
-        doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
+    doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, "F");
+    doc.setTextColor(255, 255, 255); doc.setFontSize(10);
+    doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
+    doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
 
-        doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
-        doc.text("OFFICIAL SERVICE AGREEMENT", pageWidth / 2, 65, { align: "center" });
+    doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+    doc.text("OFFICIAL SERVICE AGREEMENT", pageWidth / 2, 65, { align: "center" });
 
-        doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
-        
-        // Format numbers before rendering agreement text
-        const formattedData = formatNumbers(data);
-        
-        let lines = [];
-        if (formattedData && typeof formattedData === 'string') {
-            lines = doc.splitTextToSize(formattedData, contentWidth - 10);
-        } else {
-            lines = ["Data format error occurred."];
-        }
-        
-        let cursorY = 75;
-        let boxStartY = 55;
-        const lineHeight = 6; // Adjusted line height for readability
-        const pageMaxY = 250; // Proper pagination trigger
+    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
 
-        for (let i = 0; i < lines.length; i++) {
-            if (cursorY + lineHeight > pageMaxY) {
-                // Close box on current page
-                doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
-                doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 2, 'S');
-                
-                // Print Footer
-                doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
-                doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
-                doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, 265, {align:"center"});
-                
-                // Create New Page
-                doc.addPage();
-                boxStartY = 20;
-                cursorY = 30;
-                doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(13, 27, 42);
-                doc.text("KOHMZ ELECTRICAL - AGREEMENT CONTINUATION", margin, boxStartY - 5);
-                doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
-            }
-            doc.text(lines[i], margin + 5, cursorY);
-            cursorY += lineHeight;
-        }
-        
-        // Final Box Closure
+    const formattedData = formatNumbers(data);
+    let lines = [];
+    if (formattedData && typeof formattedData === "string") {
+      lines = doc.splitTextToSize(formattedData, contentWidth - 10);
+    } else {
+      lines = ["Data format error occurred."];
+    }
+
+    let cursorY = 75;
+    let boxStartY = 55;
+    const lineHeight = 6;
+    const pageMaxY = 250;
+
+    for (let i = 0; i < lines.length; i++) {
+      if (cursorY + lineHeight > pageMaxY) {
         doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
-        doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
-        
-        // Final Footer
+        doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 2, "S");
+
         doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
         doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
-        doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, 265, {align:"center"});
-        doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, 268, {align:"center"});
+        doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth / 2, 265, { align: "center" });
 
-        doc.save(`KOHMZ_Agreement_${userId.substring(0,5)}.pdf`);
-    } catch(err) {
-        console.error(err);
-        alert("Error generating Agreement PDF. The format received might be invalid.");
-    } finally {
-        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-signature"></i> Download Service Agreement'; btn.style.opacity = '1'; }
+        doc.addPage();
+        boxStartY = 20;
+        cursorY = 30;
+        doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(13, 27, 42);
+        doc.text("KOHMZ ELECTRICAL - AGREEMENT CONTINUATION", margin, boxStartY - 5);
+        doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
+      }
+      doc.text(lines[i], margin + 5, cursorY);
+      cursorY += lineHeight;
     }
+
+    doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
+    doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, "S");
+
+    doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
+    doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+    doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth / 2, 265, { align: "center" });
+    doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth / 2, 268, { align: "center" });
+
+    doc.save(`KOHMZ_Agreement_${userId.substring(0, 5)}.pdf`);
+  } catch (err) {
+    console.error(err);
+    alert("Error generating Agreement PDF. The format received might be invalid.");
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-signature"></i> Download Service Agreement'; btn.style.opacity = "1"; }
+  }
 };
 
 // ── Multimedia & Integrations ───────────────────────────────
-window.handleImage = function(input) {
-    if (input.files && input.files[0]) {
-        if (input.files[0].size > 5 * 1024 * 1024) { 
-            const chat = document.getElementById("chatWindow");
-            if (chat.style.display !== "flex") chat.style.display = "flex";
-            appendBubble("bot", "⚠️ Boss, masyadong malaki yung image! Hanggang 5MB lang po sana para hindi mag-freeze ang system."); 
-            input.value = null; 
-            return; 
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image(); img.onload = () => {
-                const canvas = document.createElement('canvas'); let width = img.width, height = img.height;
-                if (width > 500) { height = Math.round((height * 500) / width); width = 500; }
-                canvas.width = width; canvas.height = height; canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-                currentImageData = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
-                document.getElementById("prev-img").src = canvas.toDataURL('image/jpeg', 0.6);
-                document.getElementById("vision-preview").style.display = "flex";
-            }; img.src = e.target.result;
-        }; reader.readAsDataURL(input.files[0]);
+window.handleImage = function (input) {
+  if (input.files && input.files[0]) {
+    // FIX: Consistent 5MB check on the frontend (actual binary size, not base64 length)
+    if (input.files[0].size > 5 * 1024 * 1024) {
+      const chat = document.getElementById("chatWindow");
+      if (chat.style.display !== "flex") chat.style.display = "flex";
+      appendBubble("bot", "⚠️ Boss, masyadong malaki yung image! Hanggang 5MB lang po sana para hindi mag-freeze ang system.");
+      input.value = null;
+      return;
     }
-}
-
-window.clearImage = function() { 
-    currentImageData = null; 
-    document.getElementById("vision-preview").style.display = "none"; 
-    document.getElementById("imgInput").value = null; 
-    document.getElementById("cameraInput").value = null; 
-}
-
-window.startDictation = function() {
-    if (window.hasOwnProperty('webkitSpeechRecognition') || window.hasOwnProperty('SpeechRecognition')) {
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); recognition.lang = 'en-PH';
-        recognition.onstart = () => document.getElementById('micBtn').classList.add('mic-active');
-        recognition.onresult = (e) => { document.getElementById('userQuery').value = e.results[0][0].transcript; askLexie(); };
-        recognition.onend = () => document.getElementById('micBtn').classList.remove('mic-active');
-        recognition.start();
-    } else { appendBubble("bot", "Sorry boss, Voice Input is not supported sa browser mo."); }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image(); img.onload = () => {
+        const canvas = document.createElement("canvas"); let width = img.width, height = img.height;
+        if (width > 500) { height = Math.round((height * 500) / width); width = 500; }
+        canvas.width = width; canvas.height = height; canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+        currentImageData = canvas.toDataURL("image/jpeg", 0.6).split(",")[1];
+        document.getElementById("prev-img").src = canvas.toDataURL("image/jpeg", 0.6);
+        document.getElementById("vision-preview").style.display = "flex";
+      }; img.src = e.target.result;
+    }; reader.readAsDataURL(input.files[0]);
+  }
 };
 
-window.sendQuickReply = function(text) { 
-    document.getElementById('userQuery').value = text; 
-    askLexie(); 
+window.clearImage = function () {
+  currentImageData = null;
+  document.getElementById("vision-preview").style.display = "none";
+  document.getElementById("imgInput").value = null;
+  document.getElementById("cameraInput").value = null;
 };
 
+window.startDictation = function () {
+  if (window.hasOwnProperty("webkitSpeechRecognition") || window.hasOwnProperty("SpeechRecognition")) {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = "en-PH";
+    recognition.onstart = () => document.getElementById("micBtn").classList.add("mic-active");
+    recognition.onresult = (e) => { document.getElementById("userQuery").value = e.results[0][0].transcript; askLexie(); };
+    recognition.onend = () => document.getElementById("micBtn").classList.remove("mic-active");
+    recognition.start();
+  } else { appendBubble("bot", "Sorry boss, Voice Input is not supported sa browser mo."); }
+};
+
+window.sendQuickReply = function (text) {
+  document.getElementById("userQuery").value = text;
+  askLexie();
+};
+
+// FIX: TTS queue — cancel is now done in askLexie() before each new message
 let speechQueue = [], isSpeaking = false;
-window.speakText = function(text) {
-    if (!window.speechSynthesis || isMuted) return;
-    let cleanText = text.replace(/\[CALENDAR:.*?\]/g, '').replace(/\*/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-    let sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
-    speechQueue.push(...sentences);
-    if (!isSpeaking) processSpeechQueue();
+window.speakText = function (text) {
+  if (!window.speechSynthesis || isMuted) return;
+  let cleanText = text
+    .replace(/\[CALENDAR:.*?\]/g, "")
+    .replace(/\*/g, "")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
+  let sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
+  speechQueue.push(...sentences);
+  if (!isSpeaking) processSpeechQueue();
 };
 
 function processSpeechQueue() {
-    if (speechQueue.length === 0 || isMuted) { isSpeaking = false; return; }
-    isSpeaking = true; let sentence = speechQueue.shift().trim();
-    if (!sentence) { processSpeechQueue(); return; }
-    let utterance = new SpeechSynthesisUtterance(sentence);
-    let voices = window.speechSynthesis.getVoices();
-    let voice = voices.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Google US English") || v.name.includes("Female") || v.name.includes("Enhanced")) || voices[0];
-    if (voice) utterance.voice = voice; utterance.lang = "en-US"; utterance.pitch = 1.15; utterance.rate = 0.85;
-    utterance.onend = () => processSpeechQueue(); 
-    utterance.onerror = () => { console.warn("TTS Error"); processSpeechQueue(); }; 
-    try { window.speechSynthesis.speak(utterance); } catch(e) { processSpeechQueue(); }
+  if (speechQueue.length === 0 || isMuted) { isSpeaking = false; return; }
+  isSpeaking = true;
+  let sentence = speechQueue.shift().trim();
+  if (!sentence) { processSpeechQueue(); return; }
+  let utterance = new SpeechSynthesisUtterance(sentence);
+  let voices = window.speechSynthesis.getVoices();
+  let voice = voices.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Google US English") || v.name.includes("Female") || v.name.includes("Enhanced")) || voices[0];
+  if (voice) utterance.voice = voice;
+  utterance.lang = "en-US"; utterance.pitch = 1.15; utterance.rate = 0.85;
+  utterance.onend = () => processSpeechQueue();
+  utterance.onerror = () => { console.warn("TTS Error"); processSpeechQueue(); };
+  try { window.speechSynthesis.speak(utterance); } catch (e) { processSpeechQueue(); }
 }
 
-window.addEventListener('load', () => {
-    const t = document.getElementById("chatBody");
-    if (t) {
-        if (lexieMemory.length === 0) {
-            appendBubble("bot", "Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! I can read images and save your quotes. Paano kita matutulungan boss?");
+window.addEventListener("load", () => {
+  const t = document.getElementById("chatBody");
+  if (t) {
+    if (lexieMemory.length === 0) {
+      appendBubble("bot", "Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! I can read images and save your quotes. Paano kita matutulungan boss?");
+    } else {
+      lexieMemory.forEach(m => {
+        if (m.role === "system") return;
+        const isUser = m.role === "user";
+        const safeContent = escapeHTML(m.content).replace(/\[SYSTEM NOTE.*?\]/g, "[Image Attached]");
+        if (isUser) {
+          appendBubble("user", safeContent);
         } else {
-            lexieMemory.forEach(m => {
-                if (m.role === "system") return;
-                const isUser = m.role === "user";
-                const safeContent = escapeHTML(m.content).replace(/\[SYSTEM NOTE.*?\]/g, "[Image Attached]");
-                if (isUser) {
-                    appendBubble("user", safeContent);
-                } else {
-                    const b = document.createElement("div");
-                    b.className = "chat-bubble";
-                    b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;";
-                    b.textContent = "Lexie: " + m.content;
-                    t.appendChild(b);
-                }
-            });
-            t.scrollTop = t.scrollHeight;
+          const b = document.createElement("div");
+          b.className = "chat-bubble";
+          b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;";
+          b.textContent = "Lexie: " + m.content;
+          t.appendChild(b);
         }
+      });
+      t.scrollTop = t.scrollHeight;
     }
+  }
 
-    let currentPageName = document.title.split('|')[0].trim() || "kabilang page";
-    let lastPage = sessionStorage.getItem('kohmz_last_page');
-    if (lastPage && lastPage !== currentPageName && lexieMemory.length > 0) {
-        setTimeout(() => { appendBubble("bot", `Uy boss, napadaan ka pala dito sa ${escapeHTML(currentPageName)}! May napusuan ka bang service natin dito? I-chat mo lang ako ha!`); }, 1500);
-    }
-    sessionStorage.setItem('kohmz_last_page', currentPageName);
+  let currentPageName = document.title.split("|")[0].trim() || "kabilang page";
+  let lastPage = sessionStorage.getItem("kohmz_last_page");
+  if (lastPage && lastPage !== currentPageName && lexieMemory.length > 0) {
+    setTimeout(() => { appendBubble("bot", `Uy boss, napadaan ka pala dito sa ${escapeHTML(currentPageName)}! May napusuan ka bang service natin dito? I-chat mo lang ako ha!`); }, 1500);
+  }
+  sessionStorage.setItem("kohmz_last_page", currentPageName);
 });
 
-// ── UI Listeners (Bot Drag, Exit Intent) ─────────
+// ── UI Listeners (Bot Drag, Exit Intent) ─────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-    const inputEl = document.getElementById("userQuery");
-    if (inputEl) {
-        inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); } });
-        inputEl.addEventListener("focus", () => { setTimeout(() => { const t = document.getElementById("chatBody"); t.scrollTop = t.scrollHeight; }, 300); });
-    }
+  const inputEl = document.getElementById("userQuery");
+  if (inputEl) {
+    inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); } });
+    inputEl.addEventListener("focus", () => { setTimeout(() => { const t = document.getElementById("chatBody"); t.scrollTop = t.scrollHeight; }, 300); });
+  }
 
-    const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
-    if(wrap && toggle) {
-        let isDrag = false, startX, startY, xOff = 0, yOff = 0;
-        
-        toggle.addEventListener("mousedown", e => { isDrag = true; startX = e.clientX - xOff; startY = e.clientY - yOff; });
-        window.addEventListener("mousemove", e => { if (isDrag) { xOff = e.clientX - startX; yOff = e.clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; } });
-        window.addEventListener("mouseup", () => isDrag = false);
-        
-        toggle.addEventListener("touchstart", e => { isDrag = true; startX = e.touches[0].clientX - xOff; startY = e.touches[0].clientY - yOff; }, {passive: true});
-        window.addEventListener("touchmove", e => { if (isDrag) { xOff = e.touches[0].clientX - startX; yOff = e.touches[0].clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; e.preventDefault(); } }, {passive: false});
-        window.addEventListener("touchend", () => isDrag = false);
+  const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
+  if (wrap && toggle) {
+    let isDrag = false, startX, startY, xOff = 0, yOff = 0;
 
-        toggle.addEventListener("click", () => { if(!isDrag) window.toggleBotWindow(); });
-    }
+    toggle.addEventListener("mousedown", e => { isDrag = true; startX = e.clientX - xOff; startY = e.clientY - yOff; });
+    window.addEventListener("mousemove", e => { if (isDrag) { xOff = e.clientX - startX; yOff = e.clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; } });
+    window.addEventListener("mouseup", () => isDrag = false);
+
+    toggle.addEventListener("touchstart", e => { isDrag = true; startX = e.touches[0].clientX - xOff; startY = e.touches[0].clientY - yOff; }, { passive: true });
+    window.addEventListener("touchmove", e => { if (isDrag) { xOff = e.touches[0].clientX - startX; yOff = e.touches[0].clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; e.preventDefault(); } }, { passive: false });
+    window.addEventListener("touchend", () => isDrag = false);
+
+    toggle.addEventListener("click", () => { if (!isDrag) window.toggleBotWindow(); });
+  }
 });
 
-window.toggleBotWindow = function() {
-    const win = document.getElementById("chatWindow"), hint = document.getElementById("dragHint");
-    if (isSpeaking || window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false; window.isReadingPage = false; }
-    if (win.style.display === "flex") { win.style.display = "none"; if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "⚡ KOHMZ Lexie Pro"; } 
-    else { win.style.display = "flex"; if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "🖐️ Drag to Move"; }
+window.toggleBotWindow = function () {
+  const win = document.getElementById("chatWindow"), hint = document.getElementById("dragHint");
+  if (isSpeaking || window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false;
+  }
+  if (win.style.display === "flex") {
+    win.style.display = "none";
+    if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "⚡ KOHMZ Lexie Pro";
+  } else {
+    win.style.display = "flex";
+    if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "🖐️ Drag to Move";
+  }
 };
 
 function triggerExitIntent() {
-    if (isGodMode || sessionStorage.getItem('exit_offered')) return;
-    const chat = document.getElementById("chatWindow");
-    if (chat && chat.style.display !== "flex") { chat.style.display = "flex"; const hint = document.getElementById("dragHint"); if (hint) hint.innerHTML = "🖐️ Drag to Move"; }
-    appendBubble("bot", "Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊");
-    sessionStorage.setItem('exit_offered', 'true');
-    if (window.speechSynthesis && !isMuted) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
+  if (isGodMode || sessionStorage.getItem("exit_offered")) return;
+  const chat = document.getElementById("chatWindow");
+  if (chat && chat.style.display !== "flex") {
+    chat.style.display = "flex";
+    const hint = document.getElementById("dragHint");
+    if (hint) hint.innerHTML = "🖐️ Drag to Move";
+  }
+  appendBubble("bot", "Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊");
+  sessionStorage.setItem("exit_offered", "true");
+  if (window.speechSynthesis && !isMuted) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
 }
 
 document.addEventListener("mouseleave", (e) => { if (e.clientY < 0) triggerExitIntent(); });
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === 'hidden') triggerExitIntent(); });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") triggerExitIntent(); });
 
 let lastScrollTop = 0, lastScrollTime = Date.now();
-window.addEventListener("scroll", () => { 
-    let st = window.pageYOffset || document.documentElement.scrollTop; 
-    let now = Date.now(), timeDiff = now - lastScrollTime; 
-    if (st < lastScrollTop - 250 && timeDiff < 100) triggerExitIntent(); 
-    lastScrollTop = st <= 0 ? 0 : st; 
-    lastScrollTime = now; 
+window.addEventListener("scroll", () => {
+  let st = window.pageYOffset || document.documentElement.scrollTop;
+  let now = Date.now(), timeDiff = now - lastScrollTime;
+  if (st < lastScrollTop - 250 && timeDiff < 100) triggerExitIntent();
+  lastScrollTop = st <= 0 ? 0 : st;
+  lastScrollTime = now;
 }, { passive: true });
