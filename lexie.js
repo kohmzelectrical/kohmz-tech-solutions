@@ -1,9 +1,9 @@
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V18.6.1 (STEALTH PROTOCOL - GLOBAL SYNC FIX)
+// KOHMZ LEXIE AI — FRONTEND V18.6.2 (STEALTH PROTOCOL - GLOBAL SYNC & PDF FIX)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
-// 🛡️ SECURED IN-MEMORY STATE (No LocalStorage/SessionStorage for Keys)
+// 🛡️ SECURED IN-MEMORY STATE
 let isGodMode = false;
 let godName = "";
 let mySecretAdminToken = ""; 
@@ -54,39 +54,52 @@ let currentImageData = null;
 
 // ── God Mode UI Handlers ────────────────────────────────────
 function applyGodModeUI() {
-    document.getElementById("dragHint").innerText = "👑 IMMORTAL MODE";
-    document.getElementById("dragHint").classList.add('god-mode-tag');
+    const hint = document.getElementById("dragHint");
+    if(hint) {
+        hint.innerText = "👑 IMMORTAL MODE";
+        hint.classList.add('god-mode-tag');
+    }
     const tsCont = document.getElementById("cf-turnstile-container");
     if (tsCont) tsCont.style.display = "none";
     const btn = document.getElementById('mainSendBtn');
     if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
-    document.getElementById("chatHeader").firstElementChild.textContent = `LEXIE AI: IMMORTAL (${godName}) 👑`;
+    const header = document.getElementById("chatHeader");
+    if(header) header.firstElementChild.textContent = `LEXIE AI: IMMORTAL (${godName}) 👑`;
 }
 
 window.exitGodMode = function() {
     if (!isGodMode) return;
     
-    // 1. Wipe in-memory security keys
     isGodMode = false; 
     godName = "";
     mySecretAdminToken = "";
     
-    // 2. Wipe chat memory and screen
     lexieMemory = [];
     sessionStorage.removeItem('lexie_memory');
     document.getElementById("chatBody").innerHTML = ""; 
     
-    // 3. Reset UI
-    document.getElementById("dragHint").innerText = "⚡ KOHMZ Lexie Pro";
-    document.getElementById("dragHint").classList.remove('god-mode-tag');
+    const hint = document.getElementById("dragHint");
+    if(hint) {
+        hint.innerText = "⚡ KOHMZ Lexie Pro";
+        hint.classList.remove('god-mode-tag');
+    }
     const tsCont = document.getElementById("cf-turnstile-container");
     if (tsCont) tsCont.style.display = "flex";
-    document.getElementById("chatHeader").firstElementChild.textContent = "LEXIE AI: SYSTEM ACTIVE";
+    const header = document.getElementById("chatHeader");
+    if(header) header.firstElementChild.textContent = "LEXIE AI: SYSTEM ACTIVE";
     resetTurnstile();
     
-    // 4. Send reset notification
     appendBubble("bot", "Immortal Mode deactivated. Session memory wiped. Returning to standard protocol.");
 };
+
+// ── Number Formatter Helper (Auto-Comma) ─────────────────────
+function formatNumbers(text) {
+    if (!text) return "";
+    // Regex matches 4+ digit numbers not starting with 09 or +63 (ignores phone numbers)
+    return text.replace(/(?<!\d)(?!09|639|\+639)\d{4,}(?!\d)/g, function(match) {
+        return parseInt(match, 10).toLocaleString('en-US');
+    });
+}
 
 // ── Bubble Helper ────────────────────────────────────────────
 function escapeHTML(str) {
@@ -130,7 +143,6 @@ window.askLexie = async function(retryMessage = null) {
     
     if (!n && !currentImageData) return;
 
-    // CAPTCHA check for normal clients
     if (!isGodMode) {
         if (messageCount >= 2 && !currentTurnstileToken) {
             appendBubble("bot", "⚠️ Boss, paki-check muna yung security box (I am not a robot) sa ibaba para makapag-tuloy tayo.");
@@ -138,7 +150,6 @@ window.askLexie = async function(retryMessage = null) {
         }
     }
 
-    // Only process UI input clearing and memory saving if it's a fresh message
     if (retryMessage === null) {
         appendBubble("user", n || "[Image Attached]");
         inputEl.value = "";
@@ -175,50 +186,50 @@ window.askLexie = async function(retryMessage = null) {
                 history: lexieMemory.slice(-8),
                 turnstileToken: currentTurnstileToken,
                 vipName: godName,
-                adminToken: mySecretAdminToken // 🛡️ Sent invisibly
+                adminToken: mySecretAdminToken 
             })
         });
 
         const result = await response.json();
         document.getElementById(loadId)?.remove();
 
-        // 🚨 STEALTH PROTOCOL: BACKEND CHALLENGE INTERCEPTOR
         if (result.auth_challenge) {
             mySecretAdminToken = prompt("🔒 VIP SYSTEM DETECTED.\nPlease enter Master Key to proceed:");
             if (!mySecretAdminToken) {
                 appendBubble("bot", "⚠️ Auth canceled. Proceeding as standard client.");
                 return; 
             }
-            // Retry the execution invisibly with the token
             return askLexie(n); 
         }
 
-        // --- SUCCESSFUL GOD MODE ACTIVATION ---
         if (result.god_mode_activated) {
             isGodMode = true;
             godName = result.god_name || "Admin"; 
             applyGodModeUI();
         }
 
-        // --- UI EFFECT HANDLERS ---
         if (result.code_red) {
             document.body.classList.add("mode-red");
             setTimeout(() => document.body.classList.remove("mode-red"), 6000);
             
             document.getElementById("chatWindow").classList.add("code-red-active");
             const header = document.getElementById("chatHeader");
-            header.style.color = "#e11d48";
-            header.firstElementChild.textContent = "⚠️ CODE RED DETECTED";
+            if(header) {
+                header.style.color = "#e11d48";
+                header.firstElementChild.textContent = "⚠️ CODE RED DETECTED";
+            }
             
-            // If wrong password was provided to backend, wipe it
             if (result.ai_answer.includes("SECURITY ALERT")) {
                 mySecretAdminToken = "";
             }
         } else {
-            document.getElementById("chatWindow").classList.remove("code-red-active");
+            const chatWin = document.getElementById("chatWindow");
+            if(chatWin) chatWin.classList.remove("code-red-active");
             const header = document.getElementById("chatHeader");
-            header.style.color = "var(--cyber-blue)";
-            header.firstElementChild.textContent = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE";
+            if(header) {
+                header.style.color = "var(--cyber-blue)";
+                header.firstElementChild.textContent = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE";
+            }
             
             if (result.quote_ready || result.has_estimate || result.has_agreement) {
                 document.body.classList.add("mode-gold");
@@ -226,15 +237,18 @@ window.askLexie = async function(retryMessage = null) {
             }
         }
 
-        // --- RESPONSE RENDERING ---
+        // Format commas for numbers in the AI's chat reply
         const rawAiReply = result.ai_answer || "Error processing request.";
-        let displayHtml = escapeHTML(rawAiReply);
-        let textToSpeak = rawAiReply;
+        const formattedReply = formatNumbers(rawAiReply); 
+        
+        let displayHtml = escapeHTML(formattedReply);
+        let textToSpeak = formattedReply;
 
         if (result.code_red && !result.ai_answer.includes("SECURITY ALERT")) {
              displayHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
         }
 
+        // Distinct UI Triggers for Estimate vs Agreement
         if (result.has_estimate && !result.code_red) {
             const cleanDataForPDF = result.pdf_data
                 .replace(/\*\*/g, '').replace(/\*/g, '')
@@ -242,7 +256,7 @@ window.askLexie = async function(retryMessage = null) {
                 .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, '')
                 .trim();
             sessionStorage.setItem('lastEst', cleanDataForPDF);
-            displayHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Download Official Estimate</button>`;
+            displayHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf" style="width:100%; text-align:center;"><i class="fas fa-file-invoice-dollar"></i> Download Official Estimate</button>`;
             textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
         }
 
@@ -253,7 +267,7 @@ window.askLexie = async function(retryMessage = null) {
                 .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, '')
                 .trim();
             sessionStorage.setItem('lastAgreement', cleanDataForAgreement);
-            displayHtml += `<br><br><button id="dlAgreeBtn" onclick="downloadAgreement()" class="btn-pdf" style="background:var(--cyber-blue);color:#000;"><i class="fas fa-file-contract"></i> Download Service Agreement</button>`;
+            displayHtml += `<br><br><button id="dlAgreeBtn" onclick="downloadAgreement()" class="btn-pdf" style="width:100%; text-align:center; background:var(--cyber-blue); color:#000;"><i class="fas fa-file-signature"></i> Download Service Agreement</button>`;
             textToSpeak += " Handa na rin po ang Service Agreement natin boss, i-download niyo na lang po. ";
         }
 
@@ -274,8 +288,7 @@ window.askLexie = async function(retryMessage = null) {
     }
 };
 
-
-// ── PDF Generators ───────────────────────────────────────────
+// ── PDF Generators (Upgraded Format & Pagination) ─────────────
 window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) { alert("System Error: No estimate data found."); return; }
@@ -319,7 +332,9 @@ window.downloadPDF = async function() {
         doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
         doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
 
-        let parts = data.split(/[-=]{10,}/);
+        // Apply Comma Formatter to PDF content
+        const formattedData = formatNumbers(data);
+        let parts = formattedData.split(/[-=]{10,}/);
         let itemsStr = parts[0] || "";
         let restorationStr = (parts[1] || "").trim();
         let totalStr = (parts[2] || "").trim();
@@ -400,7 +415,7 @@ window.downloadPDF = async function() {
         console.error(err);
         alert("Error generating PDF. The format received might be invalid.");
     } finally {
-        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Official Estimate'; btn.style.opacity = '1'; }
+        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-invoice-dollar"></i> Download Official Estimate'; btn.style.opacity = '1'; }
     }
 };
 
@@ -449,25 +464,33 @@ window.downloadAgreement = async function() {
 
         doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
         
+        // Format numbers before rendering agreement text
+        const formattedData = formatNumbers(data);
+        
         let lines = [];
-        if (data && typeof data === 'string') {
-            lines = doc.splitTextToSize(data, contentWidth - 10);
+        if (formattedData && typeof formattedData === 'string') {
+            lines = doc.splitTextToSize(formattedData, contentWidth - 10);
         } else {
             lines = ["Data format error occurred."];
         }
         
         let cursorY = 75;
         let boxStartY = 55;
-        const lineHeight = 5.5;
-        const pageMaxY = 240; 
+        const lineHeight = 6; // Adjusted line height for readability
+        const pageMaxY = 250; // Proper pagination trigger
 
         for (let i = 0; i < lines.length; i++) {
             if (cursorY + lineHeight > pageMaxY) {
+                // Close box on current page
                 doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
-                doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
-                doc.setDrawColor(200, 200, 200); doc.line(margin, 255, rightAlign, 255);
+                doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 2, 'S');
+                
+                // Print Footer
+                doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
                 doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
-                doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, 260, {align:"center"});
+                doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, 265, {align:"center"});
+                
+                // Create New Page
                 doc.addPage();
                 boxStartY = 20;
                 cursorY = 30;
@@ -479,19 +502,22 @@ window.downloadAgreement = async function() {
             cursorY += lineHeight;
         }
         
+        // Final Box Closure
         doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
         doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
-        doc.setDrawColor(200, 200, 200); doc.line(margin, pageMaxY, rightAlign, pageMaxY);
+        
+        // Final Footer
+        doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
         doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
-        doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, pageMaxY + 5, {align:"center"});
-        doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, pageMaxY + 8, {align:"center"});
+        doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, 265, {align:"center"});
+        doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, 268, {align:"center"});
 
         doc.save(`KOHMZ_Agreement_${userId.substring(0,5)}.pdf`);
     } catch(err) {
         console.error(err);
         alert("Error generating Agreement PDF. The format received might be invalid.");
     } finally {
-        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-contract"></i> Download Service Agreement'; btn.style.opacity = '1'; }
+        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-signature"></i> Download Service Agreement'; btn.style.opacity = '1'; }
     }
 };
 
@@ -597,7 +623,6 @@ window.addEventListener('load', () => {
 
 // ── UI Listeners (Bot Drag, Exit Intent) ─────────
 document.addEventListener("DOMContentLoaded", () => {
-    
     const inputEl = document.getElementById("userQuery");
     if (inputEl) {
         inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); } });
