@@ -1,16 +1,13 @@
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V19.0.0 (PATCHED & HARDENED)
-// FIXES: TTS Queue Cancel on New Message, Admin Token Session Storage,
-//        Memory Purge on God Mode Login, Corrected Image Size Check,
-//        Localhost CORS removed, Identity references cleaned
+// KOHMZ LEXIE AI — FRONTEND V20.0.0 (GOD-TIER STREAMING EDITION)
+// FIXES: Real-Time SSE Streaming, Invisible JSON Buffering,
+//        Dual-Receiver Logic, Smart Sync TTS
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
 // 🛡️ SECURED IN-MEMORY STATE
 let isGodMode = false;
 let godName = "";
-// FIX: Admin token stored in sessionStorage (tab-scoped), not sent on every message
-// It is loaded once on VIP auth and cleared on exit
 let mySecretAdminToken = sessionStorage.getItem("kohmz_admin_token") || "";
 
 // ── Mute & Turnstile Logic ──────────────────────────────────
@@ -90,7 +87,6 @@ window.exitGodMode = function () {
   isGodMode = false;
   godName = "";
   mySecretAdminToken = "";
-  // FIX: Clear stored admin token on exit
   sessionStorage.removeItem("kohmz_admin_token");
 
   lexieMemory = [];
@@ -114,7 +110,6 @@ window.exitGodMode = function () {
 // ── Number Formatter Helper (Auto-Comma) ─────────────────────
 function formatNumbers(text) {
   if (!text) return "";
-  // Matches 4+ digit numbers, skips phone numbers starting with 09 or +63
   return text.replace(/(?<!\d)(?!09|639|\+639)\d{4,}(?!\d)/g, function (match) {
     return parseInt(match, 10).toLocaleString("en-US");
   });
@@ -154,7 +149,7 @@ function appendBubble(role, htmlContent, rawTextForTTS) {
   return b;
 }
 
-// ── Main Chat Engine (Ask Lexie) ─────────────────────────────
+// ── Main Chat Engine (Ask Lexie V20 STREAMING) ─────────────────────────────
 window.askLexie = async function (retryMessage = null) {
   const inputEl = document.getElementById("userQuery");
   const t = document.getElementById("chatBody");
@@ -169,7 +164,6 @@ window.askLexie = async function (retryMessage = null) {
     }
   }
 
-  // FIX: Cancel any ongoing TTS before processing new message
   if (window.speechSynthesis) {
     window.speechSynthesis.cancel();
     speechQueue = [];
@@ -191,13 +185,8 @@ window.askLexie = async function (retryMessage = null) {
   }
 
   const loadId = "load-" + Date.now();
-  const loadBubble = document.createElement("div");
-  loadBubble.className = "chat-bubble";
-  loadBubble.id = loadId;
-  loadBubble.style.borderLeft = "3px solid var(--cyber-blue)";
-  loadBubble.innerHTML = 'Lexie is analyzing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>';
-  t.appendChild(loadBubble);
-  t.scrollTop = t.scrollHeight;
+  const botBubble = appendBubble("bot", 'Lexie is analyzing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>');
+  botBubble.id = loadId;
 
   try {
     const response = await fetch(WORKER_URL, {
@@ -212,50 +201,92 @@ window.askLexie = async function (retryMessage = null) {
         history: lexieMemory.slice(-8),
         turnstileToken: currentTurnstileToken,
         vipName: godName,
-        // FIX: Admin token sent from sessionStorage — not from a global variable exposed in every call
         adminToken: mySecretAdminToken
       })
     });
 
-    const result = await response.json();
-    document.getElementById(loadId)?.remove();
+    const contentType = response.headers.get("content-type") || "";
 
-    if (result.auth_challenge) {
-      const enteredToken = prompt("🔒 VIP SYSTEM DETECTED.\nPlease enter Master Key to proceed:");
-      if (!enteredToken) {
-        appendBubble("bot", "⚠️ Auth canceled. Proceeding as standard client.");
-        return;
+    // ⚡ 1. JSON FALLBACK (For Auth, Bans, Errors)
+    if (contentType.includes("application/json")) {
+      const result = await response.json();
+      
+      if (result.auth_challenge) {
+        const enteredToken = prompt("🔒 VIP SYSTEM DETECTED.\nPlease enter Master Key to proceed:");
+        if (!enteredToken) {
+          botBubble.innerHTML = "Lexie: ⚠️ Auth canceled. Proceeding as standard client.";
+          return;
+        }
+        mySecretAdminToken = enteredToken;
+        sessionStorage.setItem("kohmz_admin_token", enteredToken);
+        botBubble.remove();
+        return askLexie(n);
       }
-      // FIX: Store admin token in sessionStorage (tab-scoped, not every message body)
-      mySecretAdminToken = enteredToken;
-      sessionStorage.setItem("kohmz_admin_token", enteredToken);
-      return askLexie(n);
+
+      if (result.god_mode_activated) {
+        isGodMode = true;
+        godName = result.god_name || "Admin";
+        lexieMemory = [];
+        sessionStorage.removeItem("lexie_memory");
+        applyGodModeUI();
+      }
+
+      botBubble.innerHTML = "Lexie: " + escapeHTML(result.ai_answer || "System error.");
+      window.speakText(result.ai_answer || "");
+      return;
     }
 
-    if (result.god_mode_activated) {
-      isGodMode = true;
-      godName = result.god_name || "Admin";
-      // FIX: Purge previous client memory when entering God Mode
-      lexieMemory = [];
-      sessionStorage.removeItem("lexie_memory");
-      applyGodModeUI();
+    // ⚡ 2. STREAMING MODE (The God-Tier Magic)
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let fullText = "";
+    botBubble.innerHTML = "Lexie: "; 
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      
+      const chunk = decoder.decode(value, { stream: true });
+      const lines = chunk.split('\n');
+      
+      for (const line of lines) {
+        if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+          try {
+            const data = JSON.parse(line.slice(6));
+            if (data.response) {
+              fullText += data.response;
+              
+              // 🛡️ THE INVISIBLE BUFFER: Hide JSON blocks from UI during typing
+              let displayHtml = fullText
+                .replace(/ESTIMATE_JSON_START[\s\S]*?(ESTIMATE_JSON_END)?/gi, "")
+                .replace(/\[AGREEMENT_START\][\s\S]*?(\[AGREEMENT_END\])?/gi, "")
+                .replace(/\[UI_ACTION:.*?\]/g, "")
+                .replace(/\*\*/g, "")
+                .trim();
+              
+              botBubble.innerHTML = "Lexie: " + escapeHTML(formatNumbers(displayHtml));
+              t.scrollTop = t.scrollHeight; 
+            }
+          } catch (e) {}
+        }
+      }
     }
 
-    if (result.code_red) {
+    // ⚡ 3. POST-STREAM PROCESSING (Extracting the Invisible JSON)
+    let finalHtml = botBubble.innerHTML;
+    let textToSpeak = fullText.replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "").replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "").replace(/\[.*?\]/g, "").trim();
+
+    // Code Red
+    if (fullText.includes("[UI_ACTION:CODE_RED]")) {
       document.body.classList.add("mode-red");
       setTimeout(() => document.body.classList.remove("mode-red"), 6000);
-
       document.getElementById("chatWindow").classList.add("code-red-active");
       const header = document.getElementById("chatHeader");
       if (header) {
         header.style.color = "#e11d48";
         header.firstElementChild.textContent = "⚠️ CODE RED DETECTED";
       }
-
-      if (result.ai_answer.includes("SECURITY ALERT")) {
-        mySecretAdminToken = "";
-        sessionStorage.removeItem("kohmz_admin_token");
-      }
+      finalHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
     } else {
       const chatWin = document.getElementById("chatWindow");
       if (chatWin) chatWin.classList.remove("code-red-active");
@@ -264,55 +295,64 @@ window.askLexie = async function (retryMessage = null) {
         header.style.color = "var(--cyber-blue)";
         header.firstElementChild.textContent = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE";
       }
+    }
 
-      if (result.quote_ready || result.has_estimate || result.has_agreement) {
+    // Extract Strict JSON Estimate
+    const jsonMatch = fullText.match(/ESTIMATE_JSON_START\s*([\s\S]*?)\s*ESTIMATE_JSON_END/i);
+    if (jsonMatch) {
+      try {
+        const estimateJSON = JSON.parse(jsonMatch[1].trim());
+        let pdfLines = estimateJSON.items.map(it => `ITEM: ${it.item}\nQTY: ${it.qty}\nLABOR COST: ${it.labor}\nMATERIALS COST: ${it.materials}`).join("\n|||\n");
+        pdfLines += `\n-----------------------------------\nRESTORATION COST: ${estimateJSON.restoration}\n-----------------------------------\nGRAND TOTAL ESTIMATE: ${estimateJSON.grand_total}`;
+        
+        const cleanDataForPDF = pdfLines.replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
+        sessionStorage.setItem("lastEst", cleanDataForPDF);
+        
         document.body.classList.add("mode-gold");
         setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
+        
+        finalHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf" style="width:100%; text-align:center;"><i class="fas fa-file-invoice-dollar"></i> Download Official Estimate</button>`;
+        textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
+      } catch (e) {
+        console.error("Failed to parse estimate JSON", e);
       }
+    } else {
+       // Legacy Fallback just in case
+       const pdfMatch = fullText.match(/\[PDF_START\]([\s\S]*?)\[PDF_END\]/i);
+       if(pdfMatch) {
+          const cleanDataForPDF = pdfMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
+          sessionStorage.setItem("lastEst", cleanDataForPDF);
+          document.body.classList.add("mode-gold");
+          setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
+          finalHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf" style="width:100%; text-align:center;"><i class="fas fa-file-invoice-dollar"></i> Download Official Estimate</button>`;
+          textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
+       }
     }
 
-    const rawAiReply = result.ai_answer || "Error processing request.";
-    const formattedReply = formatNumbers(rawAiReply);
-
-    let displayHtml = escapeHTML(formattedReply);
-    let textToSpeak = formattedReply;
-
-    if (result.code_red && !result.ai_answer.includes("SECURITY ALERT")) {
-      displayHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
-    }
-
-    if (result.has_estimate && !result.code_red) {
-      const cleanDataForPDF = result.pdf_data
-        .replace(/\*\*/g, "").replace(/\*/g, "")
-        .replace(/₱/g, "PHP ")
-        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, "")
-        .trim();
-      sessionStorage.setItem("lastEst", cleanDataForPDF);
-      displayHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf" style="width:100%; text-align:center;"><i class="fas fa-file-invoice-dollar"></i> Download Official Estimate</button>`;
-      textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
-    }
-
-    if (result.has_agreement && !result.code_red) {
-      const cleanDataForAgreement = result.agreement_data
-        .replace(/\*\*/g, "").replace(/\*/g, "")
-        .replace(/₱/g, "PHP ")
-        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{E0000}-\u{E007F}\u200D\u20E3]/gu, "")
-        .trim();
+    // Service Agreement
+    const agreeMatch = fullText.match(/\[AGREEMENT_START\]([\s\S]*?)\[AGREEMENT_END\]/i);
+    if (agreeMatch) {
+      const cleanDataForAgreement = agreeMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
       sessionStorage.setItem("lastAgreement", cleanDataForAgreement);
-      displayHtml += `<br><br><button id="dlAgreeBtn" onclick="downloadAgreement()" class="btn-pdf" style="width:100%; text-align:center; background:var(--cyber-blue); color:#000;"><i class="fas fa-file-signature"></i> Download Service Agreement</button>`;
+      
+      document.body.classList.add("mode-gold");
+      setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
+      
+      finalHtml += `<br><br><button id="dlAgreeBtn" onclick="downloadAgreement()" class="btn-pdf" style="width:100%; text-align:center; background:var(--cyber-blue); color:#000;"><i class="fas fa-file-signature"></i> Download Service Agreement</button>`;
       textToSpeak += " Handa na rin po ang Service Agreement natin boss, i-download niyo na lang po. ";
     }
 
-    lexieMemory.push({ role: "assistant", content: rawAiReply });
+    botBubble.innerHTML = finalHtml;
+    window.speakText(textToSpeak);
+
+    // Save history with tags masked out
+    lexieMemory.push({ role: "assistant", content: fullText.replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "[Provided Estimate]").replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "[Provided Agreement]") });
     if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
     sessionStorage.setItem("lexie_memory", JSON.stringify(lexieMemory));
 
-    appendBubble("bot", displayHtml, textToSpeak);
-    window.speakText(textToSpeak.replace(/\[UI_ACTION:.*?\]/g, ""));
-
   } catch (err) {
     const lb = document.getElementById(loadId);
-    if (lb) lb.textContent = "Si Lexie ay sandaling nagpapahinga! Makipag-ugnayan sa amin directly sa 0926-617-4131 (Viber/WhatsApp) o bisitahin ang kohmzelectrical.com. Pasensya na po!";
+    if (lb) lb.textContent = "Lexie: Connection Firewall blocked. Please try again.";
     resetTurnstile();
   } finally {
     clearImage();
@@ -546,7 +586,6 @@ window.downloadAgreement = async function () {
 // ── Multimedia & Integrations ───────────────────────────────
 window.handleImage = function (input) {
   if (input.files && input.files[0]) {
-    // FIX: Consistent 5MB check on the frontend (actual binary size, not base64 length)
     if (input.files[0].size > 5 * 1024 * 1024) {
       const chat = document.getElementById("chatWindow");
       if (chat.style.display !== "flex") chat.style.display = "flex";
@@ -591,7 +630,6 @@ window.sendQuickReply = function (text) {
   askLexie();
 };
 
-// FIX: TTS queue — cancel is now done in askLexie() before each new message
 let speechQueue = [], isSpeaking = false;
 window.speakText = function (text) {
   if (!window.speechSynthesis || isMuted) return;
