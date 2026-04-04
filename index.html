@@ -85,40 +85,39 @@
         .p5{left:45%; width:6px; height:6px; animation-duration:12s; animation-delay:5s; background:var(--neon-gold); box-shadow:0 0 15px var(--neon-gold);}
         @keyframes floatUp { 0%{transform:translateY(100vh) scale(0.5);opacity:0} 20%{opacity:0.8} 80%{opacity:0.8} 100%{transform:translateY(-10vh) scale(1.5);opacity:0} }
 
-        .tech-bar { height:35px; background:#010409; border-bottom:1px solid var(--blue-glow); position:relative; z-index:1001; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:0 0 20px rgba(0,229,255,0.3); }
+        .tech-bar { height:35px; background:#010409; border-bottom:1px solid var(--blue-glow); position:relative; z-index:10; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:0 0 20px rgba(0,229,255,0.3); }
         .tech-bar::after { content:''; position:absolute; top:0; left:-100%; width:50%; height:100%; background:linear-gradient(90deg, transparent, rgba(0,229,255,0.2), transparent); animation: scanline 4s infinite linear; }
         @keyframes scanline { 100%{left:200%} }
         .tech-bar-content { display:flex; align-items:center; justify-content:center; font-family:'Share Tech Mono',monospace; }
-        .electric-text { color:var(--cyber-blue); font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:1.5px; text-shadow:0 0 10px var(--cyber-blue); }
+        .electric-text { color:var(--cyber-blue); font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1.5px; text-shadow:0 0 10px var(--cyber-blue); }
         .electric-icon { color:var(--cyber-blue); margin-right:10px; font-size:14px; animation:pulseBolt 1s infinite; }
         @keyframes pulseBolt { 0%,100%{text-shadow:0 0 8px var(--cyber-blue);opacity:1} 50%{text-shadow:0 0 25px #fff;opacity:0.4} }
         .tech-cursor { color:var(--cyber-blue); font-weight:bold; animation:blink .8s step-end infinite; }
 
-        header{background:rgba(8,16,24,0.85); padding:15px 30px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000; border-bottom:1px solid var(--cyber-blue); backdrop-filter:blur(15px); box-shadow:0 10px 30px rgba(0,0,0,0.6), inset 0 -2px 10px rgba(0,229,255,0.1);}
+        header{background:rgba(8,16,24,0.92); padding:12px 30px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000; border-bottom:1px solid var(--cyber-blue); backdrop-filter:blur(15px); box-shadow:0 10px 30px rgba(0,0,0,0.6);}
         .logo{display:flex; align-items:center; gap:12px; text-decoration:none; transition: transform 0.3s;}
         .logo:hover { transform: scale(1.02); }
         .logo img{height:38px; width:38px; border-radius:4px; border:1px solid var(--cyber-blue); box-shadow:0 0 15px rgba(0,229,255,0.6);}
-        .logo-text{font-size:22px; margin:0; font-weight:900; color:#fff; display:inline-block; text-shadow: 0 0 10px rgba(255,255,255,0.2);}
+        .logo-text{font-size:22px; margin:0; font-weight:900; color:#fff; display:inline-block; line-height:1.1; padding-top:2px; text-shadow: 0 0 10px rgba(255,255,255,0.2);}
         .logo-text span{color:var(--neon-gold); text-shadow: 0 0 15px var(--power-glow);}
-        .nav-links{list-style:none; padding:0; margin:0; display:flex; align-items:center; gap:30px;}
+        .nav-links{list-style:none; padding:0; margin:0; display:flex; align-items:center; gap:25px;}
         .nav-links li.dropdown{position:relative;}
-        .nav-links li a{color:#e0faff; text-decoration:none; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:1px; padding:10px 5px; font-family:'Share Tech Mono',monospace; transition:0.3s; display:flex; align-items:center; gap:6px; position: relative;}
+        .nav-links li a{color:#e0faff; text-decoration:none; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; padding:10px 5px; font-family:'Share Tech Mono',monospace; transition:0.3s; display:flex; align-items:center; gap:6px; position: relative;}
         .nav-links li a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:var(--cyber-blue); transition:0.3s; box-shadow: 0 0 8px var(--cyber-blue); }
         .nav-links li a:hover::after { width:100%; }
         .nav-links li a:hover{color:var(--cyber-blue); text-shadow:0 0 12px var(--cyber-blue);}
-        .dropdown-content{display:none; position:absolute; background:rgba(8,16,24,0.95); min-width:180px; box-shadow:0 10px 40px rgba(0,0,0,0.8); z-index:1001; top:100%; left:50%; transform:translateX(-50%); border-top:3px solid var(--cyber-blue); border-bottom: 1px solid var(--blue-glow); backdrop-filter:blur(15px); border-radius: 0 0 8px 8px;}
-        .nav-links li.dropdown:hover .dropdown-content{display:block; animation:dropIn .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
-        @keyframes dropIn{from{opacity:0; transform:translate(-50%,15px)} to{opacity:1; transform:translate(-50%,0)}}
+        .dropdown-content{display:none; position:absolute; background:rgba(8,16,24,0.98); min-width:180px; box-shadow:0 10px 40px rgba(0,0,0,0.8); z-index:1001; top:100%; left:50%; transform:translateX(-50%); border-top:3px solid var(--cyber-blue); border-bottom: 1px solid var(--blue-glow); backdrop-filter:blur(15px); border-radius: 0 0 8px 8px;}
+        .nav-links li.dropdown:hover .dropdown-content{display:block; animation:dropIn .3s ease;}
+        @keyframes dropIn{from{opacity:0; transform:translate(-50%,10px)} to{opacity:1; transform:translate(-50%,0)}}
         .dropdown-content a{color:#fff!important; padding:12px 15px; display:block; border-bottom:1px solid rgba(255,255,255,0.05); text-align:left;}
         .dropdown-content a::after { display:none; }
-        .dropdown-content a:hover{background:rgba(0,229,255,0.15); color:var(--cyber-blue)!important; padding-left:22px; border-left: 3px solid var(--cyber-blue);}
+        .dropdown-content a:hover{background:rgba(0,229,255,0.1); color:var(--cyber-blue)!important; padding-left:22px; border-left: 3px solid var(--cyber-blue);}
         .caret{transition:transform 0.3s ease;}
         
         @media(max-width:992px){
-            .menu-toggle{display:block; font-size:24px; color:var(--cyber-blue); cursor:pointer; background:none; border:none; padding:5px; transition: 0.3s;}
-            .menu-toggle:hover { text-shadow: 0 0 15px var(--cyber-blue); }
-            .nav-links{display:none; flex-direction:column; position:absolute; top:calc(100% + 15px); left:5%; width:90%; background:rgba(8,16,24,0.98); padding:10px 0; margin:0; border:1px solid var(--cyber-blue); border-top:4px solid var(--neon-gold); border-radius:8px; max-height:60vh; overflow-y:auto; box-shadow:0 15px 40px rgba(0,0,0,0.9); backdrop-filter:blur(15px); z-index:9999;}
-            .nav-links.active{display:flex; animation:menuFadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;}
+            .menu-toggle{display:block; font-size:24px; color:var(--cyber-blue); cursor:pointer; background:none; border:none;}
+            .nav-links{display:none; flex-direction:column; position:absolute; top:100%; left:5%; width:90%; background:rgba(8,16,24,0.98); border:1px solid var(--cyber-blue); border-top:4px solid var(--neon-gold); border-radius:8px; max-height:60vh; overflow-y:auto; box-shadow:0 15px 40px rgba(0,0,0,0.9); backdrop-filter:blur(15px); z-index:9999;}
+            .nav-links.active{display:flex; animation:menuFadeIn 0.4s ease forwards;}
             @keyframes menuFadeIn{from{opacity:0; transform:translateY(-20px) scale(0.95);} to{opacity:1; transform:translateY(0) scale(1);}}
             .nav-links li{width:100%; text-align:center; border-bottom:1px solid rgba(255,255,255,0.05);}
             .nav-links li a{font-size:13px; width:100%; padding:15px; justify-content:center;}
@@ -582,14 +581,14 @@ Your browser does not support the video tag.
 </div>
 </div>
 <div class="kohmz-bot-toggle" id="botToggle">
-<lottie-player src="Live%20chatbot.json" background="transparent" speed="1" style="width:100%;height:100%;" loop autoplay></lottie-player>
+<lottie-player src="Live chatbot.json" background="transparent" speed="1" style="width:100%;height:100%;" loop autoplay></lottie-player>
 </div>
 </div>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V17.2 (ENTERPRISE FINAL PREMIUM TABLE SYNC)
+// KOHMZ LEXIE AI — FRONTEND V17.3 (ENTERPRISE MASTER FIXES)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 const VIP_KEYWORDS = ["/pepot", "/joy", "/samsam", "/mara", "/mantha"];
@@ -885,197 +884,228 @@ window.askLexie = async function() {
     }
 };
 
-// ── V17.2: AutoTable Premium PDF Estimate Generator ──────────
+// ── V17.3: AutoTable Premium PDF Estimate Generator (ROBUST FIX) ──────────
 window.downloadPDF = async function() {
     const data = sessionStorage.getItem('lastEst');
     if (!data) { alert("System Error: No estimate data found."); return; }
     const btn = document.getElementById('dlPdfBtn');
     if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = '0.6'; }
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ format: 'letter', unit: 'mm' });
-    const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
-    const contentWidth = pageWidth - (margin * 2);
-
     try {
-        const imgData = await new Promise((resolve) => {
-            const img = new Image(); img.crossOrigin = "Anonymous";
-            img.onload = () => { const c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); resolve(c.toDataURL('image/jpeg')); };
-            img.onerror = () => resolve(null); img.src = 'logo.jpg';
-        });
-        if (imgData) doc.addImage(imgData, 'JPEG', margin, 15, 20, 20); 
-    } catch (e) { }
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ format: 'letter', unit: 'mm' });
+        const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
+        const contentWidth = pageWidth - (margin * 2);
 
-    const textStartX = margin + 25;
-    doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
-    doc.text("KOHMZ", textStartX, 23);
-    doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
-    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
-    doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
+        try {
+            const imgData = await new Promise((resolve) => {
+                const img = new Image(); img.crossOrigin = "Anonymous";
+                img.onload = () => { const c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); resolve(c.toDataURL('image/jpeg')); };
+                img.onerror = () => resolve(null); img.src = 'logo.jpg';
+            });
+            if (imgData) doc.addImage(imgData, 'JPEG', margin, 15, 20, 20); 
+        } catch (e) { console.log("Logo load skipped."); }
 
-    doc.setFontSize(8); doc.setTextColor(50, 50, 50);
-    doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
-    doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
-    doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
-    
-    doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
+        const textStartX = margin + 25;
+        doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
+        doc.text("KOHMZ", textStartX, 23);
+        doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
+        doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
+        doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
 
-    doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, 'F');
-    doc.setTextColor(255, 255, 255); doc.setFontSize(10);
-    doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
-    doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
+        doc.setFontSize(8); doc.setTextColor(50, 50, 50);
+        doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
+        doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
+        doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
+        
+        doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
 
-    doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
-    doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
+        doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, 'F');
+        doc.setTextColor(255, 255, 255); doc.setFontSize(10);
+        doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
+        doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
 
-    let parts = data.split('-----------------------------------');
-    let itemsStr = parts[0] || "";
-    let restorationStr = (parts[1] || "").trim();
-    let totalStr = (parts[2] || "").trim();
+        doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+        doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
 
-    let rawItems = itemsStr.split('|||');
-    let tableBody = [];
+        // UPGRADE: Regex splitter to handle any amount of dashes or equals signs
+        let parts = data.split(/[-=]{10,}/);
+        let itemsStr = parts[0] || "";
+        let restorationStr = (parts[1] || "").trim();
+        let totalStr = (parts[2] || "").trim();
 
-    rawItems.forEach(itemBlock => {
-        if(!itemBlock.trim()) return;
-        let lines = itemBlock.split('\n').map(l => l.trim()).filter(l => l);
-        let itemName = "-", qty = "-", labor = "-", mat = "-";
-        lines.forEach(line => {
-            let upperLine = line.toUpperCase();
-            if(upperLine.startsWith('ITEM:')) itemName = line.substring(5).trim();
-            else if(upperLine.startsWith('QTY:')) qty = line.substring(4).trim();
-            else if(upperLine.startsWith('LABOR COST:')) labor = line.substring(11).trim();
-            else if(upperLine.startsWith('MATERIALS COST:')) mat = line.substring(15).trim();
-        });
-        if(itemName !== "-") {
-            tableBody.push([itemName, qty, labor, mat]);
+        // Fallback if AI missed the second divider line
+        if(!totalStr && restorationStr && restorationStr.toUpperCase().includes("GRAND TOTAL")) {
+            totalStr = restorationStr;
+            restorationStr = "RESTORATION COST: TO FOLLOW (Requires On-Site Inspection).";
         }
-    });
 
-    doc.autoTable({
-        startY: 70,
-        head: [['ITEM / SERVICE DESCRIPTION', 'QTY', 'LABOR COST', 'MATERIALS COST']],
-        body: tableBody,
-        theme: 'grid',
-        headStyles: { fillColor: [13, 27, 42], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center' },
-        bodyStyles: { textColor: [40, 40, 40], fontSize: 9 },
-        columnStyles: {
-            0: { cellWidth: 'auto' },
-            1: { cellWidth: 20, halign: 'center' },
-            2: { cellWidth: 35, halign: 'right' },
-            3: { cellWidth: 35, halign: 'right' }
-        },
-        margin: { left: margin, right: margin }
-    });
+        let rawItems = itemsStr.split('|||');
+        let tableBody = [];
 
-    let finalY = doc.lastAutoTable.finalY + 10;
-    
-    if(finalY > 230) { doc.addPage(); finalY = 20; }
-    
-    doc.setFillColor(245, 245, 245);
-    doc.rect(margin, finalY, contentWidth, 12, 'F');
-    doc.setFont("helvetica", "italic"); doc.setFontSize(9); doc.setTextColor(100, 100, 100);
-    doc.text(restorationStr || "RESTORATION COST: TO FOLLOW (Requires On-Site Inspection).", margin + 5, finalY + 7.5);
+        rawItems.forEach(itemBlock => {
+            if(!itemBlock.trim()) return;
+            let lines = itemBlock.split('\n').map(l => l.trim()).filter(l => l);
+            let itemName = "-", qty = "-", labor = "-", mat = "-";
+            lines.forEach(line => {
+                let upperLine = line.toUpperCase();
+                if(upperLine.startsWith('ITEM:')) itemName = line.substring(5).trim();
+                else if(upperLine.startsWith('QTY:')) qty = line.substring(4).trim();
+                else if(upperLine.startsWith('LABOR COST:')) labor = line.substring(11).trim();
+                else if(upperLine.startsWith('MATERIALS COST:')) mat = line.substring(15).trim();
+            });
+            if(itemName !== "-") {
+                tableBody.push([itemName, qty, labor, mat]);
+            }
+        });
 
-    finalY += 18;
-    if(finalY > 230) { doc.addPage(); finalY = 20; }
+        // UPGRADE: Fallback row if parsing fails but string has content
+        if(tableBody.length === 0 && itemsStr.trim().length > 0) {
+            tableBody.push([itemsStr.substring(0, 100) + "...", "1", "TBD", "TBD"]);
+        }
 
-    doc.setFillColor(255, 183, 3);
-    doc.rect(margin, finalY, contentWidth, 14, 'F');
-    doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(13, 27, 42);
-    doc.text(totalStr || "GRAND TOTAL ESTIMATE: TBD", rightAlign - 5, finalY + 9, { align: "right" });
+        doc.autoTable({
+            startY: 70,
+            head: [['ITEM / SERVICE DESCRIPTION', 'QTY', 'LABOR COST', 'MATERIALS COST']],
+            body: tableBody,
+            theme: 'grid',
+            headStyles: { fillColor: [13, 27, 42], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center' },
+            bodyStyles: { textColor: [40, 40, 40], fontSize: 9 },
+            columnStyles: {
+                0: { cellWidth: 'auto' },
+                1: { cellWidth: 20, halign: 'center' },
+                2: { cellWidth: 35, halign: 'right' },
+                3: { cellWidth: 35, halign: 'right' }
+            },
+            margin: { left: margin, right: margin }
+        });
 
-    const pageCount = doc.internal.getNumberOfPages();
-    for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-        doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
-        doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
-        doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth/2, 265, {align:"center"});
-        doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, 268, {align:"center"});
-        doc.text("Restoration (masonry/painting) is strictly separate from the electrical labor fee.", pageWidth/2, 271, {align:"center"});
+        let finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 80;
+        
+        if(finalY > 230) { doc.addPage(); finalY = 20; }
+        
+        doc.setFillColor(245, 245, 245);
+        doc.rect(margin, finalY, contentWidth, 12, 'F');
+        doc.setFont("helvetica", "italic"); doc.setFontSize(9); doc.setTextColor(100, 100, 100);
+        doc.text(restorationStr || "RESTORATION COST: TO FOLLOW (Requires On-Site Inspection).", margin + 5, finalY + 7.5);
+
+        finalY += 18;
+        if(finalY > 230) { doc.addPage(); finalY = 20; }
+
+        doc.setFillColor(255, 183, 3);
+        doc.rect(margin, finalY, contentWidth, 14, 'F');
+        doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(13, 27, 42);
+        doc.text(totalStr || "GRAND TOTAL ESTIMATE: TBD", rightAlign - 5, finalY + 9, { align: "right" });
+
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
+            doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+            doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth/2, 265, {align:"center"});
+            doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, 268, {align:"center"});
+            doc.text("Restoration (masonry/painting) is strictly separate from the electrical labor fee.", pageWidth/2, 271, {align:"center"});
+        }
+
+        doc.save(`KOHMZ_Estimate_${userId.substring(0,5)}.pdf`);
+    } catch(err) {
+        console.error(err);
+        alert("Error generating PDF. The format received might be invalid.");
+    } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Official Estimate'; btn.style.opacity = '1'; }
     }
-
-    doc.save(`KOHMZ_Estimate_${userId.substring(0,5)}.pdf`);
-    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf"></i> Download Official Estimate'; btn.style.opacity = '1'; }
 };
 
+// ── V17.3: AutoTable Premium PDF Agreement Generator (ROBUST FIX) ──────────
 window.downloadAgreement = async function() {
     const data = sessionStorage.getItem('lastAgreement');
     if (!data) { alert("System Error: No agreement data found."); return; }
     const btn = document.getElementById('dlAgreeBtn');
     if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = '0.6'; }
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ format: 'letter', unit: 'mm' });
-    const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
-    const contentWidth = pageWidth - (margin * 2);
-
     try {
-        const imgData = await new Promise((resolve) => {
-            const img = new Image(); img.crossOrigin = "Anonymous";
-            img.onload = () => { const c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); resolve(c.toDataURL('image/jpeg')); };
-            img.onerror = () => resolve(null); img.src = 'logo.jpg';
-        });
-        if (imgData) doc.addImage(imgData, 'JPEG', margin, 15, 20, 20); 
-    } catch (e) { }
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ format: 'letter', unit: 'mm' });
+        const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
+        const contentWidth = pageWidth - (margin * 2);
 
-    const textStartX = margin + 25;
-    doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
-    doc.text("KOHMZ", textStartX, 23);
-    doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
-    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
-    doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
+        try {
+            const imgData = await new Promise((resolve) => {
+                const img = new Image(); img.crossOrigin = "Anonymous";
+                img.onload = () => { const c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0); resolve(c.toDataURL('image/jpeg')); };
+                img.onerror = () => resolve(null); img.src = 'logo.jpg';
+            });
+            if (imgData) doc.addImage(imgData, 'JPEG', margin, 15, 20, 20); 
+        } catch (e) { console.log("Logo load skipped"); }
 
-    doc.setFontSize(8); doc.setTextColor(50, 50, 50);
-    doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
-    doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
-    doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
-    
-    doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
+        const textStartX = margin + 25;
+        doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
+        doc.text("KOHMZ", textStartX, 23);
+        doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
+        doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
+        doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
 
-    doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, 'F');
-    doc.setTextColor(255, 255, 255); doc.setFontSize(10);
-    doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
-    doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
+        doc.setFontSize(8); doc.setTextColor(50, 50, 50);
+        doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
+        doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
+        doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
+        
+        doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
 
-    doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
-    doc.text("OFFICIAL SERVICE AGREEMENT", pageWidth / 2, 65, { align: "center" });
+        doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, 'F');
+        doc.setTextColor(255, 255, 255); doc.setFontSize(10);
+        doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
+        doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
 
-    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
-    const lines = doc.splitTextToSize(data, contentWidth - 10);
-    
-    let cursorY = 75;
-    let boxStartY = 55;
-    const lineHeight = 5.5;
-    const pageMaxY = 240; 
+        doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+        doc.text("OFFICIAL SERVICE AGREEMENT", pageWidth / 2, 65, { align: "center" });
 
-    for (let i = 0; i < lines.length; i++) {
-        if (cursorY + lineHeight > pageMaxY) {
-            doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
-            doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
-            doc.setDrawColor(200, 200, 200); doc.line(margin, 255, rightAlign, 255);
-            doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
-            doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, 260, {align:"center"});
-            doc.addPage();
-            boxStartY = 20;
-            cursorY = 30;
-            doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(13, 27, 42);
-            doc.text("KOHMZ ELECTRICAL - AGREEMENT CONTINUATION", margin, boxStartY - 5);
-            doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
+        doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
+        // UPGRADE: Safe text wrap array handling
+        let lines = [];
+        if (data && typeof data === 'string') {
+            lines = doc.splitTextToSize(data, contentWidth - 10);
+        } else {
+            lines = ["Data format error occurred."];
         }
-        doc.text(lines[i], margin + 5, cursorY);
-        cursorY += lineHeight;
-    }
-    
-    doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
-    doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
-    doc.setDrawColor(200, 200, 200); doc.line(margin, pageMaxY, rightAlign, pageMaxY);
-    doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
-    doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, pageMaxY + 5, {align:"center"});
-    doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, pageMaxY + 8, {align:"center"});
+        
+        let cursorY = 75;
+        let boxStartY = 55;
+        const lineHeight = 5.5;
+        const pageMaxY = 240; 
 
-    doc.save(`KOHMZ_Agreement_${userId.substring(0,5)}.pdf`);
-    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-contract"></i> Download Service Agreement'; btn.style.opacity = '1'; }
+        for (let i = 0; i < lines.length; i++) {
+            if (cursorY + lineHeight > pageMaxY) {
+                doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
+                doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
+                doc.setDrawColor(200, 200, 200); doc.line(margin, 255, rightAlign, 255);
+                doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+                doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, 260, {align:"center"});
+                doc.addPage();
+                boxStartY = 20;
+                cursorY = 30;
+                doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(13, 27, 42);
+                doc.text("KOHMZ ELECTRICAL - AGREEMENT CONTINUATION", margin, boxStartY - 5);
+                doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
+            }
+            doc.text(lines[i], margin + 5, cursorY);
+            cursorY += lineHeight;
+        }
+        
+        doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
+        doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, 'S');
+        doc.setDrawColor(200, 200, 200); doc.line(margin, pageMaxY, rightAlign, pageMaxY);
+        doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+        doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth/2, pageMaxY + 5, {align:"center"});
+        doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth/2, pageMaxY + 8, {align:"center"});
+
+        doc.save(`KOHMZ_Agreement_${userId.substring(0,5)}.pdf`);
+    } catch(err) {
+        console.error(err);
+        alert("Error generating Agreement PDF. The format received might be invalid.");
+    } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-contract"></i> Download Service Agreement'; btn.style.opacity = '1'; }
+    }
 };
 
 // ── Images, Audio, Misc ───────────────────────────────────────
@@ -1141,7 +1171,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof AOS !== "undefined") AOS.init({ duration: 800, once: true, offset: 50 });
     const inputEl = document.getElementById("userQuery");
     
-    // UPGRADE: Mobile keyboard input focus fix
     if (inputEl) {
         inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); } });
         inputEl.addEventListener("focus", () => { setTimeout(() => { const t = document.getElementById("chatBody"); t.scrollTop = t.scrollHeight; }, 300); });
@@ -1149,7 +1178,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("mobile-menu")?.addEventListener("click", () => document.getElementById("nav-list")?.classList.toggle("active"));
 
-    // Main Hero Typing Logic
     let mIdx = 0; const mainText = "INTEGRATED POWER ARCHITECTURE & ";
     const typeHero = () => { 
         if(mIdx < mainText.length){ 
@@ -1179,7 +1207,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     typeBar();
 
-    // UPGRADED: Mobile touch events for smooth dragging
     const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
     let isDrag = false, startX, startY, xOff = 0, yOff = 0;
     
