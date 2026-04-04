@@ -1,7 +1,7 @@
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V21.5.0 (GOD-TIER STREAMING EDITION)
-// FIXES: Safari Regex Crash Fix, SSE Buffer Reassembly, Safe Error Logs,
-//        Smart Context Scraper, Audio Autoplay Unlock, Memory Leak Fix
+// KOHMZ LEXIE AI — FRONTEND V21.6.0 (BUG-FIXED EDITION)
+// FIXES: Drag/Click Conflict, Turnstile Button State, Safari Regex,
+//        SSE Buffer Reassembly, Safe Error Logs, Memory Leak Fix
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
@@ -10,7 +10,7 @@ let isGodMode = false;
 let godName = "";
 let mySecretAdminToken = sessionStorage.getItem("kohmz_admin_token") || "";
 
-// ✅ FIX: AbortController — cancel in-flight request when user sends new message
+// ✅ AbortController — cancel in-flight request when user sends new message
 let currentAbortController = null;
 
 // ── Smart Context Scraper ───────────────────────────────────
@@ -23,23 +23,20 @@ function getPageContext() {
   return context;
 }
 
-// ── Interaction Tracker & Mobile Audio Unlock (CRITICAL FIX) ──
+// ── Interaction Tracker & Mobile Audio Unlock ──
 let hasUserInteracted = false;
 function unlockAudioEngine() {
   if (hasUserInteracted) return;
   hasUserInteracted = true;
-  
-  if(window.speechSynthesis) {
-      let silentUtterance = new SpeechSynthesisUtterance("");
-      silentUtterance.volume = 0;
-      window.speechSynthesis.speak(silentUtterance);
+  if (window.speechSynthesis) {
+    let silentUtterance = new SpeechSynthesisUtterance("");
+    silentUtterance.volume = 0;
+    window.speechSynthesis.speak(silentUtterance);
   }
-  
   ['click', 'touchstart', 'keydown'].forEach(evt => {
-      document.removeEventListener(evt, unlockAudioEngine);
+    document.removeEventListener(evt, unlockAudioEngine);
   });
 }
-
 ['click', 'touchstart', 'keydown'].forEach(evt => {
   document.addEventListener(evt, unlockAudioEngine, { once: true });
 });
@@ -73,7 +70,8 @@ window.onTurnstileSuccess = function (token) {
 };
 
 window.resetTurnstile = function () {
-  if (typeof turnstile !== "undefined" && turnstile.reset && !isGodMode) {
+  if (isGodMode) return; // ✅ FIX: Never reset in God Mode
+  if (typeof turnstile !== "undefined" && turnstile.reset) {
     currentTurnstileToken = "";
     turnstile.reset();
     const btn = document.getElementById("mainSendBtn");
@@ -117,7 +115,6 @@ function applyGodModeUI() {
 
 window.exitGodMode = function () {
   if (!isGodMode) return;
-
   isGodMode = false;
   godName = "";
   mySecretAdminToken = "";
@@ -146,10 +143,10 @@ function formatNumbers(text) {
   if (!text) return "";
   return text.replace(/\b\d{4,}\b/g, function (match, offset, fullString) {
     const prevChar = fullString[offset - 1];
-    if (prevChar === '+' || prevChar === '-') return match; // skip phones formatting like +639
+    if (prevChar === '+' || prevChar === '-') return match;
     if (match.startsWith("09") || match.startsWith("639")) return match;
     const n = parseInt(match, 10);
-    if (n >= 1900 && n <= 2099) return match; // skip years
+    if (n >= 1900 && n <= 2099) return match;
     return n.toLocaleString("en-US");
   });
 }
@@ -171,7 +168,7 @@ function appendBubble(role, htmlContent, rawTextForTTS, audioUrl) {
   } else {
     b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;";
     b.innerHTML = "Lexie: " + htmlContent;
-    
+
     if (audioUrl) {
       const audioSection = document.createElement("div");
       audioSection.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
@@ -197,7 +194,7 @@ function appendBubble(role, htmlContent, rawTextForTTS, audioUrl) {
 }
 
 // ==========================================
-// ── Main Chat Engine (Ask Lexie V21.5 STREAMING) ──────────────
+// ── Main Chat Engine (Ask Lexie V21.6 STREAMING) ──────────────
 // ==========================================
 window.askLexie = async function (retryMessage = null) {
   const inputEl = document.getElementById("userQuery");
@@ -214,14 +211,14 @@ window.askLexie = async function (retryMessage = null) {
     }
   }
 
-  // Abort any in-flight request to prevent overlaps
+  // Abort any in-flight request
   if (currentAbortController) {
     currentAbortController.abort();
   }
   currentAbortController = new AbortController();
   const { signal } = currentAbortController;
 
-  // Lock UI to prevent double firing
+  // Lock UI
   if (sendBtn) sendBtn.disabled = true;
   if (inputEl) inputEl.disabled = true;
 
@@ -272,7 +269,7 @@ window.askLexie = async function (retryMessage = null) {
     // ⚡ 1. JSON FALLBACK (For Auth, Bans, Errors)
     if (contentType.includes("application/json")) {
       const result = await response.json();
-      
+
       if (result.auth_challenge) {
         const enteredToken = prompt("🔒 VIP SYSTEM DETECTED.\nPlease enter Master Key to proceed:");
         if (!enteredToken) {
@@ -294,45 +291,44 @@ window.askLexie = async function (retryMessage = null) {
       }
 
       botBubble.innerHTML = "Lexie: " + escapeHTML(result.ai_answer || "System error.");
-      if(hasUserInteracted) window.speakText(result.ai_answer || "");
+      if (hasUserInteracted) window.speakText(result.ai_answer || "");
       return;
     }
 
-    // ⚡ 2. STREAMING MODE (Buffer Reassembly Fix Applied)
+    // ⚡ 2. STREAMING MODE
     const reader = response.body.getReader();
     const decoder = new TextDecoder("utf-8");
     let fullText = "";
     let streamBuffer = "";
-    botBubble.innerHTML = "Lexie: "; 
+    botBubble.innerHTML = "Lexie: ";
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      
+
       streamBuffer += decoder.decode(value, { stream: true });
       const lines = streamBuffer.split('\n');
-      streamBuffer = lines.pop(); // Keep incomplete lines in buffer for next chunk
-      
+      streamBuffer = lines.pop();
+
       for (const line of lines) {
         if (line.startsWith('data: ') && line !== 'data: [DONE]') {
           try {
             const data = JSON.parse(line.slice(6));
             if (data.response) {
               fullText += data.response;
-              
-              // 🛡️ THE INVISIBLE BUFFER: Hide JSON blocks from UI during typing
+
               let displayHtml = fullText
                 .replace(/ESTIMATE_JSON_START[\s\S]*?(ESTIMATE_JSON_END)?/gi, "")
                 .replace(/\[AGREEMENT_START\][\s\S]*?(\[AGREEMENT_END\])?/gi, "")
                 .replace(/\[UI_ACTION:.*?\]/g, "")
                 .replace(/\*\*/g, "")
                 .trim();
-              
+
               botBubble.innerHTML = "Lexie: " + escapeHTML(formatNumbers(displayHtml));
-              t.scrollTop = t.scrollHeight; 
+              t.scrollTop = t.scrollHeight;
             }
           } catch (e) {
-            // Silently ignore incomplete JSON parses until buffer finishes it
+            // Silently ignore incomplete JSON chunks
           }
         }
       }
@@ -382,13 +378,13 @@ window.askLexie = async function (retryMessage = null) {
         const estimateJSON = JSON.parse(jsonMatch[1].trim());
         let pdfLines = estimateJSON.items.map(it => `ITEM: ${it.item}\nQTY: ${it.qty}\nLABOR COST: ${it.labor}\nMATERIALS COST: ${it.materials}`).join("\n|||\n");
         pdfLines += `\n-----------------------------------\nRESTORATION COST: ${estimateJSON.restoration}\n-----------------------------------\nGRAND TOTAL ESTIMATE: ${estimateJSON.grand_total}`;
-        
+
         const cleanDataForPDF = pdfLines.replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
         sessionStorage.setItem("lastEst", cleanDataForPDF);
-        
+
         document.body.classList.add("mode-gold");
         setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
-        
+
         const dlBtn = document.createElement("button");
         dlBtn.id = "dlPdfBtn";
         dlBtn.className = "btn-pdf";
@@ -396,28 +392,28 @@ window.askLexie = async function (retryMessage = null) {
         dlBtn.innerHTML = '<i class="fas fa-file-invoice-dollar"></i> Download Official Estimate';
         dlBtn.onclick = () => window.downloadPDF();
         botBubble.appendChild(dlBtn);
-        
+
         textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
       } catch (e) {
         console.error("Failed to parse estimate JSON", e);
       }
     } else {
-       // Legacy Fallback
-       const pdfMatch = fullText.match(/\[PDF_START\]([\s\S]*?)\[PDF_END\]/i);
-       if(pdfMatch) {
-          const cleanDataForPDF = pdfMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
-          sessionStorage.setItem("lastEst", cleanDataForPDF);
-          document.body.classList.add("mode-gold");
-          setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
-          
-          const dlBtn = document.createElement("button");
-          dlBtn.id = "dlPdfBtn"; dlBtn.className = "btn-pdf"; dlBtn.style.cssText = "width:100%;text-align:center;margin-top:12px;";
-          dlBtn.innerHTML = '<i class="fas fa-file-invoice-dollar"></i> Download Official Estimate';
-          dlBtn.onclick = () => window.downloadPDF();
-          botBubble.appendChild(dlBtn);
-          
-          textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
-       }
+      // Legacy Fallback
+      const pdfMatch = fullText.match(/\[PDF_START\]([\s\S]*?)\[PDF_END\]/i);
+      if (pdfMatch) {
+        const cleanDataForPDF = pdfMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
+        sessionStorage.setItem("lastEst", cleanDataForPDF);
+        document.body.classList.add("mode-gold");
+        setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
+
+        const dlBtn = document.createElement("button");
+        dlBtn.id = "dlPdfBtn"; dlBtn.className = "btn-pdf"; dlBtn.style.cssText = "width:100%;text-align:center;margin-top:12px;";
+        dlBtn.innerHTML = '<i class="fas fa-file-invoice-dollar"></i> Download Official Estimate';
+        dlBtn.onclick = () => window.downloadPDF();
+        botBubble.appendChild(dlBtn);
+
+        textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
+      }
     }
 
     // Service Agreement
@@ -425,23 +421,22 @@ window.askLexie = async function (retryMessage = null) {
     if (agreeMatch) {
       const cleanDataForAgreement = agreeMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
       sessionStorage.setItem("lastAgreement", cleanDataForAgreement);
-      
+
       document.body.classList.add("mode-gold");
       setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
-      
+
       const agreeBtn = document.createElement("button");
       agreeBtn.id = "dlAgreeBtn"; agreeBtn.className = "btn-pdf";
       agreeBtn.style.cssText = "width:100%;text-align:center;margin-top:12px;background:var(--cyber-blue);color:#000;";
       agreeBtn.innerHTML = '<i class="fas fa-file-signature"></i> Download Service Agreement';
       agreeBtn.onclick = () => window.downloadAgreement();
       botBubble.appendChild(agreeBtn);
-      
+
       textToSpeak += " Handa na rin po ang Service Agreement natin boss, i-download niyo na lang po. ";
     }
 
-    if(hasUserInteracted) window.speakText(textToSpeak);
+    if (hasUserInteracted) window.speakText(textToSpeak);
 
-    // Save history with tags masked out
     lexieMemory.push({ role: "assistant", content: fullText.replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "[Provided Estimate]").replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "[Provided Agreement]") });
     if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
     sessionStorage.setItem("lexie_memory", JSON.stringify(lexieMemory));
@@ -457,14 +452,28 @@ window.askLexie = async function (retryMessage = null) {
     resetTurnstile();
   } finally {
     clearImage();
-    if (!isGodMode && messageCount >= 2 && currentTurnstileToken) resetTurnstile();
+
+    // ✅ FIX: Only reset turnstile (and re-disable btn) after use in normal mode
+    if (!isGodMode && messageCount >= 2 && currentTurnstileToken) {
+      resetTurnstile(); // This will disable the button correctly
+    } else if (isGodMode) {
+      // God Mode: always keep button enabled
+      if (sendBtn) { sendBtn.disabled = false; sendBtn.style.opacity = "1"; }
+    } else {
+      // Normal mode, under limit — re-enable only if turnstile was already solved
+      if (sendBtn) {
+        if (currentTurnstileToken || messageCount < 2) {
+          sendBtn.disabled = false;
+          sendBtn.style.opacity = "1";
+        }
+      }
+    }
+
     currentAbortController = null;
-    
-    // Unlock UI
-    if (sendBtn) sendBtn.disabled = false;
+
     if (inputEl) {
-        inputEl.disabled = false;
-        inputEl.focus();
+      inputEl.disabled = false;
+      inputEl.focus();
     }
   }
 };
@@ -478,8 +487,8 @@ window.downloadPDF = async function () {
 
   try {
     if (!window.jspdf) {
-        alert("System Error: PDF Generator library did not load correctly. Please refresh the page.");
-        return;
+      alert("System Error: PDF Generator library did not load correctly. Please refresh the page.");
+      return;
     }
 
     const { jsPDF } = window.jspdf;
@@ -488,10 +497,10 @@ window.downloadPDF = async function () {
     const contentWidth = pageWidth - (margin * 2);
 
     try {
-      const imgData = await new Promise((resolve, reject) => {
+      const imgData = await new Promise((resolve) => {
         const img = new Image(); img.crossOrigin = "Anonymous";
         img.onload = () => { const c = document.createElement("canvas"); c.width = img.width; c.height = img.height; c.getContext("2d").drawImage(img, 0, 0); resolve(c.toDataURL("image/jpeg")); };
-        img.onerror = () => resolve(null); 
+        img.onerror = () => resolve(null);
         img.src = "logo.jpg";
       });
       if (imgData) doc.addImage(imgData, "JPEG", margin, 15, 20, 20);
@@ -551,22 +560,22 @@ window.downloadPDF = async function () {
       tableBody.push([itemsStr.substring(0, 100) + "...", "1", "TBD", "TBD"]);
     }
 
-    if(doc.autoTable) {
-        doc.autoTable({
-          startY: 70,
-          head: [["ITEM / SERVICE DESCRIPTION", "QTY", "LABOR COST", "MATERIALS COST"]],
-          body: tableBody,
-          theme: "grid",
-          headStyles: { fillColor: [13, 27, 42], textColor: [255, 255, 255], fontStyle: "bold", halign: "center" },
-          bodyStyles: { textColor: [40, 40, 40], fontSize: 9 },
-          columnStyles: {
-            0: { cellWidth: "auto" },
-            1: { cellWidth: 20, halign: "center" },
-            2: { cellWidth: 35, halign: "right" },
-            3: { cellWidth: 35, halign: "right" }
-          },
-          margin: { left: margin, right: margin }
-        });
+    if (doc.autoTable) {
+      doc.autoTable({
+        startY: 70,
+        head: [["ITEM / SERVICE DESCRIPTION", "QTY", "LABOR COST", "MATERIALS COST"]],
+        body: tableBody,
+        theme: "grid",
+        headStyles: { fillColor: [13, 27, 42], textColor: [255, 255, 255], fontStyle: "bold", halign: "center" },
+        bodyStyles: { textColor: [40, 40, 40], fontSize: 9 },
+        columnStyles: {
+          0: { cellWidth: "auto" },
+          1: { cellWidth: 20, halign: "center" },
+          2: { cellWidth: 35, halign: "right" },
+          3: { cellWidth: 35, halign: "right" }
+        },
+        margin: { left: margin, right: margin }
+      });
     }
 
     let finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 80;
@@ -613,8 +622,8 @@ window.downloadAgreement = async function () {
 
   try {
     if (!window.jspdf) {
-        alert("System Error: PDF Generator library did not load correctly. Please refresh the page.");
-        return;
+      alert("System Error: PDF Generator library did not load correctly. Please refresh the page.");
+      return;
     }
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ format: "letter", unit: "mm" });
@@ -625,7 +634,7 @@ window.downloadAgreement = async function () {
       const imgData = await new Promise((resolve) => {
         const img = new Image(); img.crossOrigin = "Anonymous";
         img.onload = () => { const c = document.createElement("canvas"); c.width = img.width; c.height = img.height; c.getContext("2d").drawImage(img, 0, 0); resolve(c.toDataURL("image/jpeg")); };
-        img.onerror = () => resolve(null); 
+        img.onerror = () => resolve(null);
         img.src = "logo.jpg";
       });
       if (imgData) doc.addImage(imgData, "JPEG", margin, 15, 20, 20);
@@ -764,12 +773,12 @@ window.speakText = function (text) {
     .replace(/&gt;/g, ">")
     .replace(/&amp;/g, "&");
   let sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
-  
+
   speechQueue.push(...sentences);
   if (speechQueue.length > MAX_SPEECH_QUEUE) {
     speechQueue = speechQueue.slice(-MAX_SPEECH_QUEUE);
   }
-  
+
   if (!isSpeaking) processSpeechQueue();
 };
 
@@ -778,16 +787,16 @@ function processSpeechQueue() {
   isSpeaking = true;
   let sentence = speechQueue.shift().trim();
   if (!sentence) { processSpeechQueue(); return; }
-  
+
   let utterance = new SpeechSynthesisUtterance(sentence);
   let voices = window.speechSynthesis.getVoices();
   let voice = voices.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Google US English") || v.name.includes("Female") || v.name.includes("Enhanced")) || voices[0];
-  
+
   if (voice) utterance.voice = voice;
   utterance.lang = "en-US"; utterance.pitch = 1.15; utterance.rate = 0.85;
   utterance.onend = () => processSpeechQueue();
   utterance.onerror = () => { console.warn("TTS Error"); processSpeechQueue(); };
-  
+
   try { window.speechSynthesis.speak(utterance); } catch (e) { processSpeechQueue(); }
 }
 
@@ -833,17 +842,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
   if (wrap && toggle) {
-    let isDrag = false, startX, startY, xOff = 0, yOff = 0;
+    // ✅ FIX: Use a `didActuallyMove` flag instead of `isDrag` for click detection.
+    // isDrag = "is mouse/finger currently held down"
+    // didActuallyMove = "did it travel enough pixels to count as a drag (not a tap)"
+    let isDragging = false;
+    let didActuallyMove = false;
+    let startX, startY, xOff = 0, yOff = 0;
+    const DRAG_THRESHOLD = 8; // pixels — below this = it's a tap/click, not a drag
 
-    toggle.addEventListener("mousedown", e => { isDrag = true; startX = e.clientX - xOff; startY = e.clientY - yOff; });
-    window.addEventListener("mousemove", e => { if (isDrag) { xOff = e.clientX - startX; yOff = e.clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; } });
-    window.addEventListener("mouseup", () => isDrag = false);
+    toggle.addEventListener("mousedown", e => {
+      isDragging = true;
+      didActuallyMove = false;
+      startX = e.clientX - xOff;
+      startY = e.clientY - yOff;
+    });
 
-    toggle.addEventListener("touchstart", e => { isDrag = true; startX = e.touches[0].clientX - xOff; startY = e.touches[0].clientY - yOff; }, { passive: true });
-    window.addEventListener("touchmove", e => { if (isDrag) { xOff = e.touches[0].clientX - startX; yOff = e.touches[0].clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; e.preventDefault(); } }, { passive: false });
-    window.addEventListener("touchend", () => isDrag = false);
+    window.addEventListener("mousemove", e => {
+      if (!isDragging) return;
+      const dx = e.clientX - (startX + xOff);
+      const dy = e.clientY - (startY + yOff);
+      if (!didActuallyMove && Math.sqrt(dx * dx + dy * dy) > DRAG_THRESHOLD) {
+        didActuallyMove = true;
+      }
+      xOff = e.clientX - startX;
+      yOff = e.clientY - startY;
+      wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`;
+    });
 
-    toggle.addEventListener("click", () => { if (!isDrag) window.toggleBotWindow(); });
+    window.addEventListener("mouseup", () => { isDragging = false; });
+
+    // ✅ FIX: Click fires after mouseup — check didActuallyMove (not isDragging which is already false)
+    toggle.addEventListener("click", () => {
+      if (!didActuallyMove) window.toggleBotWindow();
+      didActuallyMove = false; // reset for next interaction
+    });
+
+    // Touch (mobile)
+    toggle.addEventListener("touchstart", e => {
+      isDragging = true;
+      didActuallyMove = false;
+      startX = e.touches[0].clientX - xOff;
+      startY = e.touches[0].clientY - yOff;
+    }, { passive: true });
+
+    window.addEventListener("touchmove", e => {
+      if (!isDragging) return;
+      const tx = e.touches[0].clientX - (startX + xOff);
+      const ty = e.touches[0].clientY - (startY + yOff);
+      if (!didActuallyMove && Math.sqrt(tx * tx + ty * ty) > DRAG_THRESHOLD) {
+        didActuallyMove = true;
+      }
+      xOff = e.touches[0].clientX - startX;
+      yOff = e.touches[0].clientY - startY;
+      wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`;
+      if (didActuallyMove) e.preventDefault(); // only prevent scroll if actually dragging
+    }, { passive: false });
+
+    window.addEventListener("touchend", () => { isDragging = false; });
+
+    // ✅ FIX: For touch, use touchend to detect tap (no click event on mobile drag)
+    toggle.addEventListener("touchend", () => {
+      if (!didActuallyMove) window.toggleBotWindow();
+      didActuallyMove = false;
+    });
   }
 });
 
@@ -884,12 +945,11 @@ function triggerExitIntent() {
   }
   appendBubble("bot", "Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊");
   sessionStorage.setItem("exit_offered", "true");
-  
+
   if (hasUserInteracted && window.speechSynthesis && !isMuted) {
-      window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
+    window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
   }
 
-  // Detach listeners to prevent memory leaks in the background
   document.removeEventListener("mouseleave", checkMouseLeave);
   document.removeEventListener("visibilitychange", checkVisibility);
   window.removeEventListener("scroll", checkScroll);
