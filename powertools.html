@@ -128,7 +128,7 @@
         .dropdown-content a:hover { background: rgba(0,229,255,0.1); color: var(--cyber-blue) !important; padding-left: 20px; border-left: 3px solid var(--cyber-blue); }
         .caret { transition: transform 0.3s ease; }
 
-        /* --- MOBILE NAVIGATION (50% Width / 30VH / Centered / Synced) --- */
+        /* --- MOBILE NAVIGATION --- */
         @media (max-width: 992px) {
             .menu-toggle { display: block; font-size: 24px; color: var(--cyber-blue); cursor: pointer; background: none; border: none; padding: 5px; }
             .nav-links { 
@@ -576,7 +576,7 @@
                 }).join('\n');
             }
 
-            // --- READ PAGE ALOUD (RETAINED) ---
+            // --- READ PAGE ALOUD LOGIC (ACCESSIBILITY ONLY) ---
             window.isReadingPage = false;
             const readPageBtn = document.getElementById("readPageBtn");
             if(readPageBtn) {
