@@ -195,7 +195,7 @@
         .cta-btn:hover::before { left:200%; }
         .cta-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 30px #ffb703; color: #000; }
 
-        /* --- LEXIE AI BOT SYNCED --- */
+        /* --- LEXIE AI BOT (V20 UI) --- */
         .kohmz-bot-wrapper { position: fixed; bottom: 25px; left: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-start; touch-action: none; user-select: none;}
         .kohmz-bot-toggle { width: 130px; height: 130px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s; filter: drop-shadow(0 0 10px rgba(0,229,255,0.5));}
         .kohmz-bot-toggle:hover { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(0,229,255,0.8));}
@@ -404,41 +404,44 @@
     </aside>
 
     <div class="kohmz-bot-wrapper" id="draggableBot">
-        <div class="bot-value-tag" id="dragHint" onclick="isGodMode ? exitGodMode() : toggleBotWindow()">⚡ KOHMZ Lexie Pro</div>
+        <div class="bot-value-tag" id="dragHint" onclick="typeof exitGodMode === 'function' && isGodMode ? exitGodMode() : (typeof toggleBotWindow === 'function' ? toggleBotWindow() : null)">⚡ KOHMZ Lexie Pro</div>
         <div class="kohmz-chat-window" id="chatWindow">
             <div class="kohmz-chat-header" id="chatHeader">
                 <span>LEXIE AI: SYSTEM ACTIVE</span>
                 <div>
-                    <span id="muteBtn" onclick="toggleMute()" style="cursor:pointer;padding:0 10px;font-size:16px;" title="Mute/Unmute Voice">🔊</span>
-                    <span onclick="toggleBotWindow()" style="cursor:pointer;padding:0 5px;font-size:18px;" title="Close">✕</span>
+                    <span id="muteBtn" onclick="typeof toggleMute === 'function' ? toggleMute() : null" style="cursor:pointer;padding:0 10px;font-size:16px;" title="Mute/Unmute Voice">🔊</span>
+                    <span onclick="typeof toggleBotWindow === 'function' ? toggleBotWindow() : null" style="cursor:pointer;padding:0 5px;font-size:18px;" title="Close">✕</span>
                 </div>
             </div>
+            
             <div class="kohmz-chat-body" id="chatBody"></div>
             
             <div id="vision-preview">
                 <img id="prev-img" src="" alt="Preview">
                 <span>📎 Image attached for analysis.</span>
-                <span onclick="clearImage()" style="margin-left:auto;color:#e11d48;cursor:pointer;font-weight:bold;background:rgba(225,29,72,0.1);padding:2px 6px;border-radius:4px;">REMOVE</span>
+                <span onclick="typeof clearImage === 'function' ? clearImage() : null" style="margin-left:auto;color:#e11d48;cursor:pointer;font-weight:bold;background:rgba(225,29,72,0.1);padding:2px 6px;border-radius:4px;">REMOVE</span>
             </div>
             
             <div class="quick-replies" id="quickReplies">
-                <button onclick="sendQuickReply('How do you ensure PEC compliance?')">PEC Compliance Check</button>
-                <button onclick="sendQuickReply('Can I see more solar project details?')">Solar Project Info</button>
-                <button onclick="sendQuickReply('I want to schedule an audit.')">Book Audit Now</button>
+                <button onclick="typeof sendQuickReply === 'function' ? sendQuickReply('How do you ensure PEC compliance?') : null">PEC Compliance Check</button>
+                <button onclick="typeof sendQuickReply === 'function' ? sendQuickReply('Can I see more solar project details?') : null">Solar Project Info</button>
+                <button onclick="typeof sendQuickReply === 'function' ? sendQuickReply('I want to schedule an audit.') : null">Book Audit Now</button>
             </div>
             
             <div id="cf-turnstile-container">
-                <div class="cf-turnstile" data-sitekey="0x4AAAAAACzFc-mcc5y-ha36" data-callback="onTurnstileSuccess" data-expired-callback="resetTurnstile" data-error-callback="resetTurnstile" data-theme="dark"></div>
+                <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITEKEY_HERE" data-callback="onTurnstileSuccess" data-expired-callback="resetTurnstile" data-error-callback="resetTurnstile" data-theme="dark"></div>
             </div>
             
             <div class="chat-input-area">
                 <button class="chat-tool-btn" onclick="document.getElementById('imgInput').click()" title="Upload Image"><i class="fas fa-image"></i></button>
                 <button class="chat-tool-btn" onclick="document.getElementById('cameraInput').click()" title="Take Photo"><i class="fas fa-camera"></i></button>
-                <button id="micBtn" class="chat-tool-btn" onclick="startDictation()" title="Voice Input"><i class="fas fa-microphone"></i></button>
-                <input type="file" id="imgInput" hidden accept="image/*" onchange="handleImage(this)">
-                <input type="file" id="cameraInput" hidden accept="image/*" capture="environment" onchange="handleImage(this)">
+                <button id="micBtn" class="chat-tool-btn" onclick="typeof startDictation === 'function' ? startDictation() : null" title="Voice Input"><i class="fas fa-microphone"></i></button>
+                
+                <input type="file" id="imgInput" hidden accept="image/*" onchange="typeof handleImage === 'function' ? handleImage(this) : null">
+                <input type="file" id="cameraInput" hidden accept="image/*" capture="environment" onchange="typeof handleImage === 'function' ? handleImage(this) : null">
+                
                 <input type="text" id="userQuery" class="chat-input-field" maxlength="600" placeholder="Ask Lexie about our projects...">
-                <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="askLexie()"><i class="fas fa-shield-alt"></i></button>
+                <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="typeof askLexie === 'function' ? askLexie() : null"><i class="fas fa-shield-alt"></i></button>
             </div>
         </div>
         <div class="kohmz-bot-toggle" id="botToggle">
@@ -462,13 +465,14 @@
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
     <script src="lexie.js"></script>
     
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             if(typeof AOS !== "undefined") AOS.init({ duration: 600, once: true });
             
-            // --- MOBILE MENU LOGIC ---
+            // --- 1. MOBILE MENU LOGIC ---
             const menuBtn = document.getElementById("mobile-menu");
             const navList = document.getElementById("nav-list");
             if(menuBtn && navList) {
@@ -477,12 +481,26 @@
                 });
             }
 
-            // --- ACCORDION LOGIC (PORTFOLIO PHASES) ---
-            var coll = document.getElementsByClassName("collapsible");
-            for (var i = 0; i < coll.length; i++) {
-                coll[i].addEventListener("click", function() {
+            const dropdownBtns = document.querySelectorAll('.nav-links li.dropdown .dropbtn');
+            dropdownBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    if(window.innerWidth <= 992) {
+                        e.preventDefault();
+                        const parentLi = this.parentElement;
+                        dropdownBtns.forEach(otherBtn => {
+                            if(otherBtn !== this) otherBtn.parentElement.classList.remove('open');
+                        });
+                        parentLi.classList.toggle('open');
+                    }
+                });
+            });
+
+            // --- 2. ACCORDION LOGIC (PORTFOLIO PHASES) ---
+            const colls = document.querySelectorAll(".collapsible");
+            colls.forEach(coll => {
+                coll.addEventListener("click", function() {
                     this.classList.toggle("active");
-                    var panel = this.nextElementSibling;
+                    const panel = this.nextElementSibling;
                     if (panel.style.maxHeight) { 
                         panel.style.maxHeight = null; 
                         panel.classList.remove('open-padding');
@@ -491,12 +509,14 @@
                         panel.classList.add('open-padding');
                     } 
                 });
-            }
+            });
 
-            // --- HERO MAIN TYPEWRITER LOGIC ---
+            // --- 3. TYPEWRITER LOGIC (CLEAN) ---
+            // Hero Main Text
             const mainText = "PROJECT CAPABILITIES & ";
             let mainIdx = 0;
             const typeEl = document.getElementById("main-typewriter-text");
+            
             function typeMain() {
                 if(typeEl && mainIdx < mainText.length) {
                     typeEl.innerHTML += mainText.charAt(mainIdx++);
@@ -505,58 +525,89 @@
             }
             typeMain();
             
+            // Sub Text Typewriter Class
             class TypeWriter {
-                constructor(e, t, n) { this.el = e; this.words = t; this.txt = ""; this.wordIdx = 0; this.wait = parseInt(n, 10); this.isDel = false; this.type(); }
+                constructor(el, words, wait) {
+                    this.el = el;
+                    this.words = words;
+                    this.txt = "";
+                    this.wordIdx = 0;
+                    this.wait = parseInt(wait, 10);
+                    this.isDel = false;
+                    this.type();
+                }
                 type() {
-                    const e = this.wordIdx % this.words.length, t = this.words[e];
-                    this.txt = this.isDel ? t.substring(0, this.txt.length - 1) : t.substring(0, this.txt.length + 1);
+                    const current = this.wordIdx % this.words.length;
+                    const fullTxt = this.words[current];
+                    
+                    if (this.isDel) {
+                        this.txt = fullTxt.substring(0, this.txt.length - 1);
+                    } else {
+                        this.txt = fullTxt.substring(0, this.txt.length + 1);
+                    }
+                    
                     this.el.innerHTML = `<span class="txt">${this.txt}</span>`;
-                    let n = 100; if(this.isDel) n /= 2;
-                    if(!this.isDel && this.txt === t) { n = this.wait; this.isDel = true; }
-                    else if(this.isDel && this.txt === "") { this.isDel = false; this.wordIdx++; n = 500; }
-                    setTimeout(() => this.type(), n);
+                    
+                    let typeSpeed = 100;
+                    if (this.isDel) typeSpeed /= 2;
+                    
+                    if (!this.isDel && this.txt === fullTxt) {
+                        typeSpeed = this.wait;
+                        this.isDel = true;
+                    } else if (this.isDel && this.txt === "") {
+                        this.isDel = false;
+                        this.wordIdx++;
+                        typeSpeed = 500;
+                    }
+                    setTimeout(() => this.type(), typeSpeed);
                 }
             }
+            
             const subEl = document.querySelector(".txt-type");
             if(subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute("data-words")), subEl.getAttribute("data-wait"));
 
-            // --- ELECTRIC TYPEWRITER LOGIC FOR TECH BAR ---
+            // Tech Bar Typewriter
             const techBarWords = ["PORTFOLIO & CAPABILITIES", "DIGITAL PROTOTYPING", "100% PEC-COMPLIANT", "INDUSTRIAL-GRADE EXECUTION", "ADVANCED QA TESTING"];
-            let tbIdx = 0; let charIdx = 0; let isTbDeleting = false;
+            let tbIdx = 0, charIdx = 0, isTbDeleting = false;
             const electricEl = document.getElementById("electric-typewriter");
+            
             function typeElectricBar() {
                 if(!electricEl) return;
                 const currentWord = techBarWords[tbIdx];
-                if(isTbDeleting) {
-                    electricEl.innerText = currentWord.substring(0, charIdx - 1);
-                    charIdx--;
-                } else {
-                    electricEl.innerText = currentWord.substring(0, charIdx + 1);
-                    charIdx++;
+                if(isTbDeleting) { 
+                    electricEl.innerText = currentWord.substring(0, charIdx - 1); 
+                    charIdx--; 
+                } else { 
+                    electricEl.innerText = currentWord.substring(0, charIdx + 1); 
+                    charIdx++; 
                 }
-                let typeSpeed = 50; 
-                if(isTbDeleting) typeSpeed /= 2;
-                if(!isTbDeleting && charIdx === currentWord.length) {
-                    typeSpeed = 2000;
-                    isTbDeleting = true;
-                } else if(isTbDeleting && charIdx === 0) {
-                    isTbDeleting = false;
-                    tbIdx = (tbIdx + 1) % techBarWords.length;
-                    typeSpeed = 500;
+                
+                let typeSpeed = isTbDeleting ? 25 : 50; 
+                if(!isTbDeleting && charIdx === currentWord.length) { 
+                    typeSpeed = 2000; 
+                    isTbDeleting = true; 
+                } else if(isTbDeleting && charIdx === 0) { 
+                    isTbDeleting = false; 
+                    tbIdx = (tbIdx + 1) % techBarWords.length; 
+                    typeSpeed = 500; 
                 }
                 setTimeout(typeElectricBar, typeSpeed);
             }
             typeElectricBar();
 
-            // --- PAGE SPECIFIC SCRAPER FOR LEXIE.JS ---
+            // --- 4. PAGE SPECIFIC SCRAPER FOR LEXIE.JS ---
             window.pageContextData = "KOHMZ Portfolio Framework: ";
             const panels = document.querySelectorAll('.collapsible');
-            if(panels.length > 0) window.pageContextData += Array.from(panels).map(p => p.innerText + " " + p.nextElementSibling.innerText).join(' | ');
+            if(panels.length > 0) {
+                window.pageContextData += Array.from(panels).map(p => p.innerText + " " + p.nextElementSibling.innerText).join(' | ');
+            }
             const cards = document.querySelectorAll('.showcase-card');
-            if(cards.length > 0) window.pageContextData += " Capabilities: " + Array.from(cards).map(c => c.innerText.replace(/\n/g, ' ')).join(' | ');
+            if(cards.length > 0) {
+                window.pageContextData += " Capabilities: " + Array.from(cards).map(c => c.innerText.replace(/\n/g, ' ')).join(' | ');
+            }
             window.pageContextData = window.pageContextData.substring(0, 1500);
 
-            // --- READ PAGE ALOUD ---
+            // --- 5. READ PAGE ALOUD (CLEANED) ---
             window.isReadingPage = false;
             const readPageBtn = document.getElementById("readPageBtn");
             if(readPageBtn) {
@@ -567,19 +618,83 @@
                         readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
                         return;
                     }
+                    
                     const mainElement = document.querySelector("main");
                     if(!mainElement) return;
+                    
                     let text = mainElement.innerText.replace(/\n+/g,". ");
                     window.isReadingPage = true;
                     readPageBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                    
                     let chunk = new SpeechSynthesisUtterance("Welcome to KOHMZ Portfolio. " + text);
                     let voices = window.speechSynthesis.getVoices();
                     let profVoice = voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Female")||v.name.includes("Enhanced")) || voices[0];
+                    
                     if(profVoice) chunk.voice = profVoice;
-                    chunk.pitch = 1.15; chunk.rate = 0.85;
+                    chunk.pitch = 1.15; 
+                    chunk.rate = 0.85;
+                    
                     chunk.onend = () => { window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; };
                     chunk.onerror = () => { window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; };
+                    
                     window.speechSynthesis.speak(chunk);
+                });
+            }
+
+            // --- 6. DRAGGABLE BOT LOGIC ---
+            const wrap = document.getElementById("draggableBot");
+            const toggle = document.getElementById("botToggle");
+            
+            if (wrap && toggle) {
+                let isDrag = false, startX, startY, xOff = 0, yOff = 0, clickTime;
+                
+                toggle.addEventListener("mousedown", e => { 
+                    isDrag = true; 
+                    clickTime = Date.now(); 
+                    startX = e.clientX - xOff; 
+                    startY = e.clientY - yOff; 
+                });
+                
+                window.addEventListener("mousemove", e => { 
+                    if (isDrag) { 
+                        xOff = e.clientX - startX; 
+                        yOff = e.clientY - startY; 
+                        wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; 
+                    } 
+                });
+                
+                window.addEventListener("mouseup", () => { 
+                    if(isDrag){ 
+                        isDrag = false; 
+                        if(Date.now() - clickTime < 200 && typeof window.toggleBotWindow === 'function') {
+                            window.toggleBotWindow(); 
+                        }
+                    }
+                });
+                
+                toggle.addEventListener("touchstart", e => { 
+                    isDrag = true; 
+                    clickTime = Date.now(); 
+                    startX = e.touches[0].clientX - xOff; 
+                    startY = e.touches[0].clientY - yOff; 
+                }, { passive: true });
+                
+                window.addEventListener("touchmove", e => { 
+                    if (isDrag) { 
+                        xOff = e.touches[0].clientX - startX; 
+                        yOff = e.touches[0].clientY - startY; 
+                        wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; 
+                        e.preventDefault(); 
+                    } 
+                }, { passive: false });
+                
+                window.addEventListener("touchend", () => { 
+                    if(isDrag){ 
+                        isDrag = false; 
+                        if(Date.now() - clickTime < 200 && typeof window.toggleBotWindow === 'function') {
+                            window.toggleBotWindow(); 
+                        }
+                    }
                 });
             }
         });
