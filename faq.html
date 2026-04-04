@@ -21,7 +21,6 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
@@ -150,7 +149,7 @@
         .cta-button:hover::before { left:200%; }
         .cta-button:hover { transform:translateY(-3px) scale(1.05); box-shadow:0 0 30px #ffb703; color:#000; }
 
-        /* --- FLOATING CONTACTS & BOT (V20 UI SHELL) --- */
+        /* --- FLOATING CONTACTS & BOT (V21 UI SHELL) --- */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
         .float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff !important; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all .3s cubic-bezier(.175,.885,.32,1.275); position: relative; border: none; cursor: pointer; }
         .float-btn::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: inherit; z-index: -1; filter: blur(10px); opacity: 0.6; transition: 0.3s; }
@@ -160,12 +159,14 @@
         .kohmz-bot-wrapper { position: fixed; bottom: 25px; left: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-start; touch-action: none; user-select: none;}
         .kohmz-bot-toggle { width: 130px; height: 130px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s; filter: drop-shadow(0 0 10px rgba(0,229,255,0.5));}
         .kohmz-bot-toggle:hover { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(0,229,255,0.8));}
-        
+        .bot-value-tag { background: rgba(8, 16, 24, 0.95); border: 1px solid var(--cyber-blue); color: var(--cyber-blue); padding: 5px 12px; font-size: 11px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; cursor: pointer; text-transform: uppercase; white-space: nowrap; transition: 0.3s; box-shadow: 0 0 10px rgba(0,229,255,0.2);}
+        .bot-value-tag:hover { background: var(--cyber-blue); color: #000; }
+        .god-mode-tag { border-color: #ffb703 !important; color: #ffb703 !important; box-shadow: 0 0 15px rgba(255, 183, 3, 0.5) !important; }
+
         .kohmz-chat-window { display: none; width: 340px; height: 75dvh; max-height: 550px; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); border-radius: 8px;}
         .kohmz-chat-header { background: #000; color: #00e5ff; padding: 15px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
         .kohmz-chat-body { padding: 15px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .chat-bubble { padding: 10px; border-radius: 0 12px 12px 12px; font-size: 12px; white-space: pre-wrap; font-family: 'Share Tech Mono', monospace; color: #e0faff; background: rgba(255, 255, 255, 0.05); }
-
+        
         .quick-replies { display:flex; flex-wrap:wrap; gap:8px; padding:12px; background:rgba(8,16,24,0.98); border-top:1px solid rgba(0,229,255,0.15); width:100%; box-sizing:border-box; justify-content:center; }
         .quick-replies button { background:rgba(0,229,255,0.1); border:1px solid #00e5ff; color:#00e5ff; border-radius:20px; padding:8px 14px; font-size:11px; cursor:pointer; transition:0.3s; font-family:'Share Tech Mono',monospace; font-weight:800; flex:1 1 auto; }
         .quick-replies button:hover { background:#00e5ff; color:#000; }
@@ -178,6 +179,9 @@
 
         #vision-preview { display:none; padding:8px 12px; background:rgba(0,229,255,0.1); border-top:1px solid #00e5ff; align-items:center; gap:12px; font-size:11px; color:#00e5ff; font-family: 'Share Tech Mono', monospace;}
         #vision-preview img { height:35px; width:35px; border:1px solid #00e5ff; object-fit:cover; border-radius: 4px;}
+        
+        /* 🚨 FIX: Make sure Lottie animation doesn't block the click */
+        .kohmz-bot-toggle lottie-player { pointer-events: none; width: 100% !important; height: 100% !important;}
 
         /* --- MOBILE RESPONSIVE FIXES --- */
         @media (max-width: 768px) {
@@ -194,7 +198,6 @@
         footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; font-weight: bold;}
         footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none;}
         .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
-        .bot-value-tag { background: rgba(0,229,255,0.1); border: 1px solid var(--cyber-blue); color: var(--cyber-blue); padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; cursor: grab; text-transform: uppercase; white-space: nowrap;}
     </style>
 </head>
 <body>
@@ -373,6 +376,7 @@
     </main>
 
     <aside class="floating-container" aria-label="Quick Contact Options">
+        <button id="readPageBtn" class="float-btn" style="background:#e11d48;color:white;cursor:pointer;" aria-label="Read Page Aloud" title="Listen to Page Content"><i class="fas fa-volume-up"></i></button>
         <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" rel="noopener noreferrer" class="float-btn" style="background:#0084ff;" aria-label="Message KOHMZ Electrical on Facebook Messenger"><i class="fab fa-facebook-messenger"></i></a>
         <a href="https://wa.me/639266174131" target="_blank" rel="noopener noreferrer" class="float-btn" style="background:#25d366;" aria-label="Message KOHMZ Electrical on WhatsApp"><i class="fab fa-whatsapp"></i></a>
         <a href="viber://chat?number=%2B639266174131" target="_blank" rel="noopener noreferrer" class="float-btn" style="background:#7360f2;" aria-label="Message KOHMZ Electrical on Viber"><i class="fab fa-viber"></i></a>
@@ -380,13 +384,13 @@
     </aside>
 
     <div class="kohmz-bot-wrapper" id="draggableBot">
-        <div class="bot-value-tag" id="dragHint" onclick="typeof exitGodMode === 'function' && isGodMode ? exitGodMode() : (typeof toggleBotWindow === 'function' ? toggleBotWindow() : null)">⚡ KOHMZ Lexie Pro</div>
+        <div class="bot-value-tag" id="dragHint" onclick="typeof window.exitGodMode === 'function' && isGodMode ? window.exitGodMode() : (typeof window.toggleBotWindow === 'function' ? window.toggleBotWindow() : null)">⚡ KOHMZ Lexie Pro</div>
         <div class="kohmz-chat-window" id="chatWindow">
             <div class="kohmz-chat-header" id="chatHeader">
                 <span>LEXIE AI: SYSTEM ACTIVE</span>
                 <div>
-                    <span id="muteBtn" onclick="typeof toggleMute === 'function' ? toggleMute() : null" style="cursor:pointer;padding:0 10px;font-size:16px;" title="Mute/Unmute Voice">🔊</span>
-                    <span onclick="typeof toggleBotWindow === 'function' ? toggleBotWindow() : null" style="cursor:pointer;padding:0 5px;font-size:18px;" title="Close">✕</span>
+                    <span id="muteBtn" onclick="typeof window.toggleMute === 'function' ? window.toggleMute() : null" style="cursor:pointer;padding:0 10px;font-size:16px;" title="Mute/Unmute Voice">🔊</span>
+                    <span onclick="typeof window.toggleBotWindow === 'function' ? window.toggleBotWindow() : null" style="cursor:pointer;padding:0 5px;font-size:18px;" title="Close">✕</span>
                 </div>
             </div>
             
@@ -395,13 +399,13 @@
             <div id="vision-preview">
                 <img id="prev-img" src="" alt="Preview">
                 <span>📎 Image attached for analysis.</span>
-                <span onclick="typeof clearImage === 'function' ? clearImage() : null" style="margin-left:auto;color:#e11d48;cursor:pointer;font-weight:bold;background:rgba(225,29,72,0.1);padding:2px 6px;border-radius:4px;">REMOVE</span>
+                <span onclick="typeof window.clearImage === 'function' ? window.clearImage() : null" style="margin-left:auto;color:#e11d48;cursor:pointer;font-weight:bold;background:rgba(225,29,72,0.1);padding:2px 6px;border-radius:4px;">REMOVE</span>
             </div>
             
             <div class="quick-replies" id="quickReplies">
-                <button onclick="typeof sendQuickReply === 'function' ? sendQuickReply('Do you offer a FREE estimate?') : null">Free Estimate?</button>
-                <button onclick="typeof sendQuickReply === 'function' ? sendQuickReply('Are your services covered by warranty?') : null">Warranty Info</button>
-                <button onclick="typeof sendQuickReply === 'function' ? sendQuickReply('I want to book an inspection.') : null">Book Inspection</button>
+                <button onclick="typeof window.sendQuickReply === 'function' ? window.sendQuickReply('Do you offer a FREE estimate?') : null">Free Estimate?</button>
+                <button onclick="typeof window.sendQuickReply === 'function' ? window.sendQuickReply('Are your services covered by warranty?') : null">Warranty Info</button>
+                <button onclick="typeof window.sendQuickReply === 'function' ? window.sendQuickReply('I want to book an inspection.') : null">Book Inspection</button>
             </div>
             
             <div id="cf-turnstile-container">
@@ -411,17 +415,18 @@
             <div class="chat-input-area">
                 <button class="chat-tool-btn" onclick="document.getElementById('imgInput').click()" title="Upload Image"><i class="fas fa-image"></i></button>
                 <button class="chat-tool-btn" onclick="document.getElementById('cameraInput').click()" title="Take Photo"><i class="fas fa-camera"></i></button>
-                <button id="micBtn" class="chat-tool-btn" onclick="typeof startDictation === 'function' ? startDictation() : null" title="Voice Input"><i class="fas fa-microphone"></i></button>
+                <button id="micBtn" class="chat-tool-btn" onclick="typeof window.startDictation === 'function' ? window.startDictation() : null" title="Voice Input"><i class="fas fa-microphone"></i></button>
                 
-                <input type="file" id="imgInput" hidden accept="image/*" onchange="typeof handleImage === 'function' ? handleImage(this) : null">
-                <input type="file" id="cameraInput" hidden accept="image/*" capture="environment" onchange="typeof handleImage === 'function' ? handleImage(this) : null">
+                <input type="file" id="imgInput" hidden accept="image/*" onchange="typeof window.handleImage === 'function' ? window.handleImage(this) : null">
+                <input type="file" id="cameraInput" hidden accept="image/*" capture="environment" onchange="typeof window.handleImage === 'function' ? window.handleImage(this) : null">
                 
                 <input type="text" id="userQuery" class="chat-input-field" maxlength="600" placeholder="Ask Lexie about our FAQs...">
-                <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="typeof askLexie === 'function' ? askLexie() : null"><i class="fas fa-shield-alt"></i></button>
+                <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="typeof window.askLexie === 'function' ? window.askLexie() : null"><i class="fas fa-shield-alt"></i></button>
             </div>
         </div>
         <div class="kohmz-bot-toggle" id="botToggle">
-            <lottie-player src="Live%20chatbot.json" background="transparent" speed="1" style="width:100%;height:100%;" loop autoplay></lottie-player>
+            <i class="fas fa-robot" style="position:absolute; font-size: 40px; color: #00e5ff; z-index:-1;"></i>
+            <lottie-player src="Live-chatbot.json" background="transparent" speed="1" loop autoplay></lottie-player>
         </div>
     </div>
 
@@ -441,7 +446,6 @@
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
     <script src="lexie.js"></script>
     
     <script>
@@ -493,7 +497,7 @@
                 });
             });
 
-            // --- 3. TYPEWRITER LOGIC (CLEAN) ---
+            // --- 3. TYPEWRITER LOGIC ---
             const mainText = "FAQ: KOHMZ INTELLIGENCE & "; 
             let mainIdx = 0; 
             const typeEl = document.getElementById("main-typewriter-text");
@@ -574,16 +578,39 @@
             }
             typeElectricBar();
 
-            // --- 4. PAGE SPECIFIC SCRAPER FOR LEXIE.JS ---
-            window.pageContextData = "FAQ Context: ";
-            const faqDetails = document.querySelectorAll('.collapsible-wrapper');
-            if(faqDetails.length > 0) {
-                window.pageContextData += Array.from(faqDetails).map(d => d.innerText.replace(/\n/g, ' ')).join(' | ');
+            // --- 4. READ PAGE ALOUD FEATURE ---
+            window.isReadingPage = false;
+            const readPageBtn = document.getElementById("readPageBtn");
+            if(readPageBtn) {
+                readPageBtn.addEventListener("click", function() {
+                    if(window.isReadingPage || window.speechSynthesis.speaking) {
+                        window.speechSynthesis.cancel();
+                        window.isReadingPage = false;
+                        readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                        return;
+                    }
+                    
+                    const mainElement = document.querySelector(".faq-container");
+                    if(!mainElement) return;
+                    
+                    let text = mainElement.innerText.replace(/\n+/g,". ");
+                    window.isReadingPage = true;
+                    readPageBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                    
+                    let chunk = new SpeechSynthesisUtterance("Welcome to KOHMZ Electrical FAQ. " + text);
+                    let voices = window.speechSynthesis.getVoices();
+                    let profVoice = voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Female")||v.name.includes("Enhanced")) || voices[0];
+                    
+                    if(profVoice) chunk.voice = profVoice;
+                    chunk.pitch = 1.15; 
+                    chunk.rate = 0.85;
+                    
+                    chunk.onend = () => { window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; };
+                    chunk.onerror = () => { window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; };
+                    
+                    window.speechSynthesis.speak(chunk);
+                });
             }
-            window.pageContextData = window.pageContextData.substring(0, 1500);
-
-            // Note: Read Aloud, Dragging, Input Listeners, and Exit Intent logic have been strictly removed from here. 
-            // They MUST be handled directly inside lexie.js to avoid duplicate execution.
         });
     </script>
 </body>
