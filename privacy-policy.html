@@ -10,6 +10,10 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
@@ -30,6 +34,19 @@
             color: #e0faff; 
             overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6;
         } 
+
+        /* --- V20 SPECIFIC STYLES --- */
+        .typing-dots span { animation: blink 1.4s infinite both; }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        .mode-red { background: #3a0000 !important; transition: background 0.5s; }
+        .code-red-active { border-color: #e11d48 !important; box-shadow: 0 0 30px rgba(225, 29, 72, 0.5) !important; }
+        .mode-gold { background: rgba(255,183,3,0.1) !important; transition: background 0.5s; }
+        .btn-pdf { display:block; margin-top:10px; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer; font-family:'Share Tech Mono'; transition:0.3s; background:#ffb703; color:#000; border:none; text-transform:uppercase; width:100%; text-align:center; }
+        .btn-pdf:hover { transform:translateY(-2px); box-shadow:0 0 15px #ffb703; }
+        .god-mode-tag { background: #ffb703 !important; border-color: #fff !important; color: #000 !important; box-shadow: 0 0 20px #ffb703 !important; animation: pulseGold 2s infinite !important; }
+        @keyframes pulseGold { 0% {box-shadow: 0 0 10px #ffb703;} 50% {box-shadow: 0 0 25px #fff, 0 0 35px #ffb703;} 100% {box-shadow: 0 0 10px #ffb703;} }
+        .mic-active { color: #e11d48 !important; animation: blink 1s infinite; }
 
         /* --- ENHANCED LIVE 3D CAD BACKGROUND --- */
         .cad-background {
@@ -57,7 +74,7 @@
             pointer-events: none;
         }
 
-        /* FLOATING DATA PARTICLES (New Background Effect) */
+        /* FLOATING DATA PARTICLES */
         .particle-container { position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1; pointer-events: none; }
         .particle { position: absolute; background: #00e5ff; border-radius: 50%; box-shadow: 0 0 10px #00e5ff; opacity: 0; animation: floatUp 10s infinite linear; }
         .p1 { left: 10%; width: 4px; height: 4px; animation-duration: 8s; animation-delay: 0s; }
@@ -67,7 +84,7 @@
         .p5 { left: 50%; width: 4px; height: 4px; animation-duration: 11s; animation-delay: 5s; }
         @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 20% { opacity: 0.6; } 80% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
 
-        /* --- ELECTRIC TYPEWRITER TECH BAR (SYNCED) --- */
+        /* --- ELECTRIC TYPEWRITER TECH BAR --- */
         .tech-bar{height:35px;background:#010409;border-bottom:1px solid rgba(0,229,255,0.4);position:relative;z-index:1001;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 15px rgba(0,229,255,0.2)}
         .tech-bar-content{display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;}
         .electric-text{color:#00e5ff;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 8px #00e5ff;}
@@ -75,7 +92,7 @@
         @keyframes pulseBolt { 0%, 100% { text-shadow: 0 0 5px #00e5ff; opacity: 1; } 50% { text-shadow: 0 0 20px #fff; opacity: 0.5; } }
         .tech-cursor{color:#00e5ff;font-weight:bold;animation:blink .8s step-end infinite;}
         
-        /* --- HEADER & NAV (SYNCED) --- */
+        /* --- HEADER & NAV --- */
         header { background: rgba(8, 16, 24, 0.95); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
         .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
         .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
@@ -94,7 +111,7 @@
         .dropdown-content a:hover { background: rgba(0,229,255,0.1); color: #00e5ff !important; padding-left: 20px; }
         .caret { transition: transform 0.3s ease; }
 
-        /* --- MOBILE NAVIGATION (SYNCED WITH INDEX 50% / 30VH) --- */
+        /* --- MOBILE NAVIGATION --- */
         @media (max-width: 992px) {
             .menu-toggle { display: block; font-size: 24px; color: #00e5ff; cursor: pointer; background: none; border: none; padding: 5px; }
             .nav-links { 
@@ -137,15 +154,13 @@
             backdrop-filter: blur(10px); font-family: 'Share Tech Mono', monospace;
             position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        /* Neon Slide Effect on Hover/Active */
         .collapsible::before { content:''; position:absolute; left:0; top:0; height:100%; width:0%; background:linear-gradient(90deg, rgba(0,229,255,0.15), transparent); transition:width 0.4s ease; z-index:-1; }
         .collapsible:hover::before, .collapsible.active::before { width: 100%; }
         
         .collapsible:hover, .collapsible.active { 
-            transform: translateX(8px); /* Umuusad pa-kanan ng konti */
-            box-shadow: -5px 5px 20px rgba(0,0,0,0.6), inset 4px 0 0 #00e5ff; /* Glowing left border */
-            border-color: rgba(0,229,255,0.5);
-            color: #00e5ff;
+            transform: translateX(8px); 
+            box-shadow: -5px 5px 20px rgba(0,0,0,0.6), inset 4px 0 0 #00e5ff; 
+            border-color: rgba(0,229,255,0.5); color: #00e5ff;
         }
         
         .collapsible:after { content: '\002B'; font-size: 18px; transition: 0.3s transform; }
@@ -153,39 +168,35 @@
 
         .panel { 
             padding: 0 25px; background-color: rgba(10, 20, 35, 0.6); max-height: 0; overflow: hidden; 
-            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), padding 0.4s ease; /* Smoother opening */
+            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), padding 0.4s ease; 
             border-radius: 0 0 5px 5px; margin-bottom: 20px; 
-            border-left: 4px solid #ffb703; backdrop-filter: blur(15px);
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            border-left: 4px solid #ffb703; backdrop-filter: blur(15px); box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
-        .panel.open-padding { padding: 15px 25px 30px; } /* Dynamic padding pag naka-open */
+        .panel.open-padding { padding: 15px 25px 30px; } 
         
         .panel-content { color: #cbd5e1; font-size: 12px; opacity: 0; transform: translateY(-10px); transition: all 0.5s ease 0.1s;}
-        .panel.open-padding .panel-content { opacity: 1; transform: translateY(0); } /* Content fades in and drops down */
+        .panel.open-padding .panel-content { opacity: 1; transform: translateY(0); } 
         
         .panel-content h3 { color: #00e5ff; margin-top: 25px; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid rgba(0,229,255,0.1); padding-bottom: 5px; display:inline-block;}
 
-        /* --- FLOATING CONTACTS & BOT (SYNCED WITH INDEX.HTML) --- */
+        /* --- FLOATING CONTACTS & BOT (V20 UI) --- */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
-        .float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all .3s cubic-bezier(.175,.885,.32,1.275); position: relative; border: none; cursor: pointer; }
+        .float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff !important; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all .3s cubic-bezier(.175,.885,.32,1.275); position: relative; border: none; cursor: pointer; }
         .float-btn::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: inherit; z-index: -1; filter: blur(10px); opacity: 0.6; transition: 0.3s; }
         .float-btn:hover { transform: scale(1.15) translateY(-5px); outline: none; }
         .float-btn:hover::before { opacity: 1; filter: blur(15px); }
 
-        .kohmz-bot-wrapper { position: fixed; bottom: 25px; left: 20px; z-index: 999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-start; touch-action: none; }
+        .kohmz-bot-wrapper { position: fixed; bottom: 25px; left: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-start; touch-action: none; }
+        .bot-value-tag { background: rgba(0,229,255,0.1); border: 1px solid var(--cyber-blue); color: var(--cyber-blue); padding: 5px 12px; font-size: 10px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); cursor: grab; text-transform: uppercase; white-space: nowrap; transition: 0.3s; }
+        .kohmz-chat-window { display: none; width: 340px; max-width: 85vw; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); border-radius: 8px; overflow: hidden;}
+        .kohmz-chat-header { background: #000; color: #00e5ff; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; font-size: 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
+        .kohmz-chat-body { padding: 15px; height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; scroll-behavior: smooth; }
+        .chat-bubble { padding: 10px; border-radius: 0 12px 12px 12px; font-size: 12px; word-wrap: break-word; white-space: pre-wrap; line-height: 1.5; font-family: 'Share Tech Mono', monospace; color: #e0faff; background: rgba(255, 255, 255, 0.05); }
         .kohmz-bot-toggle { width: 130px; height: 130px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s; }
         .kohmz-bot-toggle:hover { transform: scale(1.05); }
-        .kohmz-bot-toggle:active { cursor: grabbing; }
-        lottie-player { width: 100% !important; height: 100% !important; pointer-events: none; }
-        
-        .kohmz-chat-window { display: none; width: 320px; max-width: 85vw; background: rgba(8,16,24,0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); }
-        .kohmz-chat-header { background: #000; color: #00e5ff; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid rgba(0,229,255,0.2); }
-        .kohmz-chat-body { padding: 15px; max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .chat-bubble { background: rgba(255,255,255,0.05); color: #e0faff; padding: 10px; border-radius: 0 12px 12px 12px; margin-bottom: 10px; border-left: 2px solid #00e5ff; font-size: 12px; word-wrap: break-word; white-space: pre-wrap; line-height: 1.5; font-family: 'Share Tech Mono', monospace; }
 
         @media(max-width: 768px) {
             .hero { background-size: 100% auto; background-position: center top; padding: 100px 5%; }
-            /* HORIZONTAL FLOATING DOCK NA NASA BABA (SYNCED) */
             .floating-container{
                 flex-direction: row !important; flex-wrap: nowrap !important;
                 bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; 
@@ -194,8 +205,9 @@
                 border: 1px solid rgba(0,229,255,0.4); box-shadow: 0 10px 25px rgba(0,0,0,0.9); backdrop-filter: blur(10px);
             }
             .float-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; }
-            .kohmz-bot-wrapper { bottom: 85px !important; left: 10px !important; }
+            .kohmz-bot-wrapper { bottom: 85px !important; left: 10px !important; right: auto !important;}
             .kohmz-bot-toggle { width: 75px !important; height: 75px !important; }
+            .kohmz-chat-window { width: 280px; }
         }
 
         /* --- FOOTER SYNC --- */
@@ -206,7 +218,6 @@
         footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; font-weight: bold; }
         footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none; }
         .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
-        .bot-value-tag { background: rgba(0,229,255,0.1); border: 1px solid var(--cyber-blue); color: var(--cyber-blue); font-size: 10px; padding: 6px 12px; border-radius: 4px; font-weight: 800; text-transform: uppercase; cursor:pointer; margin-bottom:5px;}
     </style>
 </head>
 <body>
@@ -333,7 +344,6 @@
                     <p>We use Google Analytics to monitor which pages are most helpful to our clients. This data is aggregated and anonymous. It helps us understand if users are looking more for Solar Integration, Commercial Rewiring, or Residential fixes, allowing us to publish better resources.</p>
                 </div>
             </div>
-
         </div>
     </main>
 
@@ -346,15 +356,35 @@
     </aside>
 
     <div class="kohmz-bot-wrapper" id="draggableBot">
-        <div class="bot-value-tag" id="dragHint" onclick="toggleBotWindow()">⚡ KOHMZ Lexie</div>
+        <div class="bot-value-tag" id="dragHint" onclick="toggleBotWindow()">⚡ KOHMZ Lexie Pro</div>
         <div class="kohmz-chat-window" id="chatWindow">
-            <div class="kohmz-chat-header"><span>LEXIE AI: SYSTEM ACTIVE</span><span onclick="toggleBotWindow()" style="cursor:pointer; padding:0 5px;">✕</span></div>
-            <div class="kohmz-chat-body" id="chatBody">
-                <div class="chat-bubble">Good day! I'm Lexie, your AI Assistant from KOHMZ Electrical. Rest assured, your data is highly protected under our strict Privacy Protocols. Have you reviewed our policies? I strongly urge you to secure your property now by clicking "Book Now" in the menu above or asking me directly to guide you to the booking page!</div>
+            <div class="kohmz-chat-header" id="chatHeader">
+                <span>LEXIE AI: SYSTEM ACTIVE</span>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <button id="muteBtn" onclick="toggleMute()" style="background:none;border:none;color:#ffb703;cursor:pointer;font-size:14px;">🔊</button>
+                    <span onclick="toggleBotWindow()" style="cursor:pointer; padding:0 5px; font-size:14px;">✕</span>
+                </div>
             </div>
-            <div style="padding:10px; border-top:1px solid rgba(0,229,255,0.2); display:flex; gap:5px; background:#000;">
-                <input type="text" id="userQuery" placeholder="Ask Lexie..." style="flex:1; background:transparent; border:1px solid #00e5ff; color:#fff; padding:8px; font-family:'Share Tech Mono'; font-size:11px; outline:none;">
-                <button onclick="askGemini()" style="background:#00e5ff; border:none; padding:5px 12px; cursor:pointer;"><i class="fas fa-paper-plane" style="color:#000;"></i></button>
+            
+            <div class="kohmz-chat-body" id="chatBody"></div>
+            
+            <div id="vision-preview" style="display:none; padding:5px; background:#000; border-top:1px solid rgba(0,229,255,0.2); position:relative;">
+                <img id="prev-img" style="max-height:60px; border-radius:4px;">
+                <button onclick="clearImage()" style="position:absolute; top:5px; right:5px; background:red; color:white; border:none; border-radius:50%; cursor:pointer; width:20px; height:20px; font-size:10px; display:flex; align-items:center; justify-content:center;">✕</button>
+            </div>
+            
+            <div id="cf-turnstile-container" style="display:flex; justify-content:center; background:#000; padding:5px; border-top:1px solid rgba(0,229,255,0.2);">
+                <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITEKEY_HERE" data-callback="onTurnstileSuccess" data-theme="dark"></div>
+            </div>
+            
+            <div style="padding:10px; border-top:1px solid rgba(0,229,255,0.2); display:flex; gap:8px; background:#000; align-items:center;">
+                <label style="cursor:pointer; color:#00e5ff; font-size:16px;">
+                    <i class="fas fa-image"></i>
+                    <input type="file" id="imgInput" accept="image/*" style="display:none;" onchange="handleImage(this)">
+                </label>
+                <button id="micBtn" onclick="startDictation()" style="background:none; border:none; color:#00e5ff; cursor:pointer; font-size:16px;"><i class="fas fa-microphone"></i></button>
+                <input type="text" id="userQuery" placeholder="Ask Lexie..." style="flex:1; background:transparent; border:1px solid #00e5ff; border-radius:4px; color:#fff; padding:8px; font-family:'Share Tech Mono'; font-size:11px; outline:none;">
+                <button id="mainSendBtn" onclick="askLexie()" style="background:#00e5ff; border:none; border-radius:4px; padding:6px 12px; cursor:pointer;"><i class="fas fa-paper-plane" style="color:#000;"></i></button>
             </div>
         </div>
         <div class="kohmz-bot-toggle" id="botToggle">
@@ -379,106 +409,362 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // --- ELECTRIC TYPEWRITER LOGIC FOR TECH BAR (SYNCED) ---
-        const techBarWords = ["TECHNICAL GOVERNANCE", "ASSET PROTECTION", "PEC-COMPLIANT ARCHITECTURE", "24/7 SPECIALIST RESPONSE", "RESIDENTIAL & COMMERCIAL MASTERY"];
-        let tbIdx = 0; let charIdx = 0; let isTbDeleting = false;
-        const electricEl = document.getElementById("electric-typewriter");
-        function typeElectricBar() {
-            if(!electricEl) return;
-            const currentWord = techBarWords[tbIdx];
-            if(isTbDeleting) {
-                electricEl.innerText = currentWord.substring(0, charIdx - 1);
-                charIdx--;
-            } else {
-                electricEl.innerText = currentWord.substring(0, charIdx + 1);
-                charIdx++;
-            }
-            let typeSpeed = 50; 
-            if(isTbDeleting) typeSpeed /= 2;
-            if(!isTbDeleting && charIdx === currentWord.length) {
-                typeSpeed = 2000;
-                isTbDeleting = true;
-            } else if(isTbDeleting && charIdx === 0) {
-                isTbDeleting = false;
-                tbIdx = (tbIdx + 1) % techBarWords.length;
-                typeSpeed = 500;
-            }
-            setTimeout(typeElectricBar, typeSpeed);
-        }
-        typeElectricBar();
-
-        // --- LEXIE AI LOGIC ---
+        // ============================================================
+        // KOHMZ LEXIE AI — FRONTEND V20.0.0 (GOD-TIER STREAMING)
+        // WITH PRIVACY POLICY HYBRID INJECTION
+        // ============================================================
         const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
-        setInterval(()=>{if(window.speechSynthesis)window.speechSynthesis.resume()},1000);
-        window.speakText=function(e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();let t=e.replace(/\./g,"... ").replace(/,/g,",.. ");const n=new SpeechSynthesisUtterance(t),s=window.speechSynthesis.getVoices(),i=s.find(e=>e.name.includes("Samantha")||e.name.includes("Aria")||e.name.includes("Google US English")||e.name.includes("Female")||e.name.includes("Enhanced"))||s[0];if(i)n.voice=i;n.lang="en-US";n.pitch=1.15;n.rate=0.80;n.volume=1;window.speechSynthesis.speak(n)};
-        window.toggleBotWindow=function(){const chat=document.getElementById("chatWindow"),hint=document.getElementById("dragHint"),btn=document.getElementById("readPageBtn");if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();if(btn)btn.innerHTML='<i class="fas fa-volume-up"></i>';window.isReadingPage=false}if(chat.style.display==="flex"){chat.style.display="none";if(hint)hint.innerHTML="⚡ KOHMZ Expert AI"}else{chat.style.display="flex";if(hint)hint.innerHTML="🖐️ Drag to Move";if(window.speechSynthesis)window.speechSynthesis.resume()}};
-        window.askGemini=async function(){const e=document.getElementById("userQuery"),t=document.getElementById("chatBody");if(!e)return;const n=e.value.trim();if(!n)return;if(window.speechSynthesis)window.speechSynthesis.resume();t.innerHTML+=`<div class="chat-bubble user-bubble" style="background:rgba(0,229,255,0.1);align-self:flex-end;border-right:2px solid #ffb703;color:#fff;padding:10px;border-radius:12px 0 12px 12px;margin-bottom:10px;white-space:pre-wrap;">YOU: ${n}</div>`;e.value="";t.scrollTop=t.scrollHeight;const s="loading-"+Date.now();t.innerHTML+=`<div class="chat-bubble" id="${s}" style="border-left:2px solid #00e5ff;">Lexie: Processing request...</div>`;t.scrollTop=t.scrollHeight;let sd="";const panels=document.querySelectorAll('.panel-content');if(panels.length>0)sd+=Array.from(panels).map(c=>c.innerText.replace(/\n/g,' ')).join(' | ');sd=sd.substring(0,1500);try{const response=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:n,name:"Web Client",pageName:document.title,pageData:sd})}),result=await response.json();document.getElementById(s)?.remove();const aiReply=result.ai_answer||"System calibration error.",cleanReplyForButton=aiReply.replace(/'/g,"\\'").replace(/"/g,"&quot;").replace(/(?:\r\n|\r|\n)/g," ");t.innerHTML+=`<div class="chat-bubble" style="border-left:2px solid #00e5ff;">Lexie: ${aiReply}<div style="margin-top:8px; border-top:1px solid rgba(0,229,255,0.2); padding-top:5px;"><button onclick="speakText('${cleanReplyForButton}')" style="background:none; border:none; color:#ffb703; cursor:pointer; font-family:'Share Tech Mono'; font-size:11px; padding:0;"><i class="fas fa-volume-up"></i> Play Audio</button></div></div>`;t.scrollTop=t.scrollHeight;speakText(aiReply)}catch(e){if(document.getElementById(s)){document.getElementById(s).innerHTML="Lexie: Connection lost. Re-syncing..."}}};
 
-        document.addEventListener("DOMContentLoaded",()=>{
-            if(typeof AOS!=="undefined")AOS.init({duration:600,once:true});
-            
-            // --- MOBILE MENU LOGIC (SYNCED) ---
-            const menuBtn=document.getElementById("mobile-menu"),navList=document.getElementById("nav-list");
-            if(menuBtn&&navList){
-                menuBtn.addEventListener("click",()=>{
-                    navList.classList.toggle("active");
-                });
+        let isGodMode = false, godName = "", mySecretAdminToken = sessionStorage.getItem("kohmz_admin_token") || "";
+        let isMuted = localStorage.getItem("lexie_muted") === "true", currentTurnstileToken = "", messageCount = parseInt(sessionStorage.getItem("msg_count")) || 0;
+
+        function applyMuteUI() { const btn = document.getElementById("muteBtn"); if (btn) btn.innerText = isMuted ? "🔇" : "🔊"; }
+        window.toggleMute = function () { isMuted = !isMuted; localStorage.setItem("lexie_muted", isMuted); applyMuteUI(); if (isMuted && window.speechSynthesis) window.speechSynthesis.cancel(); };
+        applyMuteUI();
+
+        window.onTurnstileSuccess = function (token) {
+            currentTurnstileToken = token;
+            const btn = document.getElementById("mainSendBtn");
+            if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
+        };
+
+        window.resetTurnstile = function () {
+            if (typeof turnstile !== "undefined" && turnstile.reset && !isGodMode) {
+                currentTurnstileToken = ""; turnstile.reset();
+                const btn = document.getElementById("mainSendBtn");
+                if (btn) { btn.disabled = true; btn.style.opacity = "0.5"; btn.innerHTML = '<i class="fas fa-shield-alt"></i>'; }
             }
+        };
 
-            // --- ACCORDION / RETRACTABLE DROPDOWN LOGIC FOR MOBILE (SYNCED) ---
-            const dropdownBtns = document.querySelectorAll('.nav-links li.dropdown .dropbtn');
-            dropdownBtns.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    if(window.innerWidth <= 992) {
-                        e.preventDefault();
-                        const parentLi = this.parentElement;
-                        dropdownBtns.forEach(otherBtn => {
-                            if(otherBtn !== this) {
-                                otherBtn.parentElement.classList.remove('open');
-                            }
-                        });
-                        parentLi.classList.toggle('open');
-                    }
-                });
-            });
+        let userId = localStorage.getItem("kohmz_uuid");
+        if (!userId) { userId = "user-" + Math.random().toString(36).substr(2, 9); localStorage.setItem("kohmz_uuid", userId); }
 
-            // --- TYPEWRITER LOGIC (HERO) ---
-            const policyTitleText = "Corporate Policies & Terms";
-            let policyTitleIndex = 0;
-            const policyTitleElement = document.getElementById("typewriter-title");
-            function typeWriterPolicy() {
-                if (policyTitleIndex === 0) { policyTitleElement.innerHTML = ''; }
-                if (policyTitleIndex < policyTitleText.length) {
-                    policyTitleElement.innerHTML += policyTitleText.charAt(policyTitleIndex);
-                    policyTitleIndex++;
-                    setTimeout(typeWriterPolicy, 70); 
+        let lexieMemory = [];
+        try { lexieMemory = JSON.parse(sessionStorage.getItem("lexie_memory")) || []; } catch (e) { lexieMemory = []; }
+        let currentImageData = null;
+
+        function applyGodModeUI() {
+            const hint = document.getElementById("dragHint"); if (hint) { hint.innerText = "👑 IMMORTAL MODE"; hint.classList.add("god-mode-tag"); }
+            const tsCont = document.getElementById("cf-turnstile-container"); if (tsCont) tsCont.style.display = "none";
+            const btn = document.getElementById("mainSendBtn"); if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
+            const header = document.getElementById("chatHeader"); if (header) header.firstElementChild.textContent = `LEXIE AI: IMMORTAL (${godName}) 👑`;
+        }
+
+        window.exitGodMode = function () {
+            if (!isGodMode) return; isGodMode = false; godName = ""; mySecretAdminToken = ""; sessionStorage.removeItem("kohmz_admin_token"); lexieMemory = []; sessionStorage.removeItem("lexie_memory"); document.getElementById("chatBody").innerHTML = "";
+            const hint = document.getElementById("dragHint"); if (hint) { hint.innerText = "⚡ KOHMZ Lexie Pro"; hint.classList.remove("god-mode-tag"); }
+            const tsCont = document.getElementById("cf-turnstile-container"); if (tsCont) tsCont.style.display = "flex";
+            const header = document.getElementById("chatHeader"); if (header) header.firstElementChild.textContent = "LEXIE AI: SYSTEM ACTIVE";
+            resetTurnstile(); appendBubble("bot", "Immortal Mode deactivated. Session memory wiped. Returning to standard protocol.");
+        };
+
+        function formatNumbers(text) { if (!text) return ""; return text.replace(/(?<!\d)(?!09|639|\+639)\d{4,}(?!\d)/g, match => parseInt(match, 10).toLocaleString("en-US")); }
+        function escapeHTML(str) { if (!str) return ""; return str.replace(/[&<>'"]/g, tag => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[tag])); }
+
+        function appendBubble(role, htmlContent, rawTextForTTS) {
+            const t = document.getElementById("chatBody"), b = document.createElement("div"); b.className = "chat-bubble";
+            if (role === "user") { b.style.cssText = "background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;white-space:pre-wrap;"; b.textContent = "YOU: " + htmlContent; } 
+            else {
+                b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;"; b.innerHTML = "Lexie: " + htmlContent;
+                if (rawTextForTTS) {
+                    const audioDiv = document.createElement("div"); audioDiv.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
+                    const audioBtn = document.createElement("button"); audioBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;";
+                    audioBtn.innerHTML = '<i class="fas fa-volume-up"></i> Play Audio'; audioBtn.onclick = () => { if (isMuted) toggleMute(); window.speakText(rawTextForTTS); };
+                    audioDiv.appendChild(audioBtn); b.appendChild(audioDiv);
                 }
             }
-            typeWriterPolicy();
+            t.appendChild(b); setTimeout(() => { t.scrollTop = t.scrollHeight; }, 100); return b;
+        }
 
-            // --- ENHANCED COLLAPSIBLE PANELS LOGIC ---
+        // ── Main Chat Engine (Ask Lexie V20 STREAMING + POLICY INJECTION) ──
+        window.askLexie = async function (retryMessage = null) {
+            const inputEl = document.getElementById("userQuery"), t = document.getElementById("chatBody");
+            const n = retryMessage !== null ? retryMessage : inputEl.value.trim();
+
+            if (!n && !currentImageData) return;
+            if (!isGodMode && messageCount >= 2 && !currentTurnstileToken) { appendBubble("bot", "⚠️ Boss, paki-check muna yung security box (I am not a robot) sa ibaba para makapag-tuloy tayo."); return; }
+            if (window.speechSynthesis) { window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false; }
+
+            if (retryMessage === null) {
+                appendBubble("user", n || "[Image Attached]"); inputEl.value = "";
+                lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
+                if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
+                sessionStorage.setItem("lexie_memory", JSON.stringify(lexieMemory));
+                if (!isGodMode) { messageCount++; sessionStorage.setItem("msg_count", messageCount); }
+            }
+
+            const loadId = "load-" + Date.now();
+            const botBubble = appendBubble("bot", 'Lexie is analyzing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>');
+            botBubble.id = loadId;
+
+            // ⚡ POLICY SCRAPER INJECTION
+            let sd = "Policy Context: ";
+            const panels = document.querySelectorAll('.panel-content');
+            if(panels.length > 0) sd += Array.from(panels).map(c => c.innerText.replace(/\n/g, ' ')).join(' | ');
+            const combinedPageData = (document.getElementById("main-content")?.innerText?.substring(0, 1000) || "") + "\n" + sd.substring(0, 1000);
+
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: n, image: currentImageData, name: godName || "Web Client", userId: userId, pageData: combinedPageData, history: lexieMemory.slice(-8), turnstileToken: currentTurnstileToken, vipName: godName, adminToken: mySecretAdminToken })
+                });
+
+                const contentType = response.headers.get("content-type") || "";
+
+                if (contentType.includes("application/json")) {
+                    const result = await response.json();
+                    if (result.auth_challenge) {
+                        const enteredToken = prompt("🔒 VIP SYSTEM DETECTED.\nPlease enter Master Key to proceed:");
+                        if (!enteredToken) { botBubble.innerHTML = "Lexie: ⚠️ Auth canceled."; return; }
+                        mySecretAdminToken = enteredToken; sessionStorage.setItem("kohmz_admin_token", enteredToken); botBubble.remove(); return askLexie(n);
+                    }
+                    if (result.god_mode_activated) { isGodMode = true; godName = result.god_name || "Admin"; lexieMemory = []; sessionStorage.removeItem("lexie_memory"); applyGodModeUI(); }
+                    botBubble.innerHTML = "Lexie: " + escapeHTML(result.ai_answer || "System error."); window.speakText(result.ai_answer || ""); return;
+                }
+
+                const reader = response.body.getReader(), decoder = new TextDecoder("utf-8"); let fullText = ""; botBubble.innerHTML = "Lexie: "; 
+                while (true) {
+                    const { done, value } = await reader.read(); if (done) break;
+                    const chunk = decoder.decode(value, { stream: true }); const lines = chunk.split('\n');
+                    for (const line of lines) {
+                        if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                if (data.response) {
+                                    fullText += data.response;
+                                    let displayHtml = fullText.replace(/ESTIMATE_JSON_START[\s\S]*?(ESTIMATE_JSON_END)?/gi, "").replace(/\[AGREEMENT_START\][\s\S]*?(\[AGREEMENT_END\])?/gi, "").replace(/\[UI_ACTION:.*?\]/g, "").replace(/\*\*/g, "").trim();
+                                    botBubble.innerHTML = "Lexie: " + escapeHTML(formatNumbers(displayHtml)); t.scrollTop = t.scrollHeight; 
+                                }
+                            } catch (e) {}
+                        }
+                    }
+                }
+
+                let finalHtml = botBubble.innerHTML, textToSpeak = fullText.replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "").replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "").replace(/\[.*?\]/g, "").trim();
+                if (fullText.includes("[UI_ACTION:CODE_RED]")) {
+                    document.body.classList.add("mode-red"); setTimeout(() => document.body.classList.remove("mode-red"), 6000);
+                    document.getElementById("chatWindow").classList.add("code-red-active");
+                    const header = document.getElementById("chatHeader"); if (header) { header.style.color = "#e11d48"; header.firstElementChild.textContent = "⚠️ CODE RED DETECTED"; }
+                    finalHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
+                } else {
+                    const chatWin = document.getElementById("chatWindow"); if (chatWin) chatWin.classList.remove("code-red-active");
+                    const header = document.getElementById("chatHeader"); if (header) { header.style.color = "var(--cyber-blue)"; header.firstElementChild.textContent = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE"; }
+                }
+
+                const jsonMatch = fullText.match(/ESTIMATE_JSON_START\s*([\s\S]*?)\s*ESTIMATE_JSON_END/i);
+                if (jsonMatch) {
+                    try {
+                        const estimateJSON = JSON.parse(jsonMatch[1].trim());
+                        let pdfLines = estimateJSON.items.map(it => `ITEM: ${it.item}\nQTY: ${it.qty}\nLABOR COST: ${it.labor}\nMATERIALS COST: ${it.materials}`).join("\n|||\n");
+                        pdfLines += `\n-----------------------------------\nRESTORATION COST: ${estimateJSON.restoration}\n-----------------------------------\nGRAND TOTAL ESTIMATE: ${estimateJSON.grand_total}`;
+                        const cleanDataForPDF = pdfLines.replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
+                        sessionStorage.setItem("lastEst", cleanDataForPDF);
+                        document.body.classList.add("mode-gold"); setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
+                        finalHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-invoice-dollar"></i> Download Official Estimate</button>`;
+                        textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
+                    } catch (e) { console.error("Failed to parse estimate JSON", e); }
+                } else {
+                    const pdfMatch = fullText.match(/\[PDF_START\]([\s\S]*?)\[PDF_END\]/i);
+                    if(pdfMatch) {
+                        const cleanDataForPDF = pdfMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
+                        sessionStorage.setItem("lastEst", cleanDataForPDF);
+                        document.body.classList.add("mode-gold"); setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
+                        finalHtml += `<br><br><button id="dlPdfBtn" onclick="downloadPDF()" class="btn-pdf"><i class="fas fa-file-invoice-dollar"></i> Download Official Estimate</button>`;
+                        textToSpeak += " Naihanda ko na po ang estimate natin boss. ";
+                    }
+                }
+
+                const agreeMatch = fullText.match(/\[AGREEMENT_START\]([\s\S]*?)\[AGREEMENT_END\]/i);
+                if (agreeMatch) {
+                    const cleanDataForAgreement = agreeMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
+                    sessionStorage.setItem("lastAgreement", cleanDataForAgreement);
+                    document.body.classList.add("mode-gold"); setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
+                    finalHtml += `<br><br><button id="dlAgreeBtn" onclick="downloadAgreement()" class="btn-pdf" style="background:var(--cyber-blue); color:#000;"><i class="fas fa-file-signature"></i> Download Service Agreement</button>`;
+                    textToSpeak += " Handa na rin po ang Service Agreement natin boss. ";
+                }
+
+                botBubble.innerHTML = finalHtml; window.speakText(textToSpeak);
+                lexieMemory.push({ role: "assistant", content: fullText.replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "[Provided Estimate]").replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "[Provided Agreement]") });
+                if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
+                sessionStorage.setItem("lexie_memory", JSON.stringify(lexieMemory));
+
+            } catch (err) {
+                const lb = document.getElementById(loadId); if (lb) lb.textContent = "Lexie: Connection Firewall blocked. Please try again."; resetTurnstile();
+            } finally { clearImage(); if (!isGodMode && messageCount >= 2 && currentTurnstileToken) resetTurnstile(); }
+        };
+
+        window.downloadPDF = async function () { 
+            const data = sessionStorage.getItem("lastEst"); if (!data) { alert("System Error: No estimate data found."); return; }
+            const btn = document.getElementById("dlPdfBtn"); if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = "0.6"; }
+            try {
+                const { jsPDF } = window.jspdf; const doc = new jsPDF({ format: "letter", unit: "mm" });
+                const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin, contentWidth = pageWidth - (margin * 2), textStartX = margin + 25;
+                doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42); doc.text("KOHMZ", textStartX, 23);
+                doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
+                doc.setFontSize(8); doc.setTextColor(100, 100, 100); doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
+                doc.setTextColor(50, 50, 50); doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" }); doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
+                doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
+                doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, "F"); doc.setTextColor(255, 255, 255); doc.setFontSize(10);
+                doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5); doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
+                doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
+
+                const formattedData = formatNumbers(data); let parts = formattedData.split(/[-=]{10,}/);
+                let itemsStr = parts[0] || "", restorationStr = (parts[1] || "").trim(), totalStr = (parts[2] || "").trim();
+                if (!totalStr && restorationStr && restorationStr.toUpperCase().includes("GRAND TOTAL")) { totalStr = restorationStr; restorationStr = "RESTORATION COST: TO FOLLOW"; }
+
+                let tableBody = [];
+                itemsStr.split("|||").forEach(itemBlock => {
+                    if (!itemBlock.trim()) return; let itemName = "-", qty = "-", labor = "-", mat = "-";
+                    itemBlock.split("\n").forEach(line => {
+                        let uLine = line.toUpperCase().trim();
+                        if (uLine.startsWith("ITEM:")) itemName = line.substring(5).trim();
+                        else if (uLine.startsWith("QTY:")) qty = line.substring(4).trim();
+                        else if (uLine.startsWith("LABOR COST:")) labor = line.substring(11).trim();
+                        else if (uLine.startsWith("MATERIALS COST:")) mat = line.substring(15).trim();
+                    });
+                    if (itemName !== "-") tableBody.push([itemName, qty, labor, mat]);
+                });
+
+                doc.autoTable({ startY: 70, head: [["ITEM / SERVICE DESCRIPTION", "QTY", "LABOR COST", "MATERIALS COST"]], body: tableBody, theme: "grid", headStyles: { fillColor: [13, 27, 42], textColor: [255, 255, 255], fontStyle: "bold", halign: "center" }, bodyStyles: { textColor: [40, 40, 40], fontSize: 9 }, margin: { left: margin, right: margin } });
+                let finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 80;
+                doc.setFillColor(245, 245, 245); doc.rect(margin, finalY, contentWidth, 12, "F"); doc.setFont("helvetica", "italic"); doc.setFontSize(9); doc.setTextColor(100, 100, 100); doc.text(restorationStr || "RESTORATION COST: TO FOLLOW", margin + 5, finalY + 7.5);
+                doc.setFillColor(255, 183, 3); doc.rect(margin, finalY + 18, contentWidth, 14, "F"); doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(13, 27, 42); doc.text(totalStr || "GRAND TOTAL ESTIMATE: TBD", rightAlign - 5, finalY + 27, { align: "right" });
+                doc.save(`KOHMZ_Estimate_${userId.substring(0, 5)}.pdf`);
+            } catch (err) { alert("Error generating PDF."); } finally { if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-invoice-dollar"></i> Download Official Estimate'; btn.style.opacity = "1"; } }
+        };
+
+        window.downloadAgreement = async function () { 
+            const data = sessionStorage.getItem("lastAgreement"); if (!data) { alert("System Error: No agreement data found."); return; }
+            const btn = document.getElementById("dlAgreeBtn"); if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = "0.6"; }
+            try { const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.setFont("helvetica", "bold"); doc.setFontSize(16); doc.text("OFFICIAL SERVICE AGREEMENT", 105, 20, { align: "center" }); doc.setFont("helvetica", "normal"); doc.setFontSize(10); let lines = doc.splitTextToSize(formatNumbers(data), 180); doc.text(lines, 15, 40); doc.save(`KOHMZ_Agreement_${userId.substring(0, 5)}.pdf`); } catch (e) { alert("Error generating Agreement."); } finally { if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-signature"></i> Download Service Agreement'; btn.style.opacity = "1"; } }
+        }
+
+        window.handleImage = function (input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image(); img.onload = () => {
+                        const canvas = document.createElement("canvas"); let width = img.width, height = img.height;
+                        if (width > 500) { height = Math.round((height * 500) / width); width = 500; }
+                        canvas.width = width; canvas.height = height; canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+                        currentImageData = canvas.toDataURL("image/jpeg", 0.6).split(",")[1];
+                        document.getElementById("prev-img").src = canvas.toDataURL("image/jpeg", 0.6);
+                        document.getElementById("vision-preview").style.display = "flex";
+                        document.getElementById("chatWindow").style.display = "flex";
+                    }; img.src = e.target.result;
+                }; reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+        window.clearImage = function () { currentImageData = null; document.getElementById("vision-preview").style.display = "none"; document.getElementById("imgInput").value = null; };
+
+        window.startDictation = function () {
+            if (window.hasOwnProperty("webkitSpeechRecognition") || window.hasOwnProperty("SpeechRecognition")) {
+                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = "en-PH"; recognition.onstart = () => document.getElementById("micBtn").classList.add("mic-active");
+                recognition.onresult = (e) => { document.getElementById("userQuery").value = e.results[0][0].transcript; askLexie(); };
+                recognition.onend = () => document.getElementById("micBtn").classList.remove("mic-active"); recognition.start();
+            } else { appendBubble("bot", "Sorry boss, Voice Input is not supported sa browser mo."); }
+        };
+
+        let speechQueue = [], isSpeaking = false;
+        window.speakText = function (text) {
+            if (!window.speechSynthesis || isMuted) return;
+            let cleanText = text.replace(/\[CALENDAR:.*?\]/g, "").replace(/\*/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+            let sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText]; speechQueue.push(...sentences); if (!isSpeaking) processSpeechQueue();
+        };
+
+        function processSpeechQueue() {
+            if (speechQueue.length === 0 || isMuted) { isSpeaking = false; return; } isSpeaking = true;
+            let sentence = speechQueue.shift().trim(); if (!sentence) { processSpeechQueue(); return; }
+            let utterance = new SpeechSynthesisUtterance(sentence), voices = window.speechSynthesis.getVoices(), voice = voices.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Google US English") || v.name.includes("Female") || v.name.includes("Enhanced")) || voices[0];
+            if (voice) utterance.voice = voice; utterance.lang = "en-US"; utterance.pitch = 1.15; utterance.rate = 0.85;
+            utterance.onend = () => processSpeechQueue(); utterance.onerror = () => { processSpeechQueue(); };
+            try { window.speechSynthesis.speak(utterance); } catch (e) { processSpeechQueue(); }
+        }
+
+        window.addEventListener("load", () => {
+            const t = document.getElementById("chatBody");
+            if (t) {
+                if (lexieMemory.length === 0) {
+                    appendBubble("bot", "Good day! I'm Lexie. Rest assured, your data is highly protected under our strict Privacy Protocols. Have you reviewed our policies? If you have questions about refunds or warranties, just let me know!");
+                } else {
+                    lexieMemory.forEach(m => {
+                        if (m.role === "system") return;
+                        const safeContent = escapeHTML(m.content).replace(/\[SYSTEM NOTE.*?\]/g, "[Image Attached]");
+                        if (m.role === "user") appendBubble("user", safeContent);
+                        else { const b = document.createElement("div"); b.className = "chat-bubble"; b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;"; b.textContent = "Lexie: " + m.content; t.appendChild(b); }
+                    }); t.scrollTop = t.scrollHeight;
+                }
+            }
+            let currentPageName = document.title.split("|")[0].trim(), lastPage = sessionStorage.getItem("kohmz_last_page");
+            if (lastPage && lastPage !== currentPageName && lexieMemory.length > 0) { setTimeout(() => { appendBubble("bot", `Boss, napadaan ka pala dito sa Privacy and Terms natin. Strict tayo dito kaya safe ang project mo! May ipapa-clarify ka ba?`); }, 1500); }
+            sessionStorage.setItem("kohmz_last_page", currentPageName);
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof AOS !== "undefined") AOS.init({ duration: 600, once: true });
+            const techBarWords = ["TECHNICAL GOVERNANCE", "ASSET PROTECTION", "PEC-COMPLIANT ARCHITECTURE", "24/7 SPECIALIST RESPONSE", "RESIDENTIAL & COMMERCIAL MASTERY"]; let tbIdx = 0, charIdx = 0, isTbDeleting = false; const electricEl = document.getElementById("electric-typewriter");
+            function typeElectricBar() {
+                if(!electricEl) return; const currentWord = techBarWords[tbIdx];
+                if(isTbDeleting) { electricEl.innerText = currentWord.substring(0, charIdx - 1); charIdx--; } else { electricEl.innerText = currentWord.substring(0, charIdx + 1); charIdx++; }
+                let typeSpeed = isTbDeleting ? 25 : 50; 
+                if(!isTbDeleting && charIdx === currentWord.length) { typeSpeed = 2000; isTbDeleting = true; } else if(isTbDeleting && charIdx === 0) { isTbDeleting = false; tbIdx = (tbIdx + 1) % techBarWords.length; typeSpeed = 500; }
+                setTimeout(typeElectricBar, typeSpeed);
+            } typeElectricBar();
+
+            const menuBtn=document.getElementById("mobile-menu"),navList=document.getElementById("nav-list"); if(menuBtn&&navList){ menuBtn.addEventListener("click",()=>navList.classList.toggle("active")); }
+            const dropdownBtns = document.querySelectorAll('.nav-links li.dropdown .dropbtn'); dropdownBtns.forEach(btn => { btn.addEventListener('click', function(e) { if(window.innerWidth <= 992) { e.preventDefault(); const parentLi = this.parentElement; dropdownBtns.forEach(otherBtn => { if(otherBtn !== this) otherBtn.parentElement.classList.remove('open'); }); parentLi.classList.toggle('open'); } }); });
+
+            const policyTitleText = "Corporate Policies & Terms"; let policyTitleIndex = 0; const policyTitleElement = document.getElementById("typewriter-title");
+            function typeWriterPolicy() { if (policyTitleIndex === 0) { policyTitleElement.innerHTML = ''; } if (policyTitleIndex < policyTitleText.length) { policyTitleElement.innerHTML += policyTitleText.charAt(policyTitleIndex); policyTitleIndex++; setTimeout(typeWriterPolicy, 70); } } typeWriterPolicy();
+
             var coll = document.getElementsByClassName("collapsible");
             for (var i = 0; i < coll.length; i++) {
                 coll[i].addEventListener("click", function() {
-                    this.classList.toggle("active");
-                    var panel = this.nextElementSibling;
-                    
-                    if (panel.style.maxHeight) { 
-                        panel.style.maxHeight = null; 
-                        panel.classList.remove('open-padding');
-                    } else { 
-                        panel.style.maxHeight = panel.scrollHeight + 50 + "px"; // added buffer space
-                        panel.classList.add('open-padding');
-                    } 
+                    this.classList.toggle("active"); var panel = this.nextElementSibling;
+                    if (panel.style.maxHeight) { panel.style.maxHeight = null; panel.classList.remove('open-padding'); } 
+                    else { panel.style.maxHeight = panel.scrollHeight + 50 + "px"; panel.classList.add('open-padding'); } 
                 });
             }
 
-            // --- DRAGGABLE BOT LOGIC ---
-            const wrapper=document.getElementById("draggableBot"),toggle=document.getElementById("botToggle");let isDrag=false,startX,startY,xOff=0,yOff=0,startTime;if(toggle&&wrapper){toggle.addEventListener("mousedown",e=>{isDrag=true;startTime=Date.now();startX=e.clientX-xOff;startY=e.clientY-yOff});window.addEventListener("mousemove",e=>{if(!isDrag)return;xOff=e.clientX-startX;yOff=e.clientY-startY;wrapper.style.transform=`translate3d(${xOff}px, ${yOff}px, 0)`});window.addEventListener("mouseup",()=>{if(isDrag){isDrag=false;if(Date.now()-startTime<200)window.toggleBotWindow()}})}const uQuery=document.getElementById("userQuery");if(uQuery){uQuery.addEventListener("keypress",e=>{if(e.key==="Enter")window.askGemini()})}
-            
-            // --- READ PAGE ALOUD ---
-            window.isReadingPage=false;const readPageBtn=document.getElementById("readPageBtn");if(readPageBtn){readPageBtn.addEventListener("click",function(){if(window.isReadingPage||window.speechSynthesis.speaking){window.speechSynthesis.cancel();window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}const mainElement=document.querySelector(".policy-container");if(!mainElement)return;let contentToRead=mainElement.innerText.replace(/\n+/g,". "),fullText="Welcome to KOHMZ Electrical Policies. "+contentToRead,sentences=fullText.match(/[^.!?]+[.!?]+/g)||[fullText];window.isReadingPage=true;readPageBtn.innerHTML='<i class="fas fa-volume-mute" aria-hidden="true"></i>';let currentSentence=0;function playNextSentence(){if(!window.isReadingPage||currentSentence>=sentences.length){window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>';return}let chunk=new SpeechSynthesisUtterance(sentences[currentSentence].trim()),voices=window.speechSynthesis.getVoices(),profVoice=voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Google US English")||v.name.includes("Female"))||voices[0];if(profVoice)chunk.voice=profVoice;chunk.pitch=1.15;chunk.rate=0.80;chunk.onend=()=>{currentSentence++;playNextSentence()};chunk.onerror=()=>{window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up" aria-hidden="true"></i>'};window.speechSynthesis.speak(chunk)}playNextSentence()})}
+            window.isReadingPage=false;const readPageBtn=document.getElementById("readPageBtn");if(readPageBtn){readPageBtn.addEventListener("click",function(){if(window.isReadingPage||window.speechSynthesis.speaking){window.speechSynthesis.cancel();window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up"></i>';return}const mainElement=document.querySelector(".policy-container");if(!mainElement)return;let contentToRead=mainElement.innerText.replace(/\n+/g,". "),fullText="Welcome to KOHMZ Electrical Policies. "+contentToRead,sentences=fullText.match(/[^.!?]+[.!?]+/g)||[fullText];window.isReadingPage=true;readPageBtn.innerHTML='<i class="fas fa-volume-mute"></i>';let currentSentence=0;function playNextSentence(){if(!window.isReadingPage||currentSentence>=sentences.length){window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up"></i>';return}let chunk=new SpeechSynthesisUtterance(sentences[currentSentence].trim()),voices=window.speechSynthesis.getVoices(),profVoice=voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Female"))||voices[0];if(profVoice)chunk.voice=profVoice;chunk.pitch=1.15;chunk.rate=0.80;chunk.onend=()=>{currentSentence++;playNextSentence()};chunk.onerror=()=>{window.isReadingPage=false;readPageBtn.innerHTML='<i class="fas fa-volume-up"></i>'};window.speechSynthesis.speak(chunk)}playNextSentence()})}
+
+            const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
+            if (wrap && toggle) {
+                let isDrag = false, startX, startY, xOff = 0, yOff = 0, clickTime;
+                toggle.addEventListener("mousedown", e => { isDrag = true; clickTime = Date.now(); startX = e.clientX - xOff; startY = e.clientY - yOff; });
+                window.addEventListener("mousemove", e => { if (isDrag) { xOff = e.clientX - startX; yOff = e.clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; } });
+                window.addEventListener("mouseup", () => { if(isDrag){ isDrag = false; if(Date.now() - clickTime < 200) window.toggleBotWindow(); }});
+                toggle.addEventListener("touchstart", e => { isDrag = true; clickTime = Date.now(); startX = e.touches[0].clientX - xOff; startY = e.touches[0].clientY - yOff; }, { passive: true });
+                window.addEventListener("touchmove", e => { if (isDrag) { xOff = e.touches[0].clientX - startX; yOff = e.touches[0].clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; e.preventDefault(); } }, { passive: false });
+                window.addEventListener("touchend", () => { if(isDrag){ isDrag = false; if(Date.now() - clickTime < 200) window.toggleBotWindow(); }});
+            }
+
+            const inputEl = document.getElementById("userQuery");
+            if (inputEl) { inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askLexie(); } }); inputEl.addEventListener("focus", () => { setTimeout(() => { const t = document.getElementById("chatBody"); t.scrollTop = t.scrollHeight; }, 300); }); }
         });
+
+        window.toggleBotWindow = function () {
+            const win = document.getElementById("chatWindow"), hint = document.getElementById("dragHint");
+            if (isSpeaking || window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false; }
+            if (win.style.display === "flex") { win.style.display = "none"; if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "⚡ KOHMZ Lexie Pro"; } 
+            else { win.style.display = "flex"; if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "🖐️ Drag to Move"; }
+        };
+
+        function triggerExitIntent() {
+            if (isGodMode || sessionStorage.getItem("exit_offered")) return;
+            const chat = document.getElementById("chatWindow");
+            if (chat && chat.style.display !== "flex") { chat.style.display = "flex"; const hint = document.getElementById("dragHint"); if (hint) hint.innerHTML = "🖐️ Drag to Move"; }
+            appendBubble("bot", "Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊");
+            sessionStorage.setItem("exit_offered", "true");
+            if (window.speechSynthesis && !isMuted) window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
+        }
+
+        document.addEventListener("mouseleave", (e) => { if (e.clientY < 0) triggerExitIntent(); });
+        document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") triggerExitIntent(); });
+        let lastScrollTop = 0, lastScrollTime = Date.now();
+        window.addEventListener("scroll", () => { let st = window.pageYOffset || document.documentElement.scrollTop; let now = Date.now(), timeDiff = now - lastScrollTime; if (st < lastScrollTop - 250 && timeDiff < 100) triggerExitIntent(); lastScrollTop = st <= 0 ? 0 : st; lastScrollTime = now; }, { passive: true });
     </script>
 </body>
 </html>
