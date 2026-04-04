@@ -20,14 +20,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- ✅ FIX: Cloudflare Turnstile script — required for the bot security widget to render -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-        /* --- FUTURISTIC EXTREME SYSTEM --- */
         :root {
             --neon-gold: #ffb703;
             --cyber-blue: #00e5ff;
@@ -59,7 +60,7 @@
         @keyframes pulseGold { 0% {box-shadow: 0 0 10px #ffb703;} 50% {box-shadow: 0 0 25px #fff, 0 0 35px #ffb703;} 100% {box-shadow: 0 0 10px #ffb703;} }
         .mic-active { color: #e11d48 !important; animation: blink 1s infinite; }
 
-        /* --- ENHANCED LIVE 3D CAD BACKGROUND --- */
+        /* --- LIVE 3D CAD BACKGROUND --- */
         .cad-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; perspective: 1000px; z-index: -2; overflow: hidden; background: radial-gradient(circle at center, #0a192f 0%, #04080f 100%); }
         .cad-grid { position: absolute; width: 200%; height: 200%; bottom: -50%; left: -50%; background-image: linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px); background-size: 50px 50px; transform: rotateX(60deg); animation: cadMove 8s linear infinite; }
         @keyframes cadMove { 0% { transform: rotateX(60deg) translateY(0); } 100% { transform: rotateX(60deg) translateY(50px); } }
@@ -75,7 +76,7 @@
         .p5 { left: 50%; width: 4px; height: 4px; animation-duration: 11s; animation-delay: 5s; }
         @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 20% { opacity: 0.6; } 80% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
 
-        /* --- ELECTRIC TYPEWRITER TECH BAR --- */
+        /* --- TECH BAR --- */
         .tech-bar{height:35px;background:#010409;border-bottom:1px solid rgba(0,229,255,0.4);position:relative;z-index:1001;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 15px rgba(0,229,255,0.2)}
         .tech-bar-content{display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;}
         .electric-text{color:#00e5ff;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 8px #00e5ff;}
@@ -88,6 +89,12 @@
         .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
         .logo-text { font-size: 22px; font-weight: 900; color: #fff; font-family: 'Segoe UI', sans-serif; margin:0;}
         .logo-text span { color: #ffb703; }
+
+        /* ✅ FIX: display:none by default — only shown via media query on mobile */
+        .menu-toggle { display: none; font-size: 24px; color: #00e5ff; cursor: pointer; background: none; border: none; padding: 5px; }
+
+        /* ✅ FIX: position:relative on nav so dropdowns position correctly */
+        header nav { position: relative; }
 
         .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; }
         .nav-links li.dropdown { position: relative; }
@@ -103,7 +110,7 @@
 
         /* --- MOBILE NAVIGATION --- */
         @media (max-width: 992px) {
-            .menu-toggle { display: block; font-size: 24px; color: #00e5ff; cursor: pointer; background: none; border: none; padding: 5px; }
+            .menu-toggle { display: block; } /* ✅ Show hamburger on mobile only */
             .nav-links { display: none; flex-direction: column; position: absolute; top: calc(100% + 10px); left: 25%; width: 50%; background: rgba(8, 16, 24, 0.95); padding: 5px 0; margin: 0; border: 1px solid #00e5ff; border-top: 3px solid #ffb703; border-radius: 8px; max-height: 30vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 9999; }
             .nav-links.active { display: flex; animation: menuFadeIn 0.3s ease forwards; }
             @keyframes menuFadeIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
@@ -126,20 +133,21 @@
         .faq-intro h3 { font-size: 20px; color: #00e5ff; text-transform: uppercase; font-weight: 900; border-bottom: 2px solid var(--cyber-blue); display: inline-block; padding-bottom: 10px; font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 10px rgba(0,229,255,0.3);}
         .faq-intro p { font-size: 13px; color: #cbd5e1; margin-top: 15px; }
 
+        /* ✅ FIX: Replaced <details>/<summary> with plain divs — no more native browser conflict */
         .collapsible-wrapper { margin-bottom: 15px; }
-        .collapsible { background: rgba(13, 27, 42, 0.6); color: #ffb703; cursor: pointer; padding: 20px 25px; width: 100%; border: 1px solid rgba(0,229,255,0.2); border-radius: 6px; text-align: left; outline: none; font-size: 14px; font-weight: 800; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; backdrop-filter: blur(10px); position: relative; overflow: hidden; }
+        .collapsible { background: rgba(13, 27, 42, 0.6); color: #ffb703; cursor: pointer; padding: 20px 25px; width: 100%; border: 1px solid rgba(0,229,255,0.2); border-radius: 6px; text-align: left; outline: none; font-size: 14px; font-weight: 800; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; backdrop-filter: blur(10px); position: relative; overflow: hidden; user-select: none; }
         .collapsible::before { content:''; position:absolute; left:0; top:0; height:100%; width:0%; background:linear-gradient(90deg, rgba(0,229,255,0.15), transparent); transition:width 0.4s ease; z-index:-1; }
-        .collapsible:hover::before, .collapsible-wrapper[open] .collapsible::before { width: 100%; }
-        .collapsible-wrapper[open] .collapsible, .collapsible:hover { transform: translateX(8px); box-shadow: -5px 5px 20px rgba(0,0,0,0.6), inset 4px 0 0 #00e5ff; border-color: rgba(0,229,255,0.5); color: #00e5ff; }
+        .collapsible:hover::before, .collapsible-wrapper.open .collapsible::before { width: 100%; }
+        .collapsible-wrapper.open .collapsible, .collapsible:hover { transform: translateX(8px); box-shadow: -5px 5px 20px rgba(0,0,0,0.6), inset 4px 0 0 #00e5ff; border-color: rgba(0,229,255,0.5); color: #00e5ff; }
         .collapsible::after { content: '\002B'; font-size: 20px; font-weight: bold; color: #ffb703; transition: 0.3s transform; }
-        .collapsible-wrapper[open] .collapsible::after { content: "\2212"; color: #00e5ff; transform: rotate(180deg); }
+        .collapsible-wrapper.open .collapsible::after { content: "\2212"; color: #00e5ff; transform: rotate(180deg); }
 
         .panel { padding: 0 25px; background-color: rgba(10, 20, 35, 0.6); max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; border-radius: 0 0 6px 6px; border-left: 4px solid #ffb703; backdrop-filter: blur(15px); }
-        .collapsible-wrapper[open] .panel { padding: 15px 25px 30px; }
+        .collapsible-wrapper.open .panel { padding: 15px 25px 30px; }
         .panel-content { color: #cbd5e1; line-height: 1.8; font-size: 13px; opacity: 0; transform: translateY(-10px); transition: all 0.5s ease 0.1s;}
-        .collapsible-wrapper[open] .panel-content { opacity: 1; transform: translateY(0); }
+        .collapsible-wrapper.open .panel-content { opacity: 1; transform: translateY(0); }
 
-        /* --- CTA BOX ENHANCED --- */
+        /* --- CTA BOX --- */
         .faq-cta { text-align: center; background: rgba(13, 27, 42, 0.8); border-top: 4px solid var(--neon-gold); color: white; padding: 40px; border-radius: 8px; margin-top: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-left: 1px solid rgba(255,183,3,0.2); border-right: 1px solid rgba(255,183,3,0.2); border-bottom: 1px solid rgba(255,183,3,0.2); backdrop-filter: blur(10px); position: relative; overflow: hidden; }
         .faq-cta::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle at top right, rgba(0,229,255,0.1), transparent 50%); pointer-events: none;}
         .faq-cta h4 { font-size: 18px; color: #00e5ff; margin-top: 0; margin-bottom: 10px; text-transform: uppercase; font-weight: 900; position: relative; z-index: 2;}
@@ -149,7 +157,7 @@
         .cta-button:hover::before { left:200%; }
         .cta-button:hover { transform:translateY(-3px) scale(1.05); box-shadow:0 0 30px #ffb703; color:#000; }
 
-        /* --- FLOATING CONTACTS & BOT (V21 UI SHELL) --- */
+        /* --- FLOATING CONTACTS & BOT --- */
         .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
         .float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff !important; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all .3s cubic-bezier(.175,.885,.32,1.275); position: relative; border: none; cursor: pointer; }
         .float-btn::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: inherit; z-index: -1; filter: blur(10px); opacity: 0.6; transition: 0.3s; }
@@ -161,7 +169,6 @@
         .kohmz-bot-toggle:hover { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(0,229,255,0.8));}
         .bot-value-tag { background: rgba(8, 16, 24, 0.95); border: 1px solid var(--cyber-blue); color: var(--cyber-blue); padding: 5px 12px; font-size: 11px; font-weight: bold; border-radius: 4px; margin-bottom: 8px; cursor: pointer; text-transform: uppercase; white-space: nowrap; transition: 0.3s; box-shadow: 0 0 10px rgba(0,229,255,0.2);}
         .bot-value-tag:hover { background: var(--cyber-blue); color: #000; }
-        .god-mode-tag { border-color: #ffb703 !important; color: #ffb703 !important; box-shadow: 0 0 15px rgba(255, 183, 3, 0.5) !important; }
 
         .kohmz-chat-window { display: none; width: 340px; height: 75dvh; max-height: 550px; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); border-radius: 8px;}
         .kohmz-chat-header { background: #000; color: #00e5ff; padding: 15px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
@@ -180,10 +187,9 @@
         #vision-preview { display:none; padding:8px 12px; background:rgba(0,229,255,0.1); border-top:1px solid #00e5ff; align-items:center; gap:12px; font-size:11px; color:#00e5ff; font-family: 'Share Tech Mono', monospace;}
         #vision-preview img { height:35px; width:35px; border:1px solid #00e5ff; object-fit:cover; border-radius: 4px;}
         
-        /* 🚨 FIX: Make sure Lottie animation doesn't block the click */
         .kohmz-bot-toggle lottie-player { pointer-events: none; width: 100% !important; height: 100% !important;}
 
-        /* --- MOBILE RESPONSIVE FIXES --- */
+        /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 768px) {
             .hero { background-size: 100% auto; background-position: center top; padding: 100px 5%; }
             .floating-container { flex-direction: row !important; bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; background: rgba(8,16,24,0.85); padding: 8px 15px; border-radius: 30px; border: 1px solid rgba(0,229,255,0.4); box-shadow: 0 10px 25px rgba(0,0,0,0.9); backdrop-filter: blur(10px); }
@@ -193,7 +199,7 @@
             .kohmz-chat-window { width: calc(100vw - 30px); }
         }
 
-        /* --- FOOTER SYNC --- */
+        /* --- FOOTER --- */
         footer { background: #000; color: white; text-align: center; padding: 60px 20px 40px; border-top: 2px solid var(--neon-gold); position: relative; z-index: 2; margin-top: 40px;}
         footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; font-weight: bold;}
         footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none;}
@@ -276,95 +282,97 @@
                 <p>Click on a question below to reveal the answers from our technical specialists.</p>
             </div>
 
-            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="100">
-                <summary class="collapsible">Nag-o-offer ba kayo ng FREE estimate?</summary>
+            <!-- ✅ FIX: All <details>/<summary> replaced with plain <div> to eliminate native browser conflict -->
+
+            <div class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="100">
+                <div class="collapsible">Nag-o-offer ba kayo ng FREE estimate?</div>
                 <div class="panel">
                     <div class="panel-content">
                         Yes, nagbibigay kami ng <strong>FREE initial online estimate</strong> base sa detalye at pictures na isusubmit niyo sa aming <a href="book-now.html">Booking Form</a>. Gayunpaman, ang pinal at eksaktong quotation ay mangangailangan ng pormal na "On-Site Technical Inspection" upang makita ang totoong kondisyon ng inyong wiring.
                     </div>
                 </div>
-            </details>
+            </div>
 
-            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="150">
-                <summary class="collapsible">Magkano ang pa-check ng wiring o troubleshooting?</summary>
+            <div class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="150">
+                <div class="collapsible">Magkano ang pa-check ng wiring o troubleshooting?</div>
                 <div class="panel">
                     <div class="panel-content">
                         Ang halaga ng troubleshooting ay nakadepende sa laki ng inyong property at sa layo ng lokasyon. Meron kaming standard diagnostic fee para sa pagbisita ng aming mga technician. Kapag nag-decide kayong ituloy ang project sa amin, kadalasan ay inaawas (deducted) na namin ang diagnostic fee sa total project cost.
                     </div>
                 </div>
-            </details>
+            </div>
 
-            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="200">
-                <summary class="collapsible">Covered ba ng warranty ang mga gawa ninyo?</summary>
+            <div class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="200">
+                <div class="collapsible">Covered ba ng warranty ang mga gawa ninyo?</div>
                 <div class="panel">
                     <div class="panel-content">
                         <strong>Absolutely.</strong> Ipinagmamalaki namin ang <em>KOHMZ Standard</em>. Lahat ng aming new electrical installations, panel board upgrades, at full rewiring projects ay may kasamang pormal na workmanship warranty. (Note: Maa-void ang warranty kung ang system ay ginagalaw ng ibang unauthorized technicians pagkatapos ng aming turnover).
                     </div>
                 </div>
-            </details>
+            </div>
 
-            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="250">
-                <summary class="collapsible">Bakit KOHMZ Specialists ang dapat kong i-book para sa project ko?</summary>
+            <div class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="250">
+                <div class="collapsible">Bakit KOHMZ Specialists ang dapat kong i-book para sa project ko?</div>
                 <div class="panel">
                     <div class="panel-content">
                         Dahil hindi kami naghuhula (<strong>No Guesswork!</strong>). Bago kami mag-install, gumagawa kami ng proper Load Profiling at CAD-based design. Binibigyan ka namin ng solusyon na future-proof, PEC-compliant, at idinisenyo para mapababa ang chance ng sunog o pagkasira ng appliances mo. Pag KOHMZ ang gumawa, sigurado kang premium at safe ang investment mo!
                     </div>
                 </div>
-            </details>
+            </div>
 
-            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="300">
-                <summary class="collapsible">Gumagawa ba kayo ng Solar Panel Installation?</summary>
+            <div class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="300">
+                <div class="collapsible">Gumagawa ba kayo ng Solar Panel Installation?</div>
                 <div class="panel">
                     <div class="panel-content">
                         Yes! Ang KOHMZ ay hindi lang pang-traditional electrical. Nagde-design at nag-i-install din kami ng complete Solar Power Systems (On-Grid, Off-Grid, at Hybrid) para sa mga residential at commercial na gusali para makatipid kayo sa kuryente.
                     </div>
                 </div>
-            </details>
+            </div>
 
-            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="350">
-                <summary class="collapsible">Kasama na ba ang mga materyales sa inyong quotation?</summary>
+            <div class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="350">
+                <div class="collapsible">Kasama na ba ang mga materyales sa inyong quotation?</div>
                 <div class="panel">
                     <div class="panel-content">
                         Oo. Ang aming quotation ay karaniwang <strong>"Turnkey" o All-In</strong> (Labor & Materials). Gumagamit lamang kami ng authentic, Tier-1, at UL-listed materials (tulad ng pure copper THHN/THWN-2 wires) para matiyak ang inyong kaligtasan. Wala kaming hidden charges.
                     </div>
                 </div>
-            </details>
+            </div>
 
-            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="400">
-                <summary class="collapsible">Anong mga lokasyon o lugar ang siniserbisyuhan ng KOHMZ?</summary>
+            <div class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="400">
+                <div class="collapsible">Anong mga lokasyon o lugar ang siniserbisyuhan ng KOHMZ?</div>
                 <div class="panel">
                     <div class="panel-content">
                         Kasalukuyan kaming nag-o-operate at nagse-serve sa buong <strong>Metro Manila, CALABARZON, at mga karatig-probinsya</strong>. Para sa mga malalaking Commercial projects sa labas ng aming primary area, maaari kayong magpadala ng mensahe para makapag-arrange kami ng special deployment.
                     </div>
                 </div>
-            </details>
+            </div>
 
-            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="450">
-                <summary class="collapsible">Gaano katagal bago masimulan ang project pagkatapos mag-book?</summary>
+            <div class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="450">
+                <div class="collapsible">Gaano katagal bago masimulan ang project pagkatapos mag-book?</div>
                 <div class="panel">
                     <div class="panel-content">
                         Pagka-submit ninyo ng booking form, asahan na tatawagan kayo ng aming team within <strong>24 hours</strong> para sa initial consultation. Kapag naaprubahan na ang layout at budget, maaari na naming i-schedule ang deployment nang mabilis at maayos.
                     </div>
                 </div>
-            </details>
+            </div>
 
-            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="500">
-                <summary class="collapsible">Tumatanggap ba kayo ng malalaking Commercial at High-End Residential projects?</summary>
+            <div class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="500">
+                <div class="collapsible">Tumatanggap ba kayo ng malalaking Commercial at High-End Residential projects?</div>
                 <div class="panel">
                     <div class="panel-content">
                         <strong>Yes, 100%.</strong> Isa sa aming core specialties ang mga Commercial Office Fit-outs, Retail Spaces, at malalaking Residential Estates. Mula sa strict load balancing para sa mga workstation networks, custom architectural lighting, hanggang sa dedicated smart-home panel upgrades, kaya naming i-execute ang mga malalaking operations nang may absolute precision at zero downtime.
                     </div>
                 </div>
-            </details>
+            </div>
 
-            <details class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="550">
-                <summary class="collapsible">Mayroon ba kayong Emergency Technical Support?</summary>
+            <div class="collapsible-wrapper" data-aos="fade-up" data-aos-delay="550">
+                <div class="collapsible">Mayroon ba kayong Emergency Technical Support?</div>
                 <div class="panel">
                     <div class="panel-content">
                         Definitely. Mayroon kaming <strong>24/7 Specialist Response Team</strong> para sa aming mga existing clients at emergency diagnostic troubleshooting. Maaari ninyong i-click ang WhatsApp o Viber buttons sa ibaba ng aming website upang makausap agad ang electrician na on-duty.
                     </div>
                 </div>
-            </details>
+            </div>
 
             <div class="faq-cta" data-aos="zoom-in">
                 <h4>READY nang simulan ang inyong project?</h4>
@@ -409,6 +417,7 @@
             </div>
             
             <div id="cf-turnstile-container">
+                <!-- ✅ REMINDER: Replace YOUR_TURNSTILE_SITEKEY_HERE with your real key from dash.cloudflare.com -->
                 <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITEKEY_HERE" data-callback="onTurnstileSuccess" data-expired-callback="resetTurnstile" data-error-callback="resetTurnstile" data-theme="dark"></div>
             </div>
             
@@ -450,12 +459,12 @@
     
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            if(typeof AOS !== "undefined") AOS.init({ duration: 600, once: true });
-            
+            if (typeof AOS !== "undefined") AOS.init({ duration: 600, once: true });
+
             // --- 1. MOBILE MENU LOGIC ---
             const menuBtn = document.getElementById("mobile-menu");
             const navList = document.getElementById("nav-list");
-            if(menuBtn && navList) {
+            if (menuBtn && navList) {
                 menuBtn.addEventListener("click", () => {
                     navList.classList.toggle("active");
                 });
@@ -463,53 +472,58 @@
 
             const dropdownBtns = document.querySelectorAll('.nav-links li.dropdown .dropbtn');
             dropdownBtns.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    if(window.innerWidth <= 992) {
+                btn.addEventListener('click', function (e) {
+                    if (window.innerWidth <= 992) {
                         e.preventDefault();
                         const parentLi = this.parentElement;
                         dropdownBtns.forEach(otherBtn => {
-                            if(otherBtn !== this) otherBtn.parentElement.classList.remove('open');
+                            if (otherBtn !== this) otherBtn.parentElement.classList.remove('open');
                         });
                         parentLi.classList.toggle('open');
                     }
                 });
             });
 
-            // --- 2. ACCORDION LOGIC (FAQ ITEMS) ---
-            const colls = document.querySelectorAll("details.collapsible-wrapper summary.collapsible");
+            // --- 2. ACCORDION LOGIC ---
+            // ✅ FIX: Now operates purely on .collapsible-wrapper divs — no <details>/<summary> conflict
+            const colls = document.querySelectorAll(".collapsible-wrapper .collapsible");
             colls.forEach(coll => {
-                coll.addEventListener("click", function(e) {
-                    e.preventDefault(); 
-                    const details = this.parentElement; 
+                coll.addEventListener("click", function () {
+                    const wrapper = this.parentElement;
                     const panel = this.nextElementSibling;
-                    
-                    if (details.hasAttribute('open')) {
+                    const isOpen = wrapper.classList.contains("open");
+
+                    // Close all other open panels
+                    document.querySelectorAll(".collapsible-wrapper.open").forEach(openWrapper => {
+                        if (openWrapper !== wrapper) {
+                            openWrapper.classList.remove("open");
+                            openWrapper.querySelector(".panel").style.maxHeight = null;
+                        }
+                    });
+
+                    if (isOpen) {
+                        wrapper.classList.remove("open");
                         panel.style.maxHeight = null;
-                        setTimeout(() => { 
-                            details.removeAttribute('open'); 
-                            this.classList.remove('active'); 
-                        }, 300);
                     } else {
-                        details.setAttribute('open', ''); 
-                        this.classList.add('active');
+                        wrapper.classList.add("open");
                         panel.style.maxHeight = panel.scrollHeight + 50 + "px";
                     }
                 });
             });
 
             // --- 3. TYPEWRITER LOGIC ---
-            const mainText = "FAQ: KOHMZ INTELLIGENCE & "; 
-            let mainIdx = 0; 
+            const mainText = "FAQ: KOHMZ INTELLIGENCE & ";
+            let mainIdx = 0;
             const typeEl = document.getElementById("main-typewriter-text");
-            
+
             function typeMain() {
-                if(typeEl && mainIdx < mainText.length) {
+                if (typeEl && mainIdx < mainText.length) {
                     typeEl.innerHTML += mainText.charAt(mainIdx++);
                     setTimeout(typeMain, 60);
                 }
             }
             typeMain();
-            
+
             class TypeWriter {
                 constructor(el, words, wait) {
                     this.el = el;
@@ -523,18 +537,14 @@
                 type() {
                     const current = this.wordIdx % this.words.length;
                     const fullTxt = this.words[current];
-                    
                     if (this.isDel) {
                         this.txt = fullTxt.substring(0, this.txt.length - 1);
                     } else {
                         this.txt = fullTxt.substring(0, this.txt.length + 1);
                     }
-                    
                     this.el.innerHTML = `<span class="txt">${this.txt}</span>`;
-                    
                     let typeSpeed = 100;
                     if (this.isDel) typeSpeed /= 2;
-                    
                     if (!this.isDel && this.txt === fullTxt) {
                         typeSpeed = this.wait;
                         this.isDel = true;
@@ -546,68 +556,50 @@
                     setTimeout(() => this.type(), typeSpeed);
                 }
             }
-            
+
             const subEl = document.querySelector(".txt-type");
-            if(subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute("data-words")), subEl.getAttribute("data-wait"));
+            if (subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute("data-words")), subEl.getAttribute("data-wait"));
 
             const techBarWords = ["FAQ & CONSULTATIONS", "TRANSPARENT PROCESS", "EXPERT ANSWERS", "WARRANTY GUARANTEED", "24/7 SUPPORT AVAILABLE"];
             let tbIdx = 0, charIdx = 0, isTbDeleting = false;
             const electricEl = document.getElementById("electric-typewriter");
-            
+
             function typeElectricBar() {
-                if(!electricEl) return;
+                if (!electricEl) return;
                 const currentWord = techBarWords[tbIdx];
-                if(isTbDeleting) { 
-                    electricEl.innerText = currentWord.substring(0, charIdx - 1); 
-                    charIdx--; 
-                } else { 
-                    electricEl.innerText = currentWord.substring(0, charIdx + 1); 
-                    charIdx++; 
-                }
-                
-                let typeSpeed = isTbDeleting ? 25 : 50; 
-                if(!isTbDeleting && charIdx === currentWord.length) { 
-                    typeSpeed = 2000; 
-                    isTbDeleting = true; 
-                } else if(isTbDeleting && charIdx === 0) { 
-                    isTbDeleting = false; 
-                    tbIdx = (tbIdx + 1) % techBarWords.length; 
-                    typeSpeed = 500; 
-                }
+                if (isTbDeleting) { electricEl.innerText = currentWord.substring(0, charIdx - 1); charIdx--; }
+                else { electricEl.innerText = currentWord.substring(0, charIdx + 1); charIdx++; }
+                let typeSpeed = isTbDeleting ? 25 : 50;
+                if (!isTbDeleting && charIdx === currentWord.length) { typeSpeed = 2000; isTbDeleting = true; }
+                else if (isTbDeleting && charIdx === 0) { isTbDeleting = false; tbIdx = (tbIdx + 1) % techBarWords.length; typeSpeed = 500; }
                 setTimeout(typeElectricBar, typeSpeed);
             }
             typeElectricBar();
 
-            // --- 4. READ PAGE ALOUD FEATURE ---
+            // --- 4. READ PAGE ALOUD ---
             window.isReadingPage = false;
             const readPageBtn = document.getElementById("readPageBtn");
-            if(readPageBtn) {
-                readPageBtn.addEventListener("click", function() {
-                    if(window.isReadingPage || window.speechSynthesis.speaking) {
+            if (readPageBtn) {
+                readPageBtn.addEventListener("click", function () {
+                    if (window.isReadingPage || window.speechSynthesis.speaking) {
                         window.speechSynthesis.cancel();
                         window.isReadingPage = false;
                         readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
                         return;
                     }
-                    
                     const mainElement = document.querySelector(".faq-container");
-                    if(!mainElement) return;
-                    
-                    let text = mainElement.innerText.replace(/\n+/g,". ");
+                    if (!mainElement) return;
+                    let text = mainElement.innerText.replace(/\n+/g, ". ");
                     window.isReadingPage = true;
                     readPageBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                    
                     let chunk = new SpeechSynthesisUtterance("Welcome to KOHMZ Electrical FAQ. " + text);
                     let voices = window.speechSynthesis.getVoices();
-                    let profVoice = voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Female")||v.name.includes("Enhanced")) || voices[0];
-                    
-                    if(profVoice) chunk.voice = profVoice;
-                    chunk.pitch = 1.15; 
+                    let profVoice = voices.find(v => v.name.includes("Aria") || v.name.includes("Samantha") || v.name.includes("Female") || v.name.includes("Enhanced")) || voices[0];
+                    if (profVoice) chunk.voice = profVoice;
+                    chunk.pitch = 1.15;
                     chunk.rate = 0.85;
-                    
                     chunk.onend = () => { window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; };
                     chunk.onerror = () => { window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; };
-                    
                     window.speechSynthesis.speak(chunk);
                 });
             }
