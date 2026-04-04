@@ -1,703 +1,814 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="x_KzHj0x9Ygn2C3ffPnJ8aQTC4EE3n4AhWGtoNODr_k" />
-    
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S79X3QL1TV"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-S79X3QL1TV');
-    </script>
-    
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    
-    <title>Portfolio | KOHMZ Electrical Design and Build</title>
-    <meta name="description" content="Explore the KOHMZ Electrical Portfolio. See our high-impact Technical Governance for Residential and Commercial assets through strict PEC-compliant electrical engineering.">
-    
-    <link rel="icon" type="image/jpeg" href="logo.jpg">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+// ============================================================
+// KOHMZ LEXIE AI — FRONTEND V20.1.0 (GOD-TIER STREAMING EDITION)
+// FIXES: iOS Audio Unlock, Memory Leaks, jsPDF Dependency, Context Scraper
+// ============================================================
+const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+// 🛡️ SECURED IN-MEMORY STATE
+let isGodMode = false;
+let godName = "";
+let mySecretAdminToken = sessionStorage.getItem("kohmz_admin_token") || "";
 
-        /* --- FUTURISTIC EXTREME SYSTEM --- */
-        :root {
-            --neon-gold: #ffb703;
-            --cyber-blue: #00e5ff;
-            --power-glow: rgba(255, 183, 3, 0.4);
-            --circuit-line: rgba(255, 183, 3, 0.05);
-            --bg-dark: #081018;
+// ── Smart Context Scraper ───────────────────────────────────
+function getPageContext() {
+  let context = document.title + " | ";
+  const main = document.getElementById("main-content");
+  if (main) {
+    context += main.textContent.replace(/\s+/g, ' ').trim().substring(0, 1500);
+  }
+  return context;
+}
+
+// ── Interaction Tracker & Mobile Audio Unlock (CRITICAL FIX) ──
+let hasUserInteracted = false;
+function unlockAudioEngine() {
+  if (hasUserInteracted) return;
+  hasUserInteracted = true;
+  
+  // Silent speech to unlock iOS Safari synthesis engine
+  if(window.speechSynthesis) {
+      let silentUtterance = new SpeechSynthesisUtterance("");
+      silentUtterance.volume = 0;
+      window.speechSynthesis.speak(silentUtterance);
+  }
+  
+  // Remove listeners once unlocked to save memory
+  ['click', 'touchstart', 'keydown'].forEach(evt => {
+      document.removeEventListener(evt, unlockAudioEngine);
+  });
+}
+
+['click', 'touchstart', 'keydown'].forEach(evt => {
+  document.addEventListener(evt, unlockAudioEngine, { once: true });
+});
+
+// ── Mute & Turnstile Logic ──────────────────────────────────
+let isMuted = localStorage.getItem("lexie_muted") === "true";
+let currentTurnstileToken = "";
+let messageCount = parseInt(sessionStorage.getItem("msg_count")) || 0;
+
+function applyMuteUI() {
+  const btn = document.getElementById("muteBtn");
+  if (btn) btn.innerText = isMuted ? "🔇" : "🔊";
+}
+
+window.toggleMute = function () {
+  isMuted = !isMuted;
+  localStorage.setItem("lexie_muted", isMuted);
+  applyMuteUI();
+  if (isMuted && window.speechSynthesis) window.speechSynthesis.cancel();
+};
+applyMuteUI();
+
+window.onTurnstileSuccess = function (token) {
+  currentTurnstileToken = token;
+  const btn = document.getElementById("mainSendBtn");
+  if (btn) {
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+  }
+};
+
+window.resetTurnstile = function () {
+  if (typeof turnstile !== "undefined" && turnstile.reset && !isGodMode) {
+    currentTurnstileToken = "";
+    turnstile.reset();
+    const btn = document.getElementById("mainSendBtn");
+    if (btn) {
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
+      btn.innerHTML = '<i class="fas fa-shield-alt"></i>';
+    }
+  }
+};
+
+// ── Memory & UUID Logic ─────────────────────────────────────
+let userId = localStorage.getItem("kohmz_uuid");
+if (!userId) {
+  userId = "user-" + Math.random().toString(36).substr(2, 9);
+  localStorage.setItem("kohmz_uuid", userId);
+}
+
+let lexieMemory = [];
+try { lexieMemory = JSON.parse(sessionStorage.getItem("lexie_memory")) || []; } catch (e) { lexieMemory = []; }
+let currentImageData = null;
+
+// ── God Mode UI Handlers ────────────────────────────────────
+function applyGodModeUI() {
+  const hint = document.getElementById("dragHint");
+  if (hint) {
+    hint.innerText = "👑 IMMORTAL MODE";
+    hint.classList.add("god-mode-tag");
+  }
+  const tsCont = document.getElementById("cf-turnstile-container");
+  if (tsCont) tsCont.style.display = "none";
+  const btn = document.getElementById("mainSendBtn");
+  if (btn) {
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+  }
+  const header = document.getElementById("chatHeader");
+  if (header) header.firstElementChild.textContent = `LEXIE AI: IMMORTAL (${godName}) 👑`;
+}
+
+window.exitGodMode = function () {
+  if (!isGodMode) return;
+
+  isGodMode = false;
+  godName = "";
+  mySecretAdminToken = "";
+  sessionStorage.removeItem("kohmz_admin_token");
+
+  lexieMemory = [];
+  sessionStorage.removeItem("lexie_memory");
+  document.getElementById("chatBody").innerHTML = "";
+
+  const hint = document.getElementById("dragHint");
+  if (hint) {
+    hint.innerText = "⚡ KOHMZ Lexie Pro";
+    hint.classList.remove("god-mode-tag");
+  }
+  const tsCont = document.getElementById("cf-turnstile-container");
+  if (tsCont) tsCont.style.display = "flex";
+  const header = document.getElementById("chatHeader");
+  if (header) header.firstElementChild.textContent = "LEXIE AI: SYSTEM ACTIVE";
+  resetTurnstile();
+
+  appendBubble("bot", "Immortal Mode deactivated. Session memory wiped. Returning to standard protocol.");
+};
+
+// ── Number Formatter Helper (Auto-Comma) ─────────────────────
+function formatNumbers(text) {
+  if (!text) return "";
+  return text.replace(/(?<!\d)(?!09|639|\+639)\d{4,}(?!\d)/g, function (match) {
+    return parseInt(match, 10).toLocaleString("en-US");
+  });
+}
+
+// ── Bubble Helper ────────────────────────────────────────────
+function escapeHTML(str) {
+  if (!str) return "";
+  return str.replace(/[&<>'"]/g, tag => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[tag]));
+}
+
+function appendBubble(role, htmlContent, rawTextForTTS) {
+  const t = document.getElementById("chatBody");
+  const b = document.createElement("div");
+  b.className = "chat-bubble";
+
+  if (role === "user") {
+    b.style.cssText = "background:rgba(0,229,255,0.1);align-self:flex-end;border-right:3px solid var(--neon-gold);border-left:none;color:#fff;padding:12px;border-radius:12px 0 12px 12px;margin-bottom:5px;text-align:right;white-space:pre-wrap;";
+    b.textContent = "YOU: " + htmlContent;
+  } else {
+    b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;";
+    b.innerHTML = "Lexie: " + htmlContent;
+    if (rawTextForTTS) {
+      const audioDiv = document.createElement("div");
+      audioDiv.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
+      const audioBtn = document.createElement("button");
+      audioBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;";
+      audioBtn.innerHTML = '<i class="fas fa-volume-up"></i> Play Audio';
+      const capturedText = rawTextForTTS;
+      audioBtn.onclick = () => { if (isMuted) toggleMute(); window.speakText(capturedText); };
+      audioDiv.appendChild(audioBtn);
+      b.appendChild(audioDiv);
+    }
+  }
+  t.appendChild(b);
+  setTimeout(() => { t.scrollTop = t.scrollHeight; }, 100);
+  return b;
+}
+
+// ── Main Chat Engine (Ask Lexie V20 STREAMING) ─────────────────────────────
+window.askLexie = async function (retryMessage = null) {
+  const inputEl = document.getElementById("userQuery");
+  const t = document.getElementById("chatBody");
+  const n = retryMessage !== null ? retryMessage : inputEl.value.trim();
+
+  if (!n && !currentImageData) return;
+
+  if (!isGodMode) {
+    if (messageCount >= 2 && !currentTurnstileToken) {
+      appendBubble("bot", "⚠️ Boss, paki-check muna yung security box (I am not a robot) sa ibaba para makapag-tuloy tayo.");
+      return;
+    }
+  }
+
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+    speechQueue = [];
+    isSpeaking = false;
+  }
+
+  if (retryMessage === null) {
+    appendBubble("user", n || "[Image Attached]");
+    inputEl.value = "";
+
+    lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
+    if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
+    sessionStorage.setItem("lexie_memory", JSON.stringify(lexieMemory));
+
+    if (!isGodMode) {
+      messageCount++;
+      sessionStorage.setItem("msg_count", messageCount);
+    }
+  }
+
+  const loadId = "load-" + Date.now();
+  const botBubble = appendBubble("bot", 'Lexie is analyzing<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>');
+  botBubble.id = loadId;
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: n,
+        image: currentImageData,
+        name: godName || "Web Client",
+        userId: userId,
+        pageData: getPageContext(),
+        history: lexieMemory.slice(-8),
+        turnstileToken: currentTurnstileToken,
+        vipName: godName,
+        adminToken: mySecretAdminToken
+      })
+    });
+
+    const contentType = response.headers.get("content-type") || "";
+
+    // ⚡ 1. JSON FALLBACK (For Auth, Bans, Errors)
+    if (contentType.includes("application/json")) {
+      const result = await response.json();
+      
+      if (result.auth_challenge) {
+        const enteredToken = prompt("🔒 VIP SYSTEM DETECTED.\nPlease enter Master Key to proceed:");
+        if (!enteredToken) {
+          botBubble.innerHTML = "Lexie: ⚠️ Auth canceled. Proceeding as standard client.";
+          return;
         }
+        mySecretAdminToken = enteredToken;
+        sessionStorage.setItem("kohmz_admin_token", enteredToken);
+        botBubble.remove();
+        return askLexie(n);
+      }
 
-        * { box-sizing: border-box; }
+      if (result.god_mode_activated) {
+        isGodMode = true;
+        godName = result.god_name || "Admin";
+        lexieMemory = [];
+        sessionStorage.removeItem("lexie_memory");
+        applyGodModeUI();
+      }
 
-        body { 
-            font-size: 12px; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; padding: 0; 
-            background-color: var(--bg-dark); 
-            color: #e0faff; 
-            overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6;
-        } 
+      botBubble.innerHTML = "Lexie: " + escapeHTML(result.ai_answer || "System error.");
+      if(hasUserInteracted) window.speakText(result.ai_answer || "");
+      return;
+    }
 
-        body.mode-red { --cyber-blue: #ff2a2a; --neon-gold: #ff4d4d; background-color: #1a0000; }
-        body.mode-gold { --cyber-blue: #ffb703; --neon-gold: #ffe600; background-color: #1a1300; }
+    // ⚡ 2. STREAMING MODE (The God-Tier Magic)
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let fullText = "";
+    botBubble.innerHTML = "Lexie: "; 
 
-        /* --- ENHANCED LIVE 3D CAD BACKGROUND --- */
-        .cad-background {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            perspective: 1000px; z-index: -2; overflow: hidden;
-            background: radial-gradient(circle at center, #0a192f 0%, #04080f 100%);
-        }
-        .cad-grid {
-            position: absolute; width: 200%; height: 200%;
-            bottom: -50%; left: -50%;
-            background-image: 
-                linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px);
-            background-size: 50px 50px;
-            transform: rotateX(60deg);
-            animation: cadMove 8s linear infinite;
-        }
-        @keyframes cadMove {
-            0% { transform: rotateX(60deg) translateY(0); }
-            100% { transform: rotateX(60deg) translateY(50px); }
-        }
-        .cad-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(8,16,24,1) 0%, transparent 40%, rgba(8,16,24,1) 100%);
-            pointer-events: none;
-        }
-
-        /* --- FLOATING DATA PARTICLES --- */
-        .particle-container { position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1; pointer-events: none; }
-        .particle { position: absolute; background: #00e5ff; border-radius: 50%; box-shadow: 0 0 10px #00e5ff; opacity: 0; animation: floatUp 10s infinite linear; }
-        .p1 { left: 10%; width: 4px; height: 4px; animation-duration: 8s; animation-delay: 0s; }
-        .p2 { left: 30%; width: 3px; height: 3px; animation-duration: 12s; animation-delay: 2s; background: #ffb703; box-shadow: 0 0 10px #ffb703;}
-        .p3 { left: 60%; width: 5px; height: 5px; animation-duration: 9s; animation-delay: 4s; }
-        .p4 { left: 85%; width: 2px; height: 2px; animation-duration: 15s; animation-delay: 1s; }
-        .p5 { left: 50%; width: 4px; height: 4px; animation-duration: 11s; animation-delay: 5s; }
-        @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 20% { opacity: 0.6; } 80% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
-
-        /* --- ELECTRIC TYPEWRITER TECH BAR --- */
-        .tech-bar{height:35px;background:#010409;border-bottom:1px solid rgba(0,229,255,0.4);position:relative;z-index:1001;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 15px rgba(0,229,255,0.2)}
-        .tech-bar-content{display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;}
-        .electric-text{color:#00e5ff;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 8px #00e5ff;}
-        .electric-icon{color:#00e5ff;margin-right:8px;font-size:14px;animation:pulseBolt 1s infinite;}
-        @keyframes pulseBolt { 0%, 100% { text-shadow: 0 0 5px #00e5ff; opacity: 1; } 50% { text-shadow: 0 0 20px #fff; opacity: 0.5; } }
-        .tech-cursor{color:#00e5ff;font-weight:bold;animation:blink .8s step-end infinite;}
-
-        /* --- HEADER & NAVIGATION --- */
-        header { background: rgba(8, 16, 24, 0.95); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #00e5ff; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; transition: transform 0.3s; }
-        .logo:hover { transform: scale(1.02); }
-        .logo img { height: 38px; width: 38px; border-radius: 4px; border: 1px solid #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.5); }
-        .logo-text { font-size: 22px; font-weight: 900; color: #fff; font-family: 'Segoe UI', sans-serif; margin:0;}
-        .logo-text span { color: #ffb703; }
-
-        .nav-links { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 30px; }
-        .nav-links li.dropdown { position: relative; }
-        .nav-links li a { color: #e0faff; text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 10px 5px; font-family: 'Share Tech Mono', monospace; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
-        .nav-links li a:hover { color: #00e5ff; text-shadow: 0 0 8px #00e5ff; }
-
-        .dropdown-content { display: none; position: absolute; background: rgba(8,16,24,0.98); min-width: 180px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); z-index: 1001; top: 100%; left: 50%; transform: translateX(-50%); border-top: 3px solid #00e5ff; border-radius: 0 0 8px 8px; backdrop-filter: blur(10px); }
-        .nav-links li.dropdown:hover .dropdown-content { display: block; animation: dropIn .3s ease; }
-        @keyframes dropIn { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
-        .dropdown-content a { color: #fff !important; padding: 12px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: left; }
-        .dropdown-content a:hover { background: rgba(0,229,255,0.1); color: #00e5ff !important; padding-left: 20px; }
-        .caret { transition: transform 0.3s ease; }
-
-        /* --- MOBILE NAVIGATION --- */
-        @media (max-width: 992px) {
-            .menu-toggle { display: block; font-size: 24px; color: #00e5ff; cursor: pointer; background: none; border: none; padding: 5px; }
-            .nav-links { 
-                display: none; flex-direction: column; position: absolute; top: calc(100% + 10px); 
-                left: 25%; width: 50%; 
-                background: rgba(8, 16, 24, 0.95); padding: 5px 0; margin: 0; border: 1px solid #00e5ff; border-top: 3px solid #ffb703; 
-                border-radius: 8px; max-height: 30vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 9999;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      
+      const chunk = decoder.decode(value, { stream: true });
+      const lines = chunk.split('\n');
+      
+      for (const line of lines) {
+        if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+          try {
+            const data = JSON.parse(line.slice(6));
+            if (data.response) {
+              fullText += data.response;
+              
+              // 🛡️ THE INVISIBLE BUFFER: Hide JSON blocks from UI during typing
+              let displayHtml = fullText
+                .replace(/ESTIMATE_JSON_START[\s\S]*?(ESTIMATE_JSON_END)?/gi, "")
+                .replace(/\[AGREEMENT_START\][\s\S]*?(\[AGREEMENT_END\])?/gi, "")
+                .replace(/\[UI_ACTION:.*?\]/g, "")
+                .replace(/\*\*/g, "")
+                .trim();
+              
+              botBubble.innerHTML = "Lexie: " + escapeHTML(formatNumbers(displayHtml));
+              t.scrollTop = t.scrollHeight; 
             }
-            .nav-links.active { display: flex; animation: menuFadeIn 0.3s ease forwards; }
-            @keyframes menuFadeIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
-            .nav-links li { width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-            .nav-links li:last-child { border-bottom: none; }
-            .nav-links li a { font-size: 12px; width: 100%; padding: 10px 15px; justify-content: center; text-align: center; }
-            
-            .nav-links li.dropdown:hover .dropdown-content { display: none; }
-            .nav-links li.dropdown.open .dropdown-content { display: block; animation: dropInMobile 0.3s ease; }
-            .nav-links li.dropdown.open .caret { transform: rotate(180deg); color:#ffb703; }
-
-            .dropdown-content { position: static !important; display: none; background: rgba(0,0,0,0.3) !important; width: 100% !important; border: none !important; transform: none !important; left: 0 !important; box-shadow: inset 0 0 10px rgba(0,0,0,0.6); }
-            @keyframes dropInMobile { from { opacity:0; max-height:0; } to { opacity:1; max-height:400px; } }
-            .dropdown-content a { padding: 8px 10px !important; border-left: none !important; color: #cbd5e1 !important; font-size: 11px !important; border-bottom: 1px solid rgba(255,255,255,0.02); justify-content: center; text-align: center!important;}
+          } catch (e) {}
         }
+      }
+    }
 
-        /* --- HERO --- */
-        .hero { 
-            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(1, 4, 9, 0.95)), url('logo.jpg') no-repeat center center; 
-            background-size: cover; padding: 100px 20px; text-align: center; color: white; position: relative; z-index: 2;
-        }
-        .hero h1 { font-size: 24px; color: #ffb703; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; line-height: 1.5; min-height: 70px; text-shadow: 0 0 15px rgba(255, 183, 3, 0.3); } 
-        .txt-type > .txt { border-right: 3px solid #ffb703; padding-right: 5px; animation: blink 0.7s infinite; color: #ffffff; text-shadow: 0 0 15px var(--neon-gold); }
-        @keyframes blink { from, to { opacity: 1; } 50% { opacity: 0; } }
-        .hero p { font-size: 13px; max-width: 700px; margin: 0 auto 20px; line-height: 1.6; color: #cbd5e1; } 
+    // ⚡ 3. POST-STREAM PROCESSING (Extracting the Invisible JSON)
+    let finalHtml = botBubble.innerHTML;
+    let textToSpeak = fullText.replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "").replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "").replace(/\[.*?\]/g, "").trim();
 
-        /* --- PORTFOLIO CONTENT STYLES --- */
-        .content-section { padding: 70px 10%; text-align: center; position: relative; z-index: 10;}
-        .content-section h2 { font-size: 20px; color: #00e5ff; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 10px rgba(0,229,255,0.3); display: inline-block; position: relative; padding-bottom: 10px; }
-        .content-section h2::after { content: ''; width: 60px; height: 3px; background: #ffb703; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); box-shadow: 0 0 10px #ffb703; }
+    // Code Red
+    if (fullText.includes("[UI_ACTION:CODE_RED]")) {
+      document.body.classList.add("mode-red");
+      setTimeout(() => document.body.classList.remove("mode-red"), 6000);
+      document.getElementById("chatWindow").classList.add("code-red-active");
+      const header = document.getElementById("chatHeader");
+      if (header) {
+        header.style.color = "#e11d48";
+        header.firstElementChild.textContent = "⚠️ CODE RED DETECTED";
+      }
+      finalHtml += `<br><br><a href="tel:09266174131" class="btn-pdf" style="background:#e11d48;color:#fff;"><i class="fas fa-phone"></i> CALL KOHMZ NOW</a>`;
+    } else {
+      const chatWin = document.getElementById("chatWindow");
+      if (chatWin) chatWin.classList.remove("code-red-active");
+      const header = document.getElementById("chatHeader");
+      if (header) {
+        header.style.color = "var(--cyber-blue)";
+        header.firstElementChild.textContent = isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE";
+      }
+    }
+
+    // Extract Strict JSON Estimate
+    const jsonMatch = fullText.match(/ESTIMATE_JSON_START\s*([\s\S]*?)\s*ESTIMATE_JSON_END/i);
+    if (jsonMatch) {
+      try {
+        const estimateJSON = JSON.parse(jsonMatch[1].trim());
+        let pdfLines = estimateJSON.items.map(it => `ITEM: ${it.item}\nQTY: ${it.qty}\nLABOR COST: ${it.labor}\nMATERIALS COST: ${it.materials}`).join("\n|||\n");
+        pdfLines += `\n-----------------------------------\nRESTORATION COST: ${estimateJSON.restoration}\n-----------------------------------\nGRAND TOTAL ESTIMATE: ${estimateJSON.grand_total}`;
         
-        /* ENHANCED ACCORDION */
-        .framework-container { max-width: 900px; margin: auto; }
-        .collapsible {
-            background: rgba(13, 27, 42, 0.6); color: #ffb703; cursor: pointer; padding: 20px 25px; width: 100%; border: 1px solid rgba(0,229,255,0.2);
-            border-radius: 6px; text-align: left; outline: none; font-size: 14px; font-weight: 800; font-family: 'Share Tech Mono', monospace;
-            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            backdrop-filter: blur(10px); position: relative; overflow: hidden; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .collapsible::before { content:''; position:absolute; left:0; top:0; height:100%; width:0%; background:linear-gradient(90deg, rgba(0,229,255,0.15), transparent); transition:width 0.4s ease; z-index:-1; }
-        .collapsible:hover::before, .collapsible.active::before { width: 100%; }
+        const cleanDataForPDF = pdfLines.replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
+        sessionStorage.setItem("lastEst", cleanDataForPDF);
         
-        .active, .collapsible:hover { transform: translateX(8px); box-shadow: -5px 5px 20px rgba(0,0,0,0.6), inset 4px 0 0 #00e5ff; border-color: rgba(0,229,255,0.5); color: #00e5ff; }
-        .collapsible:after { content: '\002B'; font-size: 20px; font-weight: bold; color: #ffb703; transition: 0.3s transform; }
-        .active:after { content: "\2212"; color: #00e5ff; transform: rotate(180deg); }
-
-        .panel { padding: 0 25px; background-color: rgba(10, 20, 35, 0.6); max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), padding 0.4s ease; border-radius: 0 0 6px 6px; margin-bottom: 15px; border-left: 4px solid #ffb703; text-align: left; backdrop-filter: blur(15px); box-shadow: inset 0 0 20px rgba(0,0,0,0.8);}
-        .panel.open-padding { padding: 15px 25px 30px; }
-        .panel-content { color: #cbd5e1; line-height: 1.8; font-size: 13px; opacity: 0; transform: translateY(-10px); transition: all 0.5s ease 0.1s;}
-        .panel.open-padding .panel-content { opacity: 1; transform: translateY(0); }
-
-        /* SHOWCASE GRID */
-        .showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 40px; text-align: left; }
-        .showcase-card { 
-            background: rgba(30, 41, 59, 0.4); border-radius: 8px; overflow: hidden; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5); border-top: 4px solid #ffb703; 
-            border: 1px solid rgba(255,255,255,0.05); border-top: 4px solid #ffb703;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px);
-            position: relative;
-        }
-        .showcase-card::before { content:''; position:absolute; left:0; top:0; height:100%; width:4px; background:var(--cyber-blue); transition:0.3s; transform:scaleY(0); transform-origin:bottom; }
-        .showcase-card:hover::before { transform:scaleY(1); }
-        .showcase-card:hover { transform: translateY(-10px); border-top-color: var(--cyber-blue); box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2), inset 0 0 20px rgba(255, 183, 3, 0.05); }
+        document.body.classList.add("mode-gold");
+        setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
         
-        .showcase-info { padding: 25px; }
-        .showcase-info h4 { font-size: 15px; color: #00e5ff; margin-bottom: 12px; text-transform: uppercase; font-weight: 900; font-family: 'Share Tech Mono', monospace;}
-        .showcase-info p { font-size: 12px; color: #cbd5e1; margin: 0; line-height: 1.7;}
-        .tag { background: rgba(255,183,3,0.1); border: 1px solid #ffb703; color: #ffb703; font-size: 10px; padding: 4px 10px; border-radius: 4px; display: inline-block; margin-bottom: 15px; font-weight: bold; text-transform: uppercase;}
+        finalHtml += `<br><br><button id="dlPdfBtn" onclick="window.downloadPDF()" class="btn-pdf" style="width:100%; text-align:center;"><i class="fas fa-file-invoice-dollar"></i> Download Official Estimate</button>`;
+        textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
+      } catch (e) {
+        console.error("Failed to parse estimate JSON", e);
+      }
+    } else {
+       // Legacy Fallback just in case
+       const pdfMatch = fullText.match(/\[PDF_START\]([\s\S]*?)\[PDF_END\]/i);
+       if(pdfMatch) {
+          const cleanDataForPDF = pdfMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
+          sessionStorage.setItem("lastEst", cleanDataForPDF);
+          document.body.classList.add("mode-gold");
+          setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
+          finalHtml += `<br><br><button id="dlPdfBtn" onclick="window.downloadPDF()" class="btn-pdf" style="width:100%; text-align:center;"><i class="fas fa-file-invoice-dollar"></i> Download Official Estimate</button>`;
+          textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
+       }
+    }
 
-        .cta-btn { display: inline-block; background: #ffb703; color: #0d1b2a; padding: 15px 30px; text-decoration: none; font-weight: 900; border-radius: 4px; margin-top: 20px; text-transform: uppercase; transition: 0.4s; box-shadow: 0 0 15px var(--power-glow); border: 2px solid #ffb703; position: relative; overflow: hidden; z-index: 1;}
-        .cta-btn::before { content:''; position:absolute; top:0; left:-100%; width:50%; height:100%; background:linear-gradient(to right,rgba(255,255,255,0),rgba(255,255,255,0.4),rgba(255,255,255,0)); transform:skewX(-25deg); transition:all 0.6s ease; z-index: -1; }
-        .cta-btn:hover::before { left:200%; }
-        .cta-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 30px #ffb703; color: #000; }
+    // Service Agreement
+    const agreeMatch = fullText.match(/\[AGREEMENT_START\]([\s\S]*?)\[AGREEMENT_END\]/i);
+    if (agreeMatch) {
+      const cleanDataForAgreement = agreeMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
+      sessionStorage.setItem("lastAgreement", cleanDataForAgreement);
+      
+      document.body.classList.add("mode-gold");
+      setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
+      
+      finalHtml += `<br><br><button id="dlAgreeBtn" onclick="window.downloadAgreement()" class="btn-pdf" style="width:100%; text-align:center; background:var(--cyber-blue); color:#000;"><i class="fas fa-file-signature"></i> Download Service Agreement</button>`;
+      textToSpeak += " Handa na rin po ang Service Agreement natin boss, i-download niyo na lang po. ";
+    }
 
-        /* --- LEXIE AI BOT (V20 UI) --- */
-        .kohmz-bot-wrapper { position: fixed; bottom: 25px; left: 20px; z-index: 9999999; font-family: 'Share Tech Mono', monospace; display: flex; flex-direction: column; align-items: flex-start; touch-action: none; user-select: none;}
-        .kohmz-bot-toggle { width: 130px; height: 130px; background: transparent; cursor: grab; position: relative; display: flex; justify-content: center; align-items: center; transition: transform 0.2s; filter: drop-shadow(0 0 10px rgba(0,229,255,0.5));}
-        .kohmz-bot-toggle:hover { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(0,229,255,0.8));}
-        
-        .kohmz-chat-window { display: none; width: 320px; height: 75dvh; max-height: 550px; background: rgba(8, 16, 24, 0.98); border: 1px solid #00e5ff; border-top: 4px solid #00e5ff; box-shadow: 0 10px 50px rgba(0,0,0,0.9); margin-bottom: 12px; flex-direction: column; backdrop-filter: blur(10px); border-radius: 8px;}
-        .kohmz-chat-header { background: #000; color: #00e5ff; padding: 15px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
-        .kohmz-chat-body { padding: 15px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .chat-bubble { background: rgba(255, 255, 255, 0.05); color: #e0faff; padding: 12px; border-radius: 0 12px 12px 12px; margin-bottom: 5px; border-left: 3px solid #00e5ff; font-size: 12px; word-wrap: break-word; white-space: pre-wrap; line-height: 1.5; font-family: 'Share Tech Mono', monospace;}
+    botBubble.innerHTML = finalHtml;
+    if(hasUserInteracted) window.speakText(textToSpeak);
 
-        .quick-replies { display:flex; flex-wrap:wrap; gap:8px; padding:12px; background:rgba(8,16,24,0.98); border-top:1px solid rgba(0,229,255,0.15); width:100%; box-sizing:border-box; justify-content:center; }
-        .quick-replies button { background:rgba(0,229,255,0.1); border:1px solid #00e5ff; color:#00e5ff; border-radius:20px; padding:8px 14px; font-size:11px; cursor:pointer; transition:0.3s; font-family:'Share Tech Mono',monospace; font-weight:800; flex:1 1 auto; }
-        .quick-replies button:hover { background:#00e5ff; color:#000; }
+    // Save history with tags masked out
+    lexieMemory.push({ role: "assistant", content: fullText.replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "[Provided Estimate]").replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "[Provided Agreement]") });
+    if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
+    sessionStorage.setItem("lexie_memory", JSON.stringify(lexieMemory));
 
-        #cf-turnstile-container { padding: 8px 10px; background: #000; border-top: 1px solid rgba(0,229,255,0.2); display: flex; justify-content: center; }
-        .chat-input-area { display:grid; grid-template-columns:35px 35px 35px 1fr 45px; gap:6px; padding:12px; background:#000; border-top:1px solid rgba(0,229,255,0.2); align-items:center; border-radius: 0 0 8px 8px;}
-        .chat-tool-btn { height:35px; background:transparent; border:1px solid rgba(0,229,255,0.5); color:#00e5ff; border-radius:4px; cursor:pointer; display:flex; justify-content:center; align-items:center; transition:0.2s; }
-        .chat-input-field { height:35px; background:rgba(255,255,255,0.05); border:1px solid rgba(0,229,255,0.5); color:#fff; padding:0 12px; font-family:'Share Tech Mono'; font-size:12px; outline:none; border-radius:4px; width:100%; box-sizing:border-box; }
-        .chat-send-btn { height:35px; background:#00e5ff; border:none; border-radius:4px; color:#000; cursor:pointer; font-weight:bold; transition:0.3s; display:flex; justify-content:center; align-items:center; }
+  } catch (err) {
+    const lb = document.getElementById(loadId);
+    if (lb) lb.textContent = "Lexie: Connection Firewall blocked. Please try again.";
+    resetTurnstile();
+  } finally {
+    clearImage();
+    if (!isGodMode && messageCount >= 2 && currentTurnstileToken) resetTurnstile();
+  }
+};
 
-        #vision-preview { display:none; padding:8px 12px; background:rgba(0,229,255,0.1); border-top:1px solid #00e5ff; align-items:center; gap:12px; font-size:11px; color:#00e5ff; font-family: 'Share Tech Mono', monospace;}
-        #vision-preview img { height:35px; width:35px; border:1px solid #00e5ff; object-fit:cover; border-radius: 4px;}
+// ── PDF Generators (Upgraded Format & Pagination) ─────────────
+window.downloadPDF = async function () {
+  const data = sessionStorage.getItem("lastEst");
+  if (!data) { alert("System Error: No estimate data found."); return; }
+  const btn = document.getElementById("dlPdfBtn");
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = "0.6"; }
 
-        /* --- FLOATING CONTACTS --- */
-        .floating-container { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 10000; }
-        .float-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff !important; text-decoration: none; font-size: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: all .3s cubic-bezier(.175,.885,.32,1.275); position: relative; border: none; cursor: pointer; }
-        .float-btn::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: inherit; z-index: -1; filter: blur(10px); opacity: 0.6; transition: 0.3s; }
-        .float-btn:hover { transform: scale(1.15) translateY(-5px); outline: none; }
-        .float-btn:hover::before { opacity: 1; filter: blur(15px); }
+  try {
+    if (!window.jspdf) {
+        alert("System Error: PDF Generator library did not load correctly. Please refresh the page.");
+        return;
+    }
 
-        /* --- MOBILE RESPONSIVE FIXES --- */
-        @media (max-width: 768px) {
-            .hero { background-size: 100% auto; background-position: center top; padding: 100px 5%; }
-            .floating-container { 
-                flex-direction: row !important; flex-wrap: nowrap !important;
-                bottom: 15px !important; right: 50% !important; transform: translateX(50%) !important; 
-                gap: 12px !important; width: auto !important; justify-content: center !important;
-                background: rgba(8,16,24,0.85); padding: 8px 15px; border-radius: 30px;
-                border: 1px solid rgba(0,229,255,0.4); box-shadow: 0 10px 25px rgba(0,0,0,0.9); backdrop-filter: blur(10px);
-            }
-            .float-btn { width: 40px !important; height: 40px !important; font-size: 18px !important; }
-            .kohmz-bot-wrapper { bottom: 85px !important; left: 10px !important; right: auto !important; }
-            .kohmz-bot-toggle { width: 65px !important; height: 65px !important; }
-            .kohmz-chat-window { width: calc(100vw - 30px); }
-        }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ format: "letter", unit: "mm" });
+    const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
+    const contentWidth = pageWidth - (margin * 2);
 
-        /* --- FOOTER --- */
-        footer { background: #000; color: white; text-align: center; padding: 60px 20px 40px; border-top: 2px solid var(--neon-gold); position: relative; z-index: 2; margin-top: 40px;}
-        footer a { color: #ffb703; text-decoration: underline; transition: 0.3s; font-weight: bold;}
-        footer a:hover { color: var(--cyber-blue); text-shadow: 0 0 8px var(--cyber-blue); outline: none;}
-        .footer-links { font-size: 11px; color: #94a3b8; margin-top: 15px; line-height: 2; }
-    </style>
-</head>
-<body>
+    try {
+      const imgData = await new Promise((resolve, reject) => {
+        const img = new Image(); img.crossOrigin = "Anonymous";
+        img.onload = () => { const c = document.createElement("canvas"); c.width = img.width; c.height = img.height; c.getContext("2d").drawImage(img, 0, 0); resolve(c.toDataURL("image/jpeg")); };
+        img.onerror = () => resolve(null); 
+        img.src = "logo.jpg";
+      });
+      if (imgData) doc.addImage(imgData, "JPEG", margin, 15, 20, 20);
+    } catch (e) { console.warn("Logo load skipped to prevent PDF crash."); }
 
-    <div class="cad-background">
-        <div class="cad-grid"></div>
-        <div class="cad-overlay"></div>
-    </div>
+    const textStartX = margin + 25;
+    doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
+    doc.text("KOHMZ", textStartX, 23);
+    doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
+    doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
 
-    <div class="particle-container">
-        <div class="particle p1"></div>
-        <div class="particle p2"></div>
-        <div class="particle p3"></div>
-        <div class="particle p4"></div>
-        <div class="particle p5"></div>
-    </div>
+    doc.setFontSize(8); doc.setTextColor(50, 50, 50);
+    doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
+    doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
+    doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
 
-    <div class="tech-bar">
-        <div class="tech-bar-content">
-            <i class="fas fa-bolt electric-icon"></i>
-            <span id="electric-typewriter" class="electric-text"></span>
-            <span class="tech-cursor">_</span>
-        </div>
-    </div>
+    doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
 
-    <header>
-        <a href="index.html" class="logo" aria-label="KOHMZ Homepage">
-            <img src="logo.jpg" alt="KOHMZ Logo">
-            <span class="logo-text">KOHMZ <span>Electrical</span></span>
-        </a>
-        <button class="menu-toggle" id="mobile-menu" aria-label="Open Mobile Menu"><i class="fas fa-bars"></i></button>
+    doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, "F");
+    doc.setTextColor(255, 255, 255); doc.setFontSize(10);
+    doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
+    doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
 
-        <nav aria-label="Main Navigation">
-            <ul class="nav-links" id="nav-list">
-                <li><a href="index.html">Overview</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false">Services <i class="fas fa-chevron-down caret"></i></a>
-                    <div class="dropdown-content">
-                        <a href="commercial.html">Commercial</a>
-                        <a href="residential.html">Residential</a>
-                        <a href="pro-tips.html">Pro Tips</a>
-                    </div>
-                </li>
-                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfeRxl117RvWj8v2oIhq0gkm59x7UauXeo2TJKJK84WdK28CQ/viewform" target="_blank" rel="noopener noreferrer">Request Quote</a></li>
-                <li><a href="book-now.html">Book Now</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropbtn" aria-haspopup="true" aria-expanded="false">Technical Shop <i class="fas fa-chevron-down caret"></i></a>
-                    <div class="dropdown-content">
-                        <a href="solar-parts.html">Solar Parts</a>
-                        <a href="powertools.html">Power Tools</a>
-                        <a href="electrical-materials.html">Materials</a>
-                    </div>
-                </li>
-                <li><a href="about-us.html">About Us</a></li>
-                <li><a href="portfolio.html" style="color: #ffb703; text-shadow: 0 0 8px #ffb703;">Portfolio</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-            </ul>
-        </nav>
-    </header>
+    doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+    doc.text("OFFICIAL SERVICE ESTIMATE", pageWidth / 2, 65, { align: "center" });
 
-    <main id="main-content">
-        <section class="hero" data-aos="zoom-in">
-            <div class="hero-inner">
-                <h1 id="hero-heading">
-                    <span id="main-typewriter-text"></span><span class="cursor" style="color: #00e5ff; animation: blink 1s step-end infinite;">_</span><br>
-                    <span class="txt-type" aria-hidden="true" data-wait="2000" data-words='["ENGINEERING EXCELLENCE", "PROVEN EXECUTION", "THE KOHMZ STANDARD"]'></span>
-                </h1>
-                <p>We transform complex power requirements into streamlined, high-performance systems through a rigorous project lifecycle. Mula sa High-End Residential estates hanggang sa malalaking Commercial facilities, bawat project ay patunay ng aming dedikasyon sa 100% PEC Compliance.</p>
-            </div>
-        </section>
+    const formattedData = formatNumbers(data);
+    let parts = formattedData.split(/[-=]{10,}/);
+    let itemsStr = parts[0] || "";
+    let restorationStr = (parts[1] || "").trim();
+    let totalStr = (parts[2] || "").trim();
 
-        <section class="content-section">
-            <h2 data-aos="fade-down">Our Technical Execution Framework</h2>
-            <div class="framework-container">
-                <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="100">Phase 1: Digital Prototyping & CAD Blueprinting</button>
-                <div class="panel">
-                    <div class="panel-content">
-                        <p>We eliminate "trial and error." Every project begins with professional CAD electrical drawings. This allows us to map out the most efficient wire routes, identify potential circuit bottlenecks, and ensure 100% compliance with the Philippine Electrical Code (PEC) before a single wire is installed.</p>
-                    </div>
-                </div>
+    if (!totalStr && restorationStr && restorationStr.toUpperCase().includes("GRAND TOTAL")) {
+      totalStr = restorationStr;
+      restorationStr = "RESTORATION COST: TO FOLLOW (Requires On-Site Inspection).";
+    }
 
-                <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="200">Phase 2: Technical Load Profiling & Estimation</button>
-                <div class="panel">
-                    <div class="panel-content">
-                        <p>Our specialists perform deep load evaluations to match your property's consumption with the correct breaker and wire sizing. We provide a transparent, line-item material and labor cost estimate, ensuring no hidden charges and optimal resource management.</p>
-                    </div>
-                </div>
+    let rawItems = itemsStr.split("|||");
+    let tableBody = [];
 
-                <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="300">Phase 3: Tactical Installation & NEMA Standards</button>
-                <div class="panel">
-                    <div class="panel-content">
-                        <p>Implementation is handled by certified specialists utilizing industrial-grade conduits, proper wire management systems, and NEMA-compliant enclosures. We prioritize clean aesthetics and structural integrity, ensuring your system is built for decades, not just years.</p>
-                    </div>
-                </div>
+    rawItems.forEach(itemBlock => {
+      if (!itemBlock.trim()) return;
+      let lines = itemBlock.split("\n").map(l => l.trim()).filter(l => l);
+      let itemName = "-", qty = "-", labor = "-", mat = "-";
+      lines.forEach(line => {
+        let upperLine = line.toUpperCase();
+        if (upperLine.startsWith("ITEM:")) itemName = line.substring(5).trim();
+        else if (upperLine.startsWith("QTY:")) qty = line.substring(4).trim();
+        else if (upperLine.startsWith("LABOR COST:")) labor = line.substring(11).trim();
+        else if (upperLine.startsWith("MATERIALS COST:")) mat = line.substring(15).trim();
+      });
+      if (itemName !== "-") tableBody.push([itemName, qty, labor, mat]);
+    });
 
-                <button type="button" class="collapsible" data-aos="fade-up" data-aos-delay="400">Phase 4: Advanced Testing & Quality Assurance</button>
-                <div class="panel">
-                    <div class="panel-content">
-                        <p>The "KOHMZ Standard" requires rigorous final testing. We utilize Digital Megohmmeters for insulation resistance testing to detect hidden micro-faults and perform actual load evaluations under peak stress to guarantee system stability upon handover.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+    if (tableBody.length === 0 && itemsStr.trim().length > 0) {
+      tableBody.push([itemsStr.substring(0, 100) + "...", "1", "TBD", "TBD"]);
+    }
 
-        <section class="content-section" style="background: rgba(0, 229, 255, 0.02); border-top: 1px solid rgba(0,229,255,0.1); border-bottom: 1px solid rgba(0,229,255,0.1);">
-            <h2 data-aos="fade-down">Project Capabilities Showcase</h2>
-            <p class="sub-text" data-aos="fade-up">Diverse solutions engineered for high-stakes power environments.</p>
-            
-            <div class="showcase-grid">
-                <div class="showcase-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="showcase-info">
-                        <span class="tag"><i class="fas fa-house-shield"></i> RESIDENTIAL MANSIONS</span>
-                        <h4>Custom Distribution Boards</h4>
-                        <p>Integrated sub-panel systems for multi-story residences, focusing on dedicated AC circuits and surge protection for smart electronics. Eliminating overloaded panels.</p>
-                    </div>
-                </div>
-                <div class="showcase-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="showcase-info">
-                        <span class="tag"><i class="fas fa-building"></i> COMMERCIAL FIT-OUTS</span>
-                        <h4>Retail & Office Networks</h4>
-                        <p>Designing workstations with balanced 3-phase load distribution to prevent office downtime, securing server rooms, and ensuring professional lighting aesthetics.</p>
-                    </div>
-                </div>
-                <div class="showcase-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="showcase-info">
-                        <span class="tag"><i class="fas fa-solar-panel"></i> RENEWABLE ENERGY</span>
-                        <h4>Hybrid Solar Systems</h4>
-                        <p>Certified solar array installations integrated with automatic transfer switches (ATS). Seamless transition between grid and batteries for absolute energy independence.</p>
-                    </div>
-                </div>
-                <div class="showcase-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="showcase-info">
-                        <span class="tag"><i class="fas fa-industry"></i> INDUSTRIAL</span>
-                        <h4>Heavy Service Entrances</h4>
-                        <p>Technical implementation of high-capacity meter bases and conduits for industrial equipment. Engineered to handle continuous heavy motor loads without thermal stress.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h3 style="font-size: 18px; color: #fff; text-transform: uppercase;" data-aos="zoom-in">Want to see the KOHMZ Standard in your property?</h3>
-            <div style="margin-top: 30px;" data-aos="zoom-in" data-aos-delay="200">
-                <a href="book-now.html" class="cta-btn"><i class="fas fa-hard-hat" style="margin-right: 8px;"></i> REQUEST A SITE ASSESSMENT</a>
-            </div>
-        </section>
-    </main>
-
-    <aside class="floating-container" aria-label="Quick Contact Options">
-        <button id="readPageBtn" class="float-btn" style="background:#e11d48; color:white; cursor:pointer;" aria-label="Read Page Aloud" title="Listen to Page Content"><i class="fas fa-volume-up"></i></button>
-        <a href="https://www.facebook.com/p/KOMHZ-Electrical-Design-Build-100093260504264/" target="_blank" rel="noopener noreferrer" class="float-btn" style="background:#0084ff;" aria-label="Message KOHMZ Electrical on Facebook Messenger"><i class="fab fa-facebook-messenger"></i></a>
-        <a href="https://wa.me/639266174131" target="_blank" rel="noopener noreferrer" class="float-btn" style="background:#25d366;" aria-label="Message KOHMZ Electrical on WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="viber://chat?number=%2B639266174131" target="_blank" rel="noopener noreferrer" class="float-btn" style="background:#7360f2;" aria-label="Message KOHMZ Electrical on Viber"><i class="fab fa-viber"></i></a>
-        <a href="tel:09266174131" class="float-btn" style="background:#ffb703; color:#000 !important;" aria-label="Call KOHMZ Electrical Technical Support via Phone"><i class="fas fa-phone"></i></a>
-    </aside>
-
-    <div class="kohmz-bot-wrapper" id="draggableBot">
-        <div class="bot-value-tag" id="dragHint" onclick="typeof exitGodMode === 'function' && isGodMode ? exitGodMode() : (typeof toggleBotWindow === 'function' ? toggleBotWindow() : null)">⚡ KOHMZ Lexie Pro</div>
-        <div class="kohmz-chat-window" id="chatWindow">
-            <div class="kohmz-chat-header" id="chatHeader">
-                <span>LEXIE AI: SYSTEM ACTIVE</span>
-                <div>
-                    <span id="muteBtn" onclick="typeof toggleMute === 'function' ? toggleMute() : null" style="cursor:pointer;padding:0 10px;font-size:16px;" title="Mute/Unmute Voice">🔊</span>
-                    <span onclick="typeof toggleBotWindow === 'function' ? toggleBotWindow() : null" style="cursor:pointer;padding:0 5px;font-size:18px;" title="Close">✕</span>
-                </div>
-            </div>
-            
-            <div class="kohmz-chat-body" id="chatBody"></div>
-            
-            <div id="vision-preview">
-                <img id="prev-img" src="" alt="Preview">
-                <span>📎 Image attached for analysis.</span>
-                <span onclick="typeof clearImage === 'function' ? clearImage() : null" style="margin-left:auto;color:#e11d48;cursor:pointer;font-weight:bold;background:rgba(225,29,72,0.1);padding:2px 6px;border-radius:4px;">REMOVE</span>
-            </div>
-            
-            <div class="quick-replies" id="quickReplies">
-                <button onclick="typeof sendQuickReply === 'function' ? sendQuickReply('How do you ensure PEC compliance?') : null">PEC Compliance Check</button>
-                <button onclick="typeof sendQuickReply === 'function' ? sendQuickReply('Can I see more solar project details?') : null">Solar Project Info</button>
-                <button onclick="typeof sendQuickReply === 'function' ? sendQuickReply('I want to schedule an audit.') : null">Book Audit Now</button>
-            </div>
-            
-            <div id="cf-turnstile-container">
-                <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITEKEY_HERE" data-callback="onTurnstileSuccess" data-expired-callback="resetTurnstile" data-error-callback="resetTurnstile" data-theme="dark"></div>
-            </div>
-            
-            <div class="chat-input-area">
-                <button class="chat-tool-btn" onclick="document.getElementById('imgInput').click()" title="Upload Image"><i class="fas fa-image"></i></button>
-                <button class="chat-tool-btn" onclick="document.getElementById('cameraInput').click()" title="Take Photo"><i class="fas fa-camera"></i></button>
-                <button id="micBtn" class="chat-tool-btn" onclick="typeof startDictation === 'function' ? startDictation() : null" title="Voice Input"><i class="fas fa-microphone"></i></button>
-                
-                <input type="file" id="imgInput" hidden accept="image/*" onchange="typeof handleImage === 'function' ? handleImage(this) : null">
-                <input type="file" id="cameraInput" hidden accept="image/*" capture="environment" onchange="typeof handleImage === 'function' ? handleImage(this) : null">
-                
-                <input type="text" id="userQuery" class="chat-input-field" maxlength="600" placeholder="Ask Lexie about our projects...">
-                <button class="chat-send-btn" id="mainSendBtn" disabled style="opacity:0.5;" onclick="typeof askLexie === 'function' ? askLexie() : null"><i class="fas fa-shield-alt"></i></button>
-            </div>
-        </div>
-        <div class="kohmz-bot-toggle" id="botToggle">
-            <lottie-player src="Live chatbot.json" background="transparent" speed="1" style="width:100%;height:100%;" loop autoplay></lottie-player>
-        </div>
-    </div>
-
-    <footer aria-label="Site Footer">
-        <div class="logo" style="justify-content: center; margin-bottom: 20px;">
-            <img src="logo.jpg" alt="KOHMZ Logo" width="35" height="35" loading="lazy">
-            <span class="logo-text">KOHMZ <span>Electrical</span></span>
-        </div>
-        <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 20px; font-size: 12px; line-height: 1.6; text-align: center;">Your trusted partner in structural power integrity. We specialize in bringing world-class electrical engineering standards to every Philippine home and business facility.</p>
-        <p style="text-align: center; color: white;">&copy; 2026 KOHMZ Electrical Design and Build. All Rights Reserved.</p>
-        <nav class="footer-links" aria-label="Footer Navigation">
-            <p style="margin-bottom: 5px; color: #ffb703; font-weight: 800;">Technical Governance | Asset Protection | PEC-Compliant Architecture</p>
-            <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
-            <a href="faq.html">FAQ</a> &nbsp;|&nbsp; 
-            <a href="about-us.html">About Us</a>
-        </nav>
-    </footer>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
-    <script src="lexie.js"></script>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            if(typeof AOS !== "undefined") AOS.init({ duration: 600, once: true });
-            
-            // --- 1. MOBILE MENU LOGIC ---
-            const menuBtn = document.getElementById("mobile-menu");
-            const navList = document.getElementById("nav-list");
-            if(menuBtn && navList) {
-                menuBtn.addEventListener("click", () => {
-                    navList.classList.toggle("active");
-                });
-            }
-
-            const dropdownBtns = document.querySelectorAll('.nav-links li.dropdown .dropbtn');
-            dropdownBtns.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    if(window.innerWidth <= 992) {
-                        e.preventDefault();
-                        const parentLi = this.parentElement;
-                        dropdownBtns.forEach(otherBtn => {
-                            if(otherBtn !== this) otherBtn.parentElement.classList.remove('open');
-                        });
-                        parentLi.classList.toggle('open');
-                    }
-                });
-            });
-
-            // --- 2. ACCORDION LOGIC (PORTFOLIO PHASES) ---
-            const colls = document.querySelectorAll(".collapsible");
-            colls.forEach(coll => {
-                coll.addEventListener("click", function() {
-                    this.classList.toggle("active");
-                    const panel = this.nextElementSibling;
-                    if (panel.style.maxHeight) { 
-                        panel.style.maxHeight = null; 
-                        panel.classList.remove('open-padding');
-                    } else { 
-                        panel.style.maxHeight = panel.scrollHeight + 50 + "px"; 
-                        panel.classList.add('open-padding');
-                    } 
-                });
-            });
-
-            // --- 3. TYPEWRITER LOGIC (CLEAN) ---
-            // Hero Main Text
-            const mainText = "PROJECT CAPABILITIES & ";
-            let mainIdx = 0;
-            const typeEl = document.getElementById("main-typewriter-text");
-            
-            function typeMain() {
-                if(typeEl && mainIdx < mainText.length) {
-                    typeEl.innerHTML += mainText.charAt(mainIdx++);
-                    setTimeout(typeMain, 60);
-                }
-            }
-            typeMain();
-            
-            // Sub Text Typewriter Class
-            class TypeWriter {
-                constructor(el, words, wait) {
-                    this.el = el;
-                    this.words = words;
-                    this.txt = "";
-                    this.wordIdx = 0;
-                    this.wait = parseInt(wait, 10);
-                    this.isDel = false;
-                    this.type();
-                }
-                type() {
-                    const current = this.wordIdx % this.words.length;
-                    const fullTxt = this.words[current];
-                    
-                    if (this.isDel) {
-                        this.txt = fullTxt.substring(0, this.txt.length - 1);
-                    } else {
-                        this.txt = fullTxt.substring(0, this.txt.length + 1);
-                    }
-                    
-                    this.el.innerHTML = `<span class="txt">${this.txt}</span>`;
-                    
-                    let typeSpeed = 100;
-                    if (this.isDel) typeSpeed /= 2;
-                    
-                    if (!this.isDel && this.txt === fullTxt) {
-                        typeSpeed = this.wait;
-                        this.isDel = true;
-                    } else if (this.isDel && this.txt === "") {
-                        this.isDel = false;
-                        this.wordIdx++;
-                        typeSpeed = 500;
-                    }
-                    setTimeout(() => this.type(), typeSpeed);
-                }
-            }
-            
-            const subEl = document.querySelector(".txt-type");
-            if(subEl) new TypeWriter(subEl, JSON.parse(subEl.getAttribute("data-words")), subEl.getAttribute("data-wait"));
-
-            // Tech Bar Typewriter
-            const techBarWords = ["PORTFOLIO & CAPABILITIES", "DIGITAL PROTOTYPING", "100% PEC-COMPLIANT", "INDUSTRIAL-GRADE EXECUTION", "ADVANCED QA TESTING"];
-            let tbIdx = 0, charIdx = 0, isTbDeleting = false;
-            const electricEl = document.getElementById("electric-typewriter");
-            
-            function typeElectricBar() {
-                if(!electricEl) return;
-                const currentWord = techBarWords[tbIdx];
-                if(isTbDeleting) { 
-                    electricEl.innerText = currentWord.substring(0, charIdx - 1); 
-                    charIdx--; 
-                } else { 
-                    electricEl.innerText = currentWord.substring(0, charIdx + 1); 
-                    charIdx++; 
-                }
-                
-                let typeSpeed = isTbDeleting ? 25 : 50; 
-                if(!isTbDeleting && charIdx === currentWord.length) { 
-                    typeSpeed = 2000; 
-                    isTbDeleting = true; 
-                } else if(isTbDeleting && charIdx === 0) { 
-                    isTbDeleting = false; 
-                    tbIdx = (tbIdx + 1) % techBarWords.length; 
-                    typeSpeed = 500; 
-                }
-                setTimeout(typeElectricBar, typeSpeed);
-            }
-            typeElectricBar();
-
-            // --- 4. PAGE SPECIFIC SCRAPER FOR LEXIE.JS ---
-            window.pageContextData = "KOHMZ Portfolio Framework: ";
-            const panels = document.querySelectorAll('.collapsible');
-            if(panels.length > 0) {
-                window.pageContextData += Array.from(panels).map(p => p.innerText + " " + p.nextElementSibling.innerText).join(' | ');
-            }
-            const cards = document.querySelectorAll('.showcase-card');
-            if(cards.length > 0) {
-                window.pageContextData += " Capabilities: " + Array.from(cards).map(c => c.innerText.replace(/\n/g, ' ')).join(' | ');
-            }
-            window.pageContextData = window.pageContextData.substring(0, 1500);
-
-            // --- 5. READ PAGE ALOUD (CLEANED) ---
-            window.isReadingPage = false;
-            const readPageBtn = document.getElementById("readPageBtn");
-            if(readPageBtn) {
-                readPageBtn.addEventListener("click", function() {
-                    if(window.isReadingPage || window.speechSynthesis.speaking) {
-                        window.speechSynthesis.cancel();
-                        window.isReadingPage = false;
-                        readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                        return;
-                    }
-                    
-                    const mainElement = document.querySelector("main");
-                    if(!mainElement) return;
-                    
-                    let text = mainElement.innerText.replace(/\n+/g,". ");
-                    window.isReadingPage = true;
-                    readPageBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                    
-                    let chunk = new SpeechSynthesisUtterance("Welcome to KOHMZ Portfolio. " + text);
-                    let voices = window.speechSynthesis.getVoices();
-                    let profVoice = voices.find(v=>v.name.includes("Aria")||v.name.includes("Samantha")||v.name.includes("Female")||v.name.includes("Enhanced")) || voices[0];
-                    
-                    if(profVoice) chunk.voice = profVoice;
-                    chunk.pitch = 1.15; 
-                    chunk.rate = 0.85;
-                    
-                    chunk.onend = () => { window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; };
-                    chunk.onerror = () => { window.isReadingPage = false; readPageBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; };
-                    
-                    window.speechSynthesis.speak(chunk);
-                });
-            }
-
-            // --- 6. DRAGGABLE BOT LOGIC ---
-            const wrap = document.getElementById("draggableBot");
-            const toggle = document.getElementById("botToggle");
-            
-            if (wrap && toggle) {
-                let isDrag = false, startX, startY, xOff = 0, yOff = 0, clickTime;
-                
-                toggle.addEventListener("mousedown", e => { 
-                    isDrag = true; 
-                    clickTime = Date.now(); 
-                    startX = e.clientX - xOff; 
-                    startY = e.clientY - yOff; 
-                });
-                
-                window.addEventListener("mousemove", e => { 
-                    if (isDrag) { 
-                        xOff = e.clientX - startX; 
-                        yOff = e.clientY - startY; 
-                        wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; 
-                    } 
-                });
-                
-                window.addEventListener("mouseup", () => { 
-                    if(isDrag){ 
-                        isDrag = false; 
-                        if(Date.now() - clickTime < 200 && typeof window.toggleBotWindow === 'function') {
-                            window.toggleBotWindow(); 
-                        }
-                    }
-                });
-                
-                toggle.addEventListener("touchstart", e => { 
-                    isDrag = true; 
-                    clickTime = Date.now(); 
-                    startX = e.touches[0].clientX - xOff; 
-                    startY = e.touches[0].clientY - yOff; 
-                }, { passive: true });
-                
-                window.addEventListener("touchmove", e => { 
-                    if (isDrag) { 
-                        xOff = e.touches[0].clientX - startX; 
-                        yOff = e.touches[0].clientY - startY; 
-                        wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; 
-                        e.preventDefault(); 
-                    } 
-                }, { passive: false });
-                
-                window.addEventListener("touchend", () => { 
-                    if(isDrag){ 
-                        isDrag = false; 
-                        if(Date.now() - clickTime < 200 && typeof window.toggleBotWindow === 'function') {
-                            window.toggleBotWindow(); 
-                        }
-                    }
-                });
-            }
+    if(doc.autoTable) {
+        doc.autoTable({
+          startY: 70,
+          head: [["ITEM / SERVICE DESCRIPTION", "QTY", "LABOR COST", "MATERIALS COST"]],
+          body: tableBody,
+          theme: "grid",
+          headStyles: { fillColor: [13, 27, 42], textColor: [255, 255, 255], fontStyle: "bold", halign: "center" },
+          bodyStyles: { textColor: [40, 40, 40], fontSize: 9 },
+          columnStyles: {
+            0: { cellWidth: "auto" },
+            1: { cellWidth: 20, halign: "center" },
+            2: { cellWidth: 35, halign: "right" },
+            3: { cellWidth: 35, halign: "right" }
+          },
+          margin: { left: margin, right: margin }
         });
-    </script>
-</body>
-</html>
+    }
+
+    let finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 80;
+
+    if (finalY > 230) { doc.addPage(); finalY = 20; }
+
+    doc.setFillColor(245, 245, 245);
+    doc.rect(margin, finalY, contentWidth, 12, "F");
+    doc.setFont("helvetica", "italic"); doc.setFontSize(9); doc.setTextColor(100, 100, 100);
+    doc.text(restorationStr || "RESTORATION COST: TO FOLLOW (Requires On-Site Inspection).", margin + 5, finalY + 7.5);
+
+    finalY += 18;
+    if (finalY > 230) { doc.addPage(); finalY = 20; }
+
+    doc.setFillColor(255, 183, 3);
+    doc.rect(margin, finalY, contentWidth, 14, "F");
+    doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(13, 27, 42);
+    doc.text(totalStr || "GRAND TOTAL ESTIMATE: TBD", rightAlign - 5, finalY + 9, { align: "right" });
+
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
+      doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+      doc.text("DISCLAIMER: This document is a rough AI estimate. Final pricing is subject to a formal Technical Audit.", pageWidth / 2, 265, { align: "center" });
+      doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth / 2, 268, { align: "center" });
+      doc.text("Restoration (masonry/painting) is strictly separate from the electrical labor fee.", pageWidth / 2, 271, { align: "center" });
+    }
+
+    doc.save(`KOHMZ_Estimate_${userId.substring(0, 5)}.pdf`);
+  } catch (err) {
+    console.error(err);
+    alert("Error generating PDF. Please ensure all data is loaded properly.");
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-invoice-dollar"></i> Download Official Estimate'; btn.style.opacity = "1"; }
+  }
+};
+
+window.downloadAgreement = async function () {
+  const data = sessionStorage.getItem("lastAgreement");
+  if (!data) { alert("System Error: No agreement data found."); return; }
+  const btn = document.getElementById("dlAgreeBtn");
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...'; btn.style.opacity = "0.6"; }
+
+  try {
+    if (!window.jspdf) {
+        alert("System Error: PDF Generator library did not load correctly. Please refresh the page.");
+        return;
+    }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ format: "letter", unit: "mm" });
+    const margin = 15, pageWidth = doc.internal.pageSize.getWidth(), rightAlign = pageWidth - margin;
+    const contentWidth = pageWidth - (margin * 2);
+
+    try {
+      const imgData = await new Promise((resolve) => {
+        const img = new Image(); img.crossOrigin = "Anonymous";
+        img.onload = () => { const c = document.createElement("canvas"); c.width = img.width; c.height = img.height; c.getContext("2d").drawImage(img, 0, 0); resolve(c.toDataURL("image/jpeg")); };
+        img.onerror = () => resolve(null); 
+        img.src = "logo.jpg";
+      });
+      if (imgData) doc.addImage(imgData, "JPEG", margin, 15, 20, 20);
+    } catch (e) { console.warn("Logo load skipped to prevent PDF crash"); }
+
+    const textStartX = margin + 25;
+    doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(13, 27, 42);
+    doc.text("KOHMZ", textStartX, 23);
+    doc.setTextColor(255, 183, 3); doc.text("Electrical", textStartX + doc.getTextWidth("KOHMZ "), 23);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(100, 100, 100);
+    doc.text("TECHNICAL GOVERNANCE & POWER ARCHITECTURE", textStartX, 30);
+
+    doc.setFontSize(8); doc.setTextColor(50, 50, 50);
+    doc.text("Website: kohmzelectrical.com", rightAlign, 18, { align: "right" });
+    doc.text("FB Page: KOHMZ Electrical Design and Build", rightAlign, 23, { align: "right" });
+    doc.text("Viber / WhatsApp: 0926-617-4131", rightAlign, 28, { align: "right" });
+
+    doc.setDrawColor(255, 183, 3); doc.setLineWidth(1.2); doc.line(margin, 40, rightAlign, 40);
+
+    doc.setFillColor(13, 27, 42); doc.rect(margin, 45, contentWidth, 10, "F");
+    doc.setTextColor(255, 255, 255); doc.setFontSize(10);
+    doc.text(`TRACKING REF ID: ${userId}`, margin + 5, 51.5);
+    doc.text(`DATE PREPARED: ${new Date().toLocaleDateString()}`, rightAlign - 5, 51.5, { align: "right" });
+
+    doc.setTextColor(13, 27, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+    doc.text("OFFICIAL SERVICE AGREEMENT", pageWidth / 2, 65, { align: "center" });
+
+    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
+
+    const formattedData = formatNumbers(data);
+    let lines = [];
+    if (formattedData && typeof formattedData === "string") {
+      lines = doc.splitTextToSize(formattedData, contentWidth - 10);
+    } else {
+      lines = ["Data format error occurred."];
+    }
+
+    let cursorY = 75;
+    let boxStartY = 55;
+    const lineHeight = 6;
+    const pageMaxY = 250;
+
+    for (let i = 0; i < lines.length; i++) {
+      if (cursorY + lineHeight > pageMaxY) {
+        doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
+        doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 2, "S");
+
+        doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
+        doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+        doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth / 2, 265, { align: "center" });
+
+        doc.addPage();
+        boxStartY = 20;
+        cursorY = 30;
+        doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(13, 27, 42);
+        doc.text("KOHMZ ELECTRICAL - AGREEMENT CONTINUATION", margin, boxStartY - 5);
+        doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(40, 40, 40);
+      }
+      doc.text(lines[i], margin + 5, cursorY);
+      cursorY += lineHeight;
+    }
+
+    doc.setDrawColor(13, 27, 42); doc.setLineWidth(0.3);
+    doc.rect(margin, boxStartY, contentWidth, cursorY - boxStartY + 5, "S");
+
+    doc.setDrawColor(200, 200, 200); doc.line(margin, 260, rightAlign, 260);
+    doc.setFontSize(7); doc.setTextColor(100, 100, 100); doc.setFont("helvetica", "italic");
+    doc.text("DISCLAIMER: This document is an AI-generated Service Agreement. Final approval required upon site visit.", pageWidth / 2, 265, { align: "center" });
+    doc.text("Any cancellation, abrupt changes, or additional work requested by the client will incur additional charges.", pageWidth / 2, 268, { align: "center" });
+
+    doc.save(`KOHMZ_Agreement_${userId.substring(0, 5)}.pdf`);
+  } catch (err) {
+    console.error(err);
+    alert("Error generating Agreement PDF. Please check your data.");
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-signature"></i> Download Service Agreement'; btn.style.opacity = "1"; }
+  }
+};
+
+// ── Multimedia & Integrations ───────────────────────────────
+window.handleImage = function (input) {
+  if (input.files && input.files[0]) {
+    if (input.files[0].size > 5 * 1024 * 1024) {
+      const chat = document.getElementById("chatWindow");
+      if (chat.style.display !== "flex") chat.style.display = "flex";
+      appendBubble("bot", "⚠️ Boss, masyadong malaki yung image! Hanggang 5MB lang po sana para hindi mag-freeze ang system.");
+      input.value = null;
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image(); img.onload = () => {
+        const canvas = document.createElement("canvas"); let width = img.width, height = img.height;
+        if (width > 500) { height = Math.round((height * 500) / width); width = 500; }
+        canvas.width = width; canvas.height = height; canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+        currentImageData = canvas.toDataURL("image/jpeg", 0.6).split(",")[1];
+        document.getElementById("prev-img").src = canvas.toDataURL("image/jpeg", 0.6);
+        document.getElementById("vision-preview").style.display = "flex";
+      }; img.src = e.target.result;
+    }; reader.readAsDataURL(input.files[0]);
+  }
+};
+
+window.clearImage = function () {
+  currentImageData = null;
+  document.getElementById("vision-preview").style.display = "none";
+  document.getElementById("imgInput").value = null;
+  document.getElementById("cameraInput").value = null;
+};
+
+window.startDictation = function () {
+  if (window.hasOwnProperty("webkitSpeechRecognition") || window.hasOwnProperty("SpeechRecognition")) {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = "en-PH";
+    recognition.onstart = () => document.getElementById("micBtn").classList.add("mic-active");
+    recognition.onresult = (e) => { document.getElementById("userQuery").value = e.results[0][0].transcript; window.askLexie(); };
+    recognition.onend = () => document.getElementById("micBtn").classList.remove("mic-active");
+    recognition.start();
+  } else { appendBubble("bot", "Sorry boss, Voice Input is not supported sa browser mo."); }
+};
+
+window.sendQuickReply = function (text) {
+  document.getElementById("userQuery").value = text;
+  window.askLexie();
+};
+
+let speechQueue = [], isSpeaking = false;
+window.speakText = function (text) {
+  if (!window.speechSynthesis || isMuted || !hasUserInteracted) return;
+  let cleanText = text
+    .replace(/\[CALENDAR:.*?\]/g, "")
+    .replace(/\*/g, "")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
+  let sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
+  speechQueue.push(...sentences);
+  if (!isSpeaking) processSpeechQueue();
+};
+
+function processSpeechQueue() {
+  if (speechQueue.length === 0 || isMuted) { isSpeaking = false; return; }
+  isSpeaking = true;
+  let sentence = speechQueue.shift().trim();
+  if (!sentence) { processSpeechQueue(); return; }
+  let utterance = new SpeechSynthesisUtterance(sentence);
+  let voices = window.speechSynthesis.getVoices();
+  let voice = voices.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Google US English") || v.name.includes("Female") || v.name.includes("Enhanced")) || voices[0];
+  if (voice) utterance.voice = voice;
+  utterance.lang = "en-US"; utterance.pitch = 1.15; utterance.rate = 0.85;
+  utterance.onend = () => processSpeechQueue();
+  utterance.onerror = () => { console.warn("TTS Error"); processSpeechQueue(); };
+  try { window.speechSynthesis.speak(utterance); } catch (e) { processSpeechQueue(); }
+}
+
+window.addEventListener("load", () => {
+  const t = document.getElementById("chatBody");
+  if (t) {
+    if (lexieMemory.length === 0) {
+      appendBubble("bot", "Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! I can read images and save your quotes. Paano kita matutulungan boss?");
+    } else {
+      lexieMemory.forEach(m => {
+        if (m.role === "system") return;
+        const isUser = m.role === "user";
+        const safeContent = escapeHTML(m.content).replace(/\[SYSTEM NOTE.*?\]/g, "[Image Attached]");
+        if (isUser) {
+          appendBubble("user", safeContent);
+        } else {
+          const b = document.createElement("div");
+          b.className = "chat-bubble";
+          b.style.cssText = "border-left:3px solid var(--cyber-blue);white-space:pre-wrap;";
+          b.textContent = "Lexie: " + m.content;
+          t.appendChild(b);
+        }
+      });
+      t.scrollTop = t.scrollHeight;
+    }
+  }
+
+  let currentPageName = document.title.split("|")[0].trim() || "kabilang page";
+  let lastPage = sessionStorage.getItem("kohmz_last_page");
+  if (lastPage && lastPage !== currentPageName && lexieMemory.length > 0) {
+    setTimeout(() => { appendBubble("bot", `Uy boss, napadaan ka pala dito sa ${escapeHTML(currentPageName)}! May napusuan ka bang service natin dito? I-chat mo lang ako ha!`); }, 1500);
+  }
+  sessionStorage.setItem("kohmz_last_page", currentPageName);
+});
+
+// ── UI Listeners (Bot Drag, Exit Intent) ─────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  const inputEl = document.getElementById("userQuery");
+  if (inputEl) {
+    inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); window.askLexie(); } });
+    inputEl.addEventListener("focus", () => { setTimeout(() => { const t = document.getElementById("chatBody"); t.scrollTop = t.scrollHeight; }, 300); });
+  }
+
+  const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
+  if (wrap && toggle) {
+    let isDrag = false, startX, startY, xOff = 0, yOff = 0;
+
+    toggle.addEventListener("mousedown", e => { isDrag = true; startX = e.clientX - xOff; startY = e.clientY - yOff; });
+    window.addEventListener("mousemove", e => { if (isDrag) { xOff = e.clientX - startX; yOff = e.clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; } });
+    window.addEventListener("mouseup", () => isDrag = false);
+
+    toggle.addEventListener("touchstart", e => { isDrag = true; startX = e.touches[0].clientX - xOff; startY = e.touches[0].clientY - yOff; }, { passive: true });
+    window.addEventListener("touchmove", e => { if (isDrag) { xOff = e.touches[0].clientX - startX; yOff = e.touches[0].clientY - startY; wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`; e.preventDefault(); } }, { passive: false });
+    window.addEventListener("touchend", () => isDrag = false);
+
+    toggle.addEventListener("click", () => { if (!isDrag) window.toggleBotWindow(); });
+  }
+});
+
+window.toggleBotWindow = function () {
+  const win = document.getElementById("chatWindow"), hint = document.getElementById("dragHint");
+  if (isSpeaking || window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false;
+  }
+  if (win.style.display === "flex") {
+    win.style.display = "none";
+    if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "⚡ KOHMZ Lexie Pro";
+  } else {
+    win.style.display = "flex";
+    if (hint) hint.innerHTML = isGodMode ? "👑 IMMORTAL MODE" : "🖐️ Drag to Move";
+  }
+};
+
+// Memory Leak FIX: Named functions so they can be removed
+function checkMouseLeave(e) { if (e.clientY < 0) triggerExitIntent(); }
+function checkVisibility() { if (document.visibilityState === "hidden") triggerExitIntent(); }
+
+let lastScrollTop = 0, lastScrollTime = Date.now();
+function checkScroll() {
+  let st = window.pageYOffset || document.documentElement.scrollTop;
+  let now = Date.now(), timeDiff = now - lastScrollTime;
+  if (st < lastScrollTop - 250 && timeDiff < 100) triggerExitIntent();
+  lastScrollTop = st <= 0 ? 0 : st;
+  lastScrollTime = now;
+}
+
+function triggerExitIntent() {
+  if (isGodMode || sessionStorage.getItem("exit_offered")) return;
+  const chat = document.getElementById("chatWindow");
+  if (chat && chat.style.display !== "flex") {
+    chat.style.display = "flex";
+    const hint = document.getElementById("dragHint");
+    if (hint) hint.innerHTML = "🖐️ Drag to Move";
+  }
+  appendBubble("bot", "Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin? Sayang ang oras, libre lang magtanong! 😊");
+  sessionStorage.setItem("exit_offered", "true");
+  
+  // TTS will only fire if user has interacted with the page first
+  if (hasUserInteracted && window.speechSynthesis && !isMuted) {
+      window.speakText("Wait lang boss! Aalis ka na agad? Baka gusto mo munang magpa-schedule ng quick Technical Audit natin?");
+  }
+
+  // Memory Leak Fix: Detach listeners so they stop running in the background
+  document.removeEventListener("mouseleave", checkMouseLeave);
+  document.removeEventListener("visibilitychange", checkVisibility);
+  window.removeEventListener("scroll", checkScroll);
+}
+
+document.addEventListener("mouseleave", checkMouseLeave);
+document.addEventListener("visibilitychange", checkVisibility);
+window.addEventListener("scroll", checkScroll, { passive: true });
