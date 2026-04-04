@@ -312,7 +312,7 @@ window.askLexie = async function (retryMessage = null) {
 
   } catch (err) {
     const lb = document.getElementById(loadId);
-    if (lb) lb.textContent = "Lexie: Connection Firewall blocked. Please try again.";
+    if (lb) lb.textContent = "Si Lexie ay sandaling nagpapahinga! Makipag-ugnayan sa amin directly sa 0926-617-4131 (Viber/WhatsApp) o bisitahin ang kohmzelectrical.com. Pasensya na po!";
     resetTurnstile();
   } finally {
     clearImage();
