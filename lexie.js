@@ -1,6 +1,5 @@
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V23.1 (INLINE CSS RETAINED + ROADMAP UPGRADES)
-// FIXES: Pure TTS, Touch/Drag, Stealth JSON, PNG Export, Paste Image, Voice Mic
+// KOHMZ LEXIE AI — FRONTEND V23.1 (FIXED & SECURED)
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
@@ -72,7 +71,7 @@ window.resetTurnstile = function () {
   if (isGodMode) return; 
   if (typeof turnstile !== "undefined" && turnstile.reset) {
     currentTurnstileToken = "";
-    turnstile.reset();
+    try { turnstile.reset(); } catch (e) { console.warn("Turnstile reset failed", e); }
     const btn = document.getElementById("mainSendBtn");
     if (btn) {
       btn.disabled = true;
@@ -109,7 +108,9 @@ function applyGodModeUI() {
     btn.innerHTML = '<i class="fas fa-paper-plane"></i>';
   }
   const header = document.getElementById("chatHeader");
-  if (header) header.firstElementChild.innerHTML = `LEXIE AI: IMMORTAL (${godName}) 👑 <span id="statusDot" style="color:#00ff00;font-size:10px;">●</span>`;
+  if (header && header.firstElementChild) {
+    header.firstElementChild.innerHTML = `LEXIE AI: IMMORTAL (${escapeHTML(godName)}) 👑 <span id="statusDot" style="color:#00ff00;font-size:10px;">●</span>`;
+  }
 }
 
 window.exitGodMode = function () {
@@ -121,7 +122,8 @@ window.exitGodMode = function () {
 
   lexieMemory = [];
   sessionStorage.removeItem("lexie_memory");
-  document.getElementById("chatBody").innerHTML = "";
+  const chatBody = document.getElementById("chatBody");
+  if (chatBody) chatBody.innerHTML = "";
 
   const hint = document.getElementById("dragHint");
   if (hint) {
@@ -131,7 +133,9 @@ window.exitGodMode = function () {
   const tsCont = document.getElementById("cf-turnstile-container");
   if (tsCont) tsCont.style.display = "flex";
   const header = document.getElementById("chatHeader");
-  if (header) header.firstElementChild.innerHTML = "LEXIE AI: SYSTEM ACTIVE <span id='statusDot' style='color:#00ff00;font-size:10px;'>●</span>";
+  if (header && header.firstElementChild) {
+    header.firstElementChild.innerHTML = "LEXIE AI: SYSTEM ACTIVE <span id='statusDot' style='color:#00ff00;font-size:10px;'>●</span>";
+  }
   resetTurnstile();
 
   appendBubble("bot", "Immortal Mode deactivated. Session memory wiped. Returning to standard protocol.");
@@ -157,6 +161,8 @@ function escapeHTML(str) {
 // ── V23.1 Bubble Helper (INLINE CSS RETAINED) ───────────────
 function appendBubble(role, htmlContent, rawTextForTTS, audioUrl) {
   const t = document.getElementById("chatBody");
+  if (!t) return document.createElement("div"); // Safe fallback
+
   const b = document.createElement("div");
   b.className = "chat-bubble";
 
@@ -227,7 +233,8 @@ window.askLexie = async function (retryMessage = null) {
   const inputEl = document.getElementById("userQuery");
   const t = document.getElementById("chatBody");
   const sendBtn = document.getElementById("mainSendBtn");
-  const n = retryMessage !== null ? retryMessage : inputEl.value.trim();
+  
+  const n = retryMessage !== null ? retryMessage : (inputEl ? inputEl.value.trim() : "");
 
   if (!n && !currentImageData) return;
 
@@ -253,7 +260,7 @@ window.askLexie = async function (retryMessage = null) {
 
   if (retryMessage === null) {
     appendBubble("user", n || "[Image Attached]");
-    inputEl.value = "";
+    if (inputEl) inputEl.value = "";
 
     lexieMemory.push({ role: "user", content: n || "[Image Sent]" });
     if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
@@ -265,7 +272,6 @@ window.askLexie = async function (retryMessage = null) {
     }
   }
 
-  // Remove chips if they exist
   const chips = document.getElementById("lexieChips");
   if (chips) chips.remove();
 
@@ -327,7 +333,6 @@ window.askLexie = async function (retryMessage = null) {
             const data = JSON.parse(line.slice(6));
             if (data.response) {
               fullText += data.response;
-              // V23 Stealth Parser
               let displayHtml = fullText
                 .replace(/ESTIMATE_JSON_START[\s\S]*?(ESTIMATE_JSON_END)?/gi, "")
                 .replace(/\{[\s\S]*?"grand_total"[\s\S]*?\}\s*ESTIMATE_JSON_END/gi, "")
@@ -339,7 +344,7 @@ window.askLexie = async function (retryMessage = null) {
                 isRendering = true;
                 requestAnimationFrame(() => {
                   botBubble.innerHTML = "Lexie: " + escapeHTML(formatNumbers(displayHtml));
-                  t.scrollTop = t.scrollHeight;
+                  if (t) t.scrollTop = t.scrollHeight;
                   isRendering = false;
                 });
               }
@@ -349,7 +354,6 @@ window.askLexie = async function (retryMessage = null) {
       }
     }
 
-    // ⚡ POST-STREAM PROCESSING
     let cleanText = fullText
       .replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "")
       .replace(/\{[\s\S]*?"grand_total"[\s\S]*?\}\s*ESTIMATE_JSON_END/gi, "") 
@@ -362,9 +366,13 @@ window.askLexie = async function (retryMessage = null) {
     if (fullText.includes("[UI_ACTION:CODE_RED]")) {
       document.body.classList.add("mode-red");
       setTimeout(() => document.body.classList.remove("mode-red"), 6000);
-      document.getElementById("chatWindow").classList.add("code-red-active");
+      const chatWin = document.getElementById("chatWindow");
+      if (chatWin) chatWin.classList.add("code-red-active");
       const header = document.getElementById("chatHeader");
-      if (header) { header.style.color = "#e11d48"; header.firstElementChild.innerHTML = "⚠️ CODE RED DETECTED"; }
+      if (header && header.firstElementChild) { 
+        header.style.color = "#e11d48"; 
+        header.firstElementChild.innerHTML = "⚠️ CODE RED DETECTED"; 
+      }
       const callLink = document.createElement("a");
       callLink.href = "tel:09266174131";
       callLink.style.cssText = "background:#e11d48;color:#fff;display:block;margin-top:12px;text-align:center;padding:10px;border-radius:5px;text-decoration:none;";
@@ -374,13 +382,12 @@ window.askLexie = async function (retryMessage = null) {
       const chatWin = document.getElementById("chatWindow");
       if (chatWin) chatWin.classList.remove("code-red-active");
       const header = document.getElementById("chatHeader");
-      if (header) {
+      if (header && header.firstElementChild) {
         header.style.color = "var(--cyber-blue)";
-        header.firstElementChild.innerHTML = (isGodMode ? `LEXIE AI: IMMORTAL (${godName}) 👑` : "LEXIE AI: SYSTEM ACTIVE") + " <span id='statusDot' style='color:#00ff00;font-size:10px;'>●</span>";
+        header.firstElementChild.innerHTML = (isGodMode ? `LEXIE AI: IMMORTAL (${escapeHTML(godName)}) 👑` : "LEXIE AI: SYSTEM ACTIVE") + " <span id='statusDot' style='color:#00ff00;font-size:10px;'>●</span>";
       }
     }
 
-    // JSON PARSER -> Buttons (PDF & PNG)
     const jsonMatch = fullText.match(/ESTIMATE_JSON_START\s*([\s\S]*?)\s*ESTIMATE_JSON_END/i) || fullText.match(/(\{[\s\S]*?\})\s*ESTIMATE_JSON_END/i);
     if (jsonMatch) {
       try {
@@ -388,14 +395,11 @@ window.askLexie = async function (retryMessage = null) {
         let pdfLines = estimateJSON.items.map(it => `ITEM: ${it.item}\nQTY: ${it.qty}\nLABOR COST: ${it.labor}\nMATERIALS COST: ${it.materials}`).join("\n|||\n");
         pdfLines += `\n-----------------------------------\nRESTORATION COST: ${estimateJSON.restoration}\n-----------------------------------\nGRAND TOTAL ESTIMATE: ${estimateJSON.grand_total}`;
         sessionStorage.setItem("lastEst", pdfLines.replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim());
-        
-        // Save full JSON string for PNG generation
         sessionStorage.setItem("lastEstJSON", JSON.stringify(estimateJSON));
 
         document.body.classList.add("mode-gold");
         setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
 
-        // Export Buttons Container
         const exportDiv = document.createElement("div");
         exportDiv.style.cssText = "display:flex;gap:5px;margin-top:12px;";
 
@@ -479,15 +483,14 @@ window.downloadQuotePNG = async function(btnElement) {
   
   btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
   
-  // Create hidden styled div for the PNG
   const card = document.createElement("div");
   card.style.cssText = "position:absolute;top:-9999px;left:-9999px;width:600px;background:#0d1b2a;color:#fff;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;padding:30px;border:3px solid #ffb703;border-radius:10px;";
   
   let itemsHtml = est.items.map(it => `
     <div style="border-bottom:1px solid rgba(255,255,255,0.1);padding:10px 0;">
-      <div style="font-weight:bold;font-size:16px;color:#00e5ff;">${it.item} (Qty: ${it.qty})</div>
+      <div style="font-weight:bold;font-size:16px;color:#00e5ff;">${escapeHTML(String(it.item))} (Qty: ${escapeHTML(String(it.qty))})</div>
       <div style="display:flex;justify-content:space-between;font-size:14px;margin-top:5px;">
-        <span>Labor: ${it.labor}</span><span>Material: ${it.materials}</span>
+        <span>Labor: ${escapeHTML(String(it.labor))}</span><span>Material: ${escapeHTML(String(it.materials))}</span>
       </div>
     </div>
   `).join("");
@@ -499,8 +502,8 @@ window.downloadQuotePNG = async function(btnElement) {
     </div>
     <div style="background:rgba(255,255,255,0.05);padding:15px;border-radius:8px;">${itemsHtml}</div>
     <div style="margin-top:20px;padding:15px;background:rgba(0,0,0,0.3);border-radius:8px;font-size:14px;">
-      <div style="color:#aaa;">Restoration: ${est.restoration}</div>
-      <div style="margin-top:10px;font-size:20px;font-weight:bold;color:#ffb703;text-align:right;">GRAND TOTAL: ${est.grand_total}</div>
+      <div style="color:#aaa;">Restoration: ${escapeHTML(String(est.restoration))}</div>
+      <div style="margin-top:10px;font-size:20px;font-weight:bold;color:#ffb703;text-align:right;">GRAND TOTAL: ${escapeHTML(String(est.grand_total))}</div>
     </div>
     <div style="margin-top:20px;text-align:center;font-size:10px;color:#666;">This is an AI-generated estimate subject to site inspection.<br>www.kohmzelectrical.com</div>
   `;
@@ -520,7 +523,7 @@ window.downloadQuotePNG = async function(btnElement) {
   }
 };
 
-// ── V23 PDF Generators (Intact from original) ─────────────
+// ── V23 PDF Generators ─────────────
 window.downloadPDF = async function () {
   const data = sessionStorage.getItem("lastEst");
   if (!data) { alert("System Error: No estimate data found."); return; }
@@ -662,14 +665,14 @@ window.downloadAgreement = async function () {
 window.handleImage = function (input) {
   let file;
   if (input.files && input.files[0]) file = input.files[0];
-  else if (input.type && input.type.indexOf("image") !== -1) file = input; // Paste fallback
+  else if (input.type && input.type.indexOf("image") !== -1) file = input;
 
   if (file) {
     if (file.size > 5 * 1024 * 1024) {
       const chat = document.getElementById("chatWindow");
-      if (chat.style.display !== "flex") chat.style.display = "flex";
+      if (chat && chat.style.display !== "flex") chat.style.display = "flex";
       appendBubble("bot", "⚠️ Boss, masyadong malaki yung image! Hanggang 5MB lang po sana.");
-      if (input.value) input.value = null;
+      if (input && input.value) input.value = null;
       return;
     }
     const reader = new FileReader();
@@ -679,8 +682,12 @@ window.handleImage = function (input) {
         if (width > 500) { height = Math.round((height * 500) / width); width = 500; }
         canvas.width = width; canvas.height = height; canvas.getContext("2d").drawImage(img, 0, 0, width, height);
         currentImageData = canvas.toDataURL("image/jpeg", 0.6).split(",")[1];
-        document.getElementById("prev-img").src = canvas.toDataURL("image/jpeg", 0.6);
-        document.getElementById("vision-preview").style.display = "flex";
+        
+        const prevImg = document.getElementById("prev-img");
+        if (prevImg) prevImg.src = canvas.toDataURL("image/jpeg", 0.6);
+        
+        const visionPreview = document.getElementById("vision-preview");
+        if (visionPreview) visionPreview.style.display = "flex";
       }; img.src = e.target.result;
     }; reader.readAsDataURL(file);
   }
@@ -688,9 +695,12 @@ window.handleImage = function (input) {
 
 window.clearImage = function () {
   currentImageData = null;
-  document.getElementById("vision-preview").style.display = "none";
-  document.getElementById("imgInput").value = null;
-  document.getElementById("cameraInput").value = null;
+  const vp = document.getElementById("vision-preview");
+  if (vp) vp.style.display = "none";
+  const imgIn = document.getElementById("imgInput");
+  if (imgIn) imgIn.value = null;
+  const camIn = document.getElementById("cameraInput");
+  if (camIn) camIn.value = null;
 };
 
 // ── V23 Feature: Web Speech API (Dictation) ──────────────────
@@ -699,13 +709,13 @@ window.startDictation = function () {
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.lang = "en-PH";
     
-    // Add visual indicator for dictation
     const micBtn = document.getElementById("micBtn");
     const originalMic = micBtn ? micBtn.innerHTML : "";
     if(micBtn) micBtn.innerHTML = '<i class="fas fa-circle" style="color:red;animation:blink 1s infinite;"></i>';
 
     recognition.onresult = (e) => { 
-      document.getElementById("userQuery").value = e.results[0][0].transcript; 
+      const uq = document.getElementById("userQuery");
+      if (uq) uq.value = e.results[0][0].transcript; 
       window.askLexie(); 
     };
     recognition.onerror = () => { appendBubble("bot", "Hindi ko narinig nang malinaw boss. Pa-type na lang po."); };
@@ -715,12 +725,21 @@ window.startDictation = function () {
 };
 
 window.sendQuickReply = function (text) {
-  document.getElementById("userQuery").value = text;
+  const uq = document.getElementById("userQuery");
+  if (uq) uq.value = text;
   window.askLexie();
 };
 
 let speechQueue = [], isSpeaking = false;
 const MAX_SPEECH_QUEUE = 10;
+
+let availableVoices = [];
+if (window.speechSynthesis) {
+  availableVoices = window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => {
+    availableVoices = window.speechSynthesis.getVoices();
+  };
+}
 
 window.speakText = function (text) {
   if (!window.speechSynthesis || isMuted || !hasUserInteracted) return;
@@ -738,7 +757,8 @@ function processSpeechQueue() {
   if (!sentence) { processSpeechQueue(); return; }
 
   let utterance = new SpeechSynthesisUtterance(sentence);
-  let voices = window.speechSynthesis.getVoices();
+  let voices = availableVoices.length ? availableVoices : window.speechSynthesis.getVoices();
+  
   let voice = voices.find(v => v.name.includes("Samantha") || v.name.includes("Aria") || v.name.includes("Google US English") || v.name.includes("Female") || v.name.includes("Enhanced")) || voices[0];
 
   if (voice) utterance.voice = voice;
@@ -770,7 +790,6 @@ window.addEventListener("load", () => {
     if (lexieMemory.length === 0) {
       appendBubble("bot", "Good day! I'm your sweet companion and expert assistant for KOHMZ Electrical. Lexie at your service! I can read images and save your quotes. Paano kita matutulungan boss?");
       
-      // V23 Feature: Conversation Starter Chips
       const chipsDiv = document.createElement("div");
       chipsDiv.id = "lexieChips";
       chipsDiv.style.cssText = "display:flex;gap:8px;overflow-x:auto;padding:10px 0;margin-bottom:10px;scrollbar-width:none;";
@@ -814,18 +833,18 @@ window.addEventListener("load", () => {
 document.addEventListener("DOMContentLoaded", () => {
   const inputEl = document.getElementById("userQuery");
   if (inputEl) {
-    // Submit on enter
     inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); window.askLexie(); } });
     
-    // V23 Feature: Auto-resize Textarea
     inputEl.addEventListener("input", function() {
       this.style.height = "auto";
       this.style.height = (this.scrollHeight < 120 ? this.scrollHeight : 120) + "px";
     });
 
-    // V23 Feature: Paste Image Listener
     inputEl.addEventListener("paste", (e) => {
-      const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+      const clipboardData = e.clipboardData || window.clipboardData;
+      if (!clipboardData) return;
+      const items = clipboardData.items;
+      
       for (let index in items) {
         let item = items[index];
         if (item.kind === 'file' && item.type.indexOf("image/") !== -1) {
@@ -836,7 +855,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    inputEl.addEventListener("focus", () => { setTimeout(() => { const t = document.getElementById("chatBody"); t.scrollTop = t.scrollHeight; }, 300); });
+    inputEl.addEventListener("focus", () => { setTimeout(() => { const t = document.getElementById("chatBody"); if (t) t.scrollTop = t.scrollHeight; }, 300); });
   }
 
   const mobileFixStyle = document.createElement('style');
@@ -894,8 +913,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.toggleBotWindow = function () {
   const win = document.getElementById("chatWindow"), hint = document.getElementById("dragHint");
-  if (isSpeaking || window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel(); speechQueue = []; isSpeaking = false;
+  if (!win) return;
+  if (isSpeaking || (window.speechSynthesis && window.speechSynthesis.speaking)) {
+    if (window.speechSynthesis) window.speechSynthesis.cancel(); 
+    speechQueue = []; isSpeaking = false;
   }
   if (win.style.display === "flex") {
     win.style.display = "none";
