@@ -1,8 +1,7 @@
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V21.8.0 (MOBILE PERFECTED + BOA VOICE)
-// FIXES: Mobile Click/Tap Double-Fire Bug, Mobile UI Sizing CSS,
-//        Hardware Accelerated Touch Drag, Scroll Thrashing Fix,
-//        On-Demand Premium Voice Fetcher, God-Mode Turnstile.
+// KOHMZ LEXIE AI — FRONTEND V21.8.0 (MOBILE PERFECTED + SMART VOICE)
+// FIXES: Pure TTS Engine, Bulletproof JSON Parser, Touch/Drag Separation, 
+//        iOS Audio PlaysInline, Clean Memory Logging.
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
@@ -192,7 +191,6 @@ function appendBubble(role, htmlContent, rawTextForTTS, audioUrl) {
   }
   t.appendChild(b);
   
-  // Throttle initial scroll
   requestAnimationFrame(() => { t.scrollTop = t.scrollHeight; });
   return b;
 }
@@ -214,7 +212,6 @@ window.requestLexieVoice = async function(btnElement, text) {
     const data = await res.json();
     
     if (data.audio_url) {
-      // ✅ FIX: Inalis ang "Boa Hancock", nagdagdag ng playsinline para sa iOS Safari
       btnElement.outerHTML = `
         <div style="font-size:11px;color:var(--cyber-blue);margin-bottom:6px;font-family:'Share Tech Mono';margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;">🎙️ Premium Voice</div>
         <audio controls autoplay playsinline style="width:100%;height:32px;filter:invert(0.85) hue-rotate(180deg);" src="${escapeHTML(data.audio_url)}">Browser not supported.</audio>
@@ -246,14 +243,12 @@ window.askLexie = async function (retryMessage = null) {
     }
   }
 
-  // Abort any in-flight request
   if (currentAbortController) {
     currentAbortController.abort();
   }
   currentAbortController = new AbortController();
   const { signal } = currentAbortController;
 
-  // Lock UI
   if (sendBtn) sendBtn.disabled = true;
   if (inputEl) inputEl.disabled = true;
 
@@ -301,7 +296,6 @@ window.askLexie = async function (retryMessage = null) {
 
     const contentType = response.headers.get("content-type") || "";
 
-    // ⚡ 1. JSON FALLBACK (For Auth, Bans, Errors)
     if (contentType.includes("application/json")) {
       const result = await response.json();
 
@@ -330,14 +324,13 @@ window.askLexie = async function (retryMessage = null) {
       return;
     }
 
-    // ⚡ 2. STREAMING MODE (MOBILE OPTIMIZED)
     const reader = response.body.getReader();
     const decoder = new TextDecoder("utf-8");
     let fullText = "";
     let streamBuffer = "";
     botBubble.innerHTML = "Lexie: ";
 
-    let isRendering = false; // Anti-lag trigger
+    let isRendering = false;
 
     while (true) {
       const { done, value } = await reader.read();
@@ -356,12 +349,12 @@ window.askLexie = async function (retryMessage = null) {
 
               let displayHtml = fullText
                 .replace(/ESTIMATE_JSON_START[\s\S]*?(ESTIMATE_JSON_END)?/gi, "")
+                .replace(/\{[\s\S]*?"grand_total"[\s\S]*?\}\s*ESTIMATE_JSON_END/gi, "")
                 .replace(/\[AGREEMENT_START\][\s\S]*?(\[AGREEMENT_END\])?/gi, "")
                 .replace(/\[UI_ACTION:.*?\]/g, "")
                 .replace(/\*\*/g, "")
                 .trim();
 
-              // ✅ BATCH UI UPDATES: Smooth scroll sa mobile!
               if (!isRendering) {
                 isRendering = true;
                 requestAnimationFrame(() => {
@@ -371,16 +364,15 @@ window.askLexie = async function (retryMessage = null) {
                 });
               }
             }
-          } catch (e) {
-            // Silently ignore incomplete JSON chunks
-          }
+          } catch (e) { }
         }
       }
     }
 
-    // ⚡ 3. POST-STREAM PROCESSING
+    // ⚡ 3. POST-STREAM PROCESSING (Bulletproof JSON Parser)
     let cleanText = fullText
       .replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "")
+      .replace(/\{[\s\S]*?"grand_total"[\s\S]*?\}\s*ESTIMATE_JSON_END/gi, "") 
       .replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "")
       .replace(/\[.*?\]/g, "")
       .replace(/\*\*/g, "")
@@ -389,7 +381,6 @@ window.askLexie = async function (retryMessage = null) {
     botBubble.innerHTML = "Lexie: " + escapeHTML(formatNumbers(cleanText));
     let textToSpeak = cleanText;
 
-    // Code Red
     if (fullText.includes("[UI_ACTION:CODE_RED]")) {
       document.body.classList.add("mode-red");
       setTimeout(() => document.body.classList.remove("mode-red"), 6000);
@@ -415,8 +406,7 @@ window.askLexie = async function (retryMessage = null) {
       }
     }
 
-    // Extract Strict JSON Estimate
-    const jsonMatch = fullText.match(/ESTIMATE_JSON_START\s*([\s\S]*?)\s*ESTIMATE_JSON_END/i);
+    const jsonMatch = fullText.match(/ESTIMATE_JSON_START\s*([\s\S]*?)\s*ESTIMATE_JSON_END/i) || fullText.match(/(\{[\s\S]*?\})\s*ESTIMATE_JSON_END/i);
     if (jsonMatch) {
       try {
         const estimateJSON = JSON.parse(jsonMatch[1].trim());
@@ -443,7 +433,6 @@ window.askLexie = async function (retryMessage = null) {
       }
     }
 
-    // Service Agreement
     const agreeMatch = fullText.match(/\[AGREEMENT_START\]([\s\S]*?)\[AGREEMENT_END\]/i);
     if (agreeMatch) {
       const cleanDataForAgreement = agreeMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
@@ -462,19 +451,21 @@ window.askLexie = async function (retryMessage = null) {
       textToSpeak += " Handa na rin po ang Service Agreement natin boss, i-download niyo na lang po. ";
     }
 
-   // 🎙️ ADD PREMIUM VOICE BUTTON
     const voiceBtn = document.createElement("button");
     voiceBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;margin-top:10px;display:block;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;width:100%;text-align:left;";
     voiceBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play Premium Voice';
     let safeTextForVoice = textToSpeak.substring(0, 250); 
-    // ✅ FIX: Pinalitan ng requestLexieVoice
     voiceBtn.onclick = function() { window.requestLexieVoice(this, safeTextForVoice); };
     botBubble.appendChild(voiceBtn);
 
-    // Default Browser TTS Trigger
     if (hasUserInteracted) window.speakText(textToSpeak);
 
-    lexieMemory.push({ role: "assistant", content: fullText.replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "[Provided Estimate]").replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "[Provided Agreement]") });
+    let memoryCleanText = fullText
+        .replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "[Provided Estimate]")
+        .replace(/\{[\s\S]*?"grand_total"[\s\S]*?\}\s*ESTIMATE_JSON_END/gi, "[Provided Estimate]")
+        .replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "[Provided Agreement]");
+        
+    lexieMemory.push({ role: "assistant", content: memoryCleanText });
     if (lexieMemory.length > 15) lexieMemory = lexieMemory.slice(-15);
     sessionStorage.setItem("lexie_memory", JSON.stringify(lexieMemory));
 
@@ -874,7 +865,6 @@ document.addEventListener("DOMContentLoaded", () => {
     inputEl.addEventListener("focus", () => { setTimeout(() => { const t = document.getElementById("chatBody"); t.scrollTop = t.scrollHeight; }, 300); });
   }
 
-  // ✅ MOBILE CSS FIX: Forces chatbox to fit cleanly on mobile screens
   const mobileFixStyle = document.createElement('style');
   mobileFixStyle.innerHTML = `
     @media (max-width: 768px) {
@@ -935,18 +925,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         touchTicking = true;
       }
-      if (didActuallyMove) e.preventDefault(); // Prevent scroll while dragging
+      if (didActuallyMove) e.preventDefault(); 
     }, { passive: false });
 
-    window.addEventListener("touchend", () => { isDragging = false; });
+    window.addEventListener("touchend", () => { 
+      // Delay reset slightly to prevent toggle firing immediately after drag drop
+      setTimeout(() => { isDragging = false; }, 50); 
+    });
 
-    // ✅ CLICK LISTENER: Single point of entry for toggling to prevent mobile double-firing
+    // ✅ CLICK LISTENER: Single point of entry for toggling
     toggle.addEventListener("click", (e) => {
       e.preventDefault();
       if (!didActuallyMove) {
         window.toggleBotWindow();
       }
-      didActuallyMove = false; // Reset for next tap/click
+      didActuallyMove = false; 
     });
   }
 });
