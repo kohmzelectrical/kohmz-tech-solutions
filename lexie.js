@@ -174,9 +174,9 @@ function appendBubble(role, htmlContent, rawTextForTTS, audioUrl) {
       const audioSection = document.createElement("div");
       audioSection.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
       audioSection.innerHTML = `
-        <div style="font-size:11px;color:var(--cyber-blue);margin-bottom:6px;font-family:'Share Tech Mono'">🎙️ Boa Hancock Voice</div>
-        <audio controls autoplay style="width:100%;height:32px;filter:invert(0.85) hue-rotate(180deg);" src="${escapeHTML(audioUrl)}">Your browser does not support audio.</audio>`;
-      b.appendChild(audioSection);
+       audioSection.innerHTML = `
+        <div style="font-size:11px;color:var(--cyber-blue);margin-bottom:6px;font-family:'Share Tech Mono'">🎙️ Premium Voice</div>
+        <audio controls autoplay playsinline style="width:100%;height:32px;filter:invert(0.85) hue-rotate(180deg);" src="${escapeHTML(audioUrl)}">Your browser does not support audio.</audio>`;
     } else if (rawTextForTTS) {
       const audioDiv = document.createElement("div");
       audioDiv.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
@@ -196,11 +196,11 @@ function appendBubble(role, htmlContent, rawTextForTTS, audioUrl) {
   return b;
 }
 
-// ── On-Demand Premium Voice Fetcher ───────────────────────
-window.requestBoaVoice = async function(btnElement, text) {
+// ── On-Demand Premium Voice Fetcher (Mobile Optimized) ──
+window.requestLexieVoice = async function(btnElement, text) {
   if (btnElement.disabled) return;
   btnElement.disabled = true;
-  btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Voice... (Approx 10-20s)';
+  btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Voice... (Approx 3-8s)';
   
   try {
     const res = await fetch(WORKER_URL + "voice", {
@@ -213,9 +213,10 @@ window.requestBoaVoice = async function(btnElement, text) {
     const data = await res.json();
     
     if (data.audio_url) {
+      // ✅ FIX: Inalis ang "Boa Hancock", nagdagdag ng playsinline para sa iOS Safari
       btnElement.outerHTML = `
-        <div style="font-size:11px;color:var(--cyber-blue);margin-bottom:6px;font-family:'Share Tech Mono';margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;">🎙️ Premium Voice (Boa Hancock)</div>
-        <audio controls autoplay style="width:100%;height:32px;filter:invert(0.85) hue-rotate(180deg);" src="${escapeHTML(data.audio_url)}">Browser not supported.</audio>
+        <div style="font-size:11px;color:var(--cyber-blue);margin-bottom:6px;font-family:'Share Tech Mono';margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;">🎙️ Premium Voice</div>
+        <audio controls autoplay playsinline style="width:100%;height:32px;filter:invert(0.85) hue-rotate(180deg);" src="${escapeHTML(data.audio_url)}">Browser not supported.</audio>
       `;
     } else {
       throw new Error("No URL returned");
@@ -460,13 +461,14 @@ window.askLexie = async function (retryMessage = null) {
       textToSpeak += " Handa na rin po ang Service Agreement natin boss, i-download niyo na lang po. ";
     }
 
-    // 🎙️ ADD BOA HANCOCK PREMIUM VOICE BUTTON
-    const boaBtn = document.createElement("button");
-    boaBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;margin-top:10px;display:block;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;width:100%;text-align:left;";
-    boaBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play Premium Voice (Boa)';
+   // 🎙️ ADD PREMIUM VOICE BUTTON
+    const voiceBtn = document.createElement("button");
+    voiceBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;margin-top:10px;display:block;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;width:100%;text-align:left;";
+    voiceBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play Premium Voice';
     let safeTextForVoice = textToSpeak.substring(0, 250); 
-    boaBtn.onclick = function() { window.requestBoaVoice(this, safeTextForVoice); };
-    botBubble.appendChild(boaBtn);
+    // ✅ FIX: Pinalitan ng requestLexieVoice
+    voiceBtn.onclick = function() { window.requestLexieVoice(this, safeTextForVoice); };
+    botBubble.appendChild(voiceBtn);
 
     // Default Browser TTS Trigger
     if (hasUserInteracted) window.speakText(textToSpeak);
