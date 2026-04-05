@@ -1,9 +1,8 @@
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V21.7.0 (MOBILE OPTIMIZED + BOA VOICE UI)
-// FIXES: Drag/Click Conflict, Turnstile Button State, Safari Regex,
-//        SSE Buffer Reassembly, Safe Error Logs, Memory Leak Fix,
-//        Mobile Scroll Thrashing Fix, Hardware Accelerated Touch,
-//        On-Demand Premium Voice Fetcher
+// KOHMZ LEXIE AI — FRONTEND V21.8.0 (MOBILE PERFECTED + BOA VOICE)
+// FIXES: Mobile Click/Tap Double-Fire Bug, Mobile UI Sizing CSS,
+//        Hardware Accelerated Touch Drag, Scroll Thrashing Fix,
+//        On-Demand Premium Voice Fetcher, God-Mode Turnstile.
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
@@ -72,7 +71,7 @@ window.onTurnstileSuccess = function (token) {
 };
 
 window.resetTurnstile = function () {
-  if (isGodMode) return; // ✅ FIX: Never reset in God Mode
+  if (isGodMode) return; 
   if (typeof turnstile !== "undefined" && turnstile.reset) {
     currentTurnstileToken = "";
     turnstile.reset();
@@ -140,7 +139,7 @@ window.exitGodMode = function () {
   appendBubble("bot", "Immortal Mode deactivated. Session memory wiped. Returning to standard protocol.");
 };
 
-// ✅ FIX: SAFARI SYNTAX CRASH FIX
+// SAFARI SYNTAX CRASH FIX
 function formatNumbers(text) {
   if (!text) return "";
   return text.replace(/\b\d{4,}\b/g, function (match, offset, fullString) {
@@ -872,59 +871,60 @@ document.addEventListener("DOMContentLoaded", () => {
     inputEl.addEventListener("focus", () => { setTimeout(() => { const t = document.getElementById("chatBody"); t.scrollTop = t.scrollHeight; }, 300); });
   }
 
+  // ✅ MOBILE CSS FIX: Forces chatbox to fit cleanly on mobile screens
+  const mobileFixStyle = document.createElement('style');
+  mobileFixStyle.innerHTML = `
+    @media (max-width: 768px) {
+      #chatWindow {
+        width: 92vw !important;
+        height: 75vh !important;
+        max-height: 600px !important;
+        bottom: 85px !important;
+        right: 4vw !important;
+        left: 4vw !important;
+        border-radius: 16px !important;
+        margin: auto !important;
+      }
+    }
+  `;
+  document.head.appendChild(mobileFixStyle);
+
   const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
   if (wrap && toggle) {
     let isDragging = false;
     let didActuallyMove = false;
     let startX, startY, xOff = 0, yOff = 0;
-    const DRAG_THRESHOLD = 8;
+    const DRAG_THRESHOLD = 10;
 
+    // --- MOUSE (DESKTOP) ---
     toggle.addEventListener("mousedown", e => {
-      isDragging = true;
-      didActuallyMove = false;
-      startX = e.clientX - xOff;
-      startY = e.clientY - yOff;
+      isDragging = true; didActuallyMove = false;
+      startX = e.clientX - xOff; startY = e.clientY - yOff;
     });
 
     window.addEventListener("mousemove", e => {
       if (!isDragging) return;
-      const dx = e.clientX - (startX + xOff);
-      const dy = e.clientY - (startY + yOff);
-      if (!didActuallyMove && Math.sqrt(dx * dx + dy * dy) > DRAG_THRESHOLD) {
-        didActuallyMove = true;
-      }
-      xOff = e.clientX - startX;
-      yOff = e.clientY - startY;
+      const dx = e.clientX - (startX + xOff), dy = e.clientY - (startY + yOff);
+      if (!didActuallyMove && Math.sqrt(dx * dx + dy * dy) > DRAG_THRESHOLD) didActuallyMove = true;
+      xOff = e.clientX - startX; yOff = e.clientY - startY;
       wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`;
     });
 
     window.addEventListener("mouseup", () => { isDragging = false; });
 
-    toggle.addEventListener("click", () => {
-      if (!didActuallyMove) window.toggleBotWindow();
-      didActuallyMove = false;
-    });
-
-    // Touch (mobile) drag logic
-    let touchTicking = false; // Anti-lag ticker
+    // --- TOUCH (MOBILE) ---
+    let touchTicking = false;
     toggle.addEventListener("touchstart", e => {
-      isDragging = true;
-      didActuallyMove = false;
-      startX = e.touches[0].clientX - xOff;
-      startY = e.touches[0].clientY - yOff;
+      isDragging = true; didActuallyMove = false;
+      startX = e.touches[0].clientX - xOff; startY = e.touches[0].clientY - yOff;
     }, { passive: true });
 
     window.addEventListener("touchmove", e => {
       if (!isDragging) return;
-      const tx = e.touches[0].clientX - (startX + xOff);
-      const ty = e.touches[0].clientY - (startY + yOff);
-      if (!didActuallyMove && Math.sqrt(tx * tx + ty * ty) > DRAG_THRESHOLD) {
-        didActuallyMove = true;
-      }
-      xOff = e.touches[0].clientX - startX;
-      yOff = e.touches[0].clientY - startY;
+      const tx = e.touches[0].clientX - (startX + xOff), ty = e.touches[0].clientY - (startY + yOff);
+      if (!didActuallyMove && Math.sqrt(tx * tx + ty * ty) > DRAG_THRESHOLD) didActuallyMove = true;
+      xOff = e.touches[0].clientX - startX; yOff = e.touches[0].clientY - startY;
       
-      // Hardware Acceleration to prevent mobile lag
       if (!touchTicking) {
         requestAnimationFrame(() => {
           wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`;
@@ -932,14 +932,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         touchTicking = true;
       }
-      if (didActuallyMove) e.preventDefault();
+      if (didActuallyMove) e.preventDefault(); // Prevent scroll while dragging
     }, { passive: false });
 
     window.addEventListener("touchend", () => { isDragging = false; });
 
-    toggle.addEventListener("touchend", () => {
-      if (!didActuallyMove) window.toggleBotWindow();
-      didActuallyMove = false;
+    // ✅ CLICK LISTENER: Single point of entry for toggling to prevent mobile double-firing
+    toggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (!didActuallyMove) {
+        window.toggleBotWindow();
+      }
+      didActuallyMove = false; // Reset for next tap/click
     });
   }
 });
