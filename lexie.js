@@ -1,7 +1,9 @@
 // ============================================================
-// KOHMZ LEXIE AI — FRONTEND V21.6.0 (BUG-FIXED EDITION)
+// KOHMZ LEXIE AI — FRONTEND V21.7.0 (MOBILE OPTIMIZED + BOA VOICE UI)
 // FIXES: Drag/Click Conflict, Turnstile Button State, Safari Regex,
-//        SSE Buffer Reassembly, Safe Error Logs, Memory Leak Fix
+//        SSE Buffer Reassembly, Safe Error Logs, Memory Leak Fix,
+//        Mobile Scroll Thrashing Fix, Hardware Accelerated Touch,
+//        On-Demand Premium Voice Fetcher
 // ============================================================
 const WORKER_URL = "https://kohmz-ai-vault.kohmzelectrical.workers.dev/";
 
@@ -138,7 +140,7 @@ window.exitGodMode = function () {
   appendBubble("bot", "Immortal Mode deactivated. Session memory wiped. Returning to standard protocol.");
 };
 
-// ✅ FIX: SAFARI SYNTAX CRASH FIX (Removed negative lookbehinds)
+// ✅ FIX: SAFARI SYNTAX CRASH FIX
 function formatNumbers(text) {
   if (!text) return "";
   return text.replace(/\b\d{4,}\b/g, function (match, offset, fullString) {
@@ -174,7 +176,7 @@ function appendBubble(role, htmlContent, rawTextForTTS, audioUrl) {
       audioSection.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
       audioSection.innerHTML = `
         <div style="font-size:11px;color:var(--cyber-blue);margin-bottom:6px;font-family:'Share Tech Mono'">🎙️ Boa Hancock Voice</div>
-        <audio controls style="width:100%;height:32px;filter:invert(0.85) hue-rotate(180deg);" src="${escapeHTML(audioUrl)}">Your browser does not support audio.</audio>`;
+        <audio controls autoplay style="width:100%;height:32px;filter:invert(0.85) hue-rotate(180deg);" src="${escapeHTML(audioUrl)}">Your browser does not support audio.</audio>`;
       b.appendChild(audioSection);
     } else if (rawTextForTTS) {
       const audioDiv = document.createElement("div");
@@ -189,12 +191,44 @@ function appendBubble(role, htmlContent, rawTextForTTS, audioUrl) {
     }
   }
   t.appendChild(b);
-  setTimeout(() => { t.scrollTop = t.scrollHeight; }, 100);
+  
+  // Throttle initial scroll
+  requestAnimationFrame(() => { t.scrollTop = t.scrollHeight; });
   return b;
 }
 
+// ── On-Demand Premium Voice Fetcher ───────────────────────
+window.requestBoaVoice = async function(btnElement, text) {
+  if (btnElement.disabled) return;
+  btnElement.disabled = true;
+  btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Voice... (Approx 10-20s)';
+  
+  try {
+    const res = await fetch(WORKER_URL + "voice", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: text })
+    });
+    
+    if (!res.ok) throw new Error("API Error");
+    const data = await res.json();
+    
+    if (data.audio_url) {
+      btnElement.outerHTML = `
+        <div style="font-size:11px;color:var(--cyber-blue);margin-bottom:6px;font-family:'Share Tech Mono';margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;">🎙️ Premium Voice (Boa Hancock)</div>
+        <audio controls autoplay style="width:100%;height:32px;filter:invert(0.85) hue-rotate(180deg);" src="${escapeHTML(data.audio_url)}">Browser not supported.</audio>
+      `;
+    } else {
+      throw new Error("No URL returned");
+    }
+  } catch(e) {
+    btnElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Voice failed. Try again.';
+    btnElement.disabled = false;
+  }
+};
+
 // ==========================================
-// ── Main Chat Engine (Ask Lexie V21.6 STREAMING) ──────────────
+// ── Main Chat Engine (Ask Lexie STREAMING)
 // ==========================================
 window.askLexie = async function (retryMessage = null) {
   const inputEl = document.getElementById("userQuery");
@@ -295,12 +329,14 @@ window.askLexie = async function (retryMessage = null) {
       return;
     }
 
-    // ⚡ 2. STREAMING MODE
+    // ⚡ 2. STREAMING MODE (MOBILE OPTIMIZED)
     const reader = response.body.getReader();
     const decoder = new TextDecoder("utf-8");
     let fullText = "";
     let streamBuffer = "";
     botBubble.innerHTML = "Lexie: ";
+
+    let isRendering = false; // Anti-lag trigger
 
     while (true) {
       const { done, value } = await reader.read();
@@ -324,8 +360,15 @@ window.askLexie = async function (retryMessage = null) {
                 .replace(/\*\*/g, "")
                 .trim();
 
-              botBubble.innerHTML = "Lexie: " + escapeHTML(formatNumbers(displayHtml));
-              t.scrollTop = t.scrollHeight;
+              // ✅ BATCH UI UPDATES: Smooth scroll sa mobile!
+              if (!isRendering) {
+                isRendering = true;
+                requestAnimationFrame(() => {
+                  botBubble.innerHTML = "Lexie: " + escapeHTML(formatNumbers(displayHtml));
+                  t.scrollTop = t.scrollHeight;
+                  isRendering = false;
+                });
+              }
             }
           } catch (e) {
             // Silently ignore incomplete JSON chunks
@@ -397,23 +440,6 @@ window.askLexie = async function (retryMessage = null) {
       } catch (e) {
         console.error("Failed to parse estimate JSON", e);
       }
-    } else {
-      // Legacy Fallback
-      const pdfMatch = fullText.match(/\[PDF_START\]([\s\S]*?)\[PDF_END\]/i);
-      if (pdfMatch) {
-        const cleanDataForPDF = pdfMatch[1].replace(/\*\*/g, "").replace(/\*/g, "").replace(/₱/g, "PHP ").trim();
-        sessionStorage.setItem("lastEst", cleanDataForPDF);
-        document.body.classList.add("mode-gold");
-        setTimeout(() => document.body.classList.remove("mode-gold"), 6000);
-
-        const dlBtn = document.createElement("button");
-        dlBtn.id = "dlPdfBtn"; dlBtn.className = "btn-pdf"; dlBtn.style.cssText = "width:100%;text-align:center;margin-top:12px;";
-        dlBtn.innerHTML = '<i class="fas fa-file-invoice-dollar"></i> Download Official Estimate';
-        dlBtn.onclick = () => window.downloadPDF();
-        botBubble.appendChild(dlBtn);
-
-        textToSpeak += " Naihanda ko na po ang estimate natin boss, i-click niyo na lang po ang download button sa ibaba. ";
-      }
     }
 
     // Service Agreement
@@ -435,6 +461,15 @@ window.askLexie = async function (retryMessage = null) {
       textToSpeak += " Handa na rin po ang Service Agreement natin boss, i-download niyo na lang po. ";
     }
 
+    // 🎙️ ADD BOA HANCOCK PREMIUM VOICE BUTTON
+    const boaBtn = document.createElement("button");
+    boaBtn.style.cssText = "background:none;border:none;color:var(--neon-gold);cursor:pointer;font-family:'Share Tech Mono';font-size:11px;padding:0;margin-top:10px;display:block;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;width:100%;text-align:left;";
+    boaBtn.innerHTML = '<i class="fas fa-play-circle"></i> Play Premium Voice (Boa)';
+    let safeTextForVoice = textToSpeak.substring(0, 250); 
+    boaBtn.onclick = function() { window.requestBoaVoice(this, safeTextForVoice); };
+    botBubble.appendChild(boaBtn);
+
+    // Default Browser TTS Trigger
     if (hasUserInteracted) window.speakText(textToSpeak);
 
     lexieMemory.push({ role: "assistant", content: fullText.replace(/ESTIMATE_JSON_START[\s\S]*?ESTIMATE_JSON_END/gi, "[Provided Estimate]").replace(/\[AGREEMENT_START\][\s\S]*?\[AGREEMENT_END\]/gi, "[Provided Agreement]") });
@@ -453,14 +488,11 @@ window.askLexie = async function (retryMessage = null) {
   } finally {
     clearImage();
 
-    // ✅ FIX: Only reset turnstile (and re-disable btn) after use in normal mode
     if (!isGodMode && messageCount >= 2 && currentTurnstileToken) {
-      resetTurnstile(); // This will disable the button correctly
+      resetTurnstile(); 
     } else if (isGodMode) {
-      // God Mode: always keep button enabled
       if (sendBtn) { sendBtn.disabled = false; sendBtn.style.opacity = "1"; }
     } else {
-      // Normal mode, under limit — re-enable only if turnstile was already solved
       if (sendBtn) {
         if (currentTurnstileToken || messageCount < 2) {
           sendBtn.disabled = false;
@@ -842,13 +874,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const wrap = document.getElementById("draggableBot"), toggle = document.getElementById("botToggle");
   if (wrap && toggle) {
-    // ✅ FIX: Use a `didActuallyMove` flag instead of `isDrag` for click detection.
-    // isDrag = "is mouse/finger currently held down"
-    // didActuallyMove = "did it travel enough pixels to count as a drag (not a tap)"
     let isDragging = false;
     let didActuallyMove = false;
     let startX, startY, xOff = 0, yOff = 0;
-    const DRAG_THRESHOLD = 8; // pixels — below this = it's a tap/click, not a drag
+    const DRAG_THRESHOLD = 8;
 
     toggle.addEventListener("mousedown", e => {
       isDragging = true;
@@ -871,13 +900,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("mouseup", () => { isDragging = false; });
 
-    // ✅ FIX: Click fires after mouseup — check didActuallyMove (not isDragging which is already false)
     toggle.addEventListener("click", () => {
       if (!didActuallyMove) window.toggleBotWindow();
-      didActuallyMove = false; // reset for next interaction
+      didActuallyMove = false;
     });
 
-    // Touch (mobile)
+    // Touch (mobile) drag logic
+    let touchTicking = false; // Anti-lag ticker
     toggle.addEventListener("touchstart", e => {
       isDragging = true;
       didActuallyMove = false;
@@ -894,13 +923,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       xOff = e.touches[0].clientX - startX;
       yOff = e.touches[0].clientY - startY;
-      wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`;
-      if (didActuallyMove) e.preventDefault(); // only prevent scroll if actually dragging
+      
+      // Hardware Acceleration to prevent mobile lag
+      if (!touchTicking) {
+        requestAnimationFrame(() => {
+          wrap.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`;
+          touchTicking = false;
+        });
+        touchTicking = true;
+      }
+      if (didActuallyMove) e.preventDefault();
     }, { passive: false });
 
     window.addEventListener("touchend", () => { isDragging = false; });
 
-    // ✅ FIX: For touch, use touchend to detect tap (no click event on mobile drag)
     toggle.addEventListener("touchend", () => {
       if (!didActuallyMove) window.toggleBotWindow();
       didActuallyMove = false;
@@ -922,7 +958,6 @@ window.toggleBotWindow = function () {
   }
 };
 
-// ✅ FIX: Memory Leak — Named functions so they can be removed
 function checkMouseLeave(e) { if (e.clientY < 0) triggerExitIntent(); }
 function checkVisibility() { if (document.visibilityState === "hidden") triggerExitIntent(); }
 
