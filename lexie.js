@@ -469,9 +469,7 @@ window.askLexie = async function (retryMessage = null) {
     currentAbortController = null;
     if (inputEl) { inputEl.disabled = false; inputEl.focus(); }
   }
-};
-
-// ── V23.1 Feature: Save Quote as PNG (Requires html2canvas) ──
+};// ── V23.1 Feature: Save Quote as PNG (Requires html2canvas) ──
 window.downloadQuotePNG = async function(btnElement) {
   if (typeof html2canvas === "undefined") {
     alert("System Error: html2canvas is not loaded. Please include the script in your HTML.");
@@ -792,11 +790,13 @@ window.addEventListener("load", () => {
       
       const chipsDiv = document.createElement("div");
       chipsDiv.id = "lexieChips";
-      chipsDiv.style.cssText = "display:flex;gap:8px;overflow-x:auto;padding:10px 0;margin-bottom:10px;scrollbar-width:none;";
+      // FIX: Pinalitan ng flex-wrap para bumaba sa next line yung buttons at hindi sumagad sa kanan
+      chipsDiv.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;padding:10px 0;margin-bottom:10px;width:100%;";
       const prompts = ["🔌 Humingi ng Estimate", "☀️ Solar Inquiry", "📅 Book a Visit", "💡 Need lang ng advice"];
       prompts.forEach(p => {
         const btn = document.createElement("button");
-        btn.style.cssText = "white-space:nowrap;background:rgba(0,229,255,0.1);color:#00e5ff;border:1px solid rgba(0,229,255,0.4);border-radius:15px;padding:6px 12px;font-size:12px;cursor:pointer;";
+        // FIX: Inalis yung white-space:nowrap at nilagyan ng flex: 1 1 auto para pantay-pantay
+        btn.style.cssText = "background:rgba(0,229,255,0.1);color:#00e5ff;border:1px solid rgba(0,229,255,0.4);border-radius:15px;padding:8px 12px;font-size:12px;cursor:pointer;flex:1 1 auto;text-align:center;min-width:120px;";
         btn.innerText = p;
         btn.onclick = () => window.sendQuickReply(p);
         chipsDiv.appendChild(btn);
