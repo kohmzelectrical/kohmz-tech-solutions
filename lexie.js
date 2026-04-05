@@ -174,9 +174,10 @@ function appendBubble(role, htmlContent, rawTextForTTS, audioUrl) {
       const audioSection = document.createElement("div");
       audioSection.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
       audioSection.innerHTML = `
-       audioSection.innerHTML = `
-        <div style="font-size:11px;color:var(--cyber-blue);margin-bottom:6px;font-family:'Share Tech Mono'">🎙️ Premium Voice</div>
-        <audio controls autoplay playsinline style="width:100%;height:32px;filter:invert(0.85) hue-rotate(180deg);" src="${escapeHTML(audioUrl)}">Your browser does not support audio.</audio>`;
+        <div style="font-size:11px;color:var(--cyber-blue);margin-bottom:6px;font-family:'Share Tech Mono'">🎙️ Premium Voice</div>
+        <audio controls autoplay playsinline style="width:100%;height:32px;filter:invert(0.85) hue-rotate(180deg);" src="${escapeHTML(audioUrl)}">Your browser does not support audio.</audio>
+      `;
+      b.appendChild(audioSection);
     } else if (rawTextForTTS) {
       const audioDiv = document.createElement("div");
       audioDiv.style.cssText = "margin-top:10px;border-top:1px dashed rgba(0,229,255,0.3);padding-top:8px;";
